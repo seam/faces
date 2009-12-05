@@ -1,0 +1,117 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <parent>
+      <artifactId>seam-parent</artifactId>
+      <groupId>org.jboss.seam</groupId>
+      <version>3.0.0-SNAPSHOT</version>
+   </parent>
+
+   <artifactId>seam-faces</artifactId>
+   <packaging>jar</packaging>
+   <version>3.0.0-SNAPSHOT</version>
+   <name>Seam Faces Module</name>
+
+   <build>
+      <plugins>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+               <suiteXmlFiles>
+                  <suiteXmlFile>src/test/resources/test-suite.xml</suiteXmlFile>
+               </suiteXmlFiles>
+            </configuration>
+         </plugin>
+
+      </plugins>
+   </build>
+
+   <dependencies>
+
+      <dependency>
+         <groupId>${seam.groupId}</groupId>
+         <artifactId>seam-mock</artifactId>
+         <scope>test</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>javax.el</groupId>
+         <artifactId>el-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>javax.faces</groupId>
+         <artifactId>jsf-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>javax.servlet</groupId>
+         <artifactId>servlet-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>javax.transaction</groupId>
+         <artifactId>jta</artifactId>
+         <scope>provided</scope>
+      </dependency>
+
+      <!-- doesn't inherit from seam-international because scope is provided -->
+      <dependency>
+         <groupId>javax.validation</groupId>
+         <artifactId>validation-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>${seam.groupId}</groupId>
+         <artifactId>seam-bridge-api</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>${seam.groupId}</groupId>
+         <artifactId>seam-el</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>${seam.groupId}</groupId>
+         <artifactId>seam-international</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>${seam.groupId}</groupId>
+         <artifactId>seam-resources</artifactId> <!-- may become inherited -->
+      </dependency>
+
+      <!-- QUESTION do we want this dependency? -->
+      <dependency>
+         <groupId>${seam.groupId}</groupId>
+         <artifactId>seam-security</artifactId>
+         <optional>true</optional>
+      </dependency>
+      
+      <dependency>
+         <groupId>${seam.groupId}</groupId>
+         <artifactId>seam-web</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>${webbeans.groupId}</groupId>
+         <artifactId>jsr299-api</artifactId>
+         <scope>provided</scope>
+      </dependency>         
+
+      <dependency>
+         <groupId>${webbeans.groupId}</groupId>
+         <artifactId>webbeans-logger</artifactId>
+      </dependency> 
+
+   </dependencies>
+
+</project>

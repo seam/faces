@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Seam Faces Module Test Suite" verbose="1">
+   <test name="Seam Faces Module - Unit Tests">
+      <!--
+      <method-selectors>
+         <method-selector>
+            <selector-class name="org.jboss.testharness.impl.testng.DisableIntegrationTestsMethodSelector"/>
+         </method-selector>
+      </method-selectors>
+      -->
+      <packages>
+         <package name="org.jboss.seam.faces.*"/>
+      </packages>
+   </test>
+</suite>
