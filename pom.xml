@@ -33,12 +33,6 @@
    <dependencies>
 
       <dependency>
-         <groupId>${seam.groupId}</groupId>
-         <artifactId>seam-mock</artifactId>
-         <scope>test</scope>
-      </dependency>
-
-      <dependency>
          <groupId>javax.el</groupId>
          <artifactId>el-api</artifactId>
          <scope>provided</scope>
@@ -69,49 +63,31 @@
          <scope>provided</scope>
       </dependency>
 
-      <dependency>
-         <groupId>${seam.groupId}</groupId>
-         <artifactId>seam-bridge-api</artifactId>
-      </dependency>
-
-      <dependency>
-         <groupId>${seam.groupId}</groupId>
-         <artifactId>seam-el</artifactId>
-      </dependency>
-
-      <dependency>
-         <groupId>${seam.groupId}</groupId>
-         <artifactId>seam-international</artifactId>
-      </dependency>
-
-      <dependency>
-         <groupId>${seam.groupId}</groupId>
-         <artifactId>seam-resources</artifactId> <!-- may become inherited -->
-      </dependency>
+<!--      <dependency>-->
+<!--         <groupId>org.jboss.seam</groupId>-->
+<!--         <artifactId>seam-international</artifactId>-->
+<!--      </dependency>-->
 
       <!-- QUESTION do we want this dependency? -->
       <dependency>
-         <groupId>${seam.groupId}</groupId>
+         <groupId>org.jboss.seam</groupId>
          <artifactId>seam-security</artifactId>
          <optional>true</optional>
       </dependency>
-      
-      <dependency>
-         <groupId>${seam.groupId}</groupId>
-         <artifactId>seam-web</artifactId>
-      </dependency>
 
       <dependency>
-         <groupId>${webbeans.groupId}</groupId>
-         <artifactId>jsr299-api</artifactId>
+         <groupId>javax.enterprise</groupId>
+         <artifactId>cdi-api</artifactId>
          <scope>provided</scope>
       </dependency>         
 
-      <dependency>
-         <groupId>${webbeans.groupId}</groupId>
-         <artifactId>webbeans-logger</artifactId>
-      </dependency> 
-
    </dependencies>
+   
+   
+   <scm>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/faces/trunk</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/faces/trunk</developerConnection>
+      <url>http://fisheye.jboss.org/browse/Seam/modules/faces/trunk</url>
+   </scm>
 
 </project>
