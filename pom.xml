@@ -13,22 +13,22 @@
    <packaging>jar</packaging>
    <version>3.0.0-SNAPSHOT</version>
    <name>Seam Faces Module</name>
-
-   <build>
-      <plugins>
-
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-               <suiteXmlFiles>
-                  <suiteXmlFile>src/test/resources/test-suite.xml</suiteXmlFile>
-               </suiteXmlFiles>
-            </configuration>
-         </plugin>
-
-      </plugins>
-   </build>
+   
+   <!-- Snapshots repo to get parent -->
+   <repositories>
+      <repository>
+         <id>oss.sonatype.org/jboss-snapshots</id>
+         <name>JBoss (Nexus) Snapshots Repository</name>
+         <url>http://oss.sonatype.org/content/repositories/jboss-snapshots</url>
+         <releases>
+            <enabled>false</enabled>
+         </releases>
+         <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+         </snapshots>
+      </repository>
+   </repositories>
 
    <dependencies>
 
