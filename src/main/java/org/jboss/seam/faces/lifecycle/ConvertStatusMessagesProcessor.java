@@ -1,9 +1,6 @@
 package org.jboss.seam.faces.lifecycle;
 
 import org.jboss.seam.faces.Faces;
-import org.jboss.seam.international.StatusMessages;
-import org.jboss.webbeans.log.Log;
-import org.jboss.webbeans.log.Logger;
 
 /**
  * <p>
@@ -22,13 +19,13 @@ import org.jboss.webbeans.log.Logger;
  */
 public class ConvertStatusMessagesProcessor implements FacesSystemEventProcessor
 {
-   @Logger Log log;
-   
-   @Faces StatusMessages statusMessages;
+//   @Logger Log log;
+//
+//   @Faces StatusMessages statusMessages;
 
    public boolean execute()
    {
-      statusMessages.onBeforeRender();
+//      statusMessages.onBeforeRender();
       return true;
    }
 }

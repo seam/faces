@@ -12,9 +12,6 @@ import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.ExceptionQueuedEventContext;
 
 import org.jboss.seam.faces.component.UIRestrictView;
-import org.jboss.seam.security.Identity;
-import org.jboss.webbeans.log.Log;
-import org.jboss.webbeans.log.Logger;
 
 /**
  * <p>
@@ -40,10 +37,10 @@ import org.jboss.webbeans.log.Logger;
  */
 public class EnforceViewRestrictionsProcessor extends AbstractViewMetadataProcesssor
 {
-   @Logger Log log;
+//   @Logger Log log;
 
    @Inject FacesContext facesContext;
-   @Inject Identity identity;
+//   @Inject Identity identity;
 
    @Override
    public boolean execute()
@@ -53,28 +50,28 @@ public class EnforceViewRestrictionsProcessor extends AbstractViewMetadataProces
       // collect first so as not to introduce a hard dependency on Identity if
       // tag is not in use
       Collection<UIRestrictView> restrictions = collectionViewRestrictions(viewRoot);
-      if (restrictions.isEmpty() || !Identity.isSecurityEnabled())
-      {
-         return true;
-      }
+//      if (restrictions.isEmpty() || !Identity.isSecurityEnabled())
+//      {
+//         return true;
+//      }
 
-      if (log.isTraceEnabled())
-      {
-         log.trace("Processing view restrictions before render view");
-      }
+//      if (log.isTraceEnabled())
+//      {
+//         log.trace("Processing view restrictions before render view");
+//      }
 
       try
       {
          for (UIRestrictView restriction : restrictions)
          {
-            if (restriction.getRequire() != null)
-            {
-               identity.checkRestriction(restriction.getRequire());
-            }
-            else
-            {
-               identity.checkPermission(viewRoot.getViewId(), "render");
-            }
+//            if (restriction.getRequire() != null)
+//            {
+//               identity.checkRestriction(restriction.getRequire());
+//            }
+//            else
+//            {
+//               identity.checkPermission(viewRoot.getViewId(), "render");
+//            }
          }
       }
       // FIXME damn this is ugly, but JCDI is wrapping exceptions

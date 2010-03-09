@@ -12,8 +12,6 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 
 import org.jboss.seam.faces.component.UIViewAction;
-import org.jboss.webbeans.log.Log;
-import org.jboss.webbeans.log.Logger;
 
 /**
  * <p>
@@ -45,7 +43,7 @@ public class ExecuteViewActionsListener extends AbstractViewMetadataProcesssor
 {
    public static final String VIEW_PARAMETER_VALIDATION_FAILED_OUTCOME = "org.jboss.seam.ViewParameterValidationFailed";
    
-   @Logger Log log;
+//   @Logger Log log;
    
    @Inject FacesContext facesContext;
 
@@ -54,10 +52,10 @@ public class ExecuteViewActionsListener extends AbstractViewMetadataProcesssor
    {
       UIViewRoot initialViewRoot = facesContext.getViewRoot();
 
-      if (log.isTraceEnabled())
-      {
-         log.trace("Processing view actions before render view");
-      }
+//      if (log.isTraceEnabled())
+//      {
+//         log.trace("Processing view actions before render view");
+//      }
       
       NavigationHandler navHandler = facesContext.getApplication().getNavigationHandler();
       boolean postback = facesContext.isPostback();
@@ -65,10 +63,10 @@ public class ExecuteViewActionsListener extends AbstractViewMetadataProcesssor
       // check if any view parameters failed validation and if so, fire the navigation handler
       if (!postback && facesContext.isValidationFailed())
       {
-         if (log.isTraceEnabled())
-         {
-            log.trace("Validation of view parameters failed. Calling navigation handler without executing view actions.");
-         }
+//         if (log.isTraceEnabled())
+//         {
+//            log.trace("Validation of view parameters failed. Calling navigation handler without executing view actions.");
+//         }
          // QUESTION is this a good idea to use a built-in logical outcome?
          navHandler.handleNavigation(facesContext, null, VIEW_PARAMETER_VALIDATION_FAILED_OUTCOME);
          return !facesContext.getResponseComplete() && initialViewRoot.getViewId().equals(facesContext.getViewRoot().getViewId());
@@ -81,14 +79,14 @@ public class ExecuteViewActionsListener extends AbstractViewMetadataProcesssor
          String outcome = null;
          String fromAction = null;
 
-         MethodExpression execute = action.getExecute();
+         MethodExpression execute = action.getActionExpression();
          // QUESTION shouldn't this be an illegal state otherwise??
          if (execute != null)
          {
-            if (log.isDebugEnabled())
-            {
-               log.debug("Executing view action expression {0}", execute.getExpressionString());
-            }
+//            if (log.isDebugEnabled())
+//            {
+//               log.debug("Executing view action expression {0}", execute.getExpressionString());
+//            }
             try
             {
                Object returnVal = execute.invoke(facesContext.getELContext(), null);
@@ -97,10 +95,10 @@ public class ExecuteViewActionsListener extends AbstractViewMetadataProcesssor
             }
             catch (ELException e)
             {
-               if (log.isErrorEnabled())
-               {
-                  log.error(e.getMessage(), e);
-               }
+//               if (log.isErrorEnabled())
+//               {
+//                  log.error(e.getMessage(), e);
+//               }
                throw new FacesException(execute.getExpressionString() + ": " + e.getMessage(), e);
             }
          }
@@ -110,10 +108,10 @@ public class ExecuteViewActionsListener extends AbstractViewMetadataProcesssor
          // short-circuit actions if response has been marked complete
          if (facesContext.getResponseComplete())
          {
-            if (log.isDebugEnabled())
-            {
-               log.debug("Response marked as complete during view action processing. Short-circuiting remaining actions.");
-            }
+//            if (log.isDebugEnabled())
+//            {
+//               log.debug("Response marked as complete during view action processing. Short-circuiting remaining actions.");
+//            }
             // FIXME this is lame; there should be some other way to stop view rendering
             facesContext.getViewRoot().setRendered(false);
             proceed = false;
@@ -122,10 +120,10 @@ public class ExecuteViewActionsListener extends AbstractViewMetadataProcesssor
          // short-circuit actions if a navigation case was pursued
          else if (!initialViewRoot.getViewId().equals(facesContext.getViewRoot().getViewId()))
          {
-            if (log.isDebugEnabled())
-            {
-               log.debug("Detected change in view ID during view action processing. Short-circuiting remaining actions.");
-            }
+//            if (log.isDebugEnabled())
+//            {
+//               log.debug("Detected change in view ID during view action processing. Short-circuiting remaining actions.");
+//            }
             proceed = false;
             break;
          }

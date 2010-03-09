@@ -1,8 +1,7 @@
 package org.jboss.seam.faces.lifecycle;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.AnnotationLiteral;
+import javax.enterprise.util.AnnotationLiteral;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;

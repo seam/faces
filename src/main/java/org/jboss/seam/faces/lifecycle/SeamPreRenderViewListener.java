@@ -9,9 +9,6 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
-import org.jboss.seam.beans.BeanManagerHelper;
-import org.jboss.seam.bridge.ManagerBridge;
-
 /**
  * <p>
  * A JSF {@link SystemEventListener} that observes the PreRenderViewEvent, which
@@ -45,15 +42,15 @@ public class SeamPreRenderViewListener implements SystemEventListener
 
    public void processEvent(SystemEvent event) throws AbortProcessingException
    {
-      BeanManager manager = ManagerBridge.getProvider().getCurrentManager();
-      for (Class<? extends FacesSystemEventProcessor> processorType : processorTypes)
-      {
-         boolean result = BeanManagerHelper.getInstanceByType(manager, processorType).execute();
-         if (!result)
-         {
-            break;
-         }
-      }
+//      BeanManager manager = ManagerBridge.getProvider().getCurrentManager();
+//      for (Class<? extends FacesSystemEventProcessor> processorType : processorTypes)
+//      {
+//         boolean result = BeanManagerHelper.getInstanceByType(manager, processorType).execute();
+//         if (!result)
+//         {
+//            break;
+//         }
+//      }
    }
 
 }

@@ -14,7 +14,7 @@ import javax.faces.context.FacesContext;
  * <p>QUESTION is it correct to use a @RequestScoped producer? If it is @Dependent, then a developer could unknowingly bind it to a wider-scoped bean</p>
  * 
  * @author Gavin King
- * @author Dan Allen
+ * @author Dan Allen       
  */
 public class FacesContextProducer
 {

@@ -7,8 +7,6 @@ import javax.faces.application.ViewHandler;
 import javax.faces.application.ViewHandlerWrapper;
 import javax.faces.context.FacesContext;
 
-import org.jboss.seam.beans.BeanManagerHelper;
-import org.jboss.seam.bridge.ManagerBridge;
 import org.jboss.seam.faces.lifecycle.ConvertStatusMessagesProcessor;
 
 /**
@@ -47,8 +45,8 @@ public class SeamViewHandler extends ViewHandlerWrapper
       if (context.getExternalContext().getSession(false) != null)
       {
          // QUESTION hmmm, we have to convert to faces messages now to leverage JSF's flash feature...I suppose that is okay
-         BeanManagerHelper.getInstanceByType(ManagerBridge.getProvider().getCurrentManager(), 
-                 ConvertStatusMessagesProcessor.class).execute();
+//         BeanManagerHelper.getInstanceByType(ManagerBridge.getProvider().getCurrentManager(), 
+//                 ConvertStatusMessagesProcessor.class).execute();
          // should I move this next step into TransferStatusMessagesListener?
          if (context.getMessages().hasNext())
          {

@@ -32,54 +32,12 @@
 
    <dependencies>
 
-      <dependency>
-         <groupId>javax.el</groupId>
-         <artifactId>el-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
-
-      <dependency>
-         <groupId>javax.faces</groupId>
-         <artifactId>jsf-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
-
-      <dependency>
-         <groupId>javax.servlet</groupId>
-         <artifactId>servlet-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
-
-      <dependency>
-         <groupId>javax.transaction</groupId>
-         <artifactId>jta</artifactId>
-         <scope>provided</scope>
-      </dependency>
-
-      <!-- doesn't inherit from seam-international because scope is provided -->
-      <dependency>
-         <groupId>javax.validation</groupId>
-         <artifactId>validation-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
-
-<!--      <dependency>-->
-<!--         <groupId>org.jboss.seam</groupId>-->
-<!--         <artifactId>seam-international</artifactId>-->
-<!--      </dependency>-->
-
-      <!-- QUESTION do we want this dependency? -->
-      <dependency>
-         <groupId>org.jboss.seam</groupId>
-         <artifactId>seam-security</artifactId>
-         <optional>true</optional>
-      </dependency>
-
-      <dependency>
-         <groupId>javax.enterprise</groupId>
-         <artifactId>cdi-api</artifactId>
-         <scope>provided</scope>
-      </dependency>         
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>6.0</version>
+            <scope>provided</scope>
+        </dependency>
 
    </dependencies>
    

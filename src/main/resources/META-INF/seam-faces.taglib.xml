@@ -23,7 +23,6 @@
       <tag-name>viewAction</tag-name>
       <component>
          <component-type>org.jboss.seam.faces.ViewAction</component-type>
-         <handler-class>org.jboss.seam.faces.facelets.ActionSourceHandler</handler-class>
       </component>
    </tag>
 

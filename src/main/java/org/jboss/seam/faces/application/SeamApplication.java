@@ -26,7 +26,6 @@ package org.jboss.seam.faces.application;
 import javax.el.ExpressionFactory;
 import javax.faces.application.Application;
 import javax.faces.application.ApplicationWrapper;
-import org.jboss.seam.el.SeamExpressionFactory;
 
 /**
  * Proxies the JSF Application object, and adds all kinds
@@ -48,10 +47,10 @@ public class SeamApplication extends ApplicationWrapper {
 		return delegate;
 	}
 
-	@Override
-	public ExpressionFactory getExpressionFactory() {
-      // TODO need to push SeamFacesELResolver into SeamEL composite resolver
-		return SeamExpressionFactory.INSTANCE;
-	}
+//	@Override
+//	public ExpressionFactory getExpressionFactory() {
+//      // TODO need to push SeamFacesELResolver into SeamEL composite resolver
+//		return SeamExpressionFactory.INSTANCE;
+//	}
 
 }

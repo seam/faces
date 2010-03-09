@@ -34,8 +34,6 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 
-import org.jboss.seam.bridge.ManagerBridge;
-import org.jboss.seam.el.AbstractELResolver;
 import org.jboss.seam.faces.lifecycle.ImportNamespacesProcessor;
 
 /**
@@ -65,9 +63,8 @@ import org.jboss.seam.faces.lifecycle.ImportNamespacesProcessor;
  * @author Gavin King
  * @author Dan Allen
  */
-public class SeamFacesELResolver extends AbstractELResolver
+public class SeamFacesELResolver
 {
-   @Override
    public Object getValue(ELContext context, Object base, Object property)
    {
       if (base == null)
@@ -83,7 +80,6 @@ public class SeamFacesELResolver extends AbstractELResolver
       return null;
    }
 
-   @Override
    public boolean isReadOnly(ELContext context, Object base, Object property)
    {
       return (base instanceof DataModel);
@@ -104,19 +100,19 @@ public class SeamFacesELResolver extends AbstractELResolver
          return null;
       }
       
-      String name = (String) property;
-      BeanManager manager = ManagerBridge.getProvider().getCurrentManager();
-      for (String namespace : (Collection<String>) viewMap.get(ImportNamespacesProcessor.NAMESPACES_CACHE_KEY))
-      {
-         Set<Bean<?>> beans = manager.getBeans(namespace + "." + name);
-         // TODO complain if it is more than one
-         if (beans.size() == 1)
-         {
-            context.setPropertyResolved(true);
-            Bean<?> bean = beans.iterator().next();
-            return manager.getReference(bean, Object.class, manager.createCreationalContext(bean));
-         }
-      }
+//      String name = (String) property;
+//      BeanManager manager = ManagerBridge.getProvider().getCurrentManager();
+//      for (String namespace : (Collection<String>) viewMap.get(ImportNamespacesProcessor.NAMESPACES_CACHE_KEY))
+//      {
+//         Set<Bean<?>> beans = manager.getBeans(namespace + "." + name);
+//         // TODO complain if it is more than one
+//         if (beans.size() == 1)
+//         {
+//            context.setPropertyResolved(true);
+//            Bean<?> bean = beans.iterator().next();
+//            return manager.getReference(bean, Object.class, manager.createCreationalContext(bean));
+//         }
+//      }
       
       return null;
    }

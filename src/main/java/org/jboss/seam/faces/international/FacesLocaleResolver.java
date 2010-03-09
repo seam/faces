@@ -5,9 +5,6 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.faces.context.FacesContext;
 
-import org.jboss.seam.beans.RuntimeSelected;
-import org.jboss.seam.beans.RuntimeSelectedBean;
-import org.jboss.seam.international.LocaleResolver;
 
 /**
  * A specialized version of the LocaleProducer that returns
@@ -17,9 +14,7 @@ import org.jboss.seam.international.LocaleResolver;
  * 
  * @author Dan Allen
  */
-public
-@RuntimeSelected
-class FacesLocaleResolver extends LocaleResolver implements RuntimeSelectedBean
+public class FacesLocaleResolver // extends LocaleResolver
 {
    @Inject FacesContext facesContext;
    
@@ -28,7 +23,6 @@ class FacesLocaleResolver extends LocaleResolver implements RuntimeSelectedBean
       return facesContext != null && facesContext.getCurrentPhaseId() != null;
    }
    
-   @Override
    public Locale getLocale()
    {
       if (facesContext.getViewRoot() != null)
