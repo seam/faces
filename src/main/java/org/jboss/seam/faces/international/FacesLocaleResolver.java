@@ -1,6 +1,7 @@
 package org.jboss.seam.faces.international;
 
 import java.util.Locale;
+import javax.enterprise.inject.Produces;
 
 import javax.inject.Inject;
 import javax.faces.context.FacesContext;
@@ -23,7 +24,7 @@ public class FacesLocaleResolver // extends LocaleResolver
       return facesContext != null && facesContext.getCurrentPhaseId() != null;
    }
    
-   public Locale getLocale()
+   public @Produces Locale getLocale()
    {
       if (facesContext.getViewRoot() != null)
       {
