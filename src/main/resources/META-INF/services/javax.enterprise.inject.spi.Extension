@@ -1,1 +1,2 @@
-org.jboss.seam.faces.scopes.ViewScopedExtension
+org.jboss.seam.faces.context.ViewScopedExtension
+org.jboss.seam.faces.context.FlashScopedExtension

@@ -5,21 +5,6 @@
    <namespace>http://jboss.com/products/seam/faces</namespace>
 
    <tag>
-      <tag-name>import</tag-name>
-      <component>
-         <component-type>org.jboss.seam.faces.Import</component-type>
-      </component>
-   </tag>
-   
-   <tag>
-      <tag-name>restrictView</tag-name>
-      <component>
-         <component-type>org.jboss.seam.faces.RestrictView</component-type>
-         <handler-class>org.jboss.seam.faces.facelets.DeferredValueExpressionHandler</handler-class>
-      </component>
-   </tag>
-   
-   <tag>
       <tag-name>viewAction</tag-name>
       <component>
          <component-type>org.jboss.seam.faces.ViewAction</component-type>

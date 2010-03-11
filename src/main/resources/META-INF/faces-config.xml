@@ -12,7 +12,13 @@
          <name>webbeans</name>
       </after>
    </ordering>
-
+   
+   
+   <lifecycle>
+      <phase-listener>org.jboss.seam.faces.context.FlashScopedContext</phase-listener>
+   </lifecycle>
+	
+	<!--
    <factory>
       <application-factory>org.jboss.seam.faces.application.SeamApplicationFactory</application-factory>
    </factory>
@@ -29,9 +35,7 @@
    </application>
 
    <lifecycle>
-      <!-- Not ready for this yet, it is just testing
       <phase-listener>org.jboss.seam.faces.lifecycle.SeamPhaseListener</phase-listener>
-      -->
    </lifecycle>
 
    <component>
@@ -43,6 +47,7 @@
       <component-type>org.jboss.seam.faces.RestrictView</component-type>
       <component-class>org.jboss.seam.faces.component.UIRestrictView</component-class>
    </component>
+   -->
    
    <component>
       <component-type>org.jboss.seam.faces.ViewAction</component-type>
