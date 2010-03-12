@@ -9,7 +9,7 @@
 
    <ordering>
       <after>
-         <name>webbeans</name>
+         <name>weld</name>
       </after>
    </ordering>
    
