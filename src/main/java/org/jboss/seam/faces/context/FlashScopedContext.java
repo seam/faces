@@ -24,6 +24,8 @@ import javax.faces.event.PhaseListener;
  */
 public class FlashScopedContext implements Context, PhaseListener
 {
+    private static final long serialVersionUID = -1580689204988513798L;
+
     private final static String COMPONENT_MAP_NAME = "org.jboss.seam.faces.flash.componentInstanceMap";
     private final static String CREATIONAL_MAP_NAME = "org.jboss.seam.faces.flash.creationalInstanceMap";
     private final ThreadLocal<Map<Contextual<?>, Object>> lastComponentInstanceMap = new ThreadLocal<Map<Contextual<?>, Object>>();
@@ -33,9 +35,7 @@ public class FlashScopedContext implements Context, PhaseListener
     public <T> T get(final Contextual<T> component)
     {
         assertActive();
-        Map<Contextual<?>, Object> componentInstanceMap = getComponentInstanceMap();
-        T instance = (T) componentInstanceMap.get(component);
-        return instance;
+        return (T) getComponentInstanceMap().get(component);
     }
 
     @SuppressWarnings("unchecked")
@@ -74,6 +74,57 @@ public class FlashScopedContext implements Context, PhaseListener
         return FlashScoped.class;
     }
 
+    public boolean isActive()
+    {
+        return getFlash() != null;
+    }
+
+    /**
+     * This method should, **in theory**, catch the current instanceMap (which
+     * is the previous lifecycle's next instanceMap.) These are the objects that
+     * we want cleaned up at the end of the current render-response phase, so we
+     * save them here until after the RENDER_RESPONSE phase, because otherwise
+     * they would have been destroyed by the Flash, and we would no longer have
+     * access to them.
+     */
+    public void beforePhase(final PhaseEvent event)
+    {
+        this.lastComponentInstanceMap.set(getComponentInstanceMap());
+        this.lastCreationalContextMap.set(getCreationalContextMap());
+    }
+
+    /**
+     * Do the object cleanup using our saved references.
+     */
+    @SuppressWarnings("unchecked")
+    public void afterPhase(final PhaseEvent event)
+    {
+        // TODO verify that this is actually destroying the beans we want to be
+        // destroyed... flash is confusing, tests will make sense of it
+        Map<Contextual<?>, Object> componentInstanceMap = lastComponentInstanceMap.get();
+        Map<Contextual<?>, CreationalContext<?>> creationalContextMap = lastCreationalContextMap.get();
+
+        if (componentInstanceMap != null)
+        {
+            for (Entry<Contextual<?>, Object> componentEntry : componentInstanceMap.entrySet())
+            {
+                Contextual contextual = componentEntry.getKey();
+                Object instance = componentEntry.getValue();
+                CreationalContext creational = creationalContextMap.get(contextual);
+
+                contextual.destroy(instance, creational);
+            }
+        }
+
+        this.lastComponentInstanceMap.remove();
+        this.lastCreationalContextMap.remove();
+    }
+
+    public PhaseId getPhaseId()
+    {
+        return PhaseId.RENDER_RESPONSE;
+    }
+
     private Flash getFlash()
     {
         FacesContext currentInstance = FacesContext.getCurrentInstance();
@@ -85,17 +136,12 @@ public class FlashScopedContext implements Context, PhaseListener
         return null;
     }
 
-    public boolean isActive()
-    {
-        return getFlash() != null;
-    }
-
     private void assertActive()
     {
         if (!isActive())
         {
             throw new ContextNotActiveException(
-                    "WebBeans context with scope annotation @FlashScoped is not active with respect to the current thread");
+                    "Seam context with scope annotation @FlashScoped is not active with respect to the current thread");
         }
     }
 
@@ -125,41 +171,6 @@ public class FlashScopedContext implements Context, PhaseListener
             flash.put(CREATIONAL_MAP_NAME, map);
         }
         return map;
-    }
-
-    public void beforePhase(final PhaseEvent event)
-    {
-        this.lastComponentInstanceMap.set(getComponentInstanceMap());
-        this.lastCreationalContextMap.set(getCreationalContextMap());
-    }
-
-    @SuppressWarnings("unchecked")
-    public void afterPhase(final PhaseEvent event)
-    {
-        // TODO verify that this is actually destroying the beans we want to be
-        // destroyed... flash is confusing, tests will make sense of it
-        Map<Contextual<?>, Object> componentInstanceMap = lastComponentInstanceMap.get();
-        Map<Contextual<?>, CreationalContext<?>> creationalContextMap = lastCreationalContextMap.get();
-
-        if (componentInstanceMap != null)
-        {
-            for (Entry<Contextual<?>, Object> componentEntry : componentInstanceMap.entrySet())
-            {
-                Contextual contextual = componentEntry.getKey();
-                Object instance = componentEntry.getValue();
-                CreationalContext creational = creationalContextMap.get(contextual);
-
-                contextual.destroy(instance, creational);
-            }
-        }
-
-        this.lastComponentInstanceMap.remove();
-        this.lastCreationalContextMap.remove();
-    }
-
-    public PhaseId getPhaseId()
-    {
-        return PhaseId.RENDER_RESPONSE;
     }
 
 }

@@ -53,21 +53,10 @@ public class ViewScopedContext implements Context, SystemEventListener
         if (!isJsfSubscribed)
         {
             FacesContext.getCurrentInstance().getApplication().subscribeToEvent(PreDestroyViewMapEvent.class, this);
-
             isJsfSubscribed = true;
         }
 
-        Map<String, Object> viewMap = getViewMap();
-
-        ConcurrentHashMap<Contextual<?>, Object> componentInstanceMap = (ConcurrentHashMap<Contextual<?>, Object>) viewMap
-                .get(COMPONENT_MAP_NAME);
-
-        if (componentInstanceMap == null)
-        {
-            return null;
-        }
-
-        T instance = (T) componentInstanceMap.get(component);
+        T instance = (T) getComponentInstanceMap().get(component);
 
         return instance;
     }
@@ -77,53 +66,26 @@ public class ViewScopedContext implements Context, SystemEventListener
     {
         assertActive();
 
-        Map<String, Object> viewMap = getViewMap();
-
-        ConcurrentHashMap<Contextual<?>, Object> componentInstanceMap = (ConcurrentHashMap<Contextual<?>, Object>) viewMap
-                .get(COMPONENT_MAP_NAME);
-
-        if (componentInstanceMap == null)
+        T instance = get(component);
+        if (instance == null)
         {
-            // TODO we now need to start being carefull with reentrancy...
-            componentInstanceMap = new ConcurrentHashMap<Contextual<?>, Object>();
-            viewMap.put(COMPONENT_MAP_NAME, componentInstanceMap);
-        }
-
-        ConcurrentHashMap<Contextual<?>, CreationalContext<?>> creationalContextMap = (ConcurrentHashMap<Contextual<?>, CreationalContext<?>>) viewMap
-                .get(CREATIONAL_MAP_NAME);
-        if (creationalContextMap == null)
-        {
-            // TODO we now need to start being carefull with reentrancy...
-            creationalContextMap = new ConcurrentHashMap<Contextual<?>, CreationalContext<?>>();
-            viewMap.put(CREATIONAL_MAP_NAME, creationalContextMap);
-        }
-
-        T instance = (T) componentInstanceMap.get(component);
-        if (instance != null)
-        {
-            return instance;
-        }
-
-        if (creationalContext == null)
-        {
-            return null;
-        }
-
-        synchronized (componentInstanceMap)
-        {
-            // just to make sure...
-            T i = (T) componentInstanceMap.get(component);
-            if (i != null)
+            if (creationalContext != null)
             {
-                return i;
-            }
-
-            instance = component.create(creationalContext);
-
-            if (instance != null)
-            {
-                componentInstanceMap.put(component, instance);
-                creationalContextMap.put(component, creationalContext);
+                Map<Contextual<?>, Object> componentInstanceMap = getComponentInstanceMap();
+                Map<Contextual<?>, CreationalContext<?>> creationalContextMap = getCreationalInstanceMap();
+                synchronized (componentInstanceMap)
+                {
+                    instance = (T) componentInstanceMap.get(component);
+                    if (instance == null)
+                    {
+                        instance = component.create(creationalContext);
+                        if (instance != null)
+                        {
+                            componentInstanceMap.put(component, instance);
+                            creationalContextMap.put(component, creationalContext);
+                        }
+                    }
+                }
             }
         }
 
@@ -135,9 +97,6 @@ public class ViewScopedContext implements Context, SystemEventListener
         return ViewScoped.class;
     }
 
-    /**
-     * The view context is active if a valid ViewRoot could be detected.
-     */
     public boolean isActive()
     {
         return getViewRoot() != null;
@@ -148,7 +107,7 @@ public class ViewScopedContext implements Context, SystemEventListener
         if (!isActive())
         {
             throw new ContextNotActiveException(
-                    "WebBeans context with scope annotation @ViewScoped is not active with respect to the current thread");
+                    "Seam context with scope annotation @ViewScoped is not active with respect to the current thread");
         }
     }
 
@@ -175,23 +134,17 @@ public class ViewScopedContext implements Context, SystemEventListener
     {
         if (event instanceof PreDestroyViewMapEvent)
         {
-            // better use the viewmap we get from the event to prevent
-            // concurrent modification problems
-            Map<String, Object> viewMap = ((UIViewRoot) event.getSource()).getViewMap();
-
-            ConcurrentHashMap<Contextual<?>, Object> componentInstanceMap = (ConcurrentHashMap<Contextual<?>, Object>) viewMap
-                    .get(COMPONENT_MAP_NAME);
-
-            ConcurrentHashMap<Contextual<?>, CreationalContext<?>> creationalContextMap = (ConcurrentHashMap<Contextual<?>, CreationalContext<?>>) viewMap
-                    .get(CREATIONAL_MAP_NAME);
+            Map<Contextual<?>, Object> componentInstanceMap = getComponentInstanceMap();
+            Map<Contextual<?>, CreationalContext<?>> creationalContextMap = getCreationalInstanceMap();
 
             if (componentInstanceMap != null)
             {
                 for (Entry<Contextual<?>, Object> componentEntry : componentInstanceMap.entrySet())
                 {
-                    // there is no nice way to explain the Java Compiler that we
-                    // are handling the same type T,
-                    // therefore we need completely drop the type information :(
+                    /*
+                     * No way to inform the compiler of type <T> information, so
+                     * it has to be abandoned here :(
+                     */
                     Contextual contextual = componentEntry.getKey();
                     Object instance = componentEntry.getValue();
                     CreationalContext creational = creationalContextMap.get(contextual);
@@ -224,5 +177,51 @@ public class ViewScopedContext implements Context, SystemEventListener
         }
 
         return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<Contextual<?>, Object> getComponentInstanceMap()
+    {
+        Map<String, Object> viewMap = getViewMap();
+        Map<Contextual<?>, Object> componentInstanceMap = (ConcurrentHashMap<Contextual<?>, Object>) viewMap
+                .get(COMPONENT_MAP_NAME);
+
+        if (componentInstanceMap == null)
+        {
+            synchronized (componentInstanceMap)
+            {
+                componentInstanceMap = (ConcurrentHashMap<Contextual<?>, Object>) viewMap.get(COMPONENT_MAP_NAME);
+                if (componentInstanceMap == null)
+                {
+                    componentInstanceMap = new ConcurrentHashMap<Contextual<?>, Object>();
+                    viewMap.put(COMPONENT_MAP_NAME, componentInstanceMap);
+                }
+            }
+        }
+
+        return componentInstanceMap;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<Contextual<?>, CreationalContext<?>> getCreationalInstanceMap()
+    {
+        Map<String, Object> viewMap = getViewMap();
+        Map<Contextual<?>, CreationalContext<?>> creationalContextMap = (Map<Contextual<?>, CreationalContext<?>>) viewMap
+                .get(CREATIONAL_MAP_NAME);
+
+        if (creationalContextMap == null)
+        {
+            synchronized (creationalContextMap)
+            {
+                creationalContextMap = (Map<Contextual<?>, CreationalContext<?>>) viewMap.get(CREATIONAL_MAP_NAME);
+                if (creationalContextMap == null)
+                {
+                    creationalContextMap = new ConcurrentHashMap<Contextual<?>, CreationalContext<?>>();
+                    viewMap.put(CREATIONAL_MAP_NAME, creationalContextMap);
+                }
+            }
+        }
+
+        return creationalContextMap;
     }
 }
