@@ -73,6 +73,7 @@ public class ViewScopedContext implements Context, SystemEventListener
             {
                 Map<Contextual<?>, Object> componentInstanceMap = getComponentInstanceMap();
                 Map<Contextual<?>, CreationalContext<?>> creationalContextMap = getCreationalInstanceMap();
+
                 synchronized (componentInstanceMap)
                 {
                     instance = (T) componentInstanceMap.get(component);
@@ -183,45 +184,30 @@ public class ViewScopedContext implements Context, SystemEventListener
     private Map<Contextual<?>, Object> getComponentInstanceMap()
     {
         Map<String, Object> viewMap = getViewMap();
-        Map<Contextual<?>, Object> componentInstanceMap = (ConcurrentHashMap<Contextual<?>, Object>) viewMap
-                .get(COMPONENT_MAP_NAME);
+        Map<Contextual<?>, Object> map = (ConcurrentHashMap<Contextual<?>, Object>) viewMap.get(COMPONENT_MAP_NAME);
 
-        if (componentInstanceMap == null)
+        if (map == null)
         {
-            synchronized (componentInstanceMap)
-            {
-                componentInstanceMap = (ConcurrentHashMap<Contextual<?>, Object>) viewMap.get(COMPONENT_MAP_NAME);
-                if (componentInstanceMap == null)
-                {
-                    componentInstanceMap = new ConcurrentHashMap<Contextual<?>, Object>();
-                    viewMap.put(COMPONENT_MAP_NAME, componentInstanceMap);
-                }
-            }
+            map = new ConcurrentHashMap<Contextual<?>, Object>();
+            viewMap.put(COMPONENT_MAP_NAME, map);
         }
 
-        return componentInstanceMap;
+        return map;
     }
 
     @SuppressWarnings("unchecked")
     private Map<Contextual<?>, CreationalContext<?>> getCreationalInstanceMap()
     {
         Map<String, Object> viewMap = getViewMap();
-        Map<Contextual<?>, CreationalContext<?>> creationalContextMap = (Map<Contextual<?>, CreationalContext<?>>) viewMap
+        Map<Contextual<?>, CreationalContext<?>> map = (Map<Contextual<?>, CreationalContext<?>>) viewMap
                 .get(CREATIONAL_MAP_NAME);
 
-        if (creationalContextMap == null)
+        if (map == null)
         {
-            synchronized (creationalContextMap)
-            {
-                creationalContextMap = (Map<Contextual<?>, CreationalContext<?>>) viewMap.get(CREATIONAL_MAP_NAME);
-                if (creationalContextMap == null)
-                {
-                    creationalContextMap = new ConcurrentHashMap<Contextual<?>, CreationalContext<?>>();
-                    viewMap.put(CREATIONAL_MAP_NAME, creationalContextMap);
-                }
-            }
+            map = new ConcurrentHashMap<Contextual<?>, CreationalContext<?>>();
+            viewMap.put(CREATIONAL_MAP_NAME, map);
         }
 
-        return creationalContextMap;
+        return map;
     }
 }

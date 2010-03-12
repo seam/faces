@@ -151,11 +151,13 @@ public class FlashScopedContext implements Context, PhaseListener
         Flash flash = getFlash();
         ConcurrentHashMap<Contextual<?>, Object> map = (ConcurrentHashMap<Contextual<?>, Object>) flash
                 .get(COMPONENT_MAP_NAME);
+
         if (map == null)
         {
             map = new ConcurrentHashMap<Contextual<?>, Object>();
             flash.put(COMPONENT_MAP_NAME, map);
         }
+
         return map;
     }
 
@@ -165,11 +167,13 @@ public class FlashScopedContext implements Context, PhaseListener
         Flash flash = getFlash();
         Map<Contextual<?>, CreationalContext<?>> map = (ConcurrentHashMap<Contextual<?>, CreationalContext<?>>) flash
                 .get(CREATIONAL_MAP_NAME);
+
         if (map == null)
         {
             map = new ConcurrentHashMap<Contextual<?>, CreationalContext<?>>();
             flash.put(CREATIONAL_MAP_NAME, map);
         }
+
         return map;
     }
 
