@@ -12,21 +12,21 @@ import javax.enterprise.inject.spi.Extension;
 import javax.faces.bean.FlashScoped;
 
 /**
- * An extension to provide @FlashScoped CDI / JSF2 integration.
+ * An extension to provide @FlashScoped CDI / JSF 2 integration.
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
 public class FlashScopedExtension implements Extension
 {
 
-    public void addScope(@Observes final BeforeBeanDiscovery event)
-    {
-        event.addScope(FlashScoped.class, true, true);
-    }
+   public void addScope(@Observes final BeforeBeanDiscovery event)
+   {
+      event.addScope(FlashScoped.class, true, true);
+   }
 
-    public void registerContext(@Observes final AfterBeanDiscovery event)
-    {
-        event.addContext(new FlashScopedContext());
-    }
+   public void registerContext(@Observes final AfterBeanDiscovery event)
+   {
+      event.addContext(new FlashScopedContext());
+   }
 
 }

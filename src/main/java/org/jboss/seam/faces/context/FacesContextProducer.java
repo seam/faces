@@ -6,20 +6,26 @@ import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
 
 /**
- * <p>A producer which retrieves the current JSF FacesContext by calling
- * {@link FacesContext#getCurrentInstance}, thus allowing it to be
- * injected.</p>
+ * <p>
+ * A producer which retrieves the current JSF FacesContext by calling
+ * {@link FacesContext#getCurrentInstance}, thus allowing it to be injected.
+ * </p>
  * 
- * <p>QUESTION should we return null if there is no current phase id? (seems to be a common check)</p>
- * <p>QUESTION is it correct to use a @RequestScoped producer? If it is @Dependent, then a developer could unknowingly bind it to a wider-scoped bean</p>
+ * <p>
+ * QUESTION should we return null if there is no current phase id? (seems to be
+ * a common check)
+ * </p>
+ * <p>
+ * QUESTION is it correct to use a @RequestScoped producer? If it is @Dependent,
+ * then a developer could unknowingly bind it to a wider-scoped bean
+ * </p>
  * 
  * @author Gavin King
- * @author Dan Allen       
+ * @author Dan Allen
  */
 public class FacesContextProducer
 {
-   public
-   @Produces
+   public @Produces
    @RequestScoped
    FacesContext getFacesContext()
    {

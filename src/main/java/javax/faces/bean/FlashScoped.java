@@ -20,6 +20,7 @@ import javax.enterprise.context.NormalScope;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface FlashScoped {
+public @interface FlashScoped
+{
 
 }

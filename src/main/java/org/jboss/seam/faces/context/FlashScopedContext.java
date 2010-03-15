@@ -18,7 +18,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
 /**
- * This class provides the contexts lifecycle for the new JSF2 Flash Context
+ * This class provides the lifecycle for the new JSF 2 Flash Context
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
