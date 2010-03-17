@@ -1,51 +1,90 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-   <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-   <parent>
-      <artifactId>seam-parent</artifactId>
-      <groupId>org.jboss.seam</groupId>
-      <version>3.0.0-SNAPSHOT</version>
-   </parent>
+	<parent>
+		<artifactId>seam-parent</artifactId>
+		<groupId>org.jboss.seam</groupId>
+		<version>3.0.0-SNAPSHOT</version>
+	</parent>
 
-   <artifactId>seam-faces</artifactId>
-   <version>3.0.0-SNAPSHOT</version>
-   <packaging>jar</packaging>
-   <name>Seam Faces Module</name>
-   
-   <!-- Snapshots repo to get parent -->
-   <repositories>
-      <repository>
-         <id>oss.sonatype.org/jboss-snapshots</id>
-         <name>JBoss (Nexus) Snapshots Repository</name>
-         <url>http://oss.sonatype.org/content/repositories/jboss-snapshots</url>
-         <releases>
-            <enabled>false</enabled>
-         </releases>
-         <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-         </snapshots>
-      </repository>
-   </repositories>
+	<properties>
+		<arquillian.version>1.0.0.Alpha1</arquillian.version>
+		<jsfmock.version>1.0.1-SNAPSHOT</jsfmock.version>
+	</properties>
 
-   <dependencies>
+	<artifactId>seam-faces</artifactId>
+	<version>3.0.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>Seam Faces Module</name>
 
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-web-api</artifactId>
-            <version>6.0</version>
-            <scope>provided</scope>
-        </dependency>
+	<!-- Snapshots repo to get parent -->
+	<repositories>
+		<repository>
+			<id>oss.sonatype.org/jboss-snapshots</id>
+			<name>JBoss (Nexus) Snapshots Repository</name>
+			<url>http://oss.sonatype.org/content/repositories/jboss-snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
 
-   </dependencies>
-   
-   
-   <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/faces/trunk</connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/faces/trunk</developerConnection>
-      <url>http://fisheye.jboss.org/browse/Seam/modules/faces/trunk</url>
-   </scm>
+	<dependencies>
+
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-web-api</artifactId>
+			<version>6.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<version>1.0-SP1</version>
+		</dependency>		
+
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>5.10</version>
+			<classifier>jdk15</classifier>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.arquillian</groupId>
+			<artifactId>arquillian-testng</artifactId>
+			<version>${arquillian.version}</version>
+			<scope>test</scope>
+		</dependency>		
+
+		<dependency>
+			<groupId>org.jboss.arquillian.container</groupId>
+			<artifactId>arquillian-weld-embedded</artifactId>
+			<version>${arquillian.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.test-jsf</groupId>
+			<artifactId>jsf-mock</artifactId>
+			<version>${jsfmock.version}</version>
+			<scope>test</scope>
+		</dependency>		
+
+	</dependencies>
+
+
+	<scm>
+		<connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/faces/trunk</connection>
+		<developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/faces/trunk</developerConnection>
+		<url>http://fisheye.jboss.org/browse/Seam/modules/faces/trunk</url>
+	</scm>
 
 </project>
