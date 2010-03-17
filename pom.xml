@@ -1,7 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>seam-faces</artifactId>
+	<version>3.0.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>Seam Faces Module</name>
 
 	<parent>
 		<artifactId>seam-parent</artifactId>
@@ -13,11 +17,6 @@
 		<arquillian.version>1.0.0.Alpha1</arquillian.version>
 		<jsfmock.version>1.0.1-SNAPSHOT</jsfmock.version>
 	</properties>
-
-	<artifactId>seam-faces</artifactId>
-	<version>3.0.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
-	<name>Seam Faces Module</name>
 
 	<!-- Snapshots repo to get parent -->
 	<repositories>
@@ -33,37 +32,59 @@
 				<updatePolicy>never</updatePolicy>
 			</snapshots>
 		</repository>
+		<repository>
+			<id>snapshots.jboss.org</id>
+			<name>JBoss Snapshots Repository</name>
+			<url>http://snapshots.jboss.org/maven2</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</snapshots>
+		</repository>
+
+		<repository>
+			<id>Java.NET</id>
+			<name>Java.NET Maven2 Repository</name>
+			<url>http://download.java.net/maven/2/</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
 
 		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-web-api</artifactId>
-			<version>6.0</version>
+			<!-- This is necessary until a new JSF-API is published to central -->
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>2.0.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>jsr250-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>javax.enterprise</groupId>
-			<artifactId>cdi-api</artifactId>
-			<version>1.0-SP1</version>
-		</dependency>		
-
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>5.10</version>
-			<classifier>jdk15</classifier>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.6</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.jboss.arquillian</groupId>
-			<artifactId>arquillian-testng</artifactId>
+			<artifactId>arquillian-junit</artifactId>
 			<version>${arquillian.version}</version>
 			<scope>test</scope>
-		</dependency>		
+		</dependency>
 
 		<dependency>
 			<groupId>org.jboss.arquillian.container</groupId>
@@ -76,10 +97,29 @@
 			<artifactId>jsf-mock</artifactId>
 			<version>${jsfmock.version}</version>
 			<scope>test</scope>
-		</dependency>		
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.jsfunit</groupId>
+			<artifactId>jboss-jsfunit-core</artifactId>
+			<version>1.2.0.Final</version>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>arquillian-glassfish-embedded-30</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.jboss.arquillian.container</groupId>
+					<artifactId>arquillian-glassfish-embedded-30</artifactId>
+					<version>${arquillian.version}</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 
 	<scm>
 		<connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/faces/trunk</connection>
