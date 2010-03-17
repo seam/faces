@@ -16,6 +16,7 @@
    
    <lifecycle>
       <phase-listener>org.jboss.seam.faces.context.FlashScopedContext</phase-listener>
+      <phase-listener>org.jboss.seam.faces.PhaseEventListener</phase-listener>      
    </lifecycle>
 	
 	<!--
