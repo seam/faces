@@ -15,7 +15,7 @@
 
 	<properties>
 		<arquillian.version>1.0.0.Alpha1</arquillian.version>
-		<jsfmock.version>1.0.1-SNAPSHOT</jsfmock.version>
+		<jsfmock.version>1.0.0</jsfmock.version>
 	</properties>
 
 	<!-- Snapshots repo to get parent -->
