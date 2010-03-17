@@ -14,7 +14,7 @@ import org.jboss.seam.faces.event.qualifier.RestoreView;
 import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
 
 @ApplicationScoped
-public class Observer
+public class PhaseListenerObserver
 {
    public static boolean observeBeforeRenderResponse;
    public static boolean observeAfterRenderResponse;
@@ -31,62 +31,62 @@ public class Observer
    
    public void observeBeforeRenderResponse(@Observes @Before @RenderResponse PhaseEvent e) 
    {
-      Observer.observeBeforeRenderResponse = true;
+      PhaseListenerObserver.observeBeforeRenderResponse = true;
    }
    
    public void observeAfterRenderResponse(@Observes @After @RenderResponse PhaseEvent e) 
    {
-      Observer.observeAfterRenderResponse = true;
+      PhaseListenerObserver.observeAfterRenderResponse = true;
    }
    
    public void observeBeforeApplyRequestValues(@Observes @Before @ApplyRequestValues PhaseEvent e) 
    {
-      Observer.observeBeforeApplyRequestValues = true;
+      PhaseListenerObserver.observeBeforeApplyRequestValues = true;
    }
    
    public void observeAfterApplyRequestValues(@Observes @After @ApplyRequestValues PhaseEvent e) 
    {
-      Observer.observeAfterApplyRequestValues = true;
+      PhaseListenerObserver.observeAfterApplyRequestValues = true;
    }
    
    public void observeBeforeInvokeApplication(@Observes @Before @InvokeApplication PhaseEvent e) 
    {
-      Observer.observeBeforeInvokeApplication = true;
+      PhaseListenerObserver.observeBeforeInvokeApplication = true;
    }
    
    public void observeAfterInvokeApplication(@Observes @After @InvokeApplication PhaseEvent e) 
    {
-      Observer.observeAfterInvokeApplication = true;
+      PhaseListenerObserver.observeAfterInvokeApplication = true;
    }   
    
    public void observeBeforeProcessValidations(@Observes @Before @ProcessValidations PhaseEvent e) 
    {
-      Observer.observeBeforeProcessValidations = true;
+      PhaseListenerObserver.observeBeforeProcessValidations = true;
    }
    
    public void observeAfterProcessValidations(@Observes @After @ProcessValidations PhaseEvent e) 
    {
-      Observer.observeAfterProcessValidations = true;
+      PhaseListenerObserver.observeAfterProcessValidations = true;
    }   
    
    public void observeBeforeRestoreView(@Observes @Before @RestoreView PhaseEvent e) 
    {
-      Observer.observeBeforeRestoreView = true;
+      PhaseListenerObserver.observeBeforeRestoreView = true;
    }
    
    public void observeAfterRestoreView(@Observes @After @RestoreView PhaseEvent e) 
    {
-      Observer.observeAfterRestoreView = true;
+      PhaseListenerObserver.observeAfterRestoreView = true;
    }  
 
    public void observeBeforeUpdateModelValues(@Observes @Before @UpdateModelValues PhaseEvent e) 
    {
-      Observer.observeBeforeUpdateModelValues = true;
+      PhaseListenerObserver.observeBeforeUpdateModelValues = true;
    }
    
    public void observeAfterUpdateModelValues(@Observes @After @UpdateModelValues PhaseEvent e) 
    {
-      Observer.observeAfterUpdateModelValues = true;
+      PhaseListenerObserver.observeAfterUpdateModelValues = true;
    }  
    
 }

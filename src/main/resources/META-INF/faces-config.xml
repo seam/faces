@@ -5,20 +5,46 @@
    version="2.0"
    id="seam3">
 
-   <name>seam3</name>
+	<name>seam3</name>
 
-   <ordering>
-      <after>
-         <name>weld</name>
-      </after>
-   </ordering>
-   
-   
-   <lifecycle>
-      <phase-listener>org.jboss.seam.faces.context.FlashScopedContext</phase-listener>
-      <phase-listener>org.jboss.seam.faces.PhaseEventListener</phase-listener>      
-   </lifecycle>
-	
+	<ordering>
+		<after>
+			<name>weld</name>
+		</after>
+	</ordering>
+
+	<lifecycle>
+		<phase-listener>org.jboss.seam.faces.context.FlashScopedContext</phase-listener>
+		<phase-listener>org.jboss.seam.faces.PhaseEventListener</phase-listener>      
+	</lifecycle>
+
+	<application>
+		<system-event-listener>
+			<system-event-listener-class>org.jboss.seam.faces.event.SystemEventListener</system-event-listener-class>
+			<system-event-class>javax.faces.event.ComponentSystemEvent</system-event-class>
+		</system-event-listener>
+		<system-event-listener>
+			<system-event-listener-class>org.jboss.seam.faces.event.SystemEventListener</system-event-listener-class>
+			<system-event-class>javax.faces.event.ExceptionQueuedEvent</system-event-class>
+		</system-event-listener>
+		<system-event-listener>
+			<system-event-listener-class>org.jboss.seam.faces.event.SystemEventListener</system-event-listener-class>
+			<system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
+		</system-event-listener>
+		<system-event-listener>
+			<system-event-listener-class>org.jboss.seam.faces.event.SystemEventListener</system-event-listener-class>
+			<system-event-class>javax.faces.event.PostConstructCustomScopeEvent</system-event-class>
+		</system-event-listener>
+		<system-event-listener>
+			<system-event-listener-class>org.jboss.seam.faces.event.SystemEventListener</system-event-listener-class>
+			<system-event-class>javax.faces.event.PreDestroyApplicationEvent</system-event-class>
+		</system-event-listener>
+		<system-event-listener>
+			<system-event-listener-class>org.jboss.seam.faces.event.SystemEventListener</system-event-listener-class>
+			<system-event-class>javax.faces.event.PreDestroyCustomScopeEvent</system-event-class>
+		</system-event-listener>
+	</application>	
+
 	<!--
    <factory>
       <application-factory>org.jboss.seam.faces.application.SeamApplicationFactory</application-factory>
@@ -49,10 +75,10 @@
       <component-class>org.jboss.seam.faces.component.UIRestrictView</component-class>
    </component>
    -->
-   
-   <component>
-      <component-type>org.jboss.seam.faces.ViewAction</component-type>
-      <component-class>org.jboss.seam.faces.component.UIViewAction</component-class>
-   </component>
+
+	<component>
+		<component-type>org.jboss.seam.faces.ViewAction</component-type>
+		<component-class>org.jboss.seam.faces.component.UIViewAction</component-class>
+	</component>
 
 </faces-config>
