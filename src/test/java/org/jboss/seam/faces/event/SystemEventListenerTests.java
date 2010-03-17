@@ -2,7 +2,6 @@ package org.jboss.seam.faces.event;
 
 import java.util.HashMap;
 
-import javax.faces.application.Application;
 import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.ExceptionQueuedEventContext;
@@ -19,10 +18,9 @@ import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.Archives;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
-import org.jboss.test.faces.mock.MockFacesEnvironment;
 import org.jboss.test.faces.mock.application.MockApplication;
 import org.jboss.test.faces.mock.component.MockUIComponent;
-import org.jboss.test.faces.mock.lifecycle.MockLifecycle;
+import org.jboss.test.faces.mock.context.MockFacesContext;
 import org.testng.annotations.Test;
 
 @Test
@@ -39,7 +37,7 @@ public class SystemEventListenerTests extends Arquillian
    
    @Inject SystemEventListener systemEventListener;
 
-   private MockFacesEnvironment environment = MockFacesEnvironment.createEnvironment();
+   private MockFacesContext facesContext = new MockFacesContext();
    private MockApplication application = new MockApplication();
    
    @SuppressWarnings("serial")
@@ -53,7 +51,7 @@ public class SystemEventListenerTests extends Arquillian
    @Test
    public void testExceptionQueuedEventObserver()
    {
-      ExceptionQueuedEventContext eqec = new ExceptionQueuedEventContext(environment.getFacesContext(), new NullPointerException());
+      ExceptionQueuedEventContext eqec = new ExceptionQueuedEventContext(facesContext, new NullPointerException());
       ExceptionQueuedEvent eqe = new ExceptionQueuedEvent(eqec);
       systemEventListener.processEvent(eqe);
       assert SystemEventObserver.excecptionQueuedEvent;

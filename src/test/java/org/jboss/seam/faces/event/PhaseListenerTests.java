@@ -10,7 +10,7 @@ import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.Archives;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
-import org.jboss.test.faces.mock.MockFacesEnvironment;
+import org.jboss.test.faces.mock.context.MockFacesContext;
 import org.jboss.test.faces.mock.lifecycle.MockLifecycle;
 import org.testng.annotations.Test;
 
@@ -28,90 +28,90 @@ public class PhaseListenerTests extends Arquillian
 
    @Inject PhaseEventListener phaseEventListener;
 
-   private MockFacesEnvironment environment = MockFacesEnvironment.createEnvironment();
+   private MockFacesContext facesContext = new MockFacesContext();
    private MockLifecycle lifecycle = new MockLifecycle();
    
    @Test
    public void testBeforeRenderResponseObserver()
    {
-      phaseEventListener.beforePhase(new PhaseEvent(environment.getFacesContext(), PhaseId.RENDER_RESPONSE, lifecycle));
+      phaseEventListener.beforePhase(new PhaseEvent(facesContext, PhaseId.RENDER_RESPONSE, lifecycle));
       assert PhaseListenerObserver.observeBeforeRenderResponse;
    }
    
    @Test
    public void testAfterRenderResponseObserver()
    {
-      phaseEventListener.afterPhase(new PhaseEvent(environment.getFacesContext(), PhaseId.RENDER_RESPONSE, lifecycle));
+      phaseEventListener.afterPhase(new PhaseEvent(facesContext, PhaseId.RENDER_RESPONSE, lifecycle));
       assert PhaseListenerObserver.observeAfterRenderResponse;
    }
    
    @Test
    public void testBeforeApplyRequestValuesObserver()
    {
-      phaseEventListener.beforePhase(new PhaseEvent(environment.getFacesContext(), PhaseId.APPLY_REQUEST_VALUES, lifecycle));
+      phaseEventListener.beforePhase(new PhaseEvent(facesContext, PhaseId.APPLY_REQUEST_VALUES, lifecycle));
       assert PhaseListenerObserver.observeBeforeApplyRequestValues;
    }
    
    @Test
    public void testAfterApplyRequestValuesObserver()
    {
-      phaseEventListener.afterPhase(new PhaseEvent(environment.getFacesContext(), PhaseId.APPLY_REQUEST_VALUES, lifecycle));
+      phaseEventListener.afterPhase(new PhaseEvent(facesContext, PhaseId.APPLY_REQUEST_VALUES, lifecycle));
       assert PhaseListenerObserver.observeAfterApplyRequestValues;
    }   
 
    @Test
    public void testBeforeInvokeApplicationObserver()
    {
-      phaseEventListener.beforePhase(new PhaseEvent(environment.getFacesContext(), PhaseId.INVOKE_APPLICATION, lifecycle));
+      phaseEventListener.beforePhase(new PhaseEvent(facesContext, PhaseId.INVOKE_APPLICATION, lifecycle));
       assert PhaseListenerObserver.observeBeforeInvokeApplication;
    }
    
    @Test
    public void testAfterInvokeApplicationObserver()
    {
-      phaseEventListener.afterPhase(new PhaseEvent(environment.getFacesContext(), PhaseId.INVOKE_APPLICATION, lifecycle));
+      phaseEventListener.afterPhase(new PhaseEvent(facesContext, PhaseId.INVOKE_APPLICATION, lifecycle));
       assert PhaseListenerObserver.observeAfterInvokeApplication;
    }   
 
    @Test
    public void testBeforeProcessValidationsObserver()
    {
-      phaseEventListener.beforePhase(new PhaseEvent(environment.getFacesContext(), PhaseId.PROCESS_VALIDATIONS, lifecycle));
+      phaseEventListener.beforePhase(new PhaseEvent(facesContext, PhaseId.PROCESS_VALIDATIONS, lifecycle));
       assert PhaseListenerObserver.observeBeforeProcessValidations;
    }
    
    @Test
    public void testAfterProcessValidationsObserver()
    {
-      phaseEventListener.afterPhase(new PhaseEvent(environment.getFacesContext(), PhaseId.PROCESS_VALIDATIONS, lifecycle));
+      phaseEventListener.afterPhase(new PhaseEvent(facesContext, PhaseId.PROCESS_VALIDATIONS, lifecycle));
       assert PhaseListenerObserver.observeAfterProcessValidations;
    }   
 
    @Test
    public void testBeforeRestoreViewObserver()
    {
-      phaseEventListener.beforePhase(new PhaseEvent(environment.getFacesContext(), PhaseId.RESTORE_VIEW, lifecycle));
+      phaseEventListener.beforePhase(new PhaseEvent(facesContext, PhaseId.RESTORE_VIEW, lifecycle));
       assert PhaseListenerObserver.observeBeforeRestoreView;
    }
    
    @Test
    public void testAfterRestoreViewObserver()
    {
-      phaseEventListener.afterPhase(new PhaseEvent(environment.getFacesContext(), PhaseId.RESTORE_VIEW, lifecycle));
+      phaseEventListener.afterPhase(new PhaseEvent(facesContext, PhaseId.RESTORE_VIEW, lifecycle));
       assert PhaseListenerObserver.observeAfterRestoreView;
    }   
 
    @Test
    public void testBeforeUpdateModelValuesObserver()
    {
-      phaseEventListener.beforePhase(new PhaseEvent(environment.getFacesContext(), PhaseId.UPDATE_MODEL_VALUES, lifecycle));
+      phaseEventListener.beforePhase(new PhaseEvent(facesContext, PhaseId.UPDATE_MODEL_VALUES, lifecycle));
       assert PhaseListenerObserver.observeBeforeUpdateModelValues;
    }
    
    @Test
    public void testAfterUpdateModelValuesObserver()
    {
-      phaseEventListener.afterPhase(new PhaseEvent(environment.getFacesContext(), PhaseId.UPDATE_MODEL_VALUES, lifecycle));
+      phaseEventListener.afterPhase(new PhaseEvent(facesContext, PhaseId.UPDATE_MODEL_VALUES, lifecycle));
       assert PhaseListenerObserver.observeAfterUpdateModelValues;
    }   
 
