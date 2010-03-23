@@ -11,11 +11,13 @@ import javax.inject.Qualifier;
 
 /**
  * Qualifies observer method parameters to select events that occur in a "after"
- * phase in the JSF lifecycle 
+ * phase in the JSF lifecycle
  * 
  * @author Nicklas Karlsson
  */
 @Qualifier
-@Target({FIELD, PARAMETER})
+@Target( { FIELD, PARAMETER })
 @Retention(RUNTIME)
-public @interface After {}
+public @interface After
+{
+}

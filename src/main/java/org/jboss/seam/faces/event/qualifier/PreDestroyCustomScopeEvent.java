@@ -10,12 +10,15 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 /**
- * Qualifies observer method parameters to select JSF pre-destroy custom scope events
- * The event parameter is a {@link javax.faces.event.javax.faces.event.PreDestroyCustomScopeEvent}.
+ * Qualifies observer method parameters to select JSF pre-destroy custom scope
+ * events The event parameter is a
+ * {@link javax.faces.event.javax.faces.event.PreDestroyCustomScopeEvent}.
  * 
  * @author Nicklas Karlsson
  */
 @Qualifier
-@Target({FIELD, PARAMETER})
+@Target( { FIELD, PARAMETER })
 @Retention(RUNTIME)
-public @interface PreDestroyCustomScopeEvent {}
+public @interface PreDestroyCustomScopeEvent
+{
+}

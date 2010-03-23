@@ -11,11 +11,14 @@ import javax.inject.Qualifier;
 
 /**
  * Qualifies observer method parameters to select JSF component system events
- * The event parameter is a {@link javax.faces.event.ComponentSystemEvent.ComponentSystemEvent}.
+ * The event parameter is a
+ * {@link javax.faces.event.ComponentSystemEvent.ComponentSystemEvent}.
  * 
  * @author Nicklas Karlsson
  */
 @Qualifier
-@Target({FIELD, PARAMETER})
+@Target( { FIELD, PARAMETER })
 @Retention(RUNTIME)
-public @interface ComponentSystemEvent {}
+public @interface ComponentSystemEvent
+{
+}
