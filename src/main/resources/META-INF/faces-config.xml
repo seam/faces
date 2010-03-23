@@ -15,66 +15,35 @@
 
 	<lifecycle>
 		<phase-listener>org.jboss.seam.faces.context.FlashScopedContext</phase-listener>
-		<phase-listener>org.jboss.seam.faces.event.PhaseEventListener</phase-listener>      
-	</lifecycle>
+		<phase-listener>org.jboss.seam.faces.event.DelegatingPhaseListener</phase-listener>      
+	</lifecycle> 
 
 	<application>
 		<system-event-listener>
-			<system-event-listener-class>org.jboss.seam.faces.event.SystemEventListener</system-event-listener-class>
+			<system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
 			<system-event-class>javax.faces.event.ComponentSystemEvent</system-event-class>
 		</system-event-listener>
 		<system-event-listener>
-			<system-event-listener-class>org.jboss.seam.faces.event.SystemEventListener</system-event-listener-class>
+			<system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
 			<system-event-class>javax.faces.event.ExceptionQueuedEvent</system-event-class>
 		</system-event-listener>
 		<system-event-listener>
-			<system-event-listener-class>org.jboss.seam.faces.event.SystemEventListener</system-event-listener-class>
+			<system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
 			<system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
 		</system-event-listener>
 		<system-event-listener>
-			<system-event-listener-class>org.jboss.seam.faces.event.SystemEventListener</system-event-listener-class>
+			<system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
 			<system-event-class>javax.faces.event.PostConstructCustomScopeEvent</system-event-class>
 		</system-event-listener>
 		<system-event-listener>
-			<system-event-listener-class>org.jboss.seam.faces.event.SystemEventListener</system-event-listener-class>
+			<system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
 			<system-event-class>javax.faces.event.PreDestroyApplicationEvent</system-event-class>
 		</system-event-listener>
 		<system-event-listener>
-			<system-event-listener-class>org.jboss.seam.faces.event.SystemEventListener</system-event-listener-class>
+			<system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
 			<system-event-class>javax.faces.event.PreDestroyCustomScopeEvent</system-event-class>
 		</system-event-listener>
 	</application>	
-
-	<!--
-   <factory>
-      <application-factory>org.jboss.seam.faces.application.SeamApplicationFactory</application-factory>
-   </factory>
-
-   <application>
-      <message-bundle>org.jboss.seam.international.SeamResourceBundleAdapter</message-bundle>
-      <view-handler>org.jboss.seam.faces.application.SeamViewHandler</view-handler>
-      <el-resolver>org.jboss.seam.el.SeamELResolver</el-resolver>
-      <el-resolver>org.jboss.seam.faces.el.SeamFacesELResolver</el-resolver>
-      <system-event-listener>
-         <system-event-listener-class>org.jboss.seam.faces.lifecycle.SeamPreRenderViewListener</system-event-listener-class>
-         <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
-      </system-event-listener>
-   </application>
-
-   <lifecycle>
-      <phase-listener>org.jboss.seam.faces.lifecycle.SeamPhaseListener</phase-listener>
-   </lifecycle>
-
-   <component>
-      <component-type>org.jboss.seam.faces.Import</component-type>
-      <component-class>org.jboss.seam.faces.component.UIImport</component-class>
-   </component>
-   
-   <component>
-      <component-type>org.jboss.seam.faces.RestrictView</component-type>
-      <component-class>org.jboss.seam.faces.component.UIRestrictView</component-class>
-   </component>
-   -->
 
 	<component>
 		<component-type>org.jboss.seam.faces.ViewAction</component-type>

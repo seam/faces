@@ -41,6 +41,7 @@ import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
 import javax.faces.el.MethodBinding;
+import javax.faces.el.MethodNotFoundException;
 
 import javax.el.MethodExpression;
 import javax.el.MethodInfo;
@@ -69,13 +70,14 @@ class MethodBindingMethodExpressionAdapter extends MethodBinding implements Stat
    {
    } // for StateHolder
 
-   MethodBindingMethodExpressionAdapter(MethodExpression methodExpression)
+   MethodBindingMethodExpressionAdapter(final MethodExpression methodExpression)
    {
       this.methodExpression = methodExpression;
    }
 
    @Override
-   public Object invoke(FacesContext context, Object params[]) throws javax.faces.el.EvaluationException, javax.faces.el.MethodNotFoundException
+   @SuppressWarnings("deprecation")
+   public Object invoke(final FacesContext context, final Object params[]) throws EvaluationException, MethodNotFoundException
    {
       assert (null != methodExpression);
       if (context == null)
@@ -107,20 +109,21 @@ class MethodBindingMethodExpressionAdapter extends MethodBinding implements Stat
       }
       catch (NullPointerException e)
       {
-         throw new javax.faces.el.MethodNotFoundException(e);
+         throw new MethodNotFoundException(e);
       }
       return result;
    }
 
    @Override
-   public Class getType(FacesContext context) throws javax.faces.el.MethodNotFoundException
+   @SuppressWarnings("deprecation")
+   public Class<?> getType(final FacesContext context) throws MethodNotFoundException
    {
       assert (null != methodExpression);
       if (context == null)
       {
          throw new NullPointerException("FacesConext -> null");
       }
-      Class result = null;
+      Class<?> result = null;
       if (context == null)
       {
          throw new NullPointerException();
@@ -133,15 +136,15 @@ class MethodBindingMethodExpressionAdapter extends MethodBinding implements Stat
       }
       catch (javax.el.PropertyNotFoundException e)
       {
-         throw new javax.faces.el.MethodNotFoundException(e);
+         throw new MethodNotFoundException(e);
       }
       catch (javax.el.MethodNotFoundException e)
       {
-         throw new javax.faces.el.MethodNotFoundException(e);
+         throw new MethodNotFoundException(e);
       }
       catch (ELException e)
       {
-         throw new javax.faces.el.MethodNotFoundException(e);
+         throw new MethodNotFoundException(e);
       }
       return result;
    }
@@ -154,7 +157,8 @@ class MethodBindingMethodExpressionAdapter extends MethodBinding implements Stat
    }
 
    @Override
-   public boolean equals(Object other)
+   @SuppressWarnings("deprecation")
+   public boolean equals(final Object other)
    {
       if (this == other)
       {
@@ -206,7 +210,7 @@ class MethodBindingMethodExpressionAdapter extends MethodBinding implements Stat
          // Get all of the methods with the matching name and try
          // to find a match based on controlInfo's return and parameter
          // types
-         Class type = binding.getType(context);
+         Class<?> type = binding.getType(context);
          Method[] methods = result.getClass().getMethods();
          for (Method meth : methods)
          {
@@ -234,12 +238,12 @@ class MethodBindingMethodExpressionAdapter extends MethodBinding implements Stat
       return this.tranzient;
    }
 
-   public void setTransient(boolean tranzient)
+   public void setTransient(final boolean tranzient)
    {
       this.tranzient = tranzient;
    }
 
-   public Object saveState(FacesContext context)
+   public Object saveState(final FacesContext context)
    {
       if (context == null)
       {
@@ -269,7 +273,7 @@ class MethodBindingMethodExpressionAdapter extends MethodBinding implements Stat
 
    }
 
-   public void restoreState(FacesContext context, Object state)
+   public void restoreState(final FacesContext context, final Object state)
    {
       if (context == null)
       {
@@ -288,7 +292,7 @@ class MethodBindingMethodExpressionAdapter extends MethodBinding implements Stat
          String className = stateStruct[1].toString();
          MethodExpression result = null;
 
-         Class toRestoreClass = null;
+         Class<?> toRestoreClass = null;
          if (null != className)
          {
             try
@@ -316,7 +320,7 @@ class MethodBindingMethodExpressionAdapter extends MethodBinding implements Stat
                }
             }
 
-            if (null != result && null != savedState)
+            if ((null != result) && (null != savedState))
             {
                // don't need to check transient, since that was
                // done on the saving side.
@@ -339,7 +343,7 @@ class MethodBindingMethodExpressionAdapter extends MethodBinding implements Stat
    //
    // Helper methods for StateHolder
    //
-   private static Class loadClass(String name, Object fallbackClass) throws ClassNotFoundException
+   private static Class<?> loadClass(final String name, final Object fallbackClass) throws ClassNotFoundException
    {
       ClassLoader loader = Thread.currentThread().getContextClassLoader();
       if (loader == null)

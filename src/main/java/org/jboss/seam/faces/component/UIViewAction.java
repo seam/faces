@@ -139,7 +139,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
       {
       }
 
-      PropertyKeys(String name)
+      PropertyKeys(final String name)
       {
          this.name = name;
       }
@@ -175,6 +175,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
     * 
     * @deprecated This has been replaced by {@link #getActionExpression}.
     */
+   @Deprecated
    public MethodBinding getAction()
    {
       MethodBinding result = null;
@@ -194,7 +195,8 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
     *             {@link #setActionExpression(javax.el.MethodExpression)}.
     * @throws UnsupportedOperationException if called
     */
-   public void setAction(MethodBinding action)
+   @Deprecated
+   public void setAction(final MethodBinding action)
    {
       throw new UnsupportedOperationException("Not supported.");
    }
@@ -204,6 +206,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
     * 
     * @throws UnsupportedOperationException if called
     */
+   @SuppressWarnings("deprecation")
    public MethodBinding getActionListener()
    {
       throw new UnsupportedOperationException("Not supported.");
@@ -214,7 +217,8 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
     * 
     * @throws UnsupportedOperationException if called
     */
-   public void setActionListener(MethodBinding actionListener)
+   @SuppressWarnings("deprecation")
+   public void setActionListener(final MethodBinding actionListener)
    {
       throw new UnsupportedOperationException("Not supported.");
    }
@@ -235,7 +239,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
     * Sets the immediate flag, which controls the JSF lifecycle in which the
     * action is invoked.
     */
-   public void setImmediate(boolean immediate)
+   public void setImmediate(final boolean immediate)
    {
       getStateHelper().put(PropertyKeys.immediate, immediate);
    }
@@ -268,7 +272,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
    /**
     * Set the name of the phase in which the action is to be queued.
     */
-   public void setPhase(String phase)
+   public void setPhase(final String phase)
    {
       getStateHelper().put(PropertyKeys.phase, phase);
    }
@@ -311,7 +315,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
     * 
     * @throws UnsupportedOperationException if called
     */
-   public void addActionListener(ActionListener listener)
+   public void addActionListener(final ActionListener listener)
    {
       throw new UnsupportedOperationException("Not supported.");
    }
@@ -329,7 +333,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
     * 
     * @throws UnsupportedOperationException if called
     */
-   public void removeActionListener(ActionListener listener)
+   public void removeActionListener(final ActionListener listener)
    {
       throw new UnsupportedOperationException("Not supported.");
    }
@@ -345,7 +349,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
    /**
     * Sets the action, represented as an EL method expression, to invoke.
     */
-   public void setActionExpression(MethodExpression actionExpression)
+   public void setActionExpression(final MethodExpression actionExpression)
    {
       getStateHelper().put(PropertyKeys.actionExpression, actionExpression);
    }
@@ -363,7 +367,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
     * Set the bookean flag that controls whether the action is invoked during a
     * faces (postback) request.
     */
-   public void setOnPostback(boolean onPostback)
+   public void setOnPostback(final boolean onPostback)
    {
       getStateHelper().put(PropertyKeys.onPostback, onPostback);
    }
@@ -381,7 +385,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
     * Sets the condition, represented as an EL value expression, that must
     * evaluate to true for the action to be invoked.
     */
-   public void setIf(boolean condition)
+   public void setIf(final boolean condition)
    {
       getStateHelper().put(PropertyKeys.ifAttr, condition);
    }
@@ -405,7 +409,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
     * @throws NullPointerException if <code>event</code> is <code>null</code>
     */
    @Override
-   public void broadcast(FacesEvent event) throws AbortProcessingException
+   public void broadcast(final FacesEvent event) throws AbortProcessingException
    {
 
       super.broadcast(event);
@@ -417,7 +421,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
 
       // only proceed if the response has not been marked complete and
       // navigation to another view has not occurred
-      if (event instanceof ActionEvent && !context.getResponseComplete() && context.getViewRoot() == getViewRootOf(event))
+      if ((event instanceof ActionEvent) && !context.getResponseComplete() && (context.getViewRoot() == getViewRootOf(event)))
       {
          ActionListener listener = context.getApplication().getActionListener();
          if (listener != null)
@@ -498,7 +502,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
     * passing the {@link ActionEvent} just created.
     */
    @Override
-   public void decode(FacesContext context)
+   public void decode(final FacesContext context)
    {
       if (context == null)
       {
@@ -528,7 +532,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
       queueEvent(e);
    }
 
-   private UIViewRoot getViewRootOf(FacesEvent e)
+   private UIViewRoot getViewRootOf(final FacesEvent e)
    {
       UIComponent c = e.getComponent();
       do
@@ -543,7 +547,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
       return null;
    }
 
-   private Lifecycle getLifecycle(FacesContext context)
+   private Lifecycle getLifecycle(final FacesContext context)
    {
       LifecycleFactory lifecycleFactory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
       String lifecycleId = context.getExternalContext().getInitParameter(FacesServlet.LIFECYCLE_ID_ATTR);
@@ -562,12 +566,12 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
    private class InstrumentedFacesContext extends FacesContextWrapper
    {
 
-      private FacesContext wrapped;
+      private final FacesContext wrapped;
       private boolean viewRootCleared = false;
       private boolean renderedResponseControlDisabled = false;
       private Boolean postback = null;
 
-      public InstrumentedFacesContext(FacesContext wrapped)
+      public InstrumentedFacesContext(final FacesContext wrapped)
       {
          this.wrapped = wrapped;
       }
@@ -590,7 +594,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
       }
 
       @Override
-      public void setViewRoot(UIViewRoot viewRoot)
+      public void setViewRoot(final UIViewRoot viewRoot)
       {
          viewRootCleared = false;
          wrapped.setViewRoot(viewRoot);

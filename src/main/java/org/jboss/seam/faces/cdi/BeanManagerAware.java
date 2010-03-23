@@ -1,4 +1,4 @@
-package org.jboss.seam.faces.event;
+package org.jboss.seam.faces.cdi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,21 +8,20 @@ import javax.inject.Inject;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-@SuppressWarnings("serial")
-public class GenericEventListener
+public class BeanManagerAware
 {
-
    @Inject
    BeanManager beanManager;
 
    // FIXME: hack to work around invalid binding in JBoss AS 6 M2
-   private static final List<String> beanManagerLocations = new ArrayList<String>()
+   private static final List<String> beanManagerLocations;
+
+   static
    {
-      {
-         add("java:comp/BeanManager");
-         add("java:app/BeanManager");
-      }
-   };
+      beanManagerLocations = new ArrayList<String>();
+      beanManagerLocations.add("java:comp/BeanManager");
+      beanManagerLocations.add("java:app/BeanManager");
+   }
 
    protected BeanManager getBeanManager()
    {

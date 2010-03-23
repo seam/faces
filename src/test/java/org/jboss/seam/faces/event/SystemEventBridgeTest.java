@@ -14,6 +14,7 @@ import javax.inject.Inject;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.seam.faces.cdi.BeanManagerAware;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.Archives;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -25,17 +26,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class SystemEventListenerTests
+public class SystemEventBridgeTest
 {
 
    @Deployment
    public static JavaArchive createTestArchive()
    {
-      return Archives.create("test.jar", JavaArchive.class).addClasses(SystemEventObserver.class, SystemEventListener.class, GenericEventListener.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+      return Archives.create("test.jar", JavaArchive.class).addClasses(SystemEventObserver.class, SystemEventBridge.class, BeanManagerAware.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
    }
 
    @Inject
-   SystemEventListener systemEventListener;
+   SystemEventBridge systemEventListener;
 
    private final MockFacesContext facesContext = new MockFacesContext();
    private final MockApplication application = new MockApplication();
