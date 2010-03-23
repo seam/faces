@@ -44,62 +44,62 @@ public class PhaseEventObserver
 
    public void observeBeforeRenderResponse(@Observes @Before @RenderResponse final PhaseEvent e)
    {
-      PhaseEventObserver.observeBeforeRenderResponse = true;
+      observeBeforeRenderResponse = true;
    }
 
    public void observeAfterRenderResponse(@Observes @After @RenderResponse final PhaseEvent e)
    {
-      PhaseEventObserver.observeAfterRenderResponse = true;
+      observeAfterRenderResponse = true;
    }
 
    public void observeBeforeApplyRequestValues(@Observes @Before @ApplyRequestValues final PhaseEvent e)
    {
-      PhaseEventObserver.observeBeforeApplyRequestValues = true;
+      observeBeforeApplyRequestValues = true;
    }
 
    public void observeAfterApplyRequestValues(@Observes @After @ApplyRequestValues final PhaseEvent e)
    {
-      PhaseEventObserver.observeAfterApplyRequestValues = true;
+      observeAfterApplyRequestValues = true;
    }
 
    public void observeBeforeInvokeApplication(@Observes @Before @InvokeApplication final PhaseEvent e)
    {
-      PhaseEventObserver.observeBeforeInvokeApplication = true;
+      observeBeforeInvokeApplication = true;
    }
 
    public void observeAfterInvokeApplication(@Observes @After @InvokeApplication final PhaseEvent e)
    {
-      PhaseEventObserver.observeAfterInvokeApplication = true;
+      observeAfterInvokeApplication = true;
    }
 
    public void observeBeforeProcessValidations(@Observes @Before @ProcessValidations final PhaseEvent e)
    {
-      PhaseEventObserver.observeBeforeProcessValidations = true;
+      observeBeforeProcessValidations = true;
    }
 
    public void observeAfterProcessValidations(@Observes @After @ProcessValidations final PhaseEvent e)
    {
-      PhaseEventObserver.observeAfterProcessValidations = true;
+      observeAfterProcessValidations = true;
    }
 
    public void observeBeforeRestoreView(@Observes @Before @RestoreView final PhaseEvent e)
    {
-      PhaseEventObserver.observeBeforeRestoreView = true;
+      observeBeforeRestoreView = true;
    }
 
    public void observeAfterRestoreView(@Observes @After @RestoreView final PhaseEvent e)
    {
-      PhaseEventObserver.observeAfterRestoreView = true;
+      observeAfterRestoreView = true;
    }
 
    public void observeBeforeUpdateModelValues(@Observes @Before @UpdateModelValues final PhaseEvent e)
    {
-      PhaseEventObserver.observeBeforeUpdateModelValues = true;
+      observeBeforeUpdateModelValues = true;
    }
 
    public void observeAfterUpdateModelValues(@Observes @After @UpdateModelValues final PhaseEvent e)
    {
-      PhaseEventObserver.observeAfterUpdateModelValues = true;
+      observeAfterUpdateModelValues = true;
    }
 
 }

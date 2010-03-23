@@ -10,6 +10,9 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 /**
+ * Qualifies observer method parameters to select events that occur in a any
+ * phase in the JSF lifecycle 
+ * 
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  */
 @Qualifier

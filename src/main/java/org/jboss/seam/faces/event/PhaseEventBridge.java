@@ -93,8 +93,10 @@ public class PhaseEventBridge extends BeanManagerAware implements PhaseListener
       /*
        * This propagates the event to CDI
        */
-      getBeanManager().fireEvent(event, new Annotation[] { whenQualifier, phaseQualifier });
-      getBeanManager().fireEvent(event, new Annotation[] { whenQualifier, PhaseEventBridge.ANY_PHASE });
+      Annotation[] qualifiers = new Annotation[] { whenQualifier, phaseQualifier };
+      log.debug("Fired event #0 with qualifiers #1", event, qualifiers);
+      getBeanManager().fireEvent(event, qualifiers);
+      getBeanManager().fireEvent(event, new Annotation[] { whenQualifier, ANY_PHASE });
    }
 
    public void afterPhase(final PhaseEvent e)
