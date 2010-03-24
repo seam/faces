@@ -108,6 +108,7 @@
 			<groupId>org.jboss.arquillian.container</groupId>
 			<artifactId>arquillian-weld-embedded</artifactId>
 			<version>${arquillian.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.jsfunit</groupId>
