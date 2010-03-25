@@ -27,7 +27,7 @@
 			</roles>
 		</developer>
 		<developer>
-			<name>Dan J. Allen</name>
+			<name>Dan Allen</name>
 			<organization>JBoss, by Red Hat</organization>
 			<organizationUrl>http://jboss.org</organizationUrl>
 			<timezone>EST</timezone>
@@ -59,8 +59,8 @@
 		</repository>
 
 		<repository>
-			<id>Java.NET</id>
-			<name>Java.NET Maven2 Repository</name>
+			<id>java.net</id>
+			<name>Java.net Maven2 Repository</name>
 			<url>http://download.java.net/maven/2/</url>
 		</repository>
 	</repositories>
@@ -73,6 +73,12 @@
 			<groupId>com.sun.faces</groupId>
 			<artifactId>jsf-api</artifactId>
 			<version>2.0.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>el-api</artifactId>
+			<version>2.2</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
