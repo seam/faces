@@ -4,7 +4,7 @@
 package org.jboss.seam.faces;
 
 import javax.enterprise.context.Conversation;
-import javax.inject.Singleton;
+import javax.enterprise.context.RequestScoped;
 
 /**
  * Provide a mocked conversation object for use in Unit tests. This entire class
@@ -13,7 +13,7 @@ import javax.inject.Singleton;
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * 
  */
-@Singleton
+@RequestScoped
 public class MockConversation implements Conversation
 {
    private long timeout;
