@@ -3,6 +3,7 @@
  */
 package org.jboss.seam.faces.context.conversation;
 
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
@@ -22,7 +23,7 @@ import org.slf4j.Logger;
  */
 @Begin
 @Interceptor
-public class BeginConversationInterceptor
+public class BeginConversationInterceptor implements Serializable
 {
    @Inject
    Logger log;
