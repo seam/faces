@@ -3,10 +3,10 @@
  */
 package org.jboss.seam.faces.context.conversation;
 
-import javax.enterprise.context.Conversation;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import javax.enterprise.context.Conversation;
 import javax.inject.Inject;
 
 import org.jboss.arquillian.api.Deployment;
@@ -17,8 +17,6 @@ import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.Archives;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.internal.runners.statements.Fail;
 import org.junit.runner.RunWith;
 
 /**
@@ -26,23 +24,23 @@ import org.junit.runner.RunWith;
  * 
  */
 @RunWith(Arquillian.class)
-public class BeginConversationInterceptorTest
+public class ConversationBoundaryInterceptorTest
 {
    @Deployment
    public static JavaArchive createTestArchive()
    {
-      return Archives.create("test.jar", JavaArchive.class).addClasses(BeginConversationInterceptor.class, BeginConversationBean.class, MockLogger.class, MockConversation.class).addManifestResource(BeginConversationInterceptorTest.class.getPackage().getName().replaceAll("\\.", "/") + "/BeginConversationInterceptorTest-beans.xml", ArchivePaths.create("beans.xml"));
+      return Archives.create("test.jar", JavaArchive.class).addClasses(ConversationBoundaryInterceptor.class, ConversationalBean.class, MockLogger.class, MockConversation.class).addManifestResource(ConversationBoundaryInterceptorTest.class.getPackage().getName().replaceAll("\\.", "/") + "/ConversationBoundaryInterceptorTest-beans.xml", ArchivePaths.create("beans.xml"));
    }
 
-   @Inject Conversation conversation;
+   @Inject
+   Conversation conversation;
 
-   @Inject private BeginConversationBean interceptedBean;
+   @Inject
+   private ConversationalBean interceptedBean;
 
    @Test
-   //@Category(Fail.class)
    public void testConversationStarted()
    {
-      // assert fixtures
       assertTrue(conversation.isTransient());
       assertFalse(interceptedBean.isConversationLongRunningInsideMethodCall());
 
@@ -50,5 +48,17 @@ public class BeginConversationInterceptorTest
 
       assertFalse(conversation.isTransient());
       assertTrue(interceptedBean.isConversationLongRunningInsideMethodCall());
+   }
+
+   @Test
+   public void testConversationBeginsAndEnds()
+   {
+      assertTrue(conversation.isTransient());
+      assertFalse(interceptedBean.isConversationLongRunningDuringInvocation2());
+
+      interceptedBean.beginAndEndConversation();
+
+      assertTrue(conversation.isTransient());
+      assertTrue(interceptedBean.isConversationLongRunningDuringInvocation2());
    }
 }

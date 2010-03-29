@@ -13,6 +13,7 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
+import org.jboss.seam.faces.util.Annotations;
 import org.slf4j.Logger;
 
 /**
@@ -21,12 +22,12 @@ import org.slf4j.Logger;
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * 
  */
-@Begin
+@ConversationBoundary
 @Interceptor
-// TODO try having @Begin and @End extend @ConversationAnno.. to converge into a
-// single interceptor
-public class BeginConversationInterceptor implements Serializable
+public class ConversationBoundaryInterceptor implements Serializable
 {
+   private static final long serialVersionUID = -2729227895205287477L;
+
    @Inject
    Logger log;
 
@@ -35,6 +36,22 @@ public class BeginConversationInterceptor implements Serializable
 
    @AroundInvoke
    public Object before(final InvocationContext ctx) throws Exception
+   {
+      Object result = null;
+      if (Annotations.hasAnnotation(ctx.getMethod(), Begin.class))
+      {
+         result = beginConversation(ctx);
+      }
+
+      if (Annotations.hasAnnotation(ctx.getMethod(), End.class))
+      {
+         endConversation(ctx);
+      }
+
+      return result;
+   }
+
+   private Object beginConversation(final InvocationContext ctx) throws Exception
    {
       String cid = getConversationId(ctx.getMethod());
       if (cid != null)
@@ -58,7 +75,11 @@ public class BeginConversationInterceptor implements Serializable
          conversation.end();
          throw e;
       }
+   }
 
+   private void endConversation(final InvocationContext ctx)
+   {
+      conversation.end();
    }
 
    private String getConversationId(final Method m)
