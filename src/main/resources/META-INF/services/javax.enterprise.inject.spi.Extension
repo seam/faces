@@ -1,2 +1,3 @@
 org.jboss.seam.faces.context.ViewScopedExtension
 org.jboss.seam.faces.context.FlashScopedExtension
+org.jboss.seam.faces.context.conversation.ConversationAnnotationExtension

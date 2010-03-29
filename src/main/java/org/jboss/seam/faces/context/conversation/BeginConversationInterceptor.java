@@ -23,6 +23,8 @@ import org.slf4j.Logger;
  */
 @Begin
 @Interceptor
+// TODO try having @Begin and @End extend @ConversationAnno.. to converge into a
+// single interceptor
 public class BeginConversationInterceptor implements Serializable
 {
    @Inject
