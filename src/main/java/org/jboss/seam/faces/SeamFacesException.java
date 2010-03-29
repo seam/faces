@@ -11,8 +11,9 @@ package org.jboss.seam.faces;
  */
 public class SeamFacesException extends RuntimeException
 {
+   private static final long serialVersionUID = -610838646516706170L;
 
-   public SeamFacesException(String string)
+   public SeamFacesException(final String string)
    {
    }
 
