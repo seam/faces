@@ -16,4 +16,9 @@ public class AnnotationTestObject
    {
    }
 
+   @End(permit = { Exception.class })
+   public void endPermittingExceptions()
+   {
+
+   }
 }

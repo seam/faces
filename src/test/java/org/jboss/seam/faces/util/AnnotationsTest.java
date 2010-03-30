@@ -43,4 +43,20 @@ public class AnnotationsTest
       assertTrue(Annotations.hasAnnotation(end, Begin.class));
    }
 
+   public void testGetAnnotationOnMethodDirectly() throws Exception
+   {
+      Method end = AnnotationTestObject.class.getMethod("end", new Class[] {});
+      End anno = Annotations.getAnnotation(end, End.class);
+
+      assertTrue(anno instanceof End);
+   }
+
+   public void testGetAnnotationOnMethodIndirectlyFromClass() throws Exception
+   {
+      Method end = AnnotationTestObject.class.getMethod("begin", new Class[] {});
+      Begin anno = Annotations.getAnnotation(end, Begin.class);
+
+      assertTrue(anno instanceof Begin);
+   }
+
 }

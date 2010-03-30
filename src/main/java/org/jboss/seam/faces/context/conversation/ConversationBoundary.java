@@ -12,6 +12,11 @@ import javax.interceptor.InterceptorBinding;
 
 /**
  * Parent annotation for @{@link Begin} and @{@link End}
+ * <p>
+ * <b>Note:</b> This should never be used.
+ * <p>
+ * TODO: Should we warn at startup if @{@link Begin} and @{@link End} are used
+ * together on the same method?
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */

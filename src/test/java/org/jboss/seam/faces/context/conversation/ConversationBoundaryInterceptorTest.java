@@ -61,4 +61,82 @@ public class ConversationBoundaryInterceptorTest
       assertTrue(conversation.isTransient());
       assertTrue(interceptedBean.isConversationLongRunningDuringInvocation2());
    }
+
+   @Test
+   public void testConversationAbortsBeginOnFatalException()
+   {
+      assertTrue(conversation.isTransient());
+      assertFalse(interceptedBean.isConversationLongRunningDuringInvocation3());
+
+      try
+      {
+         interceptedBean.beginAndThrowFatalException();
+      }
+      catch (Exception e)
+      {
+         // expected
+      }
+
+      assertTrue(conversation.isTransient());
+      assertTrue(interceptedBean.isConversationLongRunningDuringInvocation3());
+   }
+
+   @Test
+   public void testConversationBeginsOnPermittedException()
+   {
+      assertTrue(conversation.isTransient());
+      assertFalse(interceptedBean.isConversationLongRunningDuringInvocation4());
+
+      try
+      {
+         interceptedBean.beginAndThrowPermittedException();
+      }
+      catch (Exception e)
+      {
+         // expected
+      }
+
+      assertFalse(conversation.isTransient());
+      assertTrue(interceptedBean.isConversationLongRunningDuringInvocation4());
+   }
+
+   @Test
+   public void testConversationAbortsEndOnFatalException()
+   {
+      assertTrue(conversation.isTransient());
+      assertFalse(interceptedBean.isConversationLongRunningDuringInvocation5());
+
+      try
+      {
+         interceptedBean.begin();
+         interceptedBean.endAndThrowFatalException();
+      }
+      catch (Exception e)
+      {
+         // expected
+      }
+
+      assertFalse(conversation.isTransient());
+      assertTrue(interceptedBean.isConversationLongRunningDuringInvocation5());
+   }
+
+   @Test
+   public void testConversationEndsOnPermittedException()
+   {
+      assertTrue(conversation.isTransient());
+      assertFalse(interceptedBean.isConversationLongRunningDuringInvocation6());
+
+      try
+      {
+         interceptedBean.begin();
+         interceptedBean.endAndThrowPermittedException();
+      }
+      catch (Exception e)
+      {
+         // expected
+      }
+
+      assertTrue(conversation.isTransient());
+      assertTrue(interceptedBean.isConversationLongRunningDuringInvocation6());
+   }
 }

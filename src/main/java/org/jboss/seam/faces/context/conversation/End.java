@@ -8,15 +8,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import javax.enterprise.context.Conversation;
+import javax.enterprise.util.Nonbinding;
 import javax.interceptor.InterceptorBinding;
 
 /**
- * Marks the beginning of a persistent {@link Conversation}.
+ * Ends a persistent {@link Conversation}.
  * 
  *<p>
- * <b>Note:</b> If this method throws an exception, the conversation will be
- * discarded, unless the exception is annotated with @
- * {@link RetainsConversation}
+ * <b>Note:</b> Unless the exception is of a permitted type, if this method
+ * throws an exception, the conversation will not be ended.
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
@@ -27,9 +27,14 @@ import javax.interceptor.InterceptorBinding;
 public @interface End
 {
    /**
-    * The new conversation ID. Seam will Generate a conversation ID if left
-    * blank. If a conversation with the ID already exists, TODO what should we
-    * do?
+    * Sets the exception types for which, when encountered during a method
+    * invocation, the {@link Conversation} will still end. (In other words:
+    * These exceptions do not abort @{@link End})
+    * <p>
+    * <b>By default:</b> { empty array } - all encountered exceptions will cause
+    * the {@link Conversation} to remain open.
     */
-   String id() default "";
+   @Nonbinding
+   Class<? extends Exception>[] permit() default {};
+
 }
