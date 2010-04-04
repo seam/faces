@@ -2,13 +2,12 @@ package org.jboss.seam.faces.event;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
-
-import org.jboss.seam.faces.event.qualifier.ComponentSystemEvent;
-import org.jboss.seam.faces.event.qualifier.ExceptionQueuedEvent;
-import org.jboss.seam.faces.event.qualifier.PostConstructApplicationEvent;
-import org.jboss.seam.faces.event.qualifier.PostConstructCustomScopeEvent;
-import org.jboss.seam.faces.event.qualifier.PreDestroyApplicationEvent;
-import org.jboss.seam.faces.event.qualifier.PreDestroyCustomScopeEvent;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ExceptionQueuedEvent;
+import javax.faces.event.PostConstructApplicationEvent;
+import javax.faces.event.PostConstructCustomScopeEvent;
+import javax.faces.event.PreDestroyApplicationEvent;
+import javax.faces.event.PreDestroyCustomScopeEvent;
 
 @ApplicationScoped
 public class SystemEventObserver
@@ -20,32 +19,32 @@ public class SystemEventObserver
    public static boolean preDestroyApplicationEvent;
    public static boolean preDestroyCustomScopeEvent;
 
-   public void observeComponentSystemEvent(@Observes @ComponentSystemEvent javax.faces.event.ComponentSystemEvent e) 
+   public void observeComponentSystemEvent(@Observes ComponentSystemEvent e) 
    {
       componentSystemEvent = true;
    }
 
-   public void observeExceptionQueuedEvent(@Observes @ExceptionQueuedEvent javax.faces.event.ExceptionQueuedEvent e) 
+   public void observeExceptionQueuedEvent(@Observes ExceptionQueuedEvent e) 
    {
       excecptionQueuedEvent = true;
    }
 
-   public void observePostConstructApplicationEvent(@Observes @PostConstructApplicationEvent javax.faces.event.PostConstructApplicationEvent e) 
+   public void observePostConstructApplicationEvent(@Observes PostConstructApplicationEvent e) 
    {
       postConstructApplicationEvent = true;
    }
    
-   public void observePreDestroyApplicationEvent(@Observes @PreDestroyApplicationEvent javax.faces.event.PreDestroyApplicationEvent e) 
+   public void observePreDestroyApplicationEvent(@Observes PreDestroyApplicationEvent e) 
    {
       preDestroyApplicationEvent = true;
    }   
    
-   public void observePostConstructCustomScopeEvent(@Observes @PostConstructCustomScopeEvent javax.faces.event.PostConstructCustomScopeEvent e) 
+   public void observePostConstructCustomScopeEvent(@Observes PostConstructCustomScopeEvent e) 
    {
       postConstructCustomScopeEvent = true;
    }
    
-   public void observePreDestroyCustomScopeEvent(@Observes @PreDestroyCustomScopeEvent javax.faces.event.PreDestroyCustomScopeEvent e) 
+   public void observePreDestroyCustomScopeEvent(@Observes PreDestroyCustomScopeEvent e) 
    {
       preDestroyCustomScopeEvent = true;
    }
