@@ -1,5 +1,5 @@
 //$Id: FacesContext.java 5350 2007-06-20 17:53:19Z gavin $
-package org.jboss.seam.faces.producer;
+package org.jboss.seam.faces.environment;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
