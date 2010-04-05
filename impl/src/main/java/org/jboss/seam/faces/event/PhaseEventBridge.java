@@ -12,7 +12,6 @@ import javax.inject.Inject;
 
 import org.jboss.seam.faces.cdi.BeanManagerAware;
 import org.jboss.seam.faces.event.qualifier.After;
-import org.jboss.seam.faces.event.qualifier.AnyPhase;
 import org.jboss.seam.faces.event.qualifier.ApplyRequestValues;
 import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.faces.event.qualifier.InvokeApplication;
@@ -96,7 +95,6 @@ public class PhaseEventBridge extends BeanManagerAware implements PhaseListener
       Annotation[] qualifiers = new Annotation[] { whenQualifier, phaseQualifier };
       log.debug("Fired event #0 with qualifiers #1", event, qualifiers);
       getBeanManager().fireEvent(event, qualifiers);
-      getBeanManager().fireEvent(event, new Annotation[] { whenQualifier, ANY_PHASE });
    }
 
    public void afterPhase(final PhaseEvent e)
@@ -125,11 +123,6 @@ public class PhaseEventBridge extends BeanManagerAware implements PhaseListener
    private static final AnnotationLiteral<After> AFTER = new AnnotationLiteral<After>()
    {
       private static final long serialVersionUID = 5121252401235504952L;
-   };
-
-   private static final AnnotationLiteral<AnyPhase> ANY_PHASE = new AnnotationLiteral<AnyPhase>()
-   {
-      private static final long serialVersionUID = 6334015723435615561L;
    };
 
    private static final AnnotationLiteral<RestoreView> RESTORE_VIEW = new AnnotationLiteral<RestoreView>()

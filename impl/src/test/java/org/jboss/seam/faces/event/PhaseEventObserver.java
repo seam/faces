@@ -1,14 +1,17 @@
 package org.jboss.seam.faces.event;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
 
 import org.jboss.seam.faces.event.qualifier.After;
-import org.jboss.seam.faces.event.qualifier.AnyPhase;
 import org.jboss.seam.faces.event.qualifier.ApplyRequestValues;
 import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.faces.event.qualifier.InvokeApplication;
@@ -20,169 +23,135 @@ import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
 @ApplicationScoped
 public class PhaseEventObserver
 {
-   public static enum Observation
+   private Map<String, List<PhaseId>> observations = new HashMap<String, List<PhaseId>>();
+
+   private void recordObservation(String id, PhaseId observation)
    {
-      BEFORE_RENDER_RESPONSE, AFTER_RENDER_RESPONSE, BEFORE_APPLY_VALUES, AFTER_APPLY_VALUES, BEFORE_INVOKE_APPLICATION, AFTER_INVOKE_APPLICATION, BEFORE_PROCESS_VALIDATION, BEFORE_RESTORE_VIEW, AFTER_RESTORE_VIEW, AFTER_UPDATE_MODEL_VALUES, AFTER_PROCESS_VALIDATION, BEFORE_UPDATE_MODEL_VALUES
+      List<PhaseId> observed = observations.get(id);
+      if (observed == null)
+      {
+         observed = new ArrayList<PhaseId>();
+         observations.put(id, observed);
+      }
+      observed.add(observation);
    }
-
-   private static final List<Observation> ALL_BEFORE_OBSERVATIONS = new ArrayList<Observation>()
-   {
-      private static final long serialVersionUID = 1L;
-      {
-         add(Observation.BEFORE_APPLY_VALUES);
-         add(Observation.BEFORE_INVOKE_APPLICATION);
-         add(Observation.BEFORE_PROCESS_VALIDATION);
-         add(Observation.BEFORE_RENDER_RESPONSE);
-         add(Observation.BEFORE_RESTORE_VIEW);
-         add(Observation.BEFORE_UPDATE_MODEL_VALUES);
-      }
-   };
-
-   private static final List<Observation> ALL_AFTER_OBSERVATIONS = new ArrayList<Observation>()
-   {
-      private static final long serialVersionUID = 1L;
-      {
-         add(Observation.AFTER_APPLY_VALUES);
-         add(Observation.AFTER_INVOKE_APPLICATION);
-         add(Observation.AFTER_PROCESS_VALIDATION);
-         add(Observation.AFTER_RENDER_RESPONSE);
-         add(Observation.AFTER_RESTORE_VIEW);
-         add(Observation.AFTER_UPDATE_MODEL_VALUES);
-      }
-   };
-
-   private List<Observation> observations = new ArrayList<Observation>();
-   private List<Observation> beforeAnyObservations = new ArrayList<Observation>();
-   private List<Observation> afterAnyObservations = new ArrayList<Observation>();
 
    public void reset()
    {
       observations.clear();
-      beforeAnyObservations.clear();
-      afterAnyObservations.clear();
    }
 
-   public void assertSingleObservation(Observation observation)
+   public void assertObservations(String id, PhaseId... observations)
    {
-      assert observations.size() == 1;
-      assert observation.equals(observations.iterator().next());
-   }
-
-   private void recordObservation(Observation observation)
-   {
-      observations.add(observation);
-   }
-
-   public void observeBeforeAnyPhase(@Observes @Before @AnyPhase final PhaseEvent e)
-   {
-      recordBeforeAnyObservations();
-   }
-
-   private void recordBeforeAnyObservations()
-   {
-      recordBeforeAnyObservation(Observation.BEFORE_APPLY_VALUES);
-      recordBeforeAnyObservation(Observation.BEFORE_INVOKE_APPLICATION);
-      recordBeforeAnyObservation(Observation.BEFORE_PROCESS_VALIDATION);
-      recordBeforeAnyObservation(Observation.BEFORE_RENDER_RESPONSE);
-      recordBeforeAnyObservation(Observation.BEFORE_RESTORE_VIEW);
-      recordBeforeAnyObservation(Observation.BEFORE_UPDATE_MODEL_VALUES);
-   }
-
-   private void recordBeforeAnyObservation(Observation observation)
-   {
-      beforeAnyObservations.add(observation);
-   }
-
-   public void observeAfterAnyPhase(@Observes @After @AnyPhase final PhaseEvent e)
-   {
-      recordAfterAnyObservations();
-   }
-
-   private void recordAfterAnyObservations()
-   {
-      recordAfterAnyObservation(Observation.AFTER_APPLY_VALUES);
-      recordAfterAnyObservation(Observation.AFTER_INVOKE_APPLICATION);
-      recordAfterAnyObservation(Observation.AFTER_PROCESS_VALIDATION);
-      recordAfterAnyObservation(Observation.AFTER_RENDER_RESPONSE);
-      recordAfterAnyObservation(Observation.AFTER_RESTORE_VIEW);
-      recordAfterAnyObservation(Observation.AFTER_UPDATE_MODEL_VALUES);
-   }
-
-   private void recordAfterAnyObservation(Observation observation)
-   {
-      afterAnyObservations.add(observation);
+      List<PhaseId> observed = this.observations.get(id);
+      assert observed != null && observed.size() == observations.length;
+      assert observed.containsAll(Arrays.asList(observations));
    }
 
    public void observeBeforeRenderResponse(@Observes @Before @RenderResponse final PhaseEvent e)
    {
-      recordObservation(Observation.BEFORE_RENDER_RESPONSE);
+      recordObservation("1", e.getPhaseId());
    }
 
    public void observeAfterRenderResponse(@Observes @After @RenderResponse final PhaseEvent e)
    {
-      recordObservation(Observation.AFTER_RENDER_RESPONSE);
+      recordObservation("2", e.getPhaseId());
    }
 
    public void observeBeforeApplyRequestValues(@Observes @Before @ApplyRequestValues final PhaseEvent e)
    {
-      recordObservation(Observation.BEFORE_APPLY_VALUES);
+      recordObservation("3", e.getPhaseId());
    }
 
    public void observeAfterApplyRequestValues(@Observes @After @ApplyRequestValues final PhaseEvent e)
    {
-      recordObservation(Observation.AFTER_APPLY_VALUES);
+      recordObservation("4", e.getPhaseId());
    }
 
    public void observeBeforeInvokeApplication(@Observes @Before @InvokeApplication final PhaseEvent e)
    {
-      recordObservation(Observation.BEFORE_INVOKE_APPLICATION);
+      recordObservation("5", e.getPhaseId());
    }
 
    public void observeAfterInvokeApplication(@Observes @After @InvokeApplication final PhaseEvent e)
    {
-      recordObservation(Observation.AFTER_INVOKE_APPLICATION);
+      recordObservation("6", e.getPhaseId());
    }
 
    public void observeBeforeProcessValidations(@Observes @Before @ProcessValidations final PhaseEvent e)
    {
-      recordObservation(Observation.BEFORE_PROCESS_VALIDATION);
+      recordObservation("7", e.getPhaseId());
    }
 
    public void observeAfterProcessValidations(@Observes @After @ProcessValidations final PhaseEvent e)
    {
-      recordObservation(Observation.AFTER_PROCESS_VALIDATION);
+      recordObservation("8", e.getPhaseId());
    }
 
    public void observeBeforeRestoreView(@Observes @Before @RestoreView final PhaseEvent e)
    {
-      recordObservation(Observation.BEFORE_RESTORE_VIEW);
+      recordObservation("9", e.getPhaseId());
    }
 
    public void observeAfterRestoreView(@Observes @After @RestoreView final PhaseEvent e)
    {
-      recordObservation(Observation.AFTER_RESTORE_VIEW);
+      recordObservation("10", e.getPhaseId());
    }
 
    public void observeBeforeUpdateModelValues(@Observes @Before @UpdateModelValues final PhaseEvent e)
    {
-      recordObservation(Observation.BEFORE_UPDATE_MODEL_VALUES);
+      recordObservation("11", e.getPhaseId());
    }
 
    public void observeAfterUpdateModelValues(@Observes @After @UpdateModelValues final PhaseEvent e)
    {
-      recordObservation(Observation.AFTER_UPDATE_MODEL_VALUES);
+      recordObservation("12", e.getPhaseId());
    }
 
-   public void assertAllAfterPhasesObserved()
+   public void observeAllRenderResponse(@Observes @RenderResponse final PhaseEvent e)
    {
-//      assert afterAnyObservations.size() == ALL_AFTER_OBSERVATIONS.size();
-      assert afterAnyObservations.containsAll(ALL_AFTER_OBSERVATIONS);
+      recordObservation("13", e.getPhaseId());
    }
 
-   public void assertAllBeforePhasesObserved()
+   public void observeAllApplyRequestValues(@Observes @ApplyRequestValues final PhaseEvent e)
    {
-//      assert beforeAnyObservations.size() == ALL_BEFORE_OBSERVATIONS.size();
-      assert beforeAnyObservations.containsAll(ALL_BEFORE_OBSERVATIONS);
+      recordObservation("14", e.getPhaseId());
    }
 
+   public void observeAllInvokeApplication(@Observes @InvokeApplication final PhaseEvent e)
+   {
+      recordObservation("15", e.getPhaseId());
+   }
+
+   public void observeAllProcessValidations(@Observes @ProcessValidations final PhaseEvent e)
+   {
+      recordObservation("16", e.getPhaseId());
+   }
+
+   public void observeAllRestoreView(@Observes @RestoreView final PhaseEvent e)
+   {
+      recordObservation("17", e.getPhaseId());
+   }
+
+   public void observeAllUpdateModelValues(@Observes @UpdateModelValues final PhaseEvent e)
+   {
+      recordObservation("18", e.getPhaseId());
+   }
+
+   public void observeAllBeforeEvents(@Observes @Before final PhaseEvent e)
+   {
+      recordObservation("19", e.getPhaseId());
+   }
+   
+   public void observeAllAfterEvents(@Observes @Before final PhaseEvent e)
+   {
+      recordObservation("20", e.getPhaseId());
+   }
+   
+   public void observeAllEvents(@Observes final PhaseEvent e)
+   {
+      recordObservation("21", e.getPhaseId());
+   }
+
+   
 }
