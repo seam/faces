@@ -1,6 +1,20 @@
 package org.jboss.seam.faces.event;
 
-import static org.junit.Assert.assertEquals;
+import static org.jboss.seam.faces.event.PhaseEventObserver.Observation.AFTER_APPLY_VALUES;
+import static org.jboss.seam.faces.event.PhaseEventObserver.Observation.AFTER_INVOKE_APPLICATION;
+import static org.jboss.seam.faces.event.PhaseEventObserver.Observation.AFTER_PROCESS_VALIDATION;
+import static org.jboss.seam.faces.event.PhaseEventObserver.Observation.AFTER_RENDER_RESPONSE;
+import static org.jboss.seam.faces.event.PhaseEventObserver.Observation.AFTER_RESTORE_VIEW;
+import static org.jboss.seam.faces.event.PhaseEventObserver.Observation.AFTER_UPDATE_MODEL_VALUES;
+import static org.jboss.seam.faces.event.PhaseEventObserver.Observation.BEFORE_APPLY_VALUES;
+import static org.jboss.seam.faces.event.PhaseEventObserver.Observation.BEFORE_INVOKE_APPLICATION;
+import static org.jboss.seam.faces.event.PhaseEventObserver.Observation.BEFORE_PROCESS_VALIDATION;
+import static org.jboss.seam.faces.event.PhaseEventObserver.Observation.BEFORE_RENDER_RESPONSE;
+import static org.jboss.seam.faces.event.PhaseEventObserver.Observation.BEFORE_RESTORE_VIEW;
+import static org.jboss.seam.faces.event.PhaseEventObserver.Observation.BEFORE_UPDATE_MODEL_VALUES;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
@@ -22,6 +36,20 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class PhaseEventBridgeTest
 {
+   private static List<PhaseId> ALL_PHASES = new ArrayList<PhaseId>()
+   {
+      private static final long serialVersionUID = 1L;
+
+      {
+         add(PhaseId.APPLY_REQUEST_VALUES);
+         add(PhaseId.INVOKE_APPLICATION);
+         add(PhaseId.PROCESS_VALIDATIONS);
+         add(PhaseId.RENDER_RESPONSE);
+         add(PhaseId.RESTORE_VIEW);
+         add(PhaseId.UPDATE_MODEL_VALUES);
+      }
+   };
+
    @Deployment
    public static JavaArchive createTestArchive()
    {
@@ -30,6 +58,8 @@ public class PhaseEventBridgeTest
 
    @Inject
    PhaseEventBridge phaseEventBridge;
+   @Inject
+   PhaseEventObserver observer;
 
    private final MockFacesContext facesContext = new MockFacesContext();
    private final MockLifecycle lifecycle = new MockLifecycle();
@@ -37,103 +67,149 @@ public class PhaseEventBridgeTest
    @Test
    public void testBeforeAnyPhaseObserver()
    {
-      phaseEventBridge.beforePhase(new PhaseEvent(facesContext, PhaseId.RENDER_RESPONSE, lifecycle));
-      phaseEventBridge.beforePhase(new PhaseEvent(facesContext, PhaseId.APPLY_REQUEST_VALUES, lifecycle));
-      phaseEventBridge.beforePhase(new PhaseEvent(facesContext, PhaseId.PROCESS_VALIDATIONS, lifecycle));
-      assertEquals(3, PhaseEventObserver.beforeAnyPhaseCount);
+      observer.reset();
+      fireAllBeforePhases();
+      observer.assertAllBeforePhasesObserved();
+   }
+
+   private void fireAllBeforePhases()
+   {
+      fireBeforePhases(ALL_PHASES);
+   }
+
+   private void fireBeforePhases(List<PhaseId> phases)
+   {
+      for (PhaseId phaseId : phases)
+      {
+         fireBeforePhase(phaseId);
+      }
+   }
+
+   private void fireBeforePhase(PhaseId phaseId)
+   {
+      phaseEventBridge.beforePhase(new PhaseEvent(facesContext, phaseId, lifecycle));
    }
 
    @Test
    public void testAfterAnyPhaseObserver()
    {
-      phaseEventBridge.afterPhase(new PhaseEvent(facesContext, PhaseId.RENDER_RESPONSE, lifecycle));
-      phaseEventBridge.afterPhase(new PhaseEvent(facesContext, PhaseId.APPLY_REQUEST_VALUES, lifecycle));
-      phaseEventBridge.afterPhase(new PhaseEvent(facesContext, PhaseId.PROCESS_VALIDATIONS, lifecycle));
-      assertEquals(3, PhaseEventObserver.afterAnyPhaseCount);
+      observer.reset();
+      fireAllAfterPhases();
+      observer.assertAllAfterPhasesObserved();
+   }
+
+   private void fireAllAfterPhases()
+   {
+      fireAfterPhases(ALL_PHASES);
+   }
+
+   private void fireAfterPhases(List<PhaseId> phases)
+   {
+      for (PhaseId phaseId : phases)
+      {
+         fireAfterPhase(phaseId);
+      }
+   }
+
+   private void fireAfterPhase(PhaseId phaseId)
+   {
+      phaseEventBridge.afterPhase(new PhaseEvent(facesContext, phaseId, lifecycle));
    }
 
    @Test
    public void testBeforeRenderResponseObserver()
    {
-      phaseEventBridge.beforePhase(new PhaseEvent(facesContext, PhaseId.RENDER_RESPONSE, lifecycle));
-      assert PhaseEventObserver.observeBeforeRenderResponse;
+      observer.reset();
+      fireBeforePhase(PhaseId.RENDER_RESPONSE);
+      observer.assertSingleObservation(BEFORE_RENDER_RESPONSE);
    }
 
    @Test
    public void testAfterRenderResponseObserver()
    {
-      phaseEventBridge.afterPhase(new PhaseEvent(facesContext, PhaseId.RENDER_RESPONSE, lifecycle));
-      assert PhaseEventObserver.observeAfterRenderResponse;
+      observer.reset();
+      fireAfterPhase(PhaseId.RENDER_RESPONSE);
+      observer.assertSingleObservation(AFTER_RENDER_RESPONSE);
    }
 
    @Test
    public void testBeforeApplyRequestValuesObserver()
    {
-      phaseEventBridge.beforePhase(new PhaseEvent(facesContext, PhaseId.APPLY_REQUEST_VALUES, lifecycle));
-      assert PhaseEventObserver.observeBeforeApplyRequestValues;
+      observer.reset();
+      fireBeforePhase(PhaseId.APPLY_REQUEST_VALUES);
+      observer.assertSingleObservation(BEFORE_APPLY_VALUES);
    }
 
    @Test
    public void testAfterApplyRequestValuesObserver()
    {
-      phaseEventBridge.afterPhase(new PhaseEvent(facesContext, PhaseId.APPLY_REQUEST_VALUES, lifecycle));
-      assert PhaseEventObserver.observeAfterApplyRequestValues;
+      observer.reset();
+      fireAfterPhase(PhaseId.APPLY_REQUEST_VALUES);
+      observer.assertSingleObservation(AFTER_APPLY_VALUES);
    }
 
    @Test
    public void testBeforeInvokeApplicationObserver()
    {
-      phaseEventBridge.beforePhase(new PhaseEvent(facesContext, PhaseId.INVOKE_APPLICATION, lifecycle));
-      assert PhaseEventObserver.observeBeforeInvokeApplication;
+      observer.reset();
+      fireBeforePhase(PhaseId.INVOKE_APPLICATION);
+      observer.assertSingleObservation(BEFORE_INVOKE_APPLICATION);
    }
 
    @Test
    public void testAfterInvokeApplicationObserver()
    {
-      phaseEventBridge.afterPhase(new PhaseEvent(facesContext, PhaseId.INVOKE_APPLICATION, lifecycle));
-      assert PhaseEventObserver.observeAfterInvokeApplication;
+      observer.reset();
+      fireAfterPhase(PhaseId.INVOKE_APPLICATION);
+      observer.assertSingleObservation(AFTER_INVOKE_APPLICATION);
    }
 
    @Test
    public void testBeforeProcessValidationsObserver()
    {
-      phaseEventBridge.beforePhase(new PhaseEvent(facesContext, PhaseId.PROCESS_VALIDATIONS, lifecycle));
-      assert PhaseEventObserver.observeBeforeProcessValidations;
+      observer.reset();
+      fireBeforePhase(PhaseId.PROCESS_VALIDATIONS);
+      observer.assertSingleObservation(BEFORE_PROCESS_VALIDATION);
    }
 
    @Test
    public void testAfterProcessValidationsObserver()
    {
-      phaseEventBridge.afterPhase(new PhaseEvent(facesContext, PhaseId.PROCESS_VALIDATIONS, lifecycle));
-      assert PhaseEventObserver.observeAfterProcessValidations;
+      observer.reset();
+      fireAfterPhase(PhaseId.PROCESS_VALIDATIONS);
+      observer.assertSingleObservation(AFTER_PROCESS_VALIDATION);
    }
 
    @Test
    public void testBeforeRestoreViewObserver()
    {
-      phaseEventBridge.beforePhase(new PhaseEvent(facesContext, PhaseId.RESTORE_VIEW, lifecycle));
-      assert PhaseEventObserver.observeBeforeRestoreView;
+      observer.reset();
+      fireBeforePhase(PhaseId.RESTORE_VIEW);
+      observer.assertSingleObservation(BEFORE_RESTORE_VIEW);
    }
 
    @Test
    public void testAfterRestoreViewObserver()
    {
-      phaseEventBridge.afterPhase(new PhaseEvent(facesContext, PhaseId.RESTORE_VIEW, lifecycle));
-      assert PhaseEventObserver.observeAfterRestoreView;
+      observer.reset();
+      fireAfterPhase(PhaseId.RESTORE_VIEW);
+      observer.assertSingleObservation(AFTER_RESTORE_VIEW);
    }
 
    @Test
    public void testBeforeUpdateModelValuesObserver()
    {
-      phaseEventBridge.beforePhase(new PhaseEvent(facesContext, PhaseId.UPDATE_MODEL_VALUES, lifecycle));
-      assert PhaseEventObserver.observeBeforeUpdateModelValues;
+      observer.reset();
+      fireBeforePhase(PhaseId.UPDATE_MODEL_VALUES);
+      observer.assertSingleObservation(BEFORE_UPDATE_MODEL_VALUES);
    }
 
    @Test
    public void testAfterUpdateModelValuesObserver()
    {
-      phaseEventBridge.afterPhase(new PhaseEvent(facesContext, PhaseId.UPDATE_MODEL_VALUES, lifecycle));
-      assert PhaseEventObserver.observeAfterUpdateModelValues;
+      observer.reset();
+      fireAfterPhase(PhaseId.UPDATE_MODEL_VALUES);
+      observer.assertSingleObservation(AFTER_UPDATE_MODEL_VALUES);
    }
 
 }
