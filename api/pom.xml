@@ -31,17 +31,4 @@
 		</repository>
 	</repositories>
 
-	<profiles>
-		<profile>
-			<id>arquillian-glassfish-embedded-30</id>
-			<dependencies>
-				<dependency>
-					<groupId>org.jboss.arquillian.container</groupId>
-					<artifactId>arquillian-glassfish-embedded-30</artifactId>
-					<version>${arquillian.version}</version>
-				</dependency>
-			</dependencies>
-		</profile>
-	</profiles>
-
 </project>

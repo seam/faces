@@ -27,6 +27,98 @@
 		<!-- <module>docs</module>
 		<module>examples</module> -->
 	</modules>
+	
+	<repositories>
+		<repository>
+			<id>java.net</id>
+			<name>Java.net Maven2 Repository</name>
+			<url>http://download.java.net/maven/2/</url>
+		</repository>
+	</repositories>
+	
+	<properties>
+		<arquillian.version>1.0.0.Alpha1</arquillian.version>
+		<jsfmock.version>1.0.0</jsfmock.version>
+	</properties>
+	
+	<dependencies>
+	
+		<!-- Environment Dependencies -->
+		<dependency>
+			<!-- This is necessary until a new JSF-API is published to central -->
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>2.0.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>el-api</artifactId>
+			<version>2.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>jsr250-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.weld</groupId>
+			<artifactId>weld-extensions</artifactId>
+			<version>1.0.0.Alpha1</version>
+		</dependency>
+
+		<!-- Test Dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.arquillian</groupId>
+			<artifactId>arquillian-junit</artifactId>
+			<version>${arquillian.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.arquillian.container</groupId>
+			<artifactId>arquillian-weld-embedded</artifactId>
+			<version>${arquillian.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.jsfunit</groupId>
+			<artifactId>jboss-jsfunit-core</artifactId>
+			<version>1.2.0.Final</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.test-jsf</groupId>
+			<artifactId>jsf-mock</artifactId>
+			<version>${jsfmock.version}</version>
+			<scope>test</scope>
+		</dependency>
+	
+	</dependencies>
+	
+	<profiles>
+		<profile>
+			<id>arquillian-glassfish-embedded-30</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.jboss.arquillian.container</groupId>
+					<artifactId>arquillian-glassfish-embedded-30</artifactId>
+					<version>${arquillian.version}</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 
 	<developers>
 		<developer>
