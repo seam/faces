@@ -22,8 +22,34 @@
 	<url>http://www.seamframework.org</url>
 
 	<modules>
-		<module>core</module>
+		<module>impl</module>
+		<module>api</module>
+		<module>docs</module>
+		<module>examples</module>
 	</modules>
+
+	<developers>
+		<developer>
+			<name>Lincoln Baxter, III</name>
+			<email>lincolnbaxter@gmail.com</email>
+			<url>http://ocpsoft.com</url>
+			<organization>JBoss, by Red Hat</organization>
+			<organizationUrl>http://jboss.org</organizationUrl>
+			<timezone>EST</timezone>
+			<roles>
+				<role>Project Lead</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Dan Allen</name>
+			<organization>JBoss, by Red Hat</organization>
+			<organizationUrl>http://jboss.org</organizationUrl>
+			<timezone>EST</timezone>
+			<roles>
+				<role>Project Lead</role>
+			</roles>
+		</developer>
+	</developers>
 
 	<scm>
 		<connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/faces/trunk </connection>
