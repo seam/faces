@@ -2,15 +2,14 @@ package org.jboss.seam.faces.environment;
 
 import javax.enterprise.context.ContextNotActiveException;
 import javax.enterprise.inject.Instance;
-
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.inject.Inject;
+
 import junit.framework.Assert;
+
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.seam.faces.producer.FacesContextProducer;
-
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.Archives;
@@ -20,9 +19,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Verify that the FacesContextProducer produces the same FacesContext
- * as returned by FacesContext#getCurrentInstance().
- *
+ * Verify that the FacesContextProducer produces the same FacesContext as
+ * returned by FacesContext#getCurrentInstance().
+ * 
  * @author Dan Allen
  */
 @RunWith(Arquillian.class)
@@ -31,12 +30,11 @@ public class FacesContextProducerTest
    @Deployment
    public static Archive<?> createTestArchive()
    {
-      return Archives.create("test.jar", JavaArchive.class)
-            .addClass(FacesContextProducer.class)
-            .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+      return Archives.create("test.jar", JavaArchive.class).addClass(FacesContextProducer.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
    }
 
-   @Inject Instance<FacesContext> facesContextInstance;
+   @Inject
+   Instance<FacesContext> facesContextInstance;
 
    @Test
    public void testReturnsCurrentFacesContext()
@@ -57,7 +55,7 @@ public class FacesContextProducerTest
       Assert.assertFalse(actualFacesContext == producedFacesContext);
       // verify we have same object through proxy by comparing hash codes
       Assert.assertEquals(actualFacesContext.hashCode(), producedFacesContext.hashCode());
-      //Assert.assertEquals(actualFacesContext, producedFacesContext);
+      // Assert.assertEquals(actualFacesContext, producedFacesContext);
       Assert.assertSame(PhaseId.RENDER_RESPONSE, producedFacesContext.getCurrentPhaseId());
    }
 

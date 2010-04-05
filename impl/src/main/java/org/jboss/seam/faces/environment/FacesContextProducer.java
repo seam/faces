@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.faces.producer;
+package org.jboss.seam.faces.environment;
 
 import javax.enterprise.context.ContextNotActiveException;
 import javax.enterprise.context.RequestScoped;
@@ -24,14 +24,18 @@ import javax.faces.context.FacesContext;
 /**
  * <p>
  * A producer which retrieves the {@link FacesContext} for the current request
- * of the JavaServer Faces application by calling {@link FacesContext#getCurrentInstance()}
- * and stores the result as a request-scoped bean instance.
+ * of the JavaServer Faces application by calling
+ * {@link FacesContext#getCurrentInstance()} and stores the result as a
+ * request-scoped bean instance.
  * </p>
- *
- * <p>This producer allows the {@link FacesContext} to be injected:</p>
- *
+ * 
+ * <p>
+ * This producer allows the {@link FacesContext} to be injected:
+ * </p>
+ * 
  * <pre>
- * &#064;Inject FacesContext ctx;
+ * &#064;Inject
+ * FacesContext ctx;
  * </pre>
  * 
  * <p>
@@ -44,7 +48,9 @@ import javax.faces.context.FacesContext;
  */
 public class FacesContextProducer
 {
-   public @Produces @RequestScoped FacesContext getFacesContext()
+   public @Produces
+   @RequestScoped
+   FacesContext getFacesContext()
    {
       FacesContext ctx = FacesContext.getCurrentInstance();
       if (ctx == null)
