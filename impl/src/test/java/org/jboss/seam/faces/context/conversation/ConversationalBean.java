@@ -32,7 +32,7 @@ public class ConversationalBean
    {
    }
 
-   @Begin
+   @Begin(timeout = 1000)
    public void beginConversation()
    {
       if (!conversation.isTransient())

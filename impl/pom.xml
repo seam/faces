@@ -36,6 +36,7 @@
 			<artifactId>seam-faces-api</artifactId>
 			<groupId>org.jboss.seam.faces</groupId>
 			<version>${project.version}</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 

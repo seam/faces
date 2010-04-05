@@ -3,6 +3,7 @@
  */
 package org.jboss.seam.faces.context.conversation;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -46,6 +47,19 @@ public class ConversationBoundaryInterceptorTest
 
       interceptedBean.beginConversation();
 
+      assertFalse(conversation.isTransient());
+      assertTrue(interceptedBean.isConversationLongRunningInsideMethodCall());
+   }
+
+   @Test
+   public void testConversationStartedWithTimeout()
+   {
+      assertTrue(conversation.isTransient());
+      assertFalse(interceptedBean.isConversationLongRunningInsideMethodCall());
+
+      interceptedBean.beginConversation();
+
+      assertEquals(1000, conversation.getTimeout());
       assertFalse(conversation.isTransient());
       assertTrue(interceptedBean.isConversationLongRunningInsideMethodCall());
    }

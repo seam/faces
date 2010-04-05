@@ -27,7 +27,7 @@ public class Annotations
     *         the declaring class of the method. Returns false if the annotation
     *         is not present.
     */
-   public static boolean hasAnnotation(final Method m, final Class<? extends Annotation> type)
+   public static boolean has(final Method m, final Class<? extends Annotation> type)
    {
       boolean result = false;
       if (m.isAnnotationPresent(type))
@@ -47,7 +47,7 @@ public class Annotations
 
       if (result == false)
       {
-         result = hasAnnotation(m.getDeclaringClass(), type);
+         result = has(m.getDeclaringClass(), type);
       }
       return result;
    }
@@ -62,7 +62,7 @@ public class Annotations
     * @return True if annotation is present either on class, false if the
     *         annotation is not present.
     */
-   public static boolean hasAnnotation(final Class<?> c, final Class<? extends Annotation> type)
+   public static boolean has(final Class<?> c, final Class<? extends Annotation> type)
    {
       boolean result = false;
       if (c.isAnnotationPresent(type))
@@ -92,7 +92,7 @@ public class Annotations
     * @return The annotation instance found on this method or enclosing class,
     *         or null if no matching annotation was found.
     */
-   public static <A extends Annotation> A getAnnotation(final Method m, final Class<A> type)
+   public static <A extends Annotation> A get(final Method m, final Class<A> type)
    {
       A result = m.getAnnotation(type);
       if (result == null)
@@ -107,7 +107,7 @@ public class Annotations
       }
       if (result == null)
       {
-         result = getAnnotation(m.getDeclaringClass(), type);
+         result = get(m.getDeclaringClass(), type);
       }
       return result;
    }
@@ -122,7 +122,7 @@ public class Annotations
     * @return The annotation instance found on this class, or null if no
     *         matching annotation was found.
     */
-   public static <A extends Annotation> A getAnnotation(final Class<?> c, final Class<A> type)
+   public static <A extends Annotation> A get(final Class<?> c, final Class<A> type)
    {
       A result = c.getAnnotation(type);
       if (result == null)

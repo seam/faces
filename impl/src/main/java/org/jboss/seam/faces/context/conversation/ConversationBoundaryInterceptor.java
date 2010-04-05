@@ -42,14 +42,14 @@ public class ConversationBoundaryInterceptor implements Serializable
 
       try
       {
-         if (Annotations.hasAnnotation(ctx.getMethod(), Begin.class))
+         if (Annotations.has(ctx.getMethod(), Begin.class))
          {
             beginConversation(ctx);
          }
 
          result = ctx.proceed();
 
-         if (Annotations.hasAnnotation(ctx.getMethod(), End.class))
+         if (Annotations.has(ctx.getMethod(), End.class))
          {
             endConversation(ctx);
          }
@@ -66,7 +66,7 @@ public class ConversationBoundaryInterceptor implements Serializable
 
    private void handleExceptionBegin(final InvocationContext ctx, final Exception e)
    {
-      if (Annotations.hasAnnotation(ctx.getMethod(), Begin.class))
+      if (Annotations.has(ctx.getMethod(), Begin.class))
       {
          List<? extends Class<? extends Exception>> typesPermittedByBegin = getPermittedExceptionTypesBegin(ctx.getMethod());
          for (Class<? extends Exception> type : typesPermittedByBegin)
@@ -83,7 +83,7 @@ public class ConversationBoundaryInterceptor implements Serializable
 
    private void handleExceptionEnd(final InvocationContext ctx, final Exception e)
    {
-      if (Annotations.hasAnnotation(ctx.getMethod(), End.class))
+      if (Annotations.has(ctx.getMethod(), End.class))
       {
          List<? extends Class<? extends Exception>> typesPermittedByEnd = getPermittedExceptionTypesEnd(ctx.getMethod());
          boolean permitted = false;
@@ -104,7 +104,7 @@ public class ConversationBoundaryInterceptor implements Serializable
 
    private void beginConversation(final InvocationContext ctx) throws Exception
    {
-      String cid = getConversationId(ctx.getMethod());
+      String cid = Annotations.get(ctx.getMethod(), Begin.class).id();
       if ((cid != null) && !"".equals(cid))
       {
          conversation.begin(cid);
@@ -113,6 +113,13 @@ public class ConversationBoundaryInterceptor implements Serializable
       {
          conversation.begin();
       }
+
+      long timeout = Annotations.get(ctx.getMethod(), Begin.class).timeout();
+      if (timeout != -1)
+      {
+         conversation.setTimeout(timeout);
+      }
+
       log.debug("Began conversation: (#0) before method: (#1.#2(...))", new Object[] { conversation.getId(), ctx.getMethod().getDeclaringClass().getName(), ctx.getMethod().getName() });
    }
 
@@ -122,18 +129,13 @@ public class ConversationBoundaryInterceptor implements Serializable
       conversation.end();
    }
 
-   private String getConversationId(final Method m)
-   {
-      return Annotations.getAnnotation(m, Begin.class).id();
-   }
-
    private List<? extends Class<? extends Exception>> getPermittedExceptionTypesBegin(final Method m)
    {
-      return Arrays.asList(Annotations.getAnnotation(m, Begin.class).permit());
+      return Arrays.asList(Annotations.get(m, Begin.class).permit());
    }
 
    private List<? extends Class<? extends Exception>> getPermittedExceptionTypesEnd(final Method m)
    {
-      return Arrays.asList(Annotations.getAnnotation(m, End.class).permit());
+      return Arrays.asList(Annotations.get(m, End.class).permit());
    }
 }

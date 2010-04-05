@@ -41,7 +41,6 @@ public @interface Begin
     * Sets the {@link Conversation} timeout period, in milliseconds (E.g.: 5000
     * = 5 seconds.)
     * <p>
-    * TODO implement timeout support on @Begin
     */
    @Nonbinding
    long timeout() default -1;
