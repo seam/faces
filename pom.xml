@@ -13,7 +13,7 @@
 	<version>3.0.0-SNAPSHOT</version>
 
 	<packaging>pom</packaging>
-	<name>Seam Faces Module</name>
+	<name>Seam Faces Module Parent POM</name>
 
 	<description>
       The Parent for Seam Faces Modules
@@ -22,10 +22,10 @@
 	<url>http://www.seamframework.org</url>
 
 	<modules>
-		<module>impl</module>
 		<module>api</module>
-		<module>docs</module>
-		<module>examples</module>
+		<module>impl</module>
+		<!-- <module>docs</module>
+		<module>examples</module> -->
 	</modules>
 
 	<developers>
