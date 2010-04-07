@@ -20,7 +20,8 @@ import org.junit.runner.RunWith;
 
 /**
  * Verify that the FacesContextProducer produces the same FacesContext as
- * returned by FacesContext#getCurrentInstance().
+ * returned by FacesContext#getCurrentInstance() and by the CDI producer
+ * method.
  * 
  * @author Dan Allen
  */

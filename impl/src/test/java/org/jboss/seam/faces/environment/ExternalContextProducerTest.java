@@ -20,7 +20,7 @@ import org.junit.runner.RunWith;
 
 /**
  * Verify that the ExternalContextProducer produces the same ExternalContext as
- * returned by FacesContext#getExternalContext().
+ * returned by FacesContext#getExternalContext() and the CDI producer method.
  * 
  * @author Dan Allen
  */
