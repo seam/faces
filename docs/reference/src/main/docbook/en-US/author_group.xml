@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bookinfo PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+   "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" []>
+<authorgroup>
+   <author>
+      <firstname>Dan</firstname>
+      <surname>Allen</surname>
+   </author>
+   <author>
+      <firstname>Lincoln</firstname>
+      <surname>Baxter III</surname>
+   </author>
+
+   <!--
+vim:et:ts=3:sw=3:tw=120
+-->
+</authorgroup>
