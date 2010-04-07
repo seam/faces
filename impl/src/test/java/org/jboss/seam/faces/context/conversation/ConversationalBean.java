@@ -13,8 +13,7 @@ import org.jboss.seam.faces.SeamFacesException;
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * 
  */
-@RequestScoped
-public class ConversationalBean
+public @RequestScoped class ConversationalBean
 {
    @Inject
    Conversation conversation;

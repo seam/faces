@@ -32,8 +32,7 @@ import org.jboss.seam.faces.cdi.BeanManagerAware;
  * 
  * @author Nicklas Karlsson
  */
-@ApplicationScoped
-public class SystemEventBridge extends BeanManagerAware implements SystemEventListener
+public @ApplicationScoped class SystemEventBridge extends BeanManagerAware implements SystemEventListener
 {
 
    public boolean isListenerForSource(final Object source)

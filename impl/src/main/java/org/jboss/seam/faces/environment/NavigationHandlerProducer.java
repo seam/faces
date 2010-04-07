@@ -21,9 +21,7 @@ public class NavigationHandlerProducer
    @Inject
    FacesContext context;
 
-   public @Produces
-   @RequestScoped
-   NavigationHandler getNavigationHandler()
+   public @Produces @RequestScoped NavigationHandler getNavigationHandler()
    {
       if (context != null)
       {

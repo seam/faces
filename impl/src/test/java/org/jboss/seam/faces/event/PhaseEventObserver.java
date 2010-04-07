@@ -20,8 +20,7 @@ import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.faces.event.qualifier.RestoreView;
 import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
 
-@ApplicationScoped
-public class PhaseEventObserver
+public @ApplicationScoped class PhaseEventObserver
 {
    private Map<String, List<PhaseId>> observations = new HashMap<String, List<PhaseId>>();
 

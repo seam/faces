@@ -36,22 +36,20 @@
 package org.jboss.seam.faces.component;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 
+import javax.el.ELContext;
+import javax.el.ELException;
+import javax.el.ExpressionFactory;
+import javax.el.MethodExpression;
+import javax.el.MethodInfo;
+import javax.el.ValueExpression;
 import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.MethodNotFoundException;
-
-import javax.el.MethodExpression;
-import javax.el.MethodInfo;
-import javax.el.ELException;
-import javax.el.ELContext;
-import javax.el.ExpressionFactory;
-import javax.el.ValueExpression;
-
-import java.util.Arrays;
-import java.lang.reflect.Method;
 
 /**
  * <p>

@@ -9,8 +9,7 @@ import javax.faces.event.PostConstructCustomScopeEvent;
 import javax.faces.event.PreDestroyApplicationEvent;
 import javax.faces.event.PreDestroyCustomScopeEvent;
 
-@ApplicationScoped
-public class SystemEventObserver
+public @ApplicationScoped class SystemEventObserver
 {
    public static boolean componentSystemEvent;
    public static boolean excecptionQueuedEvent;

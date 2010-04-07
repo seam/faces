@@ -14,10 +14,7 @@ import javax.inject.Named;
  */
 public class NamedConversationAliasProducer
 {
-   public @Produces
-   @Named
-   @Typed(/* no types - prevents injection */)
-   Conversation getConversation(final Conversation conversation)
+   public @Produces @Named @Typed(/* no types - prevents injection */) Conversation getConversation(final Conversation conversation)
    {
       return conversation;
    }
