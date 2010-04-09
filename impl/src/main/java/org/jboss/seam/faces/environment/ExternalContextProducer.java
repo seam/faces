@@ -48,7 +48,9 @@ import javax.faces.context.FacesContext;
  */
 public class ExternalContextProducer
 {
-   public @Produces @RequestScoped ExternalContext getExternalContext(final FacesContext context)
+   @Produces
+   @RequestScoped
+   public ExternalContext getExternalContext(final FacesContext context)
    {
       return context.getExternalContext();
    }

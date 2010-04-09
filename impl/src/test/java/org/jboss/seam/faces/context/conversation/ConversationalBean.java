@@ -18,7 +18,7 @@
  * License along with this software; if not, write to the Free
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
- */ 
+ */
 package org.jboss.seam.faces.context.conversation;
 
 import javax.enterprise.context.Conversation;
@@ -31,7 +31,8 @@ import org.jboss.seam.faces.SeamFacesException;
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * 
  */
-public @RequestScoped class ConversationalBean
+@RequestScoped
+public class ConversationalBean
 {
    @Inject
    Conversation conversation;

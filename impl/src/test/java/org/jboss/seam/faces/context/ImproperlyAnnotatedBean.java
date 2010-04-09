@@ -18,7 +18,7 @@
  * License along with this software; if not, write to the Free
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
- */ 
+ */
 package org.jboss.seam.faces.context;
 
 import javax.faces.bean.RequestScoped;
@@ -27,6 +27,7 @@ import javax.faces.bean.RequestScoped;
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  * 
  */
-public @RequestScoped class ImproperlyAnnotatedBean
+@RequestScoped
+public class ImproperlyAnnotatedBean
 {
 }

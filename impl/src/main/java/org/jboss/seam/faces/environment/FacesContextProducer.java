@@ -53,7 +53,9 @@ import javax.faces.context.FacesContext;
  */
 public class FacesContextProducer
 {
-   public @Produces @RequestScoped FacesContext getFacesContext()
+   @Produces
+   @RequestScoped
+   public FacesContext getFacesContext()
    {
       FacesContext ctx = FacesContext.getCurrentInstance();
       if (ctx == null)

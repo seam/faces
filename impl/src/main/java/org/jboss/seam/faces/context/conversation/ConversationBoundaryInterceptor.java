@@ -41,7 +41,9 @@ import org.slf4j.Logger;
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
-public @ConversationBoundary @Interceptor class ConversationBoundaryInterceptor implements Serializable
+@ConversationBoundary
+@Interceptor
+public class ConversationBoundaryInterceptor implements Serializable
 {
    private static final long serialVersionUID = -2729227895205287477L;
 

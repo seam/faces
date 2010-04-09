@@ -18,7 +18,7 @@
  * License along with this software; if not, write to the Free
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
- */ 
+ */
 package org.jboss.seam.faces.event;
 
 import java.util.ArrayList;
@@ -44,9 +44,10 @@ import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
 /**
  * 
  * @author Nicklas Karlsson
- *
+ * 
  */
-public @ApplicationScoped class PhaseEventObserver
+@ApplicationScoped
+public class PhaseEventObserver
 {
    private Map<String, List<PhaseId>> observations = new HashMap<String, List<PhaseId>>();
 
@@ -167,16 +168,15 @@ public @ApplicationScoped class PhaseEventObserver
    {
       recordObservation("19", e.getPhaseId());
    }
-   
+
    public void observeAllAfterEvents(@Observes @Before final PhaseEvent e)
    {
       recordObservation("20", e.getPhaseId());
    }
-   
+
    public void observeAllEvents(@Observes final PhaseEvent e)
    {
       recordObservation("21", e.getPhaseId());
    }
 
-   
 }

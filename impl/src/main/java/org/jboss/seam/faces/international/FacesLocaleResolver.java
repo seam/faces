@@ -44,8 +44,8 @@ public class FacesLocaleResolver // extends LocaleResolver
       return facesContext != null && facesContext.getCurrentPhaseId() != null;
    }
 
-   public @Produces
-   Locale getLocale()
+   @Produces
+   public Locale getLocale()
    {
       if (facesContext.getViewRoot() != null)
       {

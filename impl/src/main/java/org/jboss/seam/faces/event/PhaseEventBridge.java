@@ -63,7 +63,8 @@ import org.slf4j.Logger;
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  * 
  */
-public @ApplicationScoped class PhaseEventBridge extends BeanManagerAware implements PhaseListener
+@ApplicationScoped
+public class PhaseEventBridge extends BeanManagerAware implements PhaseListener
 {
    private static final long serialVersionUID = -6181019551463318453L;
 

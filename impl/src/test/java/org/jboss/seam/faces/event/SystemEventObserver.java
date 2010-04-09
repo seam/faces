@@ -33,9 +33,10 @@ import javax.faces.event.PreDestroyCustomScopeEvent;
 /**
  * 
  * @author Nicklas Karlsson
- *
+ * 
  */
-public @ApplicationScoped class SystemEventObserver
+@ApplicationScoped
+public class SystemEventObserver
 {
    public static boolean componentSystemEvent;
    public static boolean excecptionQueuedEvent;
@@ -44,32 +45,32 @@ public @ApplicationScoped class SystemEventObserver
    public static boolean preDestroyApplicationEvent;
    public static boolean preDestroyCustomScopeEvent;
 
-   public void observeComponentSystemEvent(@Observes ComponentSystemEvent e) 
+   public void observeComponentSystemEvent(@Observes ComponentSystemEvent e)
    {
       componentSystemEvent = true;
    }
 
-   public void observeExceptionQueuedEvent(@Observes ExceptionQueuedEvent e) 
+   public void observeExceptionQueuedEvent(@Observes ExceptionQueuedEvent e)
    {
       excecptionQueuedEvent = true;
    }
 
-   public void observePostConstructApplicationEvent(@Observes PostConstructApplicationEvent e) 
+   public void observePostConstructApplicationEvent(@Observes PostConstructApplicationEvent e)
    {
       postConstructApplicationEvent = true;
    }
-   
-   public void observePreDestroyApplicationEvent(@Observes PreDestroyApplicationEvent e) 
+
+   public void observePreDestroyApplicationEvent(@Observes PreDestroyApplicationEvent e)
    {
       preDestroyApplicationEvent = true;
-   }   
-   
-   public void observePostConstructCustomScopeEvent(@Observes PostConstructCustomScopeEvent e) 
+   }
+
+   public void observePostConstructCustomScopeEvent(@Observes PostConstructCustomScopeEvent e)
    {
       postConstructCustomScopeEvent = true;
    }
-   
-   public void observePreDestroyCustomScopeEvent(@Observes PreDestroyCustomScopeEvent e) 
+
+   public void observePreDestroyCustomScopeEvent(@Observes PreDestroyCustomScopeEvent e)
    {
       preDestroyCustomScopeEvent = true;
    }

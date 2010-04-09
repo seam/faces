@@ -35,7 +35,10 @@ import javax.inject.Named;
  */
 public class NamedConversationAliasProducer
 {
-   public @Produces @Named @Typed(/* no types - prevents injection */) Conversation getConversation(final Conversation conversation)
+   @Produces
+   @Named
+   @Typed(/* no types - prevents injection */)
+   public Conversation getConversation(final Conversation conversation)
    {
       return conversation;
    }
