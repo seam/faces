@@ -21,54 +21,40 @@
  */
 package org.jboss.seam.faces.cdi;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.enterprise.inject.spi.BeanManager;
-import javax.inject.Inject;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 /**
- * Super-class for listeners that need a reference to the BeanManager
+ * A BeanManager provider for JNDI contexts
  * 
  * @author Nicklas Karlsson
+ *
  */
-public class BeanManagerAware
+public class JndiBeanManagerProvider implements BeanManagerProvider
 {
-   @Inject
-   BeanManager beanManager;
+   private String location;
 
-   private static final List<BeanManagerProvider> beanManagerProviders;
+   public static final JndiBeanManagerProvider DEFAULT = new JndiBeanManagerProvider("java:comp/BeanManager");
+   public static final JndiBeanManagerProvider JBOSS_HACK = new JndiBeanManagerProvider("java:app/BeanManager");
 
-   static
+   protected JndiBeanManagerProvider(String location)
    {
-      beanManagerProviders = new ArrayList<BeanManagerProvider>();
-      beanManagerProviders.add(ServletContextBeanManagerProvider.DEFAULT);
-      beanManagerProviders.add(JndiBeanManagerProvider.DEFAULT);
-      beanManagerProviders.add(JndiBeanManagerProvider.JBOSS_HACK);
+      this.location = location;
    }
 
-   protected BeanManager getBeanManager()
+   @Override
+   public BeanManager getBeanManager()
    {
-      if (beanManager == null)
+      try
       {
-         beanManager = lookupBeanManager();
+         return (BeanManager) new InitialContext().lookup(location);
       }
-      return beanManager;
-   }
-
-   private BeanManager lookupBeanManager()
-   {
-      BeanManager result = null;
-
-      for (BeanManagerProvider provider : beanManagerProviders)
+      catch (NamingException e)
       {
-         result = provider.getBeanManager();
-         if (result != null)
-         {
-            break;
-         }
+         // No panic, it's just not there
       }
-      return result;
+      return null;
    }
 
 }

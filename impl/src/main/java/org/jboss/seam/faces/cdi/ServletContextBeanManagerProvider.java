@@ -21,54 +21,25 @@
  */
 package org.jboss.seam.faces.cdi;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.enterprise.inject.spi.BeanManager;
-import javax.inject.Inject;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 /**
- * Super-class for listeners that need a reference to the BeanManager
+ * A BeanManager provider for the Servlet Context attribute "javax.enterprise.inject.spi.BeanManager"
  * 
  * @author Nicklas Karlsson
+ *
  */
-public class BeanManagerAware
+public class ServletContextBeanManagerProvider implements BeanManagerProvider
 {
-   @Inject
-   BeanManager beanManager;
+   public static final ServletContextBeanManagerProvider DEFAULT = new ServletContextBeanManagerProvider();
 
-   private static final List<BeanManagerProvider> beanManagerProviders;
-
-   static
+   @Override
+   public BeanManager getBeanManager()
    {
-      beanManagerProviders = new ArrayList<BeanManagerProvider>();
-      beanManagerProviders.add(ServletContextBeanManagerProvider.DEFAULT);
-      beanManagerProviders.add(JndiBeanManagerProvider.DEFAULT);
-      beanManagerProviders.add(JndiBeanManagerProvider.JBOSS_HACK);
-   }
-
-   protected BeanManager getBeanManager()
-   {
-      if (beanManager == null)
-      {
-         beanManager = lookupBeanManager();
-      }
-      return beanManager;
-   }
-
-   private BeanManager lookupBeanManager()
-   {
-      BeanManager result = null;
-
-      for (BeanManagerProvider provider : beanManagerProviders)
-      {
-         result = provider.getBeanManager();
-         if (result != null)
-         {
-            break;
-         }
-      }
-      return result;
+      ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext();
+      return (BeanManager) servletContext.getAttribute(BeanManager.class.getName());
    }
 
 }
