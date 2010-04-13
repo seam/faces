@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.jboss.seam.faces.examples;
+package org.jboss.seam.faces.examples.tinyurl;
 
 import java.io.IOException;
 
@@ -22,24 +22,27 @@ public class RedirectBean
    @Inject
    FacesContext context;
 
-   private String key;
+   @Inject
+   LinkBean linkBean;
+
+   private String name;
 
    public void send() throws IOException
    {
-      String url = "http://ocpsoft.com";
-      System.out.println("Sent redirect for key: " + key);
+      String url = linkBean.getByKey(name).getTarget();
+      System.out.println("Sent redirect for key: " + name + " => " + url);
       HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
-      response.sendRedirect(url);
+      response.sendRedirect(linkBean.format(url));
       context.responseComplete();
    }
 
-   public String getKey()
+   public String getName()
    {
-      return key;
+      return name;
    }
 
-   public void setKey(final String key)
+   public void setName(final String key)
    {
-      this.key = key;
+      this.name = key;
    }
 }
