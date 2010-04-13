@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+   "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" []>
+<chapter id="events">
+	<title>JSF event propagation</title>
+	<para>
+		By including the seam-faces module in your web application you will also have the
+		JSF events propagated to the CDI event bridge so you can observe them in your beans.
+		The event bridge works by installing JSF listeners at appropriate extension points and 
+		firing events on the BeanManager with associated qualifiers, passing along the event object.
+		There are two categories of events, JSF phase events and JSF system events.
+	</para>
+	
+	<section id="events.installation">
+		<title>Installation</title>
+		<para>
+			The event bridges are installed automatically by including the seam-faces.jar and seam-faces-api.jar
+			in the web application library folder. If you are using Maven as your build tool, you can add the
+			following dependency:
+		</para>
+		<programlisting role="XML"><![CDATA[
+			<dependency>
+				<groupId>org.jboss.seam</groupId>
+				<artifactId>seam-faces</artifactId>
+				<version>3.0.0-SNAPSHOT</version>
+			</dependency>]]></programlisting>		
+	</section>
+	<section id="events.phases">
+		<title>JSF phases events</title>
+		<para>
+			A JSF phase listener is a class that implements the <literal>javax.faces.event.PhaseListener</literal> and
+			is registered in the web applications <literal>faces-config.xml</literal>. By implementing the methods of the
+			interfaces, the user can observe events fired before or after any of the six lifecycle phases of a JSF request:
+			<literal>restore view</literal>, <literal>apply request values</literal>, <literal>process validations</literal>,
+			<literal>update model values</literal>, <literal>invoke application</literal> or <literal>render view</literal>.
+		</para>
+		<para>
+			Instead of registering your own phase listener, you can use the seam-faces module to have the events propagated
+			to the CDI event bus where they can be observed using the normal CDI <literal>@Observes</literal> methods. Bringing
+			the events to your beans saves you the trouble of registering your own phase listeners and gives you the added
+			benfit of injection, alternatives, interceptors and other features of CDI you already have available in your beans!
+		</para>
+		<para>
+			CDI observation works by providing a method in a managed bean that has a method parameter annotated
+			<literal>@Observes</literal>. This method parameter is the event object passed along when firing the event and
+			can be further narrowed down by adding qualifiers. The naming of the method itself is not significant. 
+			See the Seam Reference Guide for more information on events and observing.
+		</para>
+		<para>
+			The event object passed along from the phase listener is a <literal>javax.faces.event.PhaseEvent</literal>. So if
+			you would like to observe the full spectrum of events propagated you would write the following method in your
+			observer bean
+			<programlisting role="Java">
+				public void observeAll(@Observes PhaseEvent e)
+				{
+					// Do something with the event object
+				}
+			</programlisting>
+		</para>
+		<para>
+			Since the example above flushes you with a lot of events you have to sort out yourself, you might want to 
+			consider flitering them out a bit. We mentioned that there are six phases in the JSF lifecycle and each of
+			these phases fire one event before executing and one after. This will result in 12 events fired, six
+			"before" and six "after" events which have their corresponding temportal qualifiers <literal>@Before</literal> and
+			<literal>@After</literal>. In order to split out the events into these categories, you would write two 
+			observer methods like
+			<programlisting role="Java">
+				public void observeBefore(@Observes @Before PhaseEvent e)
+				{
+					// Do something with the "before" event object
+				}
+				
+				public void observeAfter(@Observes @After PhaseEvent e)
+				{
+					// Do something with the "after" event object
+				}
+			</programlisting>
+		</para>
+		<para>
+			If you are interested in both the "before" and "after" event of a particular phase, you can limit them
+			by adding a lifecycle qualifer that corresponds to the phase:
+			<programlisting role="Java">
+				public void observeRenderResponse(@Observes @RenderResponse PhaseEvent e)
+				{
+					// Do something with the "render response" event object
+				}
+			</programlisting>
+		</para>
+		<para>
+			By combining a temporal qualifier with a lifecycel one you can achieve the tightest qualification:
+			<programlisting role="Java">
+				public void observeBeforeRenderResponse(@Observes @Before @RenderResponse PhaseEvent e)
+				{
+					// Do something with the "before render response" event object
+				}
+			</programlisting>
+		</para>
+		<para>
+			This is the full list of temporal and lifecycle qualifers
+			<informaltable>
+				<tgroup cols="3">
+					<colspec colnum="1" colwidth="1*" />
+					<colspec colnum="2" colwidth="1*" />
+					<colspec colnum="3" colwidth="3*" />
+					<thead>
+						<row>
+							<entry>Qualifier</entry>
+							<entry>Type</entry>
+							<entry>Description</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>@Before</entry>
+							<entry>temporal</entry>
+							<entry>Qualifies events before lifecycle phases</entry>
+						</row>
+						<row>
+							<entry>@After</entry>
+							<entry>temporal</entry>
+							<entry>Qualifies events after lifecycle phases</entry>
+						</row>
+						<row>
+							<entry>@RestoreView</entry>
+							<entry>lifecycle</entry>
+							<entry>Qualifies events from the "restore view" phase</entry>
+						</row>
+						<row>
+							<entry>@ApplyRequestValues</entry>
+							<entry>lifecycle</entry>
+							<entry>Qualifies events from the "apply request values" phase</entry>
+						</row>
+						<row>
+							<entry>@ProcessValidations</entry>
+							<entry>lifecycle</entry>
+							<entry>Qualifies events from the "process validations" phase</entry>
+						</row>
+						<row>
+							<entry>@UpdateModelValues</entry>
+							<entry>lifecycle</entry>
+							<entry>Qualifies events from the "update model values" phase</entry>
+						</row>
+						<row>
+							<entry>@InvokeApplication</entry>
+							<entry>lifecycle</entry>
+							<entry>Qualifies events from the "invoke application" phase</entry>
+						</row>
+						<row>
+							<entry>@RenderResponse</entry>
+							<entry>lifecycle</entry>
+							<entry>Qualifies events from the "render response" phase</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+			The event object is always a <literal>javax.faces.event.PhaseEvent</literal> and according to the general
+			CDI principle, filtering is tightened by adding qualifiers and loosened by omitting them.
+		</para>
+	</section>
+</chapter>
