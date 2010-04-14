@@ -21,55 +21,36 @@
  */
 package org.jboss.seam.faces.cdi;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import javax.enterprise.event.Observes;
+import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.inject.Inject;
+import javax.enterprise.inject.spi.Extension;
 
 /**
- * Super-class for listeners that need a reference to the BeanManager
+ * Singleton(ish) extension that observes the AfterBeanDiscovery event and stores the BeanManager for access
+ * in places where injection is not available and JNDI or ServletContext access is not preferable.
  * 
  * @author Nicklas Karlsson
+ * 
  */
-public class BeanManagerAware
+public class BeanManagerPickupExtension implements Extension
 {
-   @Inject
-   BeanManager beanManager;
+   private static BeanManagerPickupExtension instance;
+   private volatile BeanManager beanManager;
 
-   private static final List<BeanManagerProvider> beanManagerProviders;
-
-   static
+   public BeanManager getBeanManager()
    {
-      beanManagerProviders = new ArrayList<BeanManagerProvider>();
-      beanManagerProviders.add(ServletContextBeanManagerProvider.DEFAULT);
-      beanManagerProviders.add(JndiBeanManagerProvider.DEFAULT);
-      beanManagerProviders.add(JndiBeanManagerProvider.JBOSS_HACK);
-      beanManagerProviders.add(SingletonBeanManagerProvider.DEFAULT);
-   }
-
-   protected BeanManager getBeanManager()
-   {
-      if (beanManager == null)
-      {
-         beanManager = lookupBeanManager();
-      }
       return beanManager;
    }
 
-   private BeanManager lookupBeanManager()
+   public static BeanManagerPickupExtension getInstance()
    {
-      BeanManager result = null;
-
-      for (BeanManagerProvider provider : beanManagerProviders)
-      {
-         result = provider.getBeanManager();
-         if (result != null)
-         {
-            break;
-         }
-      }
-      return result;
+      return instance;
    }
 
+   public void pickupBeanManager(@Observes AfterBeanDiscovery e, BeanManager beanManager)
+   {
+      this.beanManager = beanManager;
+      BeanManagerPickupExtension.instance = this;
+   }
 }

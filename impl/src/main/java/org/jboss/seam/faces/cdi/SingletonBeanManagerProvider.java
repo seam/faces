@@ -21,55 +21,23 @@
  */
 package org.jboss.seam.faces.cdi;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.enterprise.inject.spi.BeanManager;
-import javax.inject.Inject;
 
 /**
- * Super-class for listeners that need a reference to the BeanManager
+ * A BeanManager provider for an extension provided singleton
  * 
  * @author Nicklas Karlsson
+ * 
  */
-public class BeanManagerAware
+public class SingletonBeanManagerProvider implements BeanManagerProvider
 {
-   @Inject
-   BeanManager beanManager;
 
-   private static final List<BeanManagerProvider> beanManagerProviders;
+   public static final BeanManagerProvider DEFAULT = new SingletonBeanManagerProvider();
 
-   static
+   @Override
+   public BeanManager getBeanManager()
    {
-      beanManagerProviders = new ArrayList<BeanManagerProvider>();
-      beanManagerProviders.add(ServletContextBeanManagerProvider.DEFAULT);
-      beanManagerProviders.add(JndiBeanManagerProvider.DEFAULT);
-      beanManagerProviders.add(JndiBeanManagerProvider.JBOSS_HACK);
-      beanManagerProviders.add(SingletonBeanManagerProvider.DEFAULT);
-   }
-
-   protected BeanManager getBeanManager()
-   {
-      if (beanManager == null)
-      {
-         beanManager = lookupBeanManager();
-      }
-      return beanManager;
-   }
-
-   private BeanManager lookupBeanManager()
-   {
-      BeanManager result = null;
-
-      for (BeanManagerProvider provider : beanManagerProviders)
-      {
-         result = provider.getBeanManager();
-         if (result != null)
-         {
-            break;
-         }
-      }
-      return result;
+      return BeanManagerPickupExtension.getInstance().getBeanManager();
    }
 
 }
