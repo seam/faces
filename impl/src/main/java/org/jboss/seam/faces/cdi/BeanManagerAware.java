@@ -45,7 +45,6 @@ public class BeanManagerAware
       beanManagerProviders.add(ServletContextBeanManagerProvider.DEFAULT);
       beanManagerProviders.add(JndiBeanManagerProvider.DEFAULT);
       beanManagerProviders.add(JndiBeanManagerProvider.JBOSS_HACK);
-      beanManagerProviders.add(SingletonBeanManagerProvider.DEFAULT);
    }
 
    protected BeanManager getBeanManager()
