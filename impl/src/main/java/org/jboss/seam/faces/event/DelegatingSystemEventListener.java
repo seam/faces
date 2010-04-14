@@ -62,8 +62,12 @@ public class DelegatingSystemEventListener extends BeanManagerAware implements S
    @SuppressWarnings("unchecked")
    private List<SystemEventListener> getEventListeners()
    {
-      BeanManager manager = getBeanManager();
       List<SystemEventListener> result = new ArrayList<SystemEventListener>();
+      BeanManager manager = getBeanManager();
+      if (manager == null)
+      {
+         return result;
+      }
 
       Bean<SystemEventBridge> bean = (Bean<SystemEventBridge>) manager.getBeans(SystemEventBridge.class).iterator().next();
       CreationalContext<SystemEventBridge> context = manager.createCreationalContext(bean);

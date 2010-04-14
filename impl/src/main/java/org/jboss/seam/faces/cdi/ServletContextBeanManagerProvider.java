@@ -38,7 +38,7 @@ public class ServletContextBeanManagerProvider implements BeanManagerProvider
    @Override
    public BeanManager getBeanManager()
    {
-      ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext();
+      ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
       return (BeanManager) servletContext.getAttribute(BeanManager.class.getName());
    }
 
