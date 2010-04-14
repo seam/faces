@@ -157,4 +157,131 @@
 			CDI principle, filtering is tightened by adding qualifiers and loosened by omitting them.
 		</para>
 	</section>
+	<section id="events.system">
+		<title>JSF system events</title>
+		<para>
+			JSF 2.0 brings along system events and seam-faces provides a CDI bridge which allows you to observe them.
+			Since all JSF system event objects are distinct, no qualifiers are needed to observe them, all the CDI bridge
+			does it pass them along
+		</para>
+		<para>
+			Here is the complete list of event objects available for observation
+			<informaltable>
+				<tgroup cols="3">
+					<colspec colnum="1" colwidth="3*" />
+					<colspec colnum="2" colwidth="1*" />
+					<colspec colnum="3" colwidth="4*" />
+					<thead>
+						<row>
+							<entry>Event object</entry>
+							<entry>Context</entry>
+							<entry>Description</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>SystemEvent</entry>
+							<entry>all</entry>
+							<entry>All events</entry>
+						</row>
+						<row>
+							<entry>ComponentSystemEvent</entry>
+							<entry>component</entry>
+							<entry>All component events</entry>
+						</row>
+						<row>
+							<entry>PostAddToViewEvent</entry>
+							<entry>component</entry>
+							<entry>After a component was added to the view</entry>
+						</row>
+						<row>
+							<entry>PostConstructViewMapEvent</entry>
+							<entry>component</entry>
+							<entry>After a view map was created</entry>
+						</row>
+						<row>
+							<entry>PostRestoreStateEvent</entry>
+							<entry>component</entry>
+							<entry>After a component has its state restored</entry>
+						</row>
+						<row>
+							<entry>PostValidateEvent</entry>
+							<entry>component</entry>
+							<entry>After a component has been validated</entry>
+						</row>
+						<row>
+							<entry>PreDestroyViewMapEvent</entry>
+							<entry>component</entry>
+							<entry>Before a view map has been restored</entry>
+						</row>
+						<row>
+							<entry>PreRemoveFromViewEvent</entry>
+							<entry>component</entry>
+							<entry>Before a component has been removed from the view</entry>
+						</row>						
+						<row>
+							<entry>PreRenderComponentEvent</entry>
+							<entry>component</entry>
+							<entry>After a component has been rendered</entry>
+						</row>						
+						<row>
+							<entry>PreRenderViewEvent</entry>
+							<entry>component</entry>
+							<entry>Before a view has been rendered</entry>
+						</row>						
+						<row>
+							<entry>PreRenderViewEvent</entry>
+							<entry>component</entry>
+							<entry>Before a view has been rendered</entry>
+						</row>						
+						<row>
+							<entry>PreValidateEvent</entry>
+							<entry>component</entry>
+							<entry>Before a component has been validated</entry>
+						</row>						
+						<row>
+							<entry>ExceptionQueuedEvent</entry>
+							<entry>system</entry>
+							<entry>When an exception has been queued</entry>
+						</row>						
+						<row>
+							<entry>PostConstructApplicationEvent</entry>
+							<entry>system</entry>
+							<entry>After the application has been constructed</entry>
+						</row>						
+						<row>
+							<entry>PostConstructCustomScopeEvent</entry>
+							<entry>system</entry>
+							<entry>After a custom scope has been constructed</entry>
+						</row>		
+						<row>
+							<entry>PreDestroyApplicationEvent</entry>
+							<entry>system</entry>
+							<entry>Before the application is destroyed</entry>
+						</row>		
+						<row>
+							<entry>PreDestroyCustomScopeEvent</entry>
+							<entry>system</entry>
+							<entry>Before a custom scope is destroyed</entry>
+						</row>		
+					</tbody>
+				</tgroup>
+			</informaltable>
+			There is only one qualifier, <literal>@Component</literal> that can be used with component events by specifying the component ID
+			<programlisting role="Java">
+				public void observePrePasswordValidation(@Observes @Component("form:password") PreValidateEvent e)
+				{
+					// Do something with the "before password is validated" event object
+				}
+			</programlisting>
+			Global system events are observer without the component qualifier
+			<programlisting role="Java">
+				public void observeApplicationConstructed(@Observes PostConstructApplicationEvent e)
+				{
+					// Do something with the "after application is constructed" event object
+				}
+			</programlisting>
+			The name of the observing method is insignificant.
+		</para>
+	</section>
 </chapter>
