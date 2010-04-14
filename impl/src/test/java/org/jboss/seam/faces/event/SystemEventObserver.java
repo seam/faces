@@ -27,8 +27,11 @@ import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.PostConstructApplicationEvent;
 import javax.faces.event.PostConstructCustomScopeEvent;
+import javax.faces.event.PostValidateEvent;
 import javax.faces.event.PreDestroyApplicationEvent;
 import javax.faces.event.PreDestroyCustomScopeEvent;
+
+import org.jboss.seam.faces.event.qualifier.Component;
 
 /**
  * 
@@ -44,6 +47,12 @@ public class SystemEventObserver
    public static boolean postConstructCustomScopeEvent;
    public static boolean preDestroyApplicationEvent;
    public static boolean preDestroyCustomScopeEvent;
+   public static boolean specificComponentValidationEvent;
+
+   public void observeSpecificComponentValidation(@Observes @Component("foo") PostValidateEvent e)
+   {
+      specificComponentValidationEvent = true;
+   }
 
    public void observeComponentSystemEvent(@Observes ComponentSystemEvent e)
    {

@@ -23,12 +23,15 @@ package org.jboss.seam.faces.event;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
+import javax.enterprise.util.AnnotationLiteral;
 import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.PostConstructApplicationEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
 import org.jboss.seam.faces.cdi.BeanManagerAware;
+import org.jboss.seam.faces.event.qualifier.Component;
 
 /**
  * A SystemEventListener used to bridge JSF system events to the CDI event
@@ -65,7 +68,31 @@ public class SystemEventBridge extends BeanManagerAware implements SystemEventLi
    public void processEvent(final SystemEvent e) throws AbortProcessingException
    {
       Object payload = e.getClass().cast(e);
-      getBeanManager().fireEvent(payload);
+      if (e instanceof ComponentSystemEvent)
+      {
+         ComponentSystemEvent ce = (ComponentSystemEvent) e;
+         String id = ce.getComponent().getId();
+         getBeanManager().fireEvent(e, new ComponentLiteral(id));
+      }
+      else
+      {
+         getBeanManager().fireEvent(payload);
+      }
    }
+
+   private class ComponentLiteral extends AnnotationLiteral<Component> implements Component
+   {
+      private final String value;
+
+      public String value()
+      {
+         return value;
+      }
+
+      public ComponentLiteral(String value)
+      {
+         this.value = value;
+      }
+   }   
 
 }
