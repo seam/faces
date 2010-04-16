@@ -83,10 +83,12 @@ public class SystemEventBridgeTest
    private final ScopeContext scopeContext = new ScopeContext("foo", new HashMap<String, Object>());
    private final ExceptionQueuedEventContext eventContext = new ExceptionQueuedEventContext(facesContext, new NullPointerException());
    private static final UIComponent component = new UIOutput();
+   private static final UIViewRoot uiViewRoot = new UIViewRoot();
 
    static
    {
       component.setId("foo");
+      uiViewRoot.setViewId("foo.xhtml");
    }
 
    @Test
@@ -170,8 +172,14 @@ public class SystemEventBridgeTest
    @Test
    public void testObservePostConstructViewMap()
    {
-      fireAndAssert("14", new PostConstructViewMapEvent(new UIViewRoot()));
+      fireAndAssert("14", new PostConstructViewMapEvent(uiViewRoot));
    }
+   
+   @Test
+   public void testObservePostConstructSpecificViewMap()
+   {
+      fireAndAssert("14a", new PostConstructViewMapEvent(uiViewRoot));
+   }   
 
    @Test
    public void testObservePostRestoreState()
@@ -188,7 +196,13 @@ public class SystemEventBridgeTest
    @Test
    public void testObservePreDestroyViewMap()
    {
-      fireAndAssert("17", new PreDestroyViewMapEvent(new UIViewRoot()));
+      fireAndAssert("17", new PreDestroyViewMapEvent(uiViewRoot));
+   }  
+   
+   @Test
+   public void testObservePreDestroySpecificViewMap()
+   {
+      fireAndAssert("17a", new PreDestroyViewMapEvent(uiViewRoot));
    }  
    
    @Test
@@ -218,7 +232,13 @@ public class SystemEventBridgeTest
    @Test
    public void testObservePreRenderView()
    {
-      fireAndAssert("22", new PreRenderViewEvent(new UIViewRoot()));
+      fireAndAssert("22", new PreRenderViewEvent(uiViewRoot));
+   }    
+   
+   @Test
+   public void testObservePreRenderSpecificView()
+   {
+      fireAndAssert("23", new PreRenderViewEvent(uiViewRoot));
    }    
    
    

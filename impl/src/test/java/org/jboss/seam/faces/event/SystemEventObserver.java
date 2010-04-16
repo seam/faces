@@ -47,6 +47,7 @@ import javax.faces.event.PreValidateEvent;
 import javax.faces.event.SystemEvent;
 
 import org.jboss.seam.faces.event.qualifier.Component;
+import org.jboss.seam.faces.event.qualifier.View;
 
 /**
  * 
@@ -146,11 +147,16 @@ public class SystemEventObserver
       recordObservation("13", e);
    }   
 
-   public void observe2(@Observes PostConstructViewMapEvent e)
+   public void observe(@Observes PostConstructViewMapEvent e)
    {
       recordObservation("14", e);
+   }
+   
+   public void observe2(@Observes @View("foo.xhtml") PostConstructViewMapEvent e)
+   {
+      recordObservation("14a", e);
    } 
-
+   
    public void observe(@Observes PostRestoreStateEvent e)
    {
       recordObservation("15", e);
@@ -161,9 +167,14 @@ public class SystemEventObserver
       recordObservation("16", e);
    }
    
-   public void observe2(@Observes PreDestroyViewMapEvent e)
+   public void observe(@Observes PreDestroyViewMapEvent e)
    {
       recordObservation("17", e);
+   }    
+   
+   public void observe2(@Observes @View("foo.xhtml") PreDestroyViewMapEvent e)
+   {
+      recordObservation("17a", e);
    }    
    
    public void observe(@Observes PreRemoveFromViewEvent e)
@@ -190,4 +201,9 @@ public class SystemEventObserver
    {
       recordObservation("22", e);
    }    
+   
+   public void observe2(@Observes @View("foo.xhtml") PreRenderViewEvent e)
+   {
+      recordObservation("23", e);
+   }  
 }

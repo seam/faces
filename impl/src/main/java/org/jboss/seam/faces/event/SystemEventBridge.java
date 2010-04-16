@@ -21,17 +21,24 @@
  */
 package org.jboss.seam.faces.event;
 
+import java.lang.annotation.Annotation;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.util.AnnotationLiteral;
+import javax.faces.component.UIViewRoot;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.PostConstructApplicationEvent;
+import javax.faces.event.PostConstructViewMapEvent;
+import javax.faces.event.PreDestroyViewMapEvent;
+import javax.faces.event.PreRenderViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
 import org.jboss.seam.faces.cdi.BeanManagerAware;
 import org.jboss.seam.faces.event.qualifier.Component;
+import org.jboss.seam.faces.event.qualifier.View;
 
 /**
  * A SystemEventListener used to bridge JSF system events to the CDI event
@@ -68,16 +75,31 @@ public class SystemEventBridge extends BeanManagerAware implements SystemEventLi
    public void processEvent(final SystemEvent e) throws AbortProcessingException
    {
       Object payload = e.getClass().cast(e);
-      if (e instanceof ComponentSystemEvent)
+      Annotation[] qualifiers = getQualifiers(e);
+      getBeanManager().fireEvent(payload, qualifiers);
+   }
+
+   private Annotation[] getQualifiers(SystemEvent e)
+   {
+      if (isViewEvent(e))
       {
-         ComponentSystemEvent ce = (ComponentSystemEvent) e;
-         String id = ce.getComponent().getId();
-         getBeanManager().fireEvent(e, new ComponentLiteral(id));
+         String id = ((UIViewRoot) e.getSource()).getViewId();
+         return new Annotation[] { new ViewLiteral(id) };
+      }
+      else if (e instanceof ComponentSystemEvent)
+      {
+         String id = ((ComponentSystemEvent) e).getComponent().getId();
+         return new Annotation[] { new ComponentLiteral(id) };
       }
       else
       {
-         getBeanManager().fireEvent(payload);
+         return new Annotation[] {};
       }
+   }
+
+   private boolean isViewEvent(SystemEvent e)
+   {
+      return (e instanceof PreRenderViewEvent) || (e instanceof PostConstructViewMapEvent) || (e instanceof PreDestroyViewMapEvent);
    }
 
    private class ComponentLiteral extends AnnotationLiteral<Component> implements Component
@@ -93,6 +115,21 @@ public class SystemEventBridge extends BeanManagerAware implements SystemEventLi
       {
          this.value = value;
       }
-   }   
+   }
+
+   private class ViewLiteral extends AnnotationLiteral<View> implements View
+   {
+      private final String value;
+
+      public String value()
+      {
+         return value;
+      }
+
+      public ViewLiteral(String value)
+      {
+         this.value = value;
+      }
+   }
 
 }
