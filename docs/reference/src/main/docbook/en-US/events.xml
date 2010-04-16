@@ -230,11 +230,6 @@
 							<entry>Before a view has been rendered</entry>
 						</row>						
 						<row>
-							<entry>PreRenderViewEvent</entry>
-							<entry>component</entry>
-							<entry>Before a view has been rendered</entry>
-						</row>						
-						<row>
 							<entry>PreValidateEvent</entry>
 							<entry>component</entry>
 							<entry>Before a component has been validated</entry>
@@ -267,7 +262,9 @@
 					</tbody>
 				</tgroup>
 			</informaltable>
-			There is only one qualifier, <literal>@Component</literal> that can be used with component events by specifying the component ID
+			There is only one qualifier, <literal>@Component</literal> that can be used with component events by specifying the component ID. Note that
+			view-centric component events <literal>PreRenderViewEvent</literal>, <literal>PostConstructViewMapEvent</literal> and  
+			<literal>PreDestroyViewMapEvent</literal> do not fire with the <literal>@Component</literal> qualifier.
 			<programlisting role="Java">
 				public void observePrePasswordValidation(@Observes @Component("form:password") PreValidateEvent e)
 				{
