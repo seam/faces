@@ -28,6 +28,12 @@
 }</programlisting></entry>
 					</row>
 					<row>
+						<entry>javax.faces.context.ExternalContext</entry>
+						<entry><programlisting>public class Bean {
+	@Inject ExternalContext context;
+}</programlisting></entry>
+					</row>
+					<row>
 						<entry>javax.faces.application.NavigationHandler</entry>
 						<entry><programlisting>public class Bean {
 	@Inject NavigationHandler handler;
