@@ -42,8 +42,8 @@ public class AnnotationsTest
    {
       Method begin = AnnotationTestObject.class.getMethod("begin", new Class[] {});
 
-      assertTrue(Annotations.has(begin, Begin.class));
-      assertFalse(Annotations.has(begin, End.class));
+      assertTrue(Annotations.isAnnotationPresent(begin, Begin.class));
+      assertFalse(Annotations.isAnnotationPresent(begin, End.class));
    }
 
    @Test
@@ -51,7 +51,7 @@ public class AnnotationsTest
    {
       Method end = AnnotationTestObject.class.getMethod("end", new Class[] {});
 
-      assertTrue(Annotations.has(end, End.class));
+      assertTrue(Annotations.isAnnotationPresent(end, End.class));
    }
 
    @Test
@@ -60,14 +60,14 @@ public class AnnotationsTest
       Method begin = AnnotationTestObject.class.getMethod("begin", new Class[] {});
       Method end = AnnotationTestObject.class.getMethod("end", new Class[] {});
 
-      assertTrue(Annotations.has(begin, Begin.class));
-      assertTrue(Annotations.has(end, Begin.class));
+      assertTrue(Annotations.isAnnotationPresent(begin, Begin.class));
+      assertTrue(Annotations.isAnnotationPresent(end, Begin.class));
    }
 
    public void testGetAnnotationOnMethodDirectly() throws Exception
    {
       Method end = AnnotationTestObject.class.getMethod("end", new Class[] {});
-      End anno = Annotations.get(end, End.class);
+      End anno = Annotations.getAnnotation(end, End.class);
 
       assertTrue(anno instanceof End);
    }
@@ -75,7 +75,7 @@ public class AnnotationsTest
    public void testGetAnnotationOnMethodIndirectlyFromClass() throws Exception
    {
       Method end = AnnotationTestObject.class.getMethod("begin", new Class[] {});
-      Begin anno = Annotations.get(end, Begin.class);
+      Begin anno = Annotations.getAnnotation(end, Begin.class);
 
       assertTrue(anno instanceof Begin);
    }

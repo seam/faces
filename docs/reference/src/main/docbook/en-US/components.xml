@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+   "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" []>
+<chapter id="components">
+	<title>Faces View Components</title>
+	<para>
+		Mission statement for Faces Module components. Explain that they are functional, not UI-oriented.
+	</para>
+	<section id="viewaction">
+		<title>&lt;s:viewAction&gt;</title>
+		<para>
+			ViewAction doc
+			<programlisting><![CDATA[<s:viewAction> example]]></programlisting>
+			<tip>
+				<para>
+					Maybe a tip here?
+				</para>
+			</tip>
+		</para>
+	</section>
+</chapter>

@@ -25,10 +25,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
 
 /**
- * Super-class for listeners that need a reference to the BeanManager
+ * Super-class for non-CDI-native components that need a reference to the
+ * {@link BeanManager}
+ * <p>
+ * <b>**WARNING**</b> This class is <b>NEVER</b> safe to use outside of specific
+ * seam-faces implementation classes, and should be <b>avoided at all costs</b>.
+ * If you need a handle to the {@link BeanManager} you should probably register
+ * an {@link Extension} instead of using this class; have you tried using @
+ * {@link Inject}?
  * 
  * @author Nicklas Karlsson
  */

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+   "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" []>
+<chapter id="scopes">
+	<title>Faces Scoping Support</title>
+	<para>
+		JSF 2.0 introduced the concept of the @ViewScope, and the @FlashScope; however, CDI does not support the non-standard
+		ViewScope by default, and JSF 2.0 did not provide annotations for accessing the FlashScope. The Seam Faces module
+		does both.
+	</para>
+	<section id="viewscoped">
+		<title>@ViewScope</title>
+		<para>
+			To scope a bean to the View, use the <literal>@javax.faces.bean.ViewScoped</literal> annotation. This means that your bean will be stored in the 
+			<literal>javax.faces.component.UIViewRoot</literal> object associated with the view in which it was accessed. Each JSF view (faces-page) will store
+			its own instance of the bean, just like each HttpServletRequest has its own instance of a @RequestScoped bean.
+			<programlisting>@ViewScoped
+public class Bean {
+	// ...
+}</programlisting>
+			<caution>
+				<para>
+					@ViewScoped beans are destroyed when the JSF UIViewRoot object is destroyed. This means that the
+					life-span of @ViewScoped beans is dependent on the <literal>javax.faces.STATE_SAVING_METHOD</literal> employed by the application itself.
+				</para>
+			</caution>
+		</para>
+	</section>
+	<section id="flashscoped">
+		<title>@FlashScope</title>
+		<para>
+			To scope a bean to the Flash, use the <literal>@javax.faces.bean.FlashScoped</literal> annotation. This means that your bean will be stored in the 
+			<literal>javax.faces.context.Flash</literal>; however, the Flash is independent of the JSF view, and independent of the Request object. Objects stored in the
+			Flash will survive one page request, then be destroyed after processing of the next subsequent request. As such, the Flash scope
+			can be thought of as a scope that spans two requests; objects are added to the Flash during the first request, then removed from
+			the Flash and destroyed after the second request.
+			<programlisting>@FlashScoped
+public class Bean {
+	// ...
+}</programlisting>
+			<caution>
+				<para>
+					@FlashScoped beans are destroyed when the Flash is cleared. This means that the
+					life-span of @FlashScoped beans is limited to two HTTP requests.
+				</para>
+			</caution>
+		</para>
+	</section>
+</chapter>

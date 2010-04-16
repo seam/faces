@@ -2,29 +2,15 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
    "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" []>
 <chapter id="events">
-	<title>JSF event propagation</title>
+	<title>Faces Events Propagation</title>
 	<para>
-		By including the seam-faces module in your web application you will also have the
-		JSF events propagated to the CDI event bridge so you can observe them in your beans.
-		The event bridge works by installing JSF listeners at appropriate extension points and 
-		firing events on the BeanManager with associated qualifiers, passing along the event object.
-		There are two categories of events, JSF phase events and JSF system events.
+		When the seam-faces module is installed in a web application, JSF events will automatically be propagated
+		via the CDI event-bridge, enabling managed beans to easily observe all Faces events.
 	</para>
-	
-	<section id="events.installation">
-		<title>Installation</title>
-		<para>
-			The event bridges are installed automatically by including the seam-faces.jar and seam-faces-api.jar
-			in the web application library folder. If you are using Maven as your build tool, you can add the
-			following dependency:
-		</para>
-		<programlisting role="XML"><![CDATA[
-			<dependency>
-				<groupId>org.jboss.seam</groupId>
-				<artifactId>seam-faces</artifactId>
-				<version>3.0.0-SNAPSHOT</version>
-			</dependency>]]></programlisting>		
-	</section>
+	<para>
+	There are two categories of events: JSF phase events, and JSF system events. Phase events are triggered
+	as JSF processes HTTP requests, while system events are raised at specific events during the JSF lifecycle.
+	</para>
 	<section id="events.phases">
 		<title>JSF phases events</title>
 		<para>
@@ -51,11 +37,10 @@
 			you would like to observe the full spectrum of events propagated you would write the following method in your
 			observer bean
 			<programlisting role="Java">
-				public void observeAll(@Observes PhaseEvent e)
-				{
-					// Do something with the event object
-				}
-			</programlisting>
+public void observeAll(@Observes PhaseEvent e)
+{
+	// Do something with the event object
+} </programlisting>
 		</para>
 		<para>
 			Since the example above flushes you with a lot of events you have to sort out yourself, you might want to 
@@ -65,35 +50,32 @@
 			<literal>@After</literal>. In order to split out the events into these categories, you would write two 
 			observer methods like
 			<programlisting role="Java">
-				public void observeBefore(@Observes @Before PhaseEvent e)
-				{
-					// Do something with the "before" event object
-				}
-				
-				public void observeAfter(@Observes @After PhaseEvent e)
-				{
-					// Do something with the "after" event object
-				}
-			</programlisting>
+public void observeBefore(@Observes @Before PhaseEvent e)
+{
+	// Do something with the "before" event object
+}
+
+public void observeAfter(@Observes @After PhaseEvent e)
+{
+	// Do something with the "after" event object
+} </programlisting>
 		</para>
 		<para>
 			If you are interested in both the "before" and "after" event of a particular phase, you can limit them
 			by adding a lifecycle qualifer that corresponds to the phase:
 			<programlisting role="Java">
-				public void observeRenderResponse(@Observes @RenderResponse PhaseEvent e)
-				{
-					// Do something with the "render response" event object
-				}
-			</programlisting>
+public void observeRenderResponse(@Observes @RenderResponse PhaseEvent e)
+{
+	// Do something with the "render response" event object
+} </programlisting>
 		</para>
 		<para>
 			By combining a temporal qualifier with a lifecycel one you can achieve the tightest qualification:
 			<programlisting role="Java">
-				public void observeBeforeRenderResponse(@Observes @Before @RenderResponse PhaseEvent e)
-				{
-					// Do something with the "before render response" event object
-				}
-			</programlisting>
+public void observeBeforeRenderResponse(@Observes @Before @RenderResponse PhaseEvent e)
+{
+	// Do something with the "before render response" event object
+} </programlisting>
 		</para>
 		<para>
 			This is the full list of temporal and lifecycle qualifers
@@ -266,18 +248,16 @@
 			view-centric component events <literal>PreRenderViewEvent</literal>, <literal>PostConstructViewMapEvent</literal> and  
 			<literal>PreDestroyViewMapEvent</literal> do not fire with the <literal>@Component</literal> qualifier.
 			<programlisting role="Java">
-				public void observePrePasswordValidation(@Observes @Component("form:password") PreValidateEvent e)
-				{
-					// Do something with the "before password is validated" event object
-				}
-			</programlisting>
+public void observePrePasswordValidation(@Observes @Component("form:password") PreValidateEvent e)
+{
+	// Do something with the "before password is validated" event object
+} </programlisting>
 			Global system events are observer without the component qualifier
 			<programlisting role="Java">
-				public void observeApplicationConstructed(@Observes PostConstructApplicationEvent e)
-				{
-					// Do something with the "after application is constructed" event object
-				}
-			</programlisting>
+public void observeApplicationConstructed(@Observes PostConstructApplicationEvent e)
+{
+	// Do something with the "after application is constructed" event object
+} </programlisting>
 			The name of the observing method is insignificant.
 		</para>
 	</section>

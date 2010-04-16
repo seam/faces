@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+   "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" []>
+<chapter id="installation">
+	<title>Installation</title>
+	<para>
+		Most features of Seam Faces are installed automatically by including the seam-faces.jar and seam-faces-api.jar
+		in the web application library folder. If you are using <ulink url="http://maven.apache.org/">Maven</ulink> as your build tool, you can add the
+		following dependency to your pom.xml file:
+	</para>
+	<programlisting role="XML"><![CDATA[<dependency>
+	<groupId>org.jboss.seam</groupId>
+	<artifactId>seam-faces</artifactId>
+	<version>${seam-faces-version}</version>
+</dependency>]]></programlisting>	
+	<tip>
+		<para>Replace ${seam-faces-version} with the most recent or appropriate version of Seam Faces.</para>			
+	</tip>
+	<section id="configuration">
+		<title>Configuration</title>
+		<para>
+			Some features of Seam Faces are not automatically configured, such as enhanced conversation support through annotations.
+			These features must be enabled in your web-application's WEB-INF/beans.xml file. There are two types of features: 
+			Interceptors and Decorators. The process described here will be similar for other Seam Modules as well.
+		</para>
+		<programlisting role="XML"><![CDATA[<beans>
+	<interceptors>
+	  <class>org.jboss.seam.faces.{package}.{Interceptor}</class>
+	</interceptors>
+	<decorators>
+	  <class>org.jboss.seam.faces.{package}.{Decorator}</class>
+	</decorators>
+</beans>]]></programlisting>	
+		<para>
+			Use the table below to configure 
+		</para>
+		<para>
+			<informaltable>
+				<tgroup cols="3">
+					<colspec colnum="1" colwidth="1*" />
+					<colspec colnum="2" colwidth="1*" />
+					<colspec colnum="3" colwidth="3*" />
+					<thead>
+						<row>
+							<entry>Feature</entry>
+							<entry>Type</entry>
+							<entry>Class</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Conversation Support</entry>
+							<entry>interceptor</entry>
+							<entry>org.jboss.seam.faces.context.conversation.ConversationBoundaryInterceptor</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+	</section>
+</chapter>

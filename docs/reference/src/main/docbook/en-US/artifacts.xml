@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+   "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" []>
+<chapter id="artifacts">
+	<title>Faces Artifact Injection</title>
+	<para>
+		When creating CDI managed beans for use in the Web/UI layer, it is often necessary to access the FacesContext, NavigationHandler, and other
+		artifacts of the JSF environment. Seam Faces provides producers to allow injection of these artifacts in the proper scopes, enabling mock-testing
+		and other situations where the artifact may be difficult or tedious to resolve.
+	</para>
+	<para>
+		This is the full list of inject-able artifacts provided through Seam Faces.
+		<informaltable>
+			<tgroup cols="2">
+				<colspec colnum="1" colwidth="2*" />
+				<colspec colnum="2" colwidth="3*" />
+				<thead>
+					<row>
+						<entry>Artifact Class</entry>
+						<entry>Example</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>javax.faces.context.FacesContext</entry>
+						<entry><programlisting>public class Bean {
+	@Inject FacesContext context;
+}</programlisting></entry>
+					</row>
+					<row>
+						<entry>javax.faces.application.NavigationHandler</entry>
+						<entry><programlisting>public class Bean {
+	@Inject NavigationHandler handler;
+}</programlisting></entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
+</chapter>

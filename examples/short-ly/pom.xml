@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.jboss.seam.faces</groupId>
-	<artifactId>faces-examples-short-ly</artifactId>
+	<artifactId>seam-faces-examples-short-ly</artifactId>
 
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>bit.ly clone with Seam &amp; PrettyFaces</name>
+	<name>Seam Faces Example bit.ly clone with PrettyFaces</name>
 
 	<url>http://seamframework.org</url>
 
@@ -17,10 +17,15 @@
 			<name>Repository hosting the jee6 artifacts</name>
 			<url>http://download.java.net/maven/2</url>
 		</repository>
+		<repository>
+			<id>JBoss.ORG</id>
+			<name>JBoss Maven Repository</name>
+			<url>http://repository.jboss.org/maven2/</url>
+		</repository>
 	</repositories>
 
 	<properties>
-		<hibernate.version>3.5.0-Final</hibernate.version>
+		<hibernate.version>3.5.1-Final</hibernate.version>
 	</properties>
 
 	<dependencies>
@@ -126,7 +131,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>tiny.url</finalName>
+		<finalName>short.ly</finalName>
 	</build>
 
 </project>

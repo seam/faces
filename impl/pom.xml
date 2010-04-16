@@ -33,17 +33,14 @@
 
 	<dependencies>
 		<dependency>
-			<!-- Required until the Servlet 3.0 API can be resolved in Central -->
-			<groupId>org.glassfish</groupId>
-			<artifactId>javax.servlet</artifactId>
-			<version>3.0</version>
-			<scope>compile</scope>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
 		</dependency>	
 		<dependency>
 			<artifactId>seam-faces-api</artifactId>
 			<groupId>org.jboss.seam.faces</groupId>
 			<version>${project.version}</version>
-			<scope>compile</scope>
+			<scope>compile</scope> 
 		</dependency>
 	</dependencies>
 
