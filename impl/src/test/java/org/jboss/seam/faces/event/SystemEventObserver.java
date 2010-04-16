@@ -21,15 +21,30 @@
  */
 package org.jboss.seam.faces.event;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.ExceptionQueuedEvent;
+import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.PostConstructApplicationEvent;
 import javax.faces.event.PostConstructCustomScopeEvent;
+import javax.faces.event.PostConstructViewMapEvent;
+import javax.faces.event.PostRestoreStateEvent;
 import javax.faces.event.PostValidateEvent;
 import javax.faces.event.PreDestroyApplicationEvent;
 import javax.faces.event.PreDestroyCustomScopeEvent;
+import javax.faces.event.PreDestroyViewMapEvent;
+import javax.faces.event.PreRemoveFromViewEvent;
+import javax.faces.event.PreRenderComponentEvent;
+import javax.faces.event.PreRenderViewEvent;
+import javax.faces.event.PreValidateEvent;
+import javax.faces.event.SystemEvent;
 
 import org.jboss.seam.faces.event.qualifier.Component;
 
@@ -41,46 +56,138 @@ import org.jboss.seam.faces.event.qualifier.Component;
 @ApplicationScoped
 public class SystemEventObserver
 {
-   public static boolean componentSystemEvent;
-   public static boolean excecptionQueuedEvent;
-   public static boolean postConstructApplicationEvent;
-   public static boolean postConstructCustomScopeEvent;
-   public static boolean preDestroyApplicationEvent;
-   public static boolean preDestroyCustomScopeEvent;
-   public static boolean specificComponentValidationEvent;
+   private Map<String, List<SystemEvent>> observations = new HashMap<String, List<SystemEvent>>();
 
-   public void observeSpecificComponentValidation(@Observes @Component("foo") PostValidateEvent e)
+   private void recordObservation(String id, SystemEvent observation)
    {
-      specificComponentValidationEvent = true;
+      List<SystemEvent> observed = observations.get(id);
+      if (observed == null)
+      {
+         observed = new ArrayList<SystemEvent>();
+         observations.put(id, observed);
+      }
+      observed.add(observation);
    }
 
-   public void observeComponentSystemEvent(@Observes ComponentSystemEvent e)
+   public void reset()
    {
-      componentSystemEvent = true;
+      observations.clear();
    }
 
-   public void observeExceptionQueuedEvent(@Observes ExceptionQueuedEvent e)
+   public void assertObservations(String id, SystemEvent... observations)
    {
-      excecptionQueuedEvent = true;
+      List<SystemEvent> observed = this.observations.get(id);
+      assert observed != null && observed.size() == observations.length;
+      assert observed.containsAll(Arrays.asList(observations));
    }
 
-   public void observePostConstructApplicationEvent(@Observes PostConstructApplicationEvent e)
+   public void observe(@Observes PostConstructApplicationEvent e)
    {
-      postConstructApplicationEvent = true;
+      recordObservation("1", e);
    }
 
-   public void observePreDestroyApplicationEvent(@Observes PreDestroyApplicationEvent e)
+   public void observe(@Observes PreDestroyApplicationEvent e)
    {
-      preDestroyApplicationEvent = true;
+      recordObservation("2", e);
    }
 
-   public void observePostConstructCustomScopeEvent(@Observes PostConstructCustomScopeEvent e)
+   public void observe(@Observes PostConstructCustomScopeEvent e)
    {
-      postConstructCustomScopeEvent = true;
+      recordObservation("3", e);
    }
 
-   public void observePreDestroyCustomScopeEvent(@Observes PreDestroyCustomScopeEvent e)
+   public void observe(@Observes PreDestroyCustomScopeEvent e)
    {
-      preDestroyCustomScopeEvent = true;
+      recordObservation("4", e);
    }
+
+   public void observe(@Observes ExceptionQueuedEvent e)
+   {
+      recordObservation("5", e);
+   }
+
+   public void observe(@Observes ComponentSystemEvent e)
+   {
+      recordObservation("6", e);
+   }
+
+   public void observe(@Observes PreValidateEvent e)
+   {
+      recordObservation("7", e);
+   }
+   
+   public void observe2(@Observes @Component("foo") PreValidateEvent e)
+   {
+      recordObservation("8", e);
+   }
+   
+   public void observe3(@Observes @Component("foo") ComponentSystemEvent e)
+   {
+      recordObservation("9", e);
+   }
+   
+   public void observe(@Observes PostValidateEvent e)
+   {
+      recordObservation("10", e);
+   }
+   
+   public void observe2(@Observes @Component("foo") PostValidateEvent e)
+   {
+      recordObservation("11", e);
+   }
+   
+   public void observe(@Observes PostAddToViewEvent e)
+   {
+      recordObservation("12", e);
+   }
+   
+   public void observe2(@Observes @Component("foo") PostAddToViewEvent e)
+   {
+      recordObservation("13", e);
+   }   
+
+   public void observe2(@Observes PostConstructViewMapEvent e)
+   {
+      recordObservation("14", e);
+   } 
+
+   public void observe(@Observes PostRestoreStateEvent e)
+   {
+      recordObservation("15", e);
+   }
+   
+   public void observe2(@Observes @Component("foo") PostRestoreStateEvent e)
+   {
+      recordObservation("16", e);
+   }
+   
+   public void observe2(@Observes PreDestroyViewMapEvent e)
+   {
+      recordObservation("17", e);
+   }    
+   
+   public void observe(@Observes PreRemoveFromViewEvent e)
+   {
+      recordObservation("18", e);
+   }
+   
+   public void observe2(@Observes @Component("foo") PreRemoveFromViewEvent e)
+   {
+      recordObservation("19", e);
+   }
+   
+   public void observe(@Observes PreRenderComponentEvent e)
+   {
+      recordObservation("20", e);
+   }
+   
+   public void observe2(@Observes @Component("foo") PreRenderComponentEvent e)
+   {
+      recordObservation("21", e);
+   }     
+   
+   public void observe(@Observes PreRenderViewEvent e)
+   {
+      recordObservation("22", e);
+   }    
 }

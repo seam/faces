@@ -83,27 +83,27 @@ public class PhaseEventBridge extends BeanManagerAware implements PhaseListener
 
       if (PhaseId.RESTORE_VIEW.equals(event.getPhaseId()))
       {
-         phaseQualifier = PhaseEventBridge.RESTORE_VIEW;
+         phaseQualifier = RESTORE_VIEW;
       }
       else if (PhaseId.PROCESS_VALIDATIONS.equals(event.getPhaseId()))
       {
-         phaseQualifier = PhaseEventBridge.PROCESS_VALIDATIONS;
+         phaseQualifier = PROCESS_VALIDATIONS;
       }
       else if (PhaseId.APPLY_REQUEST_VALUES.equals(event.getPhaseId()))
       {
-         phaseQualifier = PhaseEventBridge.APPLY_REQUEST_VALUES;
+         phaseQualifier = APPLY_REQUEST_VALUES;
       }
       else if (PhaseId.INVOKE_APPLICATION.equals(event.getPhaseId()))
       {
-         phaseQualifier = PhaseEventBridge.INVOKE_APPLICATION;
+         phaseQualifier = INVOKE_APPLICATION;
       }
       else if (PhaseId.UPDATE_MODEL_VALUES.equals(event.getPhaseId()))
       {
-         phaseQualifier = PhaseEventBridge.UPDATE_MODEL_VALUES;
+         phaseQualifier = UPDATE_MODEL_VALUES;
       }
       else if (PhaseId.RENDER_RESPONSE.equals(event.getPhaseId()))
       {
-         phaseQualifier = PhaseEventBridge.RENDER_RESPONSE;
+         phaseQualifier = RENDER_RESPONSE;
       }
       else
       {

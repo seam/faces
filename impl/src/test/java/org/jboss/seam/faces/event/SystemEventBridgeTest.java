@@ -24,16 +24,25 @@ package org.jboss.seam.faces.event;
 import java.util.HashMap;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIComponentBase;
-import javax.faces.event.ComponentSystemEvent;
+import javax.faces.component.UIOutput;
+import javax.faces.component.UIViewRoot;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.ExceptionQueuedEventContext;
+import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.PostConstructApplicationEvent;
 import javax.faces.event.PostConstructCustomScopeEvent;
+import javax.faces.event.PostConstructViewMapEvent;
+import javax.faces.event.PostRestoreStateEvent;
 import javax.faces.event.PostValidateEvent;
 import javax.faces.event.PreDestroyApplicationEvent;
 import javax.faces.event.PreDestroyCustomScopeEvent;
+import javax.faces.event.PreDestroyViewMapEvent;
+import javax.faces.event.PreRemoveFromViewEvent;
+import javax.faces.event.PreRenderComponentEvent;
+import javax.faces.event.PreRenderViewEvent;
+import javax.faces.event.PreValidateEvent;
 import javax.faces.event.ScopeContext;
+import javax.faces.event.SystemEvent;
 import javax.inject.Inject;
 
 import org.jboss.arquillian.api.Deployment;
@@ -43,10 +52,7 @@ import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.Archives;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
-import org.jboss.test.faces.mock.MockFacesEnvironment;
 import org.jboss.test.faces.mock.application.MockApplication;
-import org.jboss.test.faces.mock.component.MockUIComponent;
-import org.jboss.test.faces.mock.component.MockUIComponentBase;
 import org.jboss.test.faces.mock.context.MockFacesContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,58 +73,195 @@ public class SystemEventBridgeTest
    }
 
    @Inject
-   SystemEventBridge systemEventListener;
+   SystemEventBridge listener;
+
+   @Inject
+   SystemEventObserver observer;
 
    private final MockFacesContext facesContext = new MockFacesContext();
    private final MockApplication application = new MockApplication();
+   private final ScopeContext scopeContext = new ScopeContext("foo", new HashMap<String, Object>());
+   private final ExceptionQueuedEventContext eventContext = new ExceptionQueuedEventContext(facesContext, new NullPointerException());
+   private static final UIComponent component = new UIOutput();
 
-// Skip until we find out how to set ID:s on mocks...   
-// @Test
-   public void testSpecificPostComponentValidation()
+   static
    {
-      UIComponent c = new MockUIComponent();
-      System.out.println(c.getId());
-      systemEventListener.processEvent(new PostValidateEvent(c));
-      assert SystemEventObserver.specificComponentValidationEvent;
+      component.setId("foo");
    }
 
    @Test
-   public void testExceptionQueuedEventObserver()
+   public void testObservePostConstructApplication()
    {
-      ExceptionQueuedEventContext eqec = new ExceptionQueuedEventContext(facesContext, new NullPointerException());
-      ExceptionQueuedEvent eqe = new ExceptionQueuedEvent(eqec);
-      systemEventListener.processEvent(eqe);
-      assert SystemEventObserver.excecptionQueuedEvent;
+      fireAndAssert("1", new PostConstructApplicationEvent(application));
    }
 
    @Test
-   public void testPostConstructApplicationEventObserver()
+   public void testObservePreDestroyApplication()
    {
-      systemEventListener.processEvent(new PostConstructApplicationEvent(application));
-      assert SystemEventObserver.postConstructApplicationEvent;
+      fireAndAssert("2", new PreDestroyApplicationEvent(application));
    }
 
    @Test
-   public void testPostConstructCustomScopeEvent()
+   public void testObservePostConstructCustomScope()
    {
-      ScopeContext sc = new ScopeContext("dummyscope", new HashMap<String, Object>());
-      systemEventListener.processEvent(new PostConstructCustomScopeEvent(sc));
-      assert SystemEventObserver.postConstructCustomScopeEvent;
+      fireAndAssert("3", new PostConstructCustomScopeEvent(scopeContext));
    }
 
    @Test
-   public void testPreDestroyApplicationEventObserver()
+   public void testObservePreDestroyCustomScope()
    {
-      systemEventListener.processEvent(new PreDestroyApplicationEvent(application));
-      assert SystemEventObserver.preDestroyApplicationEvent;
+      fireAndAssert("4", new PreDestroyCustomScopeEvent(scopeContext));
    }
 
    @Test
-   public void testPreDestroyCustomScopeEventObserver()
+   public void testObserveExceptionQueued()
    {
-      ScopeContext sc = new ScopeContext("dummyscope", new HashMap<String, Object>());
-      systemEventListener.processEvent(new PreDestroyCustomScopeEvent(sc));
-      assert SystemEventObserver.preDestroyCustomScopeEvent;
+      fireAndAssert("5", new ExceptionQueuedEvent(eventContext));
    }
 
+   @Test
+   public void testObserveComponentSystemEvent()
+   {
+      fireAndAssert("6", new PreValidateEvent(component));
+   }
+
+   @Test
+   public void testObservePreValidate()
+   {
+      fireAndAssert("7", new PreValidateEvent(component));
+   }
+
+   @Test
+   public void testObservePreValidateComponent()
+   {
+      fireAndAssert("8", new PreValidateEvent(component));
+   }
+
+   @Test
+   public void testObserveComponent()
+   {
+      fireAndAssert("9", new PreValidateEvent(component));
+   }
+
+   @Test
+   public void testObservePostValidate()
+   {
+      fireAndAssert("10", new PostValidateEvent(component));
+   }
+
+   @Test
+   public void testObservePostValidateComponent()
+   {
+      fireAndAssert("11", new PostValidateEvent(component));
+   }
+   
+   @Test
+   public void testObservePostAddToView()
+   {
+      fireAndAssert("12", new PostAddToViewEvent(component));
+   }
+
+   @Test
+   public void testObservePostAddToViewComponent()
+   {
+      fireAndAssert("13", new PostAddToViewEvent(component));
+   }   
+   
+   @Test
+   public void testObservePostConstructViewMap()
+   {
+      fireAndAssert("14", new PostConstructViewMapEvent(new UIViewRoot()));
+   }
+
+   @Test
+   public void testObservePostRestoreState()
+   {
+      fireAndAssert("15", new PostRestoreStateEvent(component));
+   }
+
+   @Test
+   public void testObservePostRestoreStateComponent()
+   {
+      fireAndAssert("16", new PostRestoreStateEvent(component));
+   }  
+   
+   @Test
+   public void testObservePreDestroyViewMap()
+   {
+      fireAndAssert("17", new PreDestroyViewMapEvent(new UIViewRoot()));
+   }  
+   
+   @Test
+   public void testObservePreRemoveFromView()
+   {
+      fireAndAssert("18", new PreRemoveFromViewEvent(component));
+   }
+
+   @Test
+   public void testObservePreRemoveFromViewComponent()
+   {
+      fireAndAssert("19", new PreRemoveFromViewEvent(component));
+   }    
+   
+   @Test
+   public void testObservePreRenderComponent()
+   {
+      fireAndAssert("20", new PreRenderComponentEvent(component));
+   }
+
+   @Test
+   public void testObservePreRenderComponentComponent()
+   {
+      fireAndAssert("21", new PreRenderComponentEvent(component));
+   }    
+   
+   @Test
+   public void testObservePreRenderView()
+   {
+      fireAndAssert("22", new PreRenderViewEvent(new UIViewRoot()));
+   }    
+   
+   
+   private void fireAndAssert(String caseId, SystemEvent... events)
+   {
+      observer.reset();
+      for (SystemEvent e : events) {
+         listener.processEvent(e);
+      }
+      observer.assertObservations(caseId, events);
+   }
+
+   /*
+    * @Test public void testSpecificPostComponentValidation() { UIComponent c =
+    * new UIOutput(); c.setId("foo"); systemEventListener.processEvent(new
+    * PostValidateEvent(c)); assert
+    * SystemEventObserver.specificComponentValidationEvent; }
+    * 
+    * @Test public void testExceptionQueuedEventObserver() {
+    * ExceptionQueuedEventContext eqec = new
+    * ExceptionQueuedEventContext(facesContext, new NullPointerException());
+    * ExceptionQueuedEvent eqe = new ExceptionQueuedEvent(eqec);
+    * systemEventListener.processEvent(eqe); assert
+    * SystemEventObserver.excecptionQueuedEvent; }
+    * 
+    * @Test public void testPostConstructApplicationEventObserver() {
+    * systemEventListener.processEvent(new
+    * PostConstructApplicationEvent(application)); assert
+    * SystemEventObserver.postConstructApplicationEvent; }
+    * 
+    * @Test public void testPostConstructCustomScopeEvent() { ScopeContext sc =
+    * new ScopeContext("dummyscope", new HashMap<String, Object>());
+    * systemEventListener.processEvent(new PostConstructCustomScopeEvent(sc));
+    * assert SystemEventObserver.postConstructCustomScopeEvent; }
+    * 
+    * @Test public void testPreDestroyApplicationEventObserver() {
+    * systemEventListener.processEvent(new
+    * PreDestroyApplicationEvent(application)); assert
+    * SystemEventObserver.preDestroyApplicationEvent; }
+    * 
+    * @Test public void testPreDestroyCustomScopeEventObserver() { ScopeContext
+    * sc = new ScopeContext("dummyscope", new HashMap<String, Object>());
+    * systemEventListener.processEvent(new PreDestroyCustomScopeEvent(sc));
+    * assert SystemEventObserver.preDestroyCustomScopeEvent; }
+    */
 }
