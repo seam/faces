@@ -178,7 +178,7 @@ public void observeBeforeRenderResponse(@Observes @Before @RenderResponse PhaseE
 						</row>
 						<row>
 							<entry>PostConstructViewMapEvent</entry>
-							<entry>component</entry>
+							<entry>view</entry>
 							<entry>After a view map was created</entry>
 						</row>
 						<row>
@@ -193,7 +193,7 @@ public void observeBeforeRenderResponse(@Observes @Before @RenderResponse PhaseE
 						</row>
 						<row>
 							<entry>PreDestroyViewMapEvent</entry>
-							<entry>component</entry>
+							<entry>view</entry>
 							<entry>Before a view map has been restored</entry>
 						</row>
 						<row>
@@ -208,7 +208,7 @@ public void observeBeforeRenderResponse(@Observes @Before @RenderResponse PhaseE
 						</row>						
 						<row>
 							<entry>PreRenderViewEvent</entry>
-							<entry>component</entry>
+							<entry>view</entry>
 							<entry>Before a view has been rendered</entry>
 						</row>						
 						<row>
@@ -244,13 +244,17 @@ public void observeBeforeRenderResponse(@Observes @Before @RenderResponse PhaseE
 					</tbody>
 				</tgroup>
 			</informaltable>
-			There is only one qualifier, <literal>@Component</literal> that can be used with component events by specifying the component ID. Note that
-			view-centric component events <literal>PreRenderViewEvent</literal>, <literal>PostConstructViewMapEvent</literal> and  
-			<literal>PreDestroyViewMapEvent</literal> do not fire with the <literal>@Component</literal> qualifier.
+			Component events can further be qualified with the <literal>@Component</literal> qualifer, which takes the component id
+			as the value. The corresponding qualifier for view events is <literal>@View</literal>.
 			<programlisting role="Java">
 public void observePrePasswordValidation(@Observes @Component("form:password") PreValidateEvent e)
 {
 	// Do something with the "before password is validated" event object
+} </programlisting>
+			<programlisting role="Java">
+public void observePreFooViewRendered(@Observes @View("/foo.xhtml") PreRenderViewEvent e)
+{
+	// Do something with the "before view is rendered" event object
 } </programlisting>
 			Global system events are observer without the component qualifier
 			<programlisting role="Java">
