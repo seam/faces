@@ -150,6 +150,13 @@
 				<role>Project Lead</role>
 			</roles>
 		</developer>
+		<developer>
+			<name>Nicklas Karlsson</name>
+			<timezone>GMT+2</timezone>
+			<roles>
+				<role>Committer</role>
+			</roles>
+		</developer>
 	</developers>
 
 	<scm>
