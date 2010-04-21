@@ -58,7 +58,7 @@ public class SeamApplicationWrapper extends ApplicationWrapper
    public void installWrapper(@Observes final PostConstructApplicationEvent event)
    {
       ApplicationFactory factory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
-      parent = factory.getApplication();
+      parent = event.getApplication();
       factory.setApplication(this);
    }
 
