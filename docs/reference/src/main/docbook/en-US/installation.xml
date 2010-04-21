@@ -16,6 +16,8 @@
 	<tip>
 		<para>Replace ${seam-faces-version} with the most recent or appropriate version of Seam Faces.</para>			
 	</tip>
+
+<!-- 
 	<section id="configuration">
 		<title>Configuration</title>
 		<para>
@@ -52,10 +54,11 @@
 							<entry>Conversation Support</entry>
 							<entry>interceptor</entry>
 							<entry>org.jboss.seam.faces.context.conversation.ConversationBoundaryInterceptor</entry>
-						</row>
+						</row> 
 					</tbody>
 				</tgroup>
 			</informaltable>
 		</para>
 	</section>
+ -->
 </chapter>

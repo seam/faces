@@ -9,47 +9,54 @@
 	</para>
 	<para>
 	There are two categories of events: JSF phase events, and JSF system events. Phase events are triggered
-	as JSF processes HTTP requests, while system events are raised at specific events during the JSF lifecycle.
+	as JSF processes each lifecycle phase, while system events are raised at more specific, fine-grained events during 
+	request processing.
 	</para>
 	<section id="events.phases">
-		<title>JSF phases events</title>
+		<title>JSF Phase events</title>
+		
 		<para>
-			A JSF phase listener is a class that implements the <literal>javax.faces.event.PhaseListener</literal> and
-			is registered in the web applications <literal>faces-config.xml</literal>. By implementing the methods of the
+			A JSF phase listener is a class that implements <literal>javax.faces.event.PhaseListener</literal> and
+			is registered in the web application's <literal>faces-config.xml</literal> file. By implementing the methods of the
 			interfaces, the user can observe events fired before or after any of the six lifecycle phases of a JSF request:
 			<literal>restore view</literal>, <literal>apply request values</literal>, <literal>process validations</literal>,
 			<literal>update model values</literal>, <literal>invoke application</literal> or <literal>render view</literal>.
 		</para>
-		<para>
-			Instead of registering your own phase listener, you can use the seam-faces module to have the events propagated
-			to the CDI event bus where they can be observed using the normal CDI <literal>@Observes</literal> methods. Bringing
-			the events to your beans saves you the trouble of registering your own phase listeners and gives you the added
-			benfit of injection, alternatives, interceptors and other features of CDI you already have available in your beans!
-		</para>
-		<para>
-			CDI observation works by providing a method in a managed bean that has a method parameter annotated
-			<literal>@Observes</literal>. This method parameter is the event object passed along when firing the event and
-			can be further narrowed down by adding qualifiers. The naming of the method itself is not significant. 
-			See the Seam Reference Guide for more information on events and observing.
-		</para>
-		<para>
-			The event object passed along from the phase listener is a <literal>javax.faces.event.PhaseEvent</literal>. So if
-			you would like to observe the full spectrum of events propagated you would write the following method in your
-			observer bean
-			<programlisting role="Java">
+		
+		<section id="events.phases.seam">
+			<title>Seam Faces Phase events</title>
+			<para>
+				What Seam provides is propagation of these Phase events to the CDI event bus; therefore, you can observe events 
+				using normal CDI <literal>@Observes</literal> methods. Bringing the events to CDI beans removes the need to
+				register phase listener classes via XML, and gives the added benefit of injection, alternatives, interceptors 
+				and access to all other features of CDI.
+			</para>
+			<para>
+				Creating an observer method in CDI is simple; just provide a method in a managed bean that is annotated with
+				<literal>@Observes</literal>. Each observer method must accept one method parameter: the event object; 
+				the type of this object determines the type of event being observed.
+			</para>
+			<para>
+				In this case, the event object passed along from the phase listener is a 
+				<literal>javax.faces.event.PhaseEvent</literal>. The following example observes all Phase events.
+				
+				<programlisting role="Java">
 public void observeAll(@Observes PhaseEvent e)
 {
 	// Do something with the event object
 } </programlisting>
-		</para>
-		<para>
-			Since the example above flushes you with a lot of events you have to sort out yourself, you might want to 
-			consider flitering them out a bit. We mentioned that there are six phases in the JSF lifecycle and each of
-			these phases fire one event before executing and one after. This will result in 12 events fired, six
-			"before" and six "after" events which have their corresponding temportal qualifiers <literal>@Before</literal> and
-			<literal>@After</literal>. In order to split out the events into these categories, you would write two 
-			observer methods like
-			<programlisting role="Java">
+			</para>
+			<para>
+			Events can be further filtered by adding Qualifiers. The name of the method itself is not significant. 
+			(See the CDI Reference Guide for more information on events and observing.)
+			</para>
+			<para>
+				Since the example above simply processes all events, however, it might be appropriate to filter out some events
+				that we aren't interested in. As stated earlier, there are six phases in the JSF lifecycle, and an event is
+				fired before and after each, for a total of 12 events. The <literal>@Before</literal> and 
+				<literal>@After</literal> "temporal" qualifiers can be used to observe events occurring only before or only after
+				a Phase event. For example:
+				<programlisting role="Java">
 public void observeBefore(@Observes @Before PhaseEvent e)
 {
 	// Do something with the "before" event object
@@ -59,210 +66,250 @@ public void observeAfter(@Observes @After PhaseEvent e)
 {
 	// Do something with the "after" event object
 } </programlisting>
-		</para>
-		<para>
-			If you are interested in both the "before" and "after" event of a particular phase, you can limit them
-			by adding a lifecycle qualifer that corresponds to the phase:
-			<programlisting role="Java">
+			</para>
+			<para>
+				If we are interested in both the "before" and "after" event of a particular phase, we can limit them
+				by adding a "lifecycle" qualifier that corresponds to the phase:
+				<programlisting role="Java">
 public void observeRenderResponse(@Observes @RenderResponse PhaseEvent e)
 {
 	// Do something with the "render response" event object
 } </programlisting>
-		</para>
-		<para>
-			By combining a temporal qualifier with a lifecycel one you can achieve the tightest qualification:
-			<programlisting role="Java">
+			</para>
+			<para>
+				By combining a temporal and lifecycle qualifier, we can achieve the most specific qualification:
+				<programlisting role="Java">
 public void observeBeforeRenderResponse(@Observes @Before @RenderResponse PhaseEvent e)
 {
 	// Do something with the "before render response" event object
 } </programlisting>
-		</para>
-		<para>
-			This is the full list of temporal and lifecycle qualifers
-			<informaltable>
-				<tgroup cols="3">
-					<colspec colnum="1" colwidth="1*" />
-					<colspec colnum="2" colwidth="1*" />
-					<colspec colnum="3" colwidth="3*" />
-					<thead>
-						<row>
-							<entry>Qualifier</entry>
-							<entry>Type</entry>
-							<entry>Description</entry>
-						</row>
-					</thead>
-					<tbody>
-						<row>
-							<entry>@Before</entry>
-							<entry>temporal</entry>
-							<entry>Qualifies events before lifecycle phases</entry>
-						</row>
-						<row>
-							<entry>@After</entry>
-							<entry>temporal</entry>
-							<entry>Qualifies events after lifecycle phases</entry>
-						</row>
-						<row>
-							<entry>@RestoreView</entry>
-							<entry>lifecycle</entry>
-							<entry>Qualifies events from the "restore view" phase</entry>
-						</row>
-						<row>
-							<entry>@ApplyRequestValues</entry>
-							<entry>lifecycle</entry>
-							<entry>Qualifies events from the "apply request values" phase</entry>
-						</row>
-						<row>
-							<entry>@ProcessValidations</entry>
-							<entry>lifecycle</entry>
-							<entry>Qualifies events from the "process validations" phase</entry>
-						</row>
-						<row>
-							<entry>@UpdateModelValues</entry>
-							<entry>lifecycle</entry>
-							<entry>Qualifies events from the "update model values" phase</entry>
-						</row>
-						<row>
-							<entry>@InvokeApplication</entry>
-							<entry>lifecycle</entry>
-							<entry>Qualifies events from the "invoke application" phase</entry>
-						</row>
-						<row>
-							<entry>@RenderResponse</entry>
-							<entry>lifecycle</entry>
-							<entry>Qualifies events from the "render response" phase</entry>
-						</row>
-					</tbody>
-				</tgroup>
-			</informaltable>
-			The event object is always a <literal>javax.faces.event.PhaseEvent</literal> and according to the general
-			CDI principle, filtering is tightened by adding qualifiers and loosened by omitting them.
-		</para>
+			</para>
+		</section>
+		
+		
+		<section id="events.phases.seam.table">
+			<title>Phase events listing</title>
+			<para>
+				This is the full list of temporal and lifecycle qualifiers
+				<informaltable>
+					<tgroup cols="3">
+						<colspec colnum="1" colwidth="1*" />
+						<colspec colnum="2" colwidth="1*" />
+						<colspec colnum="3" colwidth="3*" />
+						<thead>
+							<row>
+								<entry>Qualifier</entry>
+								<entry>Type</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>@Before</entry>
+								<entry>temporal</entry>
+								<entry>Qualifies events before lifecycle phases</entry>
+							</row>
+							<row>
+								<entry>@After</entry>
+								<entry>temporal</entry>
+								<entry>Qualifies events after lifecycle phases</entry>
+							</row>
+							<row>
+								<entry>@RestoreView</entry>
+								<entry>lifecycle</entry>
+								<entry>Qualifies events from the "restore view" phase</entry>
+							</row>
+							<row>
+								<entry>@ApplyRequestValues</entry>
+								<entry>lifecycle</entry>
+								<entry>Qualifies events from the "apply request values" phase</entry>
+							</row>
+							<row>
+								<entry>@ProcessValidations</entry>
+								<entry>lifecycle</entry>
+								<entry>Qualifies events from the "process validations" phase</entry>
+							</row>
+							<row>
+								<entry>@UpdateModelValues</entry>
+								<entry>lifecycle</entry>
+								<entry>Qualifies events from the "update model values" phase</entry>
+							</row>
+							<row>
+								<entry>@InvokeApplication</entry>
+								<entry>lifecycle</entry>
+								<entry>Qualifies events from the "invoke application" phase</entry>
+							</row>
+							<row>
+								<entry>@RenderResponse</entry>
+								<entry>lifecycle</entry>
+								<entry>Qualifies events from the "render response" phase</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</informaltable>
+				The event object is always a <literal>javax.faces.event.PhaseEvent</literal> and according to the general
+				CDI principle, filtering is tightened by adding qualifiers and loosened by omitting them.
+			</para>
+		</section>
 	</section>
+	
+	
+	
 	<section id="events.system">
 		<title>JSF system events</title>
 		<para>
-			JSF 2.0 brings along system events and seam-faces provides a CDI bridge which allows you to observe them.
-			Since all JSF system event objects are distinct, no qualifiers are needed to observe them, all the CDI bridge
-			does it pass them along
+			Similar to JSF Phase Events, System Events take place when specific events occur within the JSF life-cycle. Seam 
+			Faces provides a bridge for all JSF System Events, and propagates these events to CDI. 
 		</para>
-		<para>
-			Here is the complete list of event objects available for observation
-			<informaltable>
-				<tgroup cols="3">
-					<colspec colnum="1" colwidth="3*" />
-					<colspec colnum="2" colwidth="1*" />
-					<colspec colnum="3" colwidth="4*" />
-					<thead>
-						<row>
-							<entry>Event object</entry>
-							<entry>Context</entry>
-							<entry>Description</entry>
-						</row>
-					</thead>
-					<tbody>
-						<row>
-							<entry>SystemEvent</entry>
-							<entry>all</entry>
-							<entry>All events</entry>
-						</row>
-						<row>
-							<entry>ComponentSystemEvent</entry>
-							<entry>component</entry>
-							<entry>All component events</entry>
-						</row>
-						<row>
-							<entry>PostAddToViewEvent</entry>
-							<entry>component</entry>
-							<entry>After a component was added to the view</entry>
-						</row>
-						<row>
-							<entry>PostConstructViewMapEvent</entry>
-							<entry>view</entry>
-							<entry>After a view map was created</entry>
-						</row>
-						<row>
-							<entry>PostRestoreStateEvent</entry>
-							<entry>component</entry>
-							<entry>After a component has its state restored</entry>
-						</row>
-						<row>
-							<entry>PostValidateEvent</entry>
-							<entry>component</entry>
-							<entry>After a component has been validated</entry>
-						</row>
-						<row>
-							<entry>PreDestroyViewMapEvent</entry>
-							<entry>view</entry>
-							<entry>Before a view map has been restored</entry>
-						</row>
-						<row>
-							<entry>PreRemoveFromViewEvent</entry>
-							<entry>component</entry>
-							<entry>Before a component has been removed from the view</entry>
-						</row>						
-						<row>
-							<entry>PreRenderComponentEvent</entry>
-							<entry>component</entry>
-							<entry>After a component has been rendered</entry>
-						</row>						
-						<row>
-							<entry>PreRenderViewEvent</entry>
-							<entry>view</entry>
-							<entry>Before a view has been rendered</entry>
-						</row>						
-						<row>
-							<entry>PreValidateEvent</entry>
-							<entry>component</entry>
-							<entry>Before a component has been validated</entry>
-						</row>						
-						<row>
-							<entry>ExceptionQueuedEvent</entry>
-							<entry>system</entry>
-							<entry>When an exception has been queued</entry>
-						</row>						
-						<row>
-							<entry>PostConstructApplicationEvent</entry>
-							<entry>system</entry>
-							<entry>After the application has been constructed</entry>
-						</row>						
-						<row>
-							<entry>PostConstructCustomScopeEvent</entry>
-							<entry>system</entry>
-							<entry>After a custom scope has been constructed</entry>
-						</row>		
-						<row>
-							<entry>PreDestroyApplicationEvent</entry>
-							<entry>system</entry>
-							<entry>Before the application is destroyed</entry>
-						</row>		
-						<row>
-							<entry>PreDestroyCustomScopeEvent</entry>
-							<entry>system</entry>
-							<entry>Before a custom scope is destroyed</entry>
-						</row>		
-					</tbody>
-				</tgroup>
-			</informaltable>
-			Component events can further be qualified with the <literal>@Component</literal> qualifer, which takes the component id
-			as the value. The corresponding qualifier for view events is <literal>@View</literal>.
-			<programlisting role="Java">
+		
+		
+		
+		
+		
+		<section id="events.system.seam">
+			<title>Seam Faces System events</title>
+			<para>
+				This is an example of observing a Faces system event:
+			</para>
+			<para>
+				<programlisting role="Java">
+public void observesThisEvent(@Observes ExceptionQueuedEvent e)
+{
+	// Do something with the event object
+} </programlisting>
+			</para>
+		</section>
+		
+		
+		
+		
+		<section id="events.system.seam.listing">
+			<title>System events listing</title>
+			<para>
+				Since all JSF system event objects are distinct, no qualifiers are needed to observe them. The following events 
+				may be observed:
+				<informaltable>
+					<tgroup cols="3">
+						<colspec colnum="1" colwidth="3*" />
+						<colspec colnum="2" colwidth="1*" />
+						<colspec colnum="3" colwidth="4*" />
+						<thead>
+							<row>
+								<entry>Event object</entry>
+								<entry>Context</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>SystemEvent</entry>
+								<entry>all</entry>
+								<entry>All events</entry>
+							</row>
+							<row>
+								<entry>ComponentSystemEvent</entry>
+								<entry>component</entry>
+								<entry>All component events</entry>
+							</row>
+							<row>
+								<entry>PostAddToViewEvent</entry>
+								<entry>component</entry>
+								<entry>After a component was added to the view</entry>
+							</row>
+							<row>
+								<entry>PostConstructViewMapEvent</entry>
+								<entry>component</entry>
+								<entry>After a view map was created</entry>
+							</row>
+							<row>
+								<entry>PostRestoreStateEvent</entry>
+								<entry>component</entry>
+								<entry>After a component has its state restored</entry>
+							</row>
+							<row>
+								<entry>PostValidateEvent</entry>
+								<entry>component</entry>
+								<entry>After a component has been validated</entry>
+							</row>
+							<row>
+								<entry>PreDestroyViewMapEvent</entry>
+								<entry>component</entry>
+								<entry>Before a view map has been restored</entry>
+							</row>
+							<row>
+								<entry>PreRemoveFromViewEvent</entry>
+								<entry>component</entry>
+								<entry>Before a component has been removed from the view</entry>
+							</row>						
+							<row>
+								<entry>PreRenderComponentEvent</entry>
+								<entry>component</entry>
+								<entry>After a component has been rendered</entry>
+							</row>						
+							<row>
+								<entry>PreRenderViewEvent</entry>
+								<entry>component</entry>
+								<entry>Before a view has been rendered</entry>
+							</row>						
+							<row>
+								<entry>PreValidateEvent</entry>
+								<entry>component</entry>
+								<entry>Before a component has been validated</entry>
+							</row>						
+							<row>
+								<entry>ExceptionQueuedEvent</entry>
+								<entry>system</entry>
+								<entry>When an exception has been queued</entry>
+							</row>						
+							<row>
+								<entry>PostConstructApplicationEvent</entry>
+								<entry>system</entry>
+								<entry>After the application has been constructed</entry>
+							</row>						
+							<row>
+								<entry>PostConstructCustomScopeEvent</entry>
+								<entry>system</entry>
+								<entry>After a custom scope has been constructed</entry>
+							</row>		
+							<row>
+								<entry>PreDestroyApplicationEvent</entry>
+								<entry>system</entry>
+								<entry>Before the application is destroyed</entry>
+							</row>		
+							<row>
+								<entry>PreDestroyCustomScopeEvent</entry>
+								<entry>system</entry>
+								<entry>Before a custom scope is destroyed</entry>
+							</row>		
+						</tbody>
+					</tgroup>
+				</informaltable>
+			</para>
+		</section>
+		
+		
+		
+		<section id="events.system.component">
+			<title>Component system events</title>
+			<para>
+				There is one qualifier, <literal>@Component</literal> that can be used with component events by specifying the component ID. Note that
+				view-centric component events <literal>PreRenderViewEvent</literal>, <literal>PostConstructViewMapEvent</literal> and  
+				<literal>PreDestroyViewMapEvent</literal> do not fire with the <literal>@Component</literal> qualifier.
+				<programlisting role="Java">
 public void observePrePasswordValidation(@Observes @Component("form:password") PreValidateEvent e)
 {
-	// Do something with the "before password is validated" event object
+// Do something with the "before password is validated" event object
 } </programlisting>
-			<programlisting role="Java">
-public void observePreFooViewRendered(@Observes @View("/foo.xhtml") PreRenderViewEvent e)
-{
-	// Do something with the "before view is rendered" event object
-} </programlisting>
-			Global system events are observer without the component qualifier
-			<programlisting role="Java">
+				Global system events are observer without the component qualifier
+				<programlisting role="Java">
 public void observeApplicationConstructed(@Observes PostConstructApplicationEvent e)
 {
-	// Do something with the "after application is constructed" event object
+// Do something with the "after application is constructed" event object
 } </programlisting>
-			The name of the observing method is insignificant.
-		</para>
+				The name of the observing method is not relevant; observers are defined solely via annotations.
+			</para>
+		</section>
+		
+		
 	</section>
 </chapter>

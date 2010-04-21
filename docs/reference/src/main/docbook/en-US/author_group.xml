@@ -10,6 +10,10 @@
       <firstname>Lincoln</firstname>
       <surname>Baxter III</surname>
    </author>
+   <author>
+      <firstname>Nicklas</firstname>
+      <surname>Karlsson</surname>
+   </author>
 
    <!--
 vim:et:ts=3:sw=3:tw=120
