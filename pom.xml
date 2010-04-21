@@ -3,9 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>seam-parent</artifactId>
-		<groupId>org.jboss.seam</groupId>
-		<version>3.0.0-SNAPSHOT</version>
+		<groupId>org.jboss.weld</groupId>
+		<artifactId>weld-parent</artifactId>
+		<version>9</version>
 	</parent>
 
 	<artifactId>seam-faces-parent</artifactId>
@@ -16,7 +16,7 @@
 	<name>Seam Faces Module Parent POM</name>
 
 	<description>
-      The Parent for Seam Faces Modules
+		The Parent for Seam Faces Modules
    	</description>
 
 	<url>http://www.seamframework.org</url>
@@ -27,34 +27,41 @@
 		<module>docs/reference</module>
 		<module>examples/short-ly</module>
 	</modules>
-	
-	<repositories>
-		<repository>
-			<id>java.net</id>
-			<name>Java.net Maven2 Repository</name>
-			<url>http://download.java.net/maven/2/</url>
-		</repository>
-	</repositories>
-	
+
 	<properties>
 		<arquillian.version>1.0.0.Alpha1</arquillian.version>
 		<jsfmock.version>1.0.0</jsfmock.version>
+		<jsfunit.version>1.2.0.Final</jsfunit.version>
+		<weldx.version>1.0.0.Alpha1</weldx.version>
+		<weld.api.version>1.0-SP1</weld.api.version>
+		<junit.version>4.8.1</junit.version>
 	</properties>
-	
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.jboss.weld</groupId>
+				<artifactId>weld-api-bom</artifactId>
+				<version>${weld.api.version}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
-	
+
 		<!-- Environment Dependencies -->
 		<dependency>
 			<!-- This is necessary until a new JSF-API is published to central -->
-			<groupId>com.sun.faces</groupId>
-			<artifactId>jsf-api</artifactId>
-			<version>2.0.2</version>
+			<groupId>org.apache.myfaces.core</groupId>
+			<artifactId>myfaces-api</artifactId>
+			<version>2.0.0-beta-3</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.el</groupId>
 			<artifactId>el-api</artifactId>
-			<version>2.2</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -70,14 +77,14 @@
 		<dependency>
 			<groupId>org.jboss.weld</groupId>
 			<artifactId>weld-extensions</artifactId>
-			<version>1.0.0.Alpha1</version>
+			<version>${weldx.version}</version>
 		</dependency>
 
 		<!-- Test Dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -92,21 +99,23 @@
 			<version>${arquillian.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>org.jboss.jsfunit</groupId>
 			<artifactId>jboss-jsfunit-core</artifactId>
-			<version>1.2.0.Final</version>
+			<version>${jsfunit.version}</version>
 			<scope>test</scope>
 		</dependency>
+		 -->
 		<dependency>
 			<groupId>org.jboss.test-jsf</groupId>
 			<artifactId>jsf-mock</artifactId>
 			<version>${jsfmock.version}</version>
 			<scope>test</scope>
 		</dependency>
-	
+
 	</dependencies>
-	
+
 	<profiles>
 		<profile>
 			<id>arquillian-glassfish-embedded-30</id>
@@ -144,24 +153,26 @@
 	</developers>
 
 	<scm>
-		<connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/faces/trunk </connection>
-		<developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/faces/trunk </developerConnection>
+		<connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/faces/trunk
+		</connection>
+		<developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/faces/trunk
+		</developerConnection>
 		<url>http://fisheye.jboss.org/browse/Seam/modules/faces/trunk</url>
 	</scm>
-	
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
 
