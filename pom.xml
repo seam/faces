@@ -23,8 +23,10 @@
 	<modules>
 		<module>api</module>
 		<module>impl</module>
+		<!-- 
 		<module>docs/reference</module>
 		<module>examples/short-ly</module>
+		 -->
 	</modules>
 
 	<properties>
