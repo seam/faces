@@ -42,4 +42,10 @@
  Release Notes
  =============
 
- ...
+    *  View actions
+    * javax.faces.bean.*Scoped aliases
+    * @FlashScoped and @ViewScoped
+    * CDI / Faces Phase & System Event bridge
+    * JSF API producers (FacesContext, ExternalContext, NavigationHandler, etc...)
+    * Simplified EL name to conversation: #{conversation.transient}
+

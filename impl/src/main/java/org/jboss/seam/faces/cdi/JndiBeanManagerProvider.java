@@ -29,21 +29,20 @@ import javax.naming.NamingException;
  * A BeanManager provider for JNDI contexts
  * 
  * @author Nicklas Karlsson
- *
+ * 
  */
 public class JndiBeanManagerProvider implements BeanManagerProvider
 {
-   private String location;
+   private final String location;
 
    public static final JndiBeanManagerProvider DEFAULT = new JndiBeanManagerProvider("java:comp/BeanManager");
    public static final JndiBeanManagerProvider JBOSS_HACK = new JndiBeanManagerProvider("java:app/BeanManager");
 
-   protected JndiBeanManagerProvider(String location)
+   protected JndiBeanManagerProvider(final String location)
    {
       this.location = location;
    }
 
-   @Override
    public BeanManager getBeanManager()
    {
       try

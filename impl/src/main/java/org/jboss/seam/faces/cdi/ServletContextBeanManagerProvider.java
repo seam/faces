@@ -26,16 +26,16 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 
 /**
- * A BeanManager provider for the Servlet Context attribute "javax.enterprise.inject.spi.BeanManager"
+ * A BeanManager provider for the Servlet Context attribute
+ * "javax.enterprise.inject.spi.BeanManager"
  * 
  * @author Nicklas Karlsson
- *
+ * 
  */
 public class ServletContextBeanManagerProvider implements BeanManagerProvider
 {
    public static final ServletContextBeanManagerProvider DEFAULT = new ServletContextBeanManagerProvider();
 
-   @Override
    public BeanManager getBeanManager()
    {
       ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
