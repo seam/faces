@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -10,7 +9,7 @@
 
 	<artifactId>seam-faces-parent</artifactId>
 	<groupId>org.jboss.seam.faces</groupId>
-	<version>3.0.0-SNAPSHOT</version>
+	<version>3.0.0.Alpha1</version>
 
 	<packaging>pom</packaging>
 	<name>Seam Faces Module Parent POM</name>
@@ -24,8 +23,10 @@
 	<modules>
 		<module>api</module>
 		<module>impl</module>
+		<!-- 
 		<module>docs/reference</module>
 		<module>examples/short-ly</module>
+		 -->
 	</modules>
 
 	<properties>
@@ -177,11 +178,11 @@
 	</developers>
 
 	<scm>
-		<connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/faces/trunk
+		<connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/faces/tags/3.0.0.Alpha1
 		</connection>
-		<developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/faces/trunk
+		<developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/faces/tags/3.0.0.Alpha1
 		</developerConnection>
-		<url>http://fisheye.jboss.org/browse/Seam/modules/faces/trunk</url>
+		<url>http://fisheye.jboss.org/browse/Seam/modules/faces/tags/3.0.0.Alpha1</url>
 	</scm>
 
 	<build>
