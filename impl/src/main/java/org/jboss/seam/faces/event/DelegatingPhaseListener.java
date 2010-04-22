@@ -31,7 +31,7 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
-import org.jboss.seam.faces.cdi.BeanManagerAware;
+import org.jboss.weld.extensions.beanManager.BeanManagerAware;
 
 /**
  * Provide CDI injection to PhaseListener artifacts by delegating through this

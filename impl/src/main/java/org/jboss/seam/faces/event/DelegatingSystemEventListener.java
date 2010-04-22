@@ -31,7 +31,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
-import org.jboss.seam.faces.cdi.BeanManagerAware;
+import org.jboss.weld.extensions.beanManager.BeanManagerAware;
 
 /**
  * Provide CDI injection to SystemEventListener artifacts by delegating through
