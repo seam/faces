@@ -6,7 +6,6 @@
 		<artifactId>weld-parent</artifactId>
 		<version>9</version>
 	</parent>
-   -->
 
 	<artifactId>seam-faces-parent</artifactId>
 	<groupId>org.jboss.seam.faces</groupId>

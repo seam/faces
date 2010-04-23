@@ -50,6 +50,12 @@ public class SeamApplicationWrapper extends ApplicationWrapper
    @Inject
    BeanManagerUtils managerUtils;
 
+   @Override
+   public Application getWrapped()
+   {
+      return parent;
+   }
+
    public void installWrapper(@Observes final PostConstructApplicationEvent event)
    {
       ApplicationFactory factory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
@@ -61,10 +67,7 @@ public class SeamApplicationWrapper extends ApplicationWrapper
    public Converter createConverter(final Class<?> targetClass)
    {
       Converter result = parent.createConverter(targetClass);
-      if (result != null)
-      {
-         result = managerUtils.getContextualInstance(result.getClass());
-      }
+      result = attemptExtension(result);
       return result;
    }
 
@@ -72,10 +75,7 @@ public class SeamApplicationWrapper extends ApplicationWrapper
    public Converter createConverter(final String converterId)
    {
       Converter result = parent.createConverter(converterId);
-      if (result != null)
-      {
-         result = managerUtils.getContextualInstance(result.getClass());
-      }
+      result = attemptExtension(result);
       return result;
    }
 
@@ -83,16 +83,24 @@ public class SeamApplicationWrapper extends ApplicationWrapper
    public Validator createValidator(final String validatorId)
    {
       Validator result = parent.createValidator(validatorId);
-      if (result != null)
-      {
-         result = managerUtils.getContextualInstance(result.getClass());
-      }
+      result = attemptExtension(result);
       return result;
    }
 
-   @Override
-   public Application getWrapped()
+   @SuppressWarnings("unchecked")
+   private <T> T attemptExtension(T result)
    {
-      return parent;
+      if (result != null)
+      {
+         if (managerUtils.isDependentScoped(result.getClass()))
+         {
+            managerUtils.injectNonContextualInstance(result);
+         }
+         else
+         {
+            result = (T) managerUtils.getContextualInstance(result.getClass());
+         }
+      }
+      return result;
    }
 }

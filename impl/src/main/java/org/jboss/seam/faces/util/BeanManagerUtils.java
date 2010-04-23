@@ -25,6 +25,7 @@ package org.jboss.seam.faces.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
@@ -53,6 +54,17 @@ public class BeanManagerUtils
       CreationalContext<Object> creationalContext = manager.createCreationalContext(null);
       InjectionTarget<Object> injectionTarget = (InjectionTarget<Object>) manager.createInjectionTarget(manager.createAnnotatedType(instance.getClass()));
       injectionTarget.inject(instance, creationalContext);
+   }
+
+   @SuppressWarnings("unchecked")
+   public <T> boolean isDependentScoped(final Class<T> type)
+   {
+      Bean<T> bean = (Bean<T>) manager.resolve(manager.getBeans(type));
+      if (bean != null)
+      {
+         return Dependent.class.equals(bean.getScope());
+      }
+      return false;
    }
 
    /**
