@@ -19,34 +19,41 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.seam.faces.beanManager;
+package org.jboss.seam.faces.cdi;
 
 import javax.enterprise.inject.spi.BeanManager;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-
-import org.jboss.weld.extensions.beanManager.BeanManagerProvider;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 /**
- * A BeanManager provider for the FacesContext-acquired Servlet Context attribute
- * "javax.enterprise.inject.spi.BeanManager"
+ * A BeanManager provider for JNDI contexts
  * 
  * @author Nicklas Karlsson
  * 
  */
-public class FacesServletContextBeanManagerProvider implements BeanManagerProvider
+public class JndiBeanManagerProvider implements BeanManagerProvider
 {
-   public static final FacesServletContextBeanManagerProvider DEFAULT = new FacesServletContextBeanManagerProvider();
+   private final String location;
+
+   public static final JndiBeanManagerProvider DEFAULT = new JndiBeanManagerProvider("java:comp/BeanManager");
+   public static final JndiBeanManagerProvider JBOSS_HACK = new JndiBeanManagerProvider("java:app/BeanManager");
+
+   protected JndiBeanManagerProvider(final String location)
+   {
+      this.location = location;
+   }
 
    public BeanManager getBeanManager()
    {
-      ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-      return (BeanManager) servletContext.getAttribute(BeanManager.class.getName());
-   }
-
-   public int getPrecedence()
-   {
-      return 0;
+      try
+      {
+         return (BeanManager) new InitialContext().lookup(location);
+      }
+      catch (NamingException e)
+      {
+         // No panic, it's just not there
+      }
+      return null;
    }
 
 }

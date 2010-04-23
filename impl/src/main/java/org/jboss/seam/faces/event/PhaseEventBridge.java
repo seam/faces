@@ -31,6 +31,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.inject.Inject;
 
+import org.jboss.seam.faces.cdi.BeanManagerAware;
 import org.jboss.seam.faces.event.qualifier.After;
 import org.jboss.seam.faces.event.qualifier.ApplyRequestValues;
 import org.jboss.seam.faces.event.qualifier.Before;
@@ -39,7 +40,6 @@ import org.jboss.seam.faces.event.qualifier.ProcessValidations;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.faces.event.qualifier.RestoreView;
 import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
-import org.jboss.weld.extensions.beanManager.BeanManagerAware;
 import org.slf4j.Logger;
 
 /**
