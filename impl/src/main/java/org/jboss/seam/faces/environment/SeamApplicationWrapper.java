@@ -22,13 +22,8 @@
 
 package org.jboss.seam.faces.environment;
 
-import java.util.Set;
-
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.BeanManager;
 import javax.faces.FactoryFinder;
 import javax.faces.application.Application;
 import javax.faces.application.ApplicationFactory;
@@ -38,11 +33,11 @@ import javax.faces.event.PostConstructApplicationEvent;
 import javax.faces.validator.Validator;
 import javax.inject.Inject;
 
-import org.jboss.seam.faces.event.PhaseEventBridge;
+import org.jboss.seam.faces.util.BeanManagerUtils;
 
 /**
- * Provides @{@link Inject} support for JSF artifacts such as {@link Converter},
- * {@link Validator}.
+ * Provides contextual lifecycle and @{link Inject} support for JSF artifacts
+ * such as {@link Converter}, {@link Validator}.
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  * 
@@ -53,7 +48,7 @@ public class SeamApplicationWrapper extends ApplicationWrapper
    private Application parent;
 
    @Inject
-   BeanManager manager;
+   BeanManagerUtils managerUtils;
 
    public void installWrapper(@Observes final PostConstructApplicationEvent event)
    {
@@ -65,67 +60,33 @@ public class SeamApplicationWrapper extends ApplicationWrapper
    @Override
    public Converter createConverter(final Class<?> targetClass)
    {
-      Converter result = null;
-
-      Set<Bean<?>> beans = manager.getBeans(targetClass);
-      if (!beans.isEmpty())
+      Converter result = parent.createConverter(targetClass);
+      if (result != null)
       {
-         Bean<?> bean = beans.iterator().next();
-         CreationalContext<?> context = manager.createCreationalContext(bean);
-         result = (Converter) manager.getReference(bean, PhaseEventBridge.class, context);
+         result = managerUtils.getContextualInstance(result.getClass());
       }
-
-      if (result == null)
-      {
-         result = parent.createConverter(targetClass);
-      }
-
       return result;
    }
 
    @Override
    public Converter createConverter(final String converterId)
    {
-      /*
-       * We need to ask for an instance because we have no way of getting the
-       * type information by id
-       */
       Converter result = parent.createConverter(converterId);
       if (result != null)
       {
-         Class<? extends Converter> targetClass = result.getClass();
-         Set<Bean<?>> beans = manager.getBeans(targetClass);
-         if (!beans.isEmpty())
-         {
-            Bean<?> bean = beans.iterator().next();
-            CreationalContext<?> context = manager.createCreationalContext(bean);
-            result = (Converter) manager.getReference(bean, targetClass, context);
-         }
+         result = managerUtils.getContextualInstance(result.getClass());
       }
-
       return result;
    }
 
    @Override
    public Validator createValidator(final String validatorId)
    {
-      /*
-       * We need to ask for an instance because we have no way of getting the
-       * type information by id
-       */
       Validator result = parent.createValidator(validatorId);
       if (result != null)
       {
-         Class<? extends Validator> targetClass = result.getClass();
-         Set<Bean<?>> beans = manager.getBeans(targetClass);
-         if (!beans.isEmpty())
-         {
-            Bean<?> bean = beans.iterator().next();
-            CreationalContext<?> context = manager.createCreationalContext(bean);
-            result = (Validator) manager.getReference(bean, targetClass, context);
-         }
+         result = managerUtils.getContextualInstance(result.getClass());
       }
-
       return result;
    }
 
