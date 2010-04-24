@@ -36,9 +36,9 @@ import javax.faces.event.PreRenderViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
-import org.jboss.seam.faces.cdi.BeanManagerAware;
 import org.jboss.seam.faces.event.qualifier.Component;
 import org.jboss.seam.faces.event.qualifier.View;
+import org.jboss.weld.extensions.beanManager.BeanManagerAware;
 
 /**
  * A SystemEventListener used to bridge JSF system events to the CDI event
