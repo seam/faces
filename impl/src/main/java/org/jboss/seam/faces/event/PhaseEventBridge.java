@@ -25,6 +25,7 @@ import java.lang.annotation.Annotation;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.util.AnnotationLiteral;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
@@ -39,7 +40,6 @@ import org.jboss.seam.faces.event.qualifier.ProcessValidations;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.faces.event.qualifier.RestoreView;
 import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
-import org.jboss.weld.extensions.beanManager.BeanManagerAware;
 import org.slf4j.Logger;
 
 /**
@@ -63,13 +63,15 @@ import org.slf4j.Logger;
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  * 
  */
-@ApplicationScoped
-public class PhaseEventBridge extends BeanManagerAware implements PhaseListener
+public class PhaseEventBridge implements PhaseListener
 {
    private static final long serialVersionUID = -6181019551463318453L;
 
    @Inject
    private Logger log;
+   
+   @Inject
+   private BeanManager beanManager;
 
    /**
     * @param whenQualifier When this event occurred (e.g.:
@@ -115,7 +117,7 @@ public class PhaseEventBridge extends BeanManagerAware implements PhaseListener
        */
       Annotation[] qualifiers = new Annotation[] { whenQualifier, phaseQualifier };
       log.debug("Fired event #0 with qualifiers #1", event, qualifiers);
-      getBeanManager().fireEvent(event, qualifiers);
+      beanManager.fireEvent(event, qualifiers);
    }
 
    public void afterPhase(final PhaseEvent e)

@@ -23,8 +23,8 @@ package org.jboss.seam.faces.event;
 
 import java.lang.annotation.Annotation;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.util.AnnotationLiteral;
 import javax.faces.component.UIViewRoot;
 import javax.faces.event.AbortProcessingException;
@@ -35,10 +35,10 @@ import javax.faces.event.PreDestroyViewMapEvent;
 import javax.faces.event.PreRenderViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
+import javax.inject.Inject;
 
 import org.jboss.seam.faces.event.qualifier.Component;
 import org.jboss.seam.faces.event.qualifier.View;
-import org.jboss.weld.extensions.beanManager.BeanManagerAware;
 
 /**
  * A SystemEventListener used to bridge JSF system events to the CDI event
@@ -63,9 +63,10 @@ import org.jboss.weld.extensions.beanManager.BeanManagerAware;
  * 
  * @author Nicklas Karlsson
  */
-@ApplicationScoped
-public class SystemEventBridge extends BeanManagerAware implements SystemEventListener
+public class SystemEventBridge implements SystemEventListener
 {
+   @Inject
+   BeanManager beanManager;
 
    public boolean isListenerForSource(final Object source)
    {
@@ -76,7 +77,7 @@ public class SystemEventBridge extends BeanManagerAware implements SystemEventLi
    {
       Object payload = e.getClass().cast(e);
       Annotation[] qualifiers = getQualifiers(e);
-      getBeanManager().fireEvent(payload, qualifiers);
+      beanManager.fireEvent(payload, qualifiers);
    }
 
    private Annotation[] getQualifiers(SystemEvent e)
