@@ -43,6 +43,7 @@
 					</dependency>
 				</dependencies>
 				<configuration>
+               <sourceDirectory>${project.basedir}/src/main/docbook</sourceDirectory>
 					<sourceDocumentName>master.xml</sourceDocumentName>
 					<masterTranslation>en-US</masterTranslation>
 					<imageResource>
