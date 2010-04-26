@@ -33,7 +33,7 @@
 		<arquillian.version>1.0.0.Alpha1</arquillian.version>
 		<jsfmock.version>1.0.0</jsfmock.version>
 		<jsfunit.version>1.2.0.Final</jsfunit.version>
-		<weldx.version>1.0.0.Alpha1</weldx.version>
+		<weldx.version>1.0.0-SNAPSHOT</weldx.version>
 		<weld.api.version>1.0-SP1</weld.api.version>
 		<junit.version>4.8.1</junit.version>
 		<slf4j.version>1.5.9.RC1</slf4j.version>
