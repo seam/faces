@@ -28,7 +28,6 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 
-import org.jboss.seam.faces.event.BeanManagerServletContextListener;
 import org.jboss.weld.extensions.beanManager.BeanManagerProvider;
 
 /**

@@ -5,7 +5,7 @@
 	<name>seamfaces</name>
 
 	<listener>
-		<listener-class>org.jboss.seam.faces.event.BeanManagerServletContextListener</listener-class>
+		<listener-class>org.jboss.seam.faces.beanManager.BeanManagerServletContextListener</listener-class>
 	</listener>
 
 </web-fragment>
