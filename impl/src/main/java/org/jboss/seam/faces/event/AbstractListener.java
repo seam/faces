@@ -18,45 +18,37 @@
  * License along with this software; if not, write to the Free
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
- */
+ */ 
 package org.jboss.seam.faces.event;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.SystemEvent;
-import javax.faces.event.SystemEventListener;
+import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.Bean;
+
+import org.jboss.weld.extensions.beanManager.BeanManagerAware;
 
 /**
- * Provide CDI injection to SystemEventListener artifacts by delegating through
- * this class.
+ * Superclass for event listeners
  * 
- * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
- * 
+ * @author Nicklas Karlsson
+ *
+ * @param <T> Listener class
  */
-public class DelegatingSystemEventListener extends AbstractListener<SystemEventListener> implements SystemEventListener
+public class AbstractListener<T> extends BeanManagerAware
 {
-
-   public boolean isListenerForSource(final Object source)
-   {
-      return true;
-   }
-
-   public void processEvent(final SystemEvent event) throws AbortProcessingException
-   {
-      for (SystemEventListener l : getEventListeners())
-      {
-         if (l.isListenerForSource(event.getSource()))
-         {
-            l.processEvent(event);
-         }
-      }
-   }
-
    @SuppressWarnings("unchecked")
-   private List<SystemEventListener> getEventListeners()
+   protected List<T> getListeners(Class<? extends T>... classes)
    {
-      return getListeners(SystemEventBridge.class);
+      List<T> listeners = new ArrayList<T>();
+      for (Class<? extends T> clazz : classes) {
+         Bean<? extends T> bean = (Bean<? extends T>) getBeanManager().getBeans(clazz).iterator().next();
+         CreationalContext<? extends T> context = getBeanManager().createCreationalContext(bean);
+         T listener = (T) getBeanManager().getReference(bean, clazz, context);
+         listeners.add(listener);
+      }
+      return listeners;
    }
-
+   
 }

@@ -21,17 +21,11 @@
  */
 package org.jboss.seam.faces.event;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.BeanManager;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-
-import org.jboss.weld.extensions.beanManager.BeanManagerAware;
 
 /**
  * Provide CDI injection to PhaseListener artifacts by delegating through this
@@ -40,7 +34,7 @@ import org.jboss.weld.extensions.beanManager.BeanManagerAware;
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  * 
  */
-public class DelegatingPhaseListener extends BeanManagerAware implements PhaseListener
+public class DelegatingPhaseListener extends AbstractListener<PhaseListener> implements PhaseListener
 {
    private static final long serialVersionUID = 8454616175394888259L;
 
@@ -83,16 +77,7 @@ public class DelegatingPhaseListener extends BeanManagerAware implements PhaseLi
    @SuppressWarnings("unchecked")
    private List<PhaseListener> getPhaseListeners()
    {
-      BeanManager manager = getBeanManager();
-      List<PhaseListener> result = new ArrayList<PhaseListener>();
-
-      Bean<PhaseEventBridge> bean = (Bean<PhaseEventBridge>) manager.getBeans(PhaseEventBridge.class).iterator().next();
-      CreationalContext<PhaseEventBridge> context = manager.createCreationalContext(bean);
-      PhaseEventBridge listener = (PhaseEventBridge) manager.getReference(bean, PhaseEventBridge.class, context);
-
-      result.add(listener);
-
-      return result;
+      return getListeners(PhaseEventBridge.class);
    }
 
 }
