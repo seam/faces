@@ -51,9 +51,12 @@ public class BeanManagerUtils
    @SuppressWarnings("unchecked")
    public void injectNonContextualInstance(final Object instance)
    {
-      CreationalContext<Object> creationalContext = manager.createCreationalContext(null);
-      InjectionTarget<Object> injectionTarget = (InjectionTarget<Object>) manager.createInjectionTarget(manager.createAnnotatedType(instance.getClass()));
-      injectionTarget.inject(instance, creationalContext);
+      if (instance != null)
+      {
+         CreationalContext<Object> creationalContext = manager.createCreationalContext(null);
+         InjectionTarget<Object> injectionTarget = (InjectionTarget<Object>) manager.createInjectionTarget(manager.createAnnotatedType(instance.getClass()));
+         injectionTarget.inject(instance, creationalContext);
+      }
    }
 
    @SuppressWarnings("unchecked")
@@ -72,14 +75,19 @@ public class BeanManagerUtils
     * first result if multiple beans are available.
     * 
     * @param type The class for which to return an instance.
+    * @return The managed instance, or null if none could be provided.
     */
    @SuppressWarnings("unchecked")
    public <T> T getContextualInstance(final Class<T> type)
    {
       Bean<T> bean = (Bean<T>) manager.resolve(manager.getBeans(type));
-      CreationalContext<T> context = manager.createCreationalContext(bean);
-      T result = (T) manager.getReference(bean, type, context);
-      return result;
+      if (bean != null)
+      {
+         CreationalContext<T> context = manager.createCreationalContext(bean);
+         T result = (T) manager.getReference(bean, type, context);
+         return result;
+      }
+      return null;
    }
 
    /**

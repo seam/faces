@@ -66,13 +66,13 @@ public class PhaseEventBridgeTest
    @Deployment
    public static JavaArchive createTestArchive()
    {
-      return Archives.create("test.jar", JavaArchive.class).addClasses(PhaseEventObserver.class, PhaseEventBridge.class, BeanManagerAware.class, MockLogger.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+      return Archives.create("test.jar", JavaArchive.class).addClasses(MockPhaseEventObserver.class, PhaseEventBridge.class, BeanManagerAware.class, MockLogger.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
    }
 
    @Inject
    PhaseEventBridge phaseEventBridge;
    @Inject
-   PhaseEventObserver observer;
+   MockPhaseEventObserver observer;
 
    private final MockFacesContext facesContext = new MockFacesContext();
    private final MockLifecycle lifecycle = new MockLifecycle();

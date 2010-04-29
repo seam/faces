@@ -47,7 +47,7 @@ import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
  * 
  */
 @ApplicationScoped
-public class PhaseEventObserver
+public class MockPhaseEventObserver
 {
    private Map<String, List<PhaseId>> observations = new HashMap<String, List<PhaseId>>();
 

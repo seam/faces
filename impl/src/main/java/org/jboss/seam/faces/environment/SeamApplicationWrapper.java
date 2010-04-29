@@ -88,19 +88,27 @@ public class SeamApplicationWrapper extends ApplicationWrapper
    }
 
    @SuppressWarnings("unchecked")
-   private <T> T attemptExtension(T result)
+   private <T> T attemptExtension(final T base)
    {
-      if (result != null)
+      T result = base;
+
+      if (base != null)
       {
-         if (managerUtils.isDependentScoped(result.getClass()))
+         if (managerUtils.isDependentScoped(base.getClass()))
          {
             managerUtils.injectNonContextualInstance(result);
          }
          else
          {
-            result = (T) managerUtils.getContextualInstance(result.getClass());
+            result = (T) managerUtils.getContextualInstance(base.getClass());
          }
       }
+
+      if (result == null)
+      {
+         result = base;
+      }
+
       return result;
    }
 }
