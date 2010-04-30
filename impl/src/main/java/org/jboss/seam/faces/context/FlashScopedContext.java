@@ -21,6 +21,7 @@
  */
 package org.jboss.seam.faces.context;
 
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -30,6 +31,7 @@ import javax.enterprise.context.ContextNotActiveException;
 import javax.enterprise.context.spi.Context;
 import javax.enterprise.context.spi.Contextual;
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.event.Observes;
 import javax.faces.bean.FlashScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -37,6 +39,9 @@ import javax.faces.context.Flash;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+import javax.faces.event.PreRenderViewEvent;
+import javax.inject.Inject;
+import javax.servlet.ServletRequest;
 
 /**
  * This class provides the lifecycle for the new JSF 2 Flash Context
@@ -45,157 +50,183 @@ import javax.faces.event.PhaseListener;
  */
 public class FlashScopedContext implements Context, PhaseListener
 {
-    private static final long serialVersionUID = -1580689204988513798L;
+   private static final long serialVersionUID = -1580689204988513798L;
 
-    private final static String COMPONENT_MAP_NAME = "org.jboss.seam.faces.flash.componentInstanceMap";
-    private final static String CREATIONAL_MAP_NAME = "org.jboss.seam.faces.flash.creationalInstanceMap";
-    private final ThreadLocal<Map<Contextual<?>, Object>> lastComponentInstanceMap = new ThreadLocal<Map<Contextual<?>, Object>>();
-    private final ThreadLocal<Map<Contextual<?>, CreationalContext<?>>> lastCreationalContextMap = new ThreadLocal<Map<Contextual<?>, CreationalContext<?>>>();
+   final static String COMPONENT_MAP_NAME = "org.jboss.seam.faces.flash.componentInstanceMap";
+   final static String CREATIONAL_MAP_NAME = "org.jboss.seam.faces.flash.creationalInstanceMap";
 
-    @SuppressWarnings("unchecked")
-    public <T> T get(final Contextual<T> component)
-    {
-        assertActive();
-        return (T) getComponentInstanceMap().get(component);
-    }
+   @SuppressWarnings("unchecked")
+   public <T> T get(final Contextual<T> component)
+   {
+      assertActive();
+      return (T) getComponentInstanceMap().get(component);
+   }
 
-    @SuppressWarnings("unchecked")
-    public <T> T get(final Contextual<T> component, final CreationalContext<T> creationalContext)
-    {
-        assertActive();
+   @SuppressWarnings("unchecked")
+   public <T> T get(final Contextual<T> component, final CreationalContext<T> creationalContext)
+   {
+      assertActive();
 
-        T instance = get(component);
+      T instance = get(component);
 
-        if (instance == null)
-        {
-            Map<Contextual<?>, CreationalContext<?>> creationalContextMap = getCreationalContextMap();
-            Map<Contextual<?>, Object> componentInstanceMap = getComponentInstanceMap();
+      if (instance == null)
+      {
+         Map<Contextual<?>, CreationalContext<?>> creationalContextMap = getCreationalContextMap();
+         Map<Contextual<?>, Object> componentInstanceMap = getComponentInstanceMap();
 
-            synchronized (componentInstanceMap)
+         synchronized (componentInstanceMap)
+         {
+            instance = (T) componentInstanceMap.get(component);
+            if (instance == null)
             {
-                instance = (T) componentInstanceMap.get(component);
-                if (instance == null)
-                {
-                    instance = component.create(creationalContext);
+               instance = component.create(creationalContext);
 
-                    if (instance != null)
-                    {
-                        componentInstanceMap.put(component, instance);
-                        creationalContextMap.put(component, creationalContext);
-                    }
-                }
+               if (instance != null)
+               {
+                  componentInstanceMap.put(component, instance);
+                  creationalContextMap.put(component, creationalContext);
+               }
             }
-        }
+         }
+      }
 
-        return instance;
-    }
+      return instance;
+   }
 
-    public Class<? extends Annotation> getScope()
-    {
-        return FlashScoped.class;
-    }
+   public Class<? extends Annotation> getScope()
+   {
+      return FlashScoped.class;
+   }
 
-    public boolean isActive()
-    {
-        return getFlash() != null;
-    }
+   public boolean isActive()
+   {
+      return getFlash() != null;
+   }
 
-    /**
-     * This method should, **in theory**, catch the current instanceMap (which
-     * is the previous lifecycle's next instanceMap.) These are the objects that
-     * we want cleaned up at the end of the current render-response phase, so we
-     * save them here until after the RENDER_RESPONSE phase, because otherwise
-     * they would have been destroyed by the Flash, and we would no longer have
-     * access to them.
-     */
-    public void beforePhase(final PhaseEvent event)
-    {
-        this.lastComponentInstanceMap.set(getComponentInstanceMap());
-        this.lastCreationalContextMap.set(getCreationalContextMap());
-    }
+   @Inject
+   FacesContext context;
 
-    /**
-     * Do the object cleanup using our saved references.
-     */
-    @SuppressWarnings("unchecked")
-    public void afterPhase(final PhaseEvent event)
-    {
-        // TODO verify that this is actually destroying the beans we want to be
-        // destroyed... flash is confusing, tests will make sense of it
-        Map<Contextual<?>, Object> componentInstanceMap = lastComponentInstanceMap.get();
-        Map<Contextual<?>, CreationalContext<?>> creationalContextMap = lastCreationalContextMap.get();
+   /**
+    * This method ensures that the contextual maps are populated before
+    * rendering occurs (thus, before any contextual objects are created during
+    * the Render Response phase.)
+    * <p>
+    * This method also ensures that the maps are available after Flash.clear()
+    * is called immediately before Render Response is complete.
+    * 
+    * @param event
+    * @throws IOException
+    */
+   public void retrieveContextualMaps(@Observes final PreRenderViewEvent event) throws IOException
+   {
+      ExternalContext externalContext = context.getExternalContext();
+      Object temp = externalContext.getRequest();
+      if (temp instanceof ServletRequest)
+      {
+         Object componentMap = getComponentInstanceMap();
+         Object creationalMap = getCreationalContextMap();
 
-        if (componentInstanceMap != null)
-        {
-            for (Entry<Contextual<?>, Object> componentEntry : componentInstanceMap.entrySet())
+         ServletRequest request = (ServletRequest) temp;
+         request.setAttribute(FlashScopedContext.COMPONENT_MAP_NAME, componentMap);
+         request.setAttribute(FlashScopedContext.CREATIONAL_MAP_NAME, creationalMap);
+      }
+   }
+
+   public void beforePhase(final PhaseEvent event)
+   {
+   }
+
+   /**
+    * This method saves the current scope metadata into the Flash after Restore
+    * View, then destroys the metadata after Render Response. Since the current
+    * request's execution Flash is swapped with the last requests execution
+    * flash for the Render Response phase, the last request's execution flash is
+    * actually the one that gets cleaned up.
+    * <p>
+    * Preserve this request's new metadata. Do the object cleanup using our
+    * saved references from last request.
+    */
+   @SuppressWarnings("unchecked")
+   public void afterPhase(final PhaseEvent event)
+   {
+      if (PhaseId.RENDER_RESPONSE.equals(event.getPhaseId()))
+      {
+         ExternalContext externalContext = event.getFacesContext().getExternalContext();
+         Object temp = externalContext.getRequest();
+         if (temp instanceof ServletRequest)
+         {
+            ServletRequest request = (ServletRequest) temp;
+
+            Map<Contextual<?>, Object> componentInstanceMap = (Map<Contextual<?>, Object>) request.getAttribute(FlashScopedContext.COMPONENT_MAP_NAME);
+            Map<Contextual<?>, CreationalContext<?>> creationalContextMap = (Map<Contextual<?>, CreationalContext<?>>) request.getAttribute(FlashScopedContext.CREATIONAL_MAP_NAME);
+
+            if ((componentInstanceMap != null) && (creationalContextMap != null))
             {
-                Contextual contextual = componentEntry.getKey();
-                Object instance = componentEntry.getValue();
-                CreationalContext creational = creationalContextMap.get(contextual);
+               for (Entry<Contextual<?>, Object> componentEntry : componentInstanceMap.entrySet())
+               {
+                  Contextual contextual = componentEntry.getKey();
+                  Object instance = componentEntry.getValue();
+                  CreationalContext creational = creationalContextMap.get(contextual);
 
-                contextual.destroy(instance, creational);
+                  contextual.destroy(instance, creational);
+               }
             }
-        }
+         }
+      }
+   }
 
-        this.lastComponentInstanceMap.remove();
-        this.lastCreationalContextMap.remove();
-    }
+   public PhaseId getPhaseId()
+   {
+      return PhaseId.ANY_PHASE;
+   }
 
-    public PhaseId getPhaseId()
-    {
-        return PhaseId.RENDER_RESPONSE;
-    }
+   private Flash getFlash()
+   {
+      FacesContext currentInstance = FacesContext.getCurrentInstance();
+      if (currentInstance != null)
+      {
+         ExternalContext externalContext = currentInstance.getExternalContext();
+         return externalContext.getFlash();
+      }
+      return null;
+   }
 
-    private Flash getFlash()
-    {
-        FacesContext currentInstance = FacesContext.getCurrentInstance();
-        if (currentInstance != null)
-        {
-            ExternalContext externalContext = currentInstance.getExternalContext();
-            return externalContext.getFlash();
-        }
-        return null;
-    }
+   private void assertActive()
+   {
+      if (!isActive())
+      {
+         throw new ContextNotActiveException("Seam context with scope annotation @FlashScoped is not active with respect to the current thread");
+      }
+   }
 
-    private void assertActive()
-    {
-        if (!isActive())
-        {
-            throw new ContextNotActiveException(
-                    "Seam context with scope annotation @FlashScoped is not active with respect to the current thread");
-        }
-    }
+   @SuppressWarnings("unchecked")
+   private Map<Contextual<?>, Object> getComponentInstanceMap()
+   {
+      Flash flash = getFlash();
+      ConcurrentHashMap<Contextual<?>, Object> map = (ConcurrentHashMap<Contextual<?>, Object>) flash.get(COMPONENT_MAP_NAME);
 
-    @SuppressWarnings("unchecked")
-    private Map<Contextual<?>, Object> getComponentInstanceMap()
-    {
-        Flash flash = getFlash();
-        ConcurrentHashMap<Contextual<?>, Object> map = (ConcurrentHashMap<Contextual<?>, Object>) flash
-                .get(COMPONENT_MAP_NAME);
+      if (map == null)
+      {
+         map = new ConcurrentHashMap<Contextual<?>, Object>();
+         flash.put(COMPONENT_MAP_NAME, map);
+      }
 
-        if (map == null)
-        {
-            map = new ConcurrentHashMap<Contextual<?>, Object>();
-            flash.put(COMPONENT_MAP_NAME, map);
-        }
+      return map;
+   }
 
-        return map;
-    }
+   @SuppressWarnings("unchecked")
+   private Map<Contextual<?>, CreationalContext<?>> getCreationalContextMap()
+   {
+      Flash flash = getFlash();
+      Map<Contextual<?>, CreationalContext<?>> map = (ConcurrentHashMap<Contextual<?>, CreationalContext<?>>) flash.get(CREATIONAL_MAP_NAME);
 
-    @SuppressWarnings("unchecked")
-    private Map<Contextual<?>, CreationalContext<?>> getCreationalContextMap()
-    {
-        Flash flash = getFlash();
-        Map<Contextual<?>, CreationalContext<?>> map = (ConcurrentHashMap<Contextual<?>, CreationalContext<?>>) flash
-                .get(CREATIONAL_MAP_NAME);
+      if (map == null)
+      {
+         map = new ConcurrentHashMap<Contextual<?>, CreationalContext<?>>();
+         flash.put(CREATIONAL_MAP_NAME, map);
+      }
 
-        if (map == null)
-        {
-            map = new ConcurrentHashMap<Contextual<?>, CreationalContext<?>>();
-            flash.put(CREATIONAL_MAP_NAME, map);
-        }
-
-        return map;
-    }
+      return map;
+   }
 
 }
