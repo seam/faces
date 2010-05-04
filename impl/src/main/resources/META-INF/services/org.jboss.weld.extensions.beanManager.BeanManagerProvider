@@ -1,1 +1,3 @@
 org.jboss.seam.faces.beanManager.FacesServletContextBeanManagerProvider
+org.jboss.weld.extensions.beanManager.DefaultJndiBeanManagerProvider
+org.jboss.weld.extensions.beanManager.JBossJndiBeanManagerProvider

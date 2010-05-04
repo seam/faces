@@ -48,9 +48,4 @@
 		</system-event-listener>
 	</application>
 
-	<component>
-		<component-type>org.jboss.seam.faces.ViewAction</component-type>
-		<component-class>org.jboss.seam.faces.component.UIViewAction</component-class>
-	</component>
-
 </faces-config>

@@ -21,6 +21,23 @@ public enum Level
       this.severity = severity;
    }
 
+   public static Level valueOf(final Severity severity)
+   {
+      Level result = null;
+
+      if (severity != null)
+      {
+         for (Level l : Level.values())
+         {
+            if (l.severity.equals(severity))
+            {
+               result = l;
+            }
+         }
+      }
+      return result;
+   }
+
    public Severity getSeverity()
    {
       return severity;

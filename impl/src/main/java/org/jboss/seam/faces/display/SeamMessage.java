@@ -40,6 +40,12 @@ public class SeamMessage implements Message
       this.level = level;
    }
 
+   @Override
+   public String toString()
+   {
+      return "SeamMessage [clientId=" + clientId + ", details=" + details + ", level=" + level + ", message=" + message + "]";
+   }
+
    public Message component(final String clientId)
    {
       this.clientId = clientId;

@@ -31,5 +31,11 @@ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
          <component-type>org.jboss.seam.faces.ViewAction</component-type>
       </component>
    </tag>
+   <tag>
+      <tag-name>validateForm</tag-name>
+      <component>
+         <component-type>org.jboss.seam.faces.ValidateForm</component-type>
+      </component>
+   </tag>
 
 </facelet-taglib>

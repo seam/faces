@@ -3,9 +3,97 @@
    "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" []>
 <chapter id="components">
 	<title>Seam Faces Components</title>
+	<para>While Seam Faces does not provide layout components or other UI-design related features, it does provide
+	functional components designed to make developing JSF applications easier, more functional, more scalable, and
+	more practical.</para>
 	<para>
-		Mission statement for Faces Module components. Explain that they are functional, not UI-oriented.
+	For layout and design components, take a look at <ulink url="http://jboss.org/richfaces">RichFaces</ulink>, a 
+	UI component library specifically tailored for easy, rich web-interfaces.
 	</para>
+	<section id="basicUsage">
+		<title>Introduction</title>
+		<para>
+			In order to use the Seam Faces components, you must first add the namespace to your view file, 
+			just like the standard JSF component libraries.
+			
+			<programlisting><![CDATA[<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.com/products/seam/faces"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+      
+      <h1>This is a page using Seam Faces</h1>
+      <h:outputText value="#{bean.sayHello()}" />
+      
+</html>]]></programlisting>
+			<tip>
+				<para>
+					All Seam Faces components use the same namespace: 
+					<literal>http://jboss.com/products/seam/faces</literal>
+				</para>
+			</tip>
+		</para>
+	</section>
+	<section id="validateForm">
+		<title>&lt;s:validateForm&gt;</title>
+		<para>
+			Performing cross-field form validation is simple using the Form Validation component.
+			<programlisting><![CDATA[<h:form id="locationForm">
+     <h:inputText id="city" value="#{bean.author}" />
+     <h:inputText id="state" value="#{bean.title}" />
+     <h:inputText id="zip" value="#{bean.text}" />
+     <h:commandButton id="submit" value="Submit" action="#{bean.submitPost}" />
+                  
+      <s:validateForm validatorId="locationValidator" />
+</h:form>]]></programlisting> 
+
+
+
+			The corresponding Validator for the example above would look something like this:
+			<programlisting>@FacesValidator("locationValidator")
+public class LocationValidator implements Validator
+{
+   @Inject
+   Directory directory;
+
+   @InputField
+   private String city;
+
+   @InputField
+   private String state;
+
+   @InputField
+   private String zip;
+
+   @Override
+   public void validate(final FacesContext context, final UIComponent comp, final Object values) throws ValidatorException
+   {
+      if(!directory.exists(city, state, zip))
+      {
+         throw new ValidatorException(new FacesMessage("Multiple fields-- failed validation baby!"));
+      }
+   }
+}</programlisting>
+
+
+
+			Notice that the IDs of the inputText components match the IDs of your Validator 
+			@InputFields. The name of the @InputField will automatically
+			be matched to the ID of the input component, unless overridden by using a field
+			ID alias (see below.) Notice that "zip" will still be referenced normally; you need only
+			specify aliases for fields that differ in name from the Validator @InputFields.
+			<programlisting><![CDATA[<h:form id="locationForm">
+     <h:inputText id="cityId" value="#{bean.author}" />
+     <h:inputText id="stateId" value="#{bean.title}" />
+     <h:inputText id="zip" value="#{bean.text}" />
+     <h:commandButton id="submit" value="Submit" action="#{bean.submitPost}" />
+                  
+      <s:validateForm fields="city=cityId state=stateId" validatorId="locationValidator" />
+</h:form>]]></programlisting>
+
+
+		</para>
+	</section>
 	<section id="viewaction">
 		<title>&lt;s:viewAction&gt;</title>
 		<para>
