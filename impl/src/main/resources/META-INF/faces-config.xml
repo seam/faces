@@ -46,6 +46,10 @@
 			<system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
 			<system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
 		</system-event-listener>
+		<system-event-listener>
+			<system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
+			<system-event-class>javax.faces.event.PreValidateEvent</system-event-class>
+		</system-event-listener>
 	</application>
 
 </faces-config>

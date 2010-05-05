@@ -22,7 +22,7 @@
       xmlns:s="http://jboss.com/products/seam/faces"
       xmlns:ui="http://java.sun.com/jsf/facelets">
       
-      <h1>This is a page using Seam Faces</h1>
+      <h1>This is a view using Seam Faces</h1>
       <h:outputText value="#{bean.sayHello()}" />
       
 </html>]]></programlisting>
@@ -37,7 +37,11 @@
 	<section id="validateForm">
 		<title>&lt;s:validateForm&gt;</title>
 		<para>
-			Performing cross-field form validation is simple using the Form Validation component.
+			On many occasions you might find yourself needing to compare the values of multiple input fields
+			on a given page submit: confirming a password; re-enter password; address lookups; and so on. 
+			
+			Performing cross-field form validation is simple - just place the &lt;s:validateForm&gt; component
+			in the form you wish to validate, then attach your custom Validator.
 			<programlisting><![CDATA[<h:form id="locationForm">
      <h:inputText id="city" value="#{bean.author}" />
      <h:inputText id="state" value="#{bean.title}" />
@@ -56,32 +60,48 @@ public class LocationValidator implements Validator
    @Inject
    Directory directory;
 
+   @Inject
    @InputField
-   private String city;
+   private Object city;
 
+   @Inject
    @InputField
-   private String state;
+   private Object state;
 
+   @Inject
    @InputField
-   private String zip;
+   private ZipCode zip;
 
    @Override
    public void validate(final FacesContext context, final UIComponent comp, final Object values) throws ValidatorException
    {
       if(!directory.exists(city, state, zip))
       {
-         throw new ValidatorException(new FacesMessage("Multiple fields-- failed validation baby!"));
+         throw new ValidatorException(new FacesMessage("Sorry, that location is not in our database. Please try again."));
       }
    }
 }</programlisting>
-
-
-
+		</para>
+		
+			<tip>
+				<para>
+		You may inject the correct type directly.
+				<programlisting>@Inject
+@InputField
+private ZipCode zip;</programlisting>
+				</para>
+			</tip>
+		
+		<para>
 			Notice that the IDs of the inputText components match the IDs of your Validator 
-			@InputFields. The name of the @InputField will automatically
+			@InputFields; each @Inject @InputField member will be injected with the value of the form input field
+			who's ID matches the name of the variable.
+		</para>
+		<para>
+			In other words - the name of the @InputField annotated member variable will automatically
 			be matched to the ID of the input component, unless overridden by using a field
-			ID alias (see below.) Notice that "zip" will still be referenced normally; you need only
-			specify aliases for fields that differ in name from the Validator @InputFields.
+			ID alias (see below.) 
+			
 			<programlisting><![CDATA[<h:form id="locationForm">
      <h:inputText id="cityId" value="#{bean.author}" />
      <h:inputText id="stateId" value="#{bean.title}" />
@@ -91,9 +111,29 @@ public class LocationValidator implements Validator
       <s:validateForm fields="city=cityId state=stateId" validatorId="locationValidator" />
 </h:form>]]></programlisting>
 
+			Notice that "zip" will still be referenced normally; you need only
+			specify aliases for fields that differ in name from the Validator @InputFields.
+			
+		</para>
+		<para>
 
+			<tip>
+				<para>
+					<literal>Using @InputField("customID")</literal> with an ID override can also be used to 
+					specify a custom ID, instead of using the default: the name of the field. This gives you
+					the ability to change the name of the private field, without worrying about changing the
+					name of input fields in the View itself.
+				<programlisting>@Inject
+@InputField("state")
+private String sectorTwo;</programlisting>
+				</para>
+			</tip>
 		</para>
 	</section>
+	
+	
+	
+	
 	<section id="viewaction">
 		<title>&lt;s:viewAction&gt;</title>
 		<para>

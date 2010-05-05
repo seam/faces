@@ -27,10 +27,13 @@ import java.util.List;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionTarget;
 import javax.inject.Inject;
+
+import org.jboss.seam.faces.component.FormValidationTypeOverrideExtension;
 
 /**
  * A utility providing common functions to simply use of {@link BeanManager}
@@ -43,6 +46,9 @@ public class BeanManagerUtils
    @Inject
    private BeanManager manager;
 
+   @Inject
+   FormValidationTypeOverrideExtension classExtension;
+
    /**
     * Perform @{@link Inject} on an object as if it were a bean managed by CDI.
     * 
@@ -54,9 +60,23 @@ public class BeanManagerUtils
       if (instance != null)
       {
          CreationalContext<Object> creationalContext = manager.createCreationalContext(null);
-         InjectionTarget<Object> injectionTarget = (InjectionTarget<Object>) manager.createInjectionTarget(manager.createAnnotatedType(instance.getClass()));
+         InjectionTarget<Object> injectionTarget = (InjectionTarget<Object>) manager.createInjectionTarget(getAnnotatedType(instance));
          injectionTarget.inject(instance, creationalContext);
       }
+   }
+
+   private AnnotatedType<? extends Object> getAnnotatedType(final Object instance)
+   {
+      AnnotatedType<?> result = null;
+      if (classExtension.hasOverriddenType(instance.getClass()))
+      {
+         result = classExtension.getOverriddenType(instance.getClass());
+      }
+      else
+      {
+         result = manager.createAnnotatedType(instance.getClass());
+      }
+      return result;
    }
 
    @SuppressWarnings("unchecked")
