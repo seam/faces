@@ -35,7 +35,6 @@ import javax.enterprise.inject.spi.InjectionPoint;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIInput;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.inject.Inject;
@@ -65,7 +64,7 @@ public class FormValidationFieldProducer
    public void interceptComponentTree(@Observes @Before final UIValidateForm event)
    {
       validator = event;
-      form = locateForm(event);
+      form = validator.locateForm();
       components = locateAliasedComponents(event);
    }
 
@@ -122,20 +121,6 @@ public class FormValidationFieldProducer
          parameterName = ip.getMember().getName();
       }
       return parameterName;
-   }
-
-   private UIForm locateForm(final UIComponent component)
-   {
-      UIComponent parent = component.getParent();
-      while (!(parent instanceof UIForm))
-      {
-         parent = parent.getParent();
-         if ((parent == null) || (parent instanceof UIViewRoot))
-         {
-            throw new IllegalStateException("The form validator must be placed within a UIForm");
-         }
-      }
-      return (UIForm) parent;
    }
 
    public HashMap<String, UIInput> locateAliasedComponents(final UIValidateForm validator)

@@ -23,14 +23,13 @@
 package org.jboss.seam.faces.component;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.enterprise.util.AnnotationLiteral;
 import javax.faces.component.FacesComponent;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.component.UIInput;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PostValidateEvent;
 import javax.faces.event.PreValidateEvent;
@@ -40,8 +39,6 @@ import javax.faces.validator.ValidatorException;
 import org.jboss.seam.faces.event.qualifier.After;
 import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.faces.util.BeanManagerAccessor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
@@ -65,10 +62,6 @@ public class UIValidateForm extends UIInput
    private String validatorId = "";
    private String fields = "";
 
-   private final Logger log = LoggerFactory.getLogger(UIValidateForm.class);
-
-   private final Map<String, UIInput> components = Collections.synchronizedMap(new HashMap<String, UIInput>());
-
    @Override
    public String getFamily()
    {
@@ -90,12 +83,10 @@ public class UIValidateForm extends UIInput
       try
       {
          UIComponent parent = this.getParent();
-         validator.validate(context, parent, components);
+         validator.validate(context, parent, null);
       }
       catch (ValidatorException e)
       {
-         // TODO fire components invalid event
-         setComponentsInvalid();
          setValid(false);
          context.addMessage(null, e.getFacesMessage());
       }
@@ -104,16 +95,22 @@ public class UIValidateForm extends UIInput
       context.getApplication().publishEvent(context, PostValidateEvent.class, UIValidateForm.class, this);
    }
 
-   private void setComponentsInvalid()
+   /**
+    * Attempt to locate the form in which this component resides. If the
+    * component is not within a UIForm tag, throw an exception.
+    */
+   public UIForm locateForm()
    {
-      for (UIComponent comp : components.values())
+      UIComponent parent = this.getParent();
+      while (!(parent instanceof UIForm))
       {
-         if ((comp != null) && (comp instanceof UIInput))
+         if ((parent == null) || (parent instanceof UIViewRoot))
          {
-            UIInput input = (UIInput) comp;
-            input.setValid(false);
+            throw new IllegalStateException("The UIValidateForm (<s:validateForm />) component must be placed within a UIForm (<h:form>)");
          }
+         parent = parent.getParent();
       }
+      return (UIForm) parent;
    }
 
    /*
@@ -123,6 +120,7 @@ public class UIValidateForm extends UIInput
    @Override
    public void encodeAll(final FacesContext context) throws IOException
    {
+      locateForm();
    }
 
    @Override

@@ -43,9 +43,9 @@
 			Performing cross-field form validation is simple - just place the &lt;s:validateForm&gt; component
 			in the form you wish to validate, then attach your custom Validator.
 			<programlisting><![CDATA[<h:form id="locationForm">
-     <h:inputText id="city" value="#{bean.author}" />
-     <h:inputText id="state" value="#{bean.title}" />
-     <h:inputText id="zip" value="#{bean.text}" />
+     <h:inputText id="city" value="#{bean.city}" />
+     <h:inputText id="state" value="#{bean.state}" />
+     <h:inputText id="zip" value="#{bean.zip}" />
      <h:commandButton id="submit" value="Submit" action="#{bean.submitPost}" />
                   
       <s:validateForm validatorId="locationValidator" />
@@ -103,9 +103,9 @@ private ZipCode zip;</programlisting>
 			ID alias (see below.) 
 			
 			<programlisting><![CDATA[<h:form id="locationForm">
-     <h:inputText id="cityId" value="#{bean.author}" />
-     <h:inputText id="stateId" value="#{bean.title}" />
-     <h:inputText id="zip" value="#{bean.text}" />
+     <h:inputText id="cityId" value="#{bean.city}" />
+     <h:inputText id="stateId" value="#{bean.state}" />
+     <h:inputText id="zip" value="#{bean.zip}" />
      <h:commandButton id="submit" value="Submit" action="#{bean.submitPost}" />
                   
       <s:validateForm fields="city=cityId state=stateId" validatorId="locationValidator" />
