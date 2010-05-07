@@ -24,6 +24,7 @@ package org.jboss.seam.faces.component;
 
 import java.io.IOException;
 
+import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.util.AnnotationLiteral;
 import javax.faces.component.FacesComponent;
 import javax.faces.component.UIComponent;
@@ -72,7 +73,8 @@ public class UIValidateForm extends UIInput
    public void validate(final FacesContext context)
    {
       context.getApplication().publishEvent(context, PreValidateEvent.class, UIValidateForm.class, this);
-      BeanManagerAccessor.getManager().fireEvent(this, BEFORE);
+      BeanManager manager = BeanManagerAccessor.getManager();
+      manager.fireEvent(this, BEFORE);
 
       Validator validator = context.getApplication().createValidator(validatorId);
       if (validator == null)
@@ -91,7 +93,7 @@ public class UIValidateForm extends UIInput
          context.addMessage(null, e.getFacesMessage());
       }
 
-      BeanManagerAccessor.getManager().fireEvent(this, AFTER);
+      manager.fireEvent(this, AFTER);
       context.getApplication().publishEvent(context, PostValidateEvent.class, UIValidateForm.class, this);
    }
 

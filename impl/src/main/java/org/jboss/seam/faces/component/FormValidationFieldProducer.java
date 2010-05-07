@@ -59,13 +59,13 @@ public class FormValidationFieldProducer
 
    UIForm form = null;
    UIValidateForm validator = null;
-   private Map<String, UIInput> components = null;
+   private Map<String, UIInput> components;
 
    public void interceptComponentTree(@Observes @Before final UIValidateForm event)
    {
       validator = event;
       form = validator.locateForm();
-      components = locateAliasedComponents(event);
+      locateAliasedComponents(event);
    }
 
    public void cleanupComponentTree(@Observes @After final UIValidateForm event)
@@ -123,9 +123,9 @@ public class FormValidationFieldProducer
       return parameterName;
    }
 
-   public HashMap<String, UIInput> locateAliasedComponents(final UIValidateForm validator)
+   public void locateAliasedComponents(final UIValidateForm validator)
    {
-      HashMap<String, UIInput> result = new HashMap<String, UIInput>();
+      components = new HashMap<String, UIInput>();
       String fields = validator.getFields();
       if ((fields != null) && !"".equals(fields.trim()))
       {
@@ -146,7 +146,6 @@ public class FormValidationFieldProducer
             components.put(aliasFieldName, component);
          }
       }
-      return result;
    }
 
    private UIInput findComponent(final String alias, final String clientId)
