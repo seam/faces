@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -34,27 +35,31 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
-		</dependency>	
+		</dependency>
 		<dependency>
 			<artifactId>seam-faces-api</artifactId>
 			<groupId>org.jboss.seam.faces</groupId>
 			<version>${project.version}</version>
-			<scope>compile</scope> 
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
-  
-  	<profiles>
+
+	<profiles>
 		<profile>
 			<id>code-coverage</id>
 			<build>
-			  	<plugins>     
-					<plugin>      
+				<plugins>
+					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
-					  	<artifactId>emma-maven-plugin</artifactId>
+						<artifactId>emma-maven-plugin</artifactId>
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
-					  	<artifactId>maven-surefire-plugin</artifactId>
+						<artifactId>maven-surefire-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.sonatype.maven.plugin</groupId>
+						<artifactId>emma4it-maven-plugin</artifactId>
 					</plugin>
 				</plugins>
 			</build>
