@@ -23,6 +23,8 @@
 package org.jboss.seam.faces.component;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.util.AnnotationLiteral;
@@ -62,6 +64,7 @@ public class UIValidateForm extends UIInput
 
    private String validatorId = "";
    private String fields = "";
+   private Map<String, UIInput> components = new HashMap<String, UIInput>();
 
    @Override
    public String getFamily()
@@ -85,11 +88,17 @@ public class UIValidateForm extends UIInput
       try
       {
          UIComponent parent = this.getParent();
-         validator.validate(context, parent, null);
+         validator.validate(context, parent, components);
       }
       catch (ValidatorException e)
       {
          setValid(false);
+         for (UIInput comp : components.values())
+         {
+            comp.setValid(false);
+            // TODO Put this back when attributes can control it
+            // context.addMessage(comp.getClientId(), e.getFacesMessage());
+         }
          context.addMessage(null, e.getFacesMessage());
       }
 
@@ -162,5 +171,13 @@ public class UIValidateForm extends UIInput
    public void setValidatorId(final String validatorId)
    {
       this.validatorId = validatorId;
+   }
+
+   /**
+    * @param components
+    */
+   public void setComponents(final Map<String, UIInput> components)
+   {
+      this.components = components;
    }
 }

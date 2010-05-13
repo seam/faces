@@ -16,6 +16,10 @@
 		<phase-listener>org.jboss.seam.faces.context.FlashScopedContext</phase-listener>
 		<phase-listener>org.jboss.seam.faces.event.DelegatingPhaseListener</phase-listener>
 	</lifecycle>
+	
+	<factory>
+		<external-context-factory>org.jboss.seam.faces.environment.SeamExternalContextFactory</external-context-factory>
+	</factory>
 
 	<application>
 		<system-event-listener>

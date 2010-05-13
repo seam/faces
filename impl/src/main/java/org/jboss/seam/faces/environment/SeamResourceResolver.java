@@ -19,28 +19,51 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.seam.faces;
+
+package org.jboss.seam.faces.environment;
+
+import java.net.URL;
+
+import javax.faces.view.facelets.ResourceResolver;
 
 /**
+ * Allow resolution of classpath resources.
  * 
- * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
+ * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
+ * 
  */
-public class SeamFacesException extends RuntimeException
+public class SeamResourceResolver extends ResourceResolver
 {
-   private static final long serialVersionUID = -610838646516706170L;
+   private final ResourceResolver parent;
 
-   public SeamFacesException()
+   public SeamResourceResolver()
    {
+      this.parent = null;
    }
 
-   public SeamFacesException(final String message)
+   public SeamResourceResolver(final ResourceResolver parent)
    {
-      super(message);
+      this.parent = parent;
    }
 
-   public SeamFacesException(final String message, final Exception e)
+   @Override
+   public URL resolveUrl(final String path)
    {
-      super(message, e);
-   }
+      URL result = null;
+      if (path != null)
+      {
+         String canonicalPath = path;
+         if (path.startsWith("/"))
+         {
+            canonicalPath = path.substring(1);
+         }
 
+         result = Thread.currentThread().getContextClassLoader().getResource(canonicalPath);
+         if ((result == null) && (parent != null))
+         {
+            result = parent.resolveUrl(path);
+         }
+      }
+      return result;
+   }
 }

@@ -66,6 +66,7 @@ public class FormValidationFieldProducer
       validator = event;
       form = validator.locateForm();
       locateAliasedComponents(event);
+      event.setComponents(components);
    }
 
    public void cleanupComponentTree(@Observes @After final UIValidateForm event)
