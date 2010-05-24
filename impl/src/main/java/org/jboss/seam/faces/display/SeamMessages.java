@@ -23,56 +23,63 @@
 package org.jboss.seam.faces.display;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Observes;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.event.PhaseEvent;
+import javax.inject.Inject;
 
 import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
+import org.jboss.seam.international.status.Level;
+import org.jboss.seam.international.status.Message;
+import org.jboss.seam.international.status.Messages;
 
 /**
+ * Convert Seam Messages into FacesMessages <br>
+ * TODO perform EL evaluation.
+ * 
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  * 
  */
 @SessionScoped
-public class SeamMessages implements Messages, Serializable
+public class SeamMessages implements Serializable
 {
    private static final long serialVersionUID = -2908193057765795662L;
-   private final Set<Message> messages = Collections.synchronizedSet(new HashSet<Message>());
+
+   @Inject
+   Messages sm;
 
    @SuppressWarnings("unused")
    private void convert(@Observes @Before @RenderResponse final PhaseEvent event)
    {
-      for (Message m : messages)
+      for (Message m : sm.getAll())
       {
-         event.getFacesContext().addMessage(m.getClientId(), new FacesMessage(m.getLevel().getSeverity(), m.getMessage(), m.getDetails()));
+         event.getFacesContext().addMessage(m.getTargets(), new FacesMessage(getSeverity(m.getLevel()), m.getText(), null));
       }
-      clear();
+      sm.clear();
    }
 
-   public void clear()
+   private Severity getSeverity(final Level level)
    {
-      messages.clear();
-   }
-
-   public Message add(final Level level)
-   {
-      Message result = new SeamMessage(level);
-      messages.add(result);
-      return result;
-   }
-
-   public Set<Message> getAll()
-   {
-      Set<Message> result;
-      synchronized (messages)
+      Severity result = FacesMessage.SEVERITY_INFO;
+      switch (level)
       {
-         result = Collections.unmodifiableSet(messages);
+      case INFO:
+         break;
+      case WARN:
+         result = FacesMessage.SEVERITY_WARN;
+         break;
+      case ERROR:
+         result = FacesMessage.SEVERITY_ERROR;
+         break;
+      case FATAL:
+         result = FacesMessage.SEVERITY_FATAL;
+         break;
+      default:
+         break;
       }
       return result;
    }

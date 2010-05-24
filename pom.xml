@@ -30,6 +30,7 @@
 	</modules>
 
 	<properties>
+		<seam.i18n.version>3.0.0-SNAPSHOT</seam.i18n.version>
 		<arquillian.version>1.0.0.Alpha1</arquillian.version>
 		<jsfmock.version>1.0.0</jsfmock.version>
 		<jsfunit.version>1.2.0.Final</jsfunit.version>
@@ -54,6 +55,11 @@
 	</dependencyManagement>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.jboss.seam.international</groupId>
+			<artifactId>seam-international</artifactId>
+			<version>${seam.i18n.version}</version>
+		</dependency>
 
 		<!-- Environment Dependencies -->
 		<dependency>
