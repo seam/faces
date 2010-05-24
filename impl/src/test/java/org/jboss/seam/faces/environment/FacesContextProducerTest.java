@@ -18,7 +18,7 @@
  * License along with this software; if not, write to the Free
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
- */ 
+ */
 package org.jboss.seam.faces.environment;
 
 import javax.enterprise.context.ContextNotActiveException;
@@ -33,7 +33,7 @@ import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ArchivePaths;
-import org.jboss.shrinkwrap.api.Archives;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
 import org.junit.Test;
@@ -41,8 +41,7 @@ import org.junit.runner.RunWith;
 
 /**
  * Verify that the FacesContextProducer produces the same FacesContext as
- * returned by FacesContext#getCurrentInstance() and by the CDI producer
- * method.
+ * returned by FacesContext#getCurrentInstance() and by the CDI producer method.
  * 
  * @author Dan Allen
  */
@@ -52,7 +51,7 @@ public class FacesContextProducerTest
    @Deployment
    public static Archive<?> createTestArchive()
    {
-      return Archives.create("test.jar", JavaArchive.class).addClass(FacesContextProducer.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+      return ShrinkWrap.create("test.jar", JavaArchive.class).addClass(FacesContextProducer.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
    }
 
    @Inject

@@ -48,7 +48,7 @@ import javax.inject.Inject;
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ArchivePaths;
-import org.jboss.shrinkwrap.api.Archives;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
 import org.jboss.test.faces.mock.application.MockApplication;
@@ -69,7 +69,7 @@ public class SystemEventBridgeTest
    @Deployment
    public static JavaArchive createTestArchive()
    {
-      return Archives.create("test.jar", JavaArchive.class).addClasses(SystemEventObserver.class, SystemEventBridge.class, BeanManagerAware.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+      return ShrinkWrap.create("test.jar", JavaArchive.class).addClasses(SystemEventObserver.class, SystemEventBridge.class, BeanManagerAware.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
    }
 
    @Inject
@@ -156,7 +156,7 @@ public class SystemEventBridgeTest
    {
       fireAndAssert("11", new PostValidateEvent(component));
    }
-   
+
    @Test
    public void testObservePostAddToView()
    {
@@ -167,19 +167,19 @@ public class SystemEventBridgeTest
    public void testObservePostAddToViewComponent()
    {
       fireAndAssert("13", new PostAddToViewEvent(component));
-   }   
-   
+   }
+
    @Test
    public void testObservePostConstructViewMap()
    {
       fireAndAssert("14", new PostConstructViewMapEvent(uiViewRoot));
    }
-   
+
    @Test
    public void testObservePostConstructSpecificViewMap()
    {
       fireAndAssert("14a", new PostConstructViewMapEvent(uiViewRoot));
-   }   
+   }
 
    @Test
    public void testObservePostRestoreState()
@@ -191,20 +191,20 @@ public class SystemEventBridgeTest
    public void testObservePostRestoreStateComponent()
    {
       fireAndAssert("16", new PostRestoreStateEvent(component));
-   }  
-   
+   }
+
    @Test
    public void testObservePreDestroyViewMap()
    {
       fireAndAssert("17", new PreDestroyViewMapEvent(uiViewRoot));
-   }  
-   
+   }
+
    @Test
    public void testObservePreDestroySpecificViewMap()
    {
       fireAndAssert("17a", new PreDestroyViewMapEvent(uiViewRoot));
-   }  
-   
+   }
+
    @Test
    public void testObservePreRemoveFromView()
    {
@@ -215,8 +215,8 @@ public class SystemEventBridgeTest
    public void testObservePreRemoveFromViewComponent()
    {
       fireAndAssert("19", new PreRemoveFromViewEvent(component));
-   }    
-   
+   }
+
    @Test
    public void testObservePreRenderComponent()
    {
@@ -227,25 +227,25 @@ public class SystemEventBridgeTest
    public void testObservePreRenderComponentComponent()
    {
       fireAndAssert("21", new PreRenderComponentEvent(component));
-   }    
-   
+   }
+
    @Test
    public void testObservePreRenderView()
    {
       fireAndAssert("22", new PreRenderViewEvent(uiViewRoot));
-   }    
-   
+   }
+
    @Test
    public void testObservePreRenderSpecificView()
    {
       fireAndAssert("23", new PreRenderViewEvent(uiViewRoot));
-   }    
-   
-   
-   private void fireAndAssert(String caseId, SystemEvent... events)
+   }
+
+   private void fireAndAssert(final String caseId, final SystemEvent... events)
    {
       observer.reset();
-      for (SystemEvent e : events) {
+      for (SystemEvent e : events)
+      {
          listener.processEvent(e);
       }
       observer.assertObservations(caseId, events);

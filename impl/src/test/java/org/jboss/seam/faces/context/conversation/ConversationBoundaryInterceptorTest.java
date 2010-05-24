@@ -18,7 +18,7 @@
  * License along with this software; if not, write to the Free
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
- */ 
+ */
 package org.jboss.seam.faces.context.conversation;
 
 import static org.junit.Assert.assertEquals;
@@ -33,7 +33,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.faces.MockConversation;
 import org.jboss.seam.faces.MockLogger;
 import org.jboss.shrinkwrap.api.ArchivePaths;
-import org.jboss.shrinkwrap.api.Archives;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,7 +48,7 @@ public class ConversationBoundaryInterceptorTest
    @Deployment
    public static JavaArchive createTestArchive()
    {
-      return Archives.create("test.jar", JavaArchive.class).addClasses(ConversationBoundaryInterceptor.class, ConversationalBean.class, MockLogger.class, MockConversation.class).addManifestResource(ConversationBoundaryInterceptorTest.class.getPackage().getName().replaceAll("\\.", "/") + "/ConversationBoundaryInterceptorTest-beans.xml", ArchivePaths.create("beans.xml"));
+      return ShrinkWrap.create("test.jar", JavaArchive.class).addClasses(ConversationBoundaryInterceptor.class, ConversationalBean.class, MockLogger.class, MockConversation.class).addManifestResource(ConversationBoundaryInterceptorTest.class.getPackage().getName().replaceAll("\\.", "/") + "/ConversationBoundaryInterceptorTest-beans.xml", ArchivePaths.create("beans.xml"));
    }
 
    @Inject

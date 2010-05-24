@@ -18,7 +18,7 @@
  * License along with this software; if not, write to the Free
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
- */ 
+ */
 package org.jboss.seam.faces.event;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.faces.MockLogger;
 import org.jboss.shrinkwrap.api.ArchivePaths;
-import org.jboss.shrinkwrap.api.Archives;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
 import org.jboss.test.faces.mock.context.MockFacesContext;
@@ -44,7 +44,7 @@ import org.junit.runner.RunWith;
 /**
  * 
  * @author Nicklas Karlsson
- *
+ * 
  */
 @RunWith(Arquillian.class)
 public class PhaseEventBridgeTest
@@ -66,7 +66,7 @@ public class PhaseEventBridgeTest
    @Deployment
    public static JavaArchive createTestArchive()
    {
-      return Archives.create("test.jar", JavaArchive.class).addClasses(MockPhaseEventObserver.class, PhaseEventBridge.class, BeanManagerAware.class, MockLogger.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+      return ShrinkWrap.create("test.jar", JavaArchive.class).addClasses(MockPhaseEventObserver.class, PhaseEventBridge.class, BeanManagerAware.class, MockLogger.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
    }
 
    @Inject
@@ -88,7 +88,7 @@ public class PhaseEventBridgeTest
       fireBeforePhases(ALL_PHASES);
    }
 
-   private void fireBeforePhases(List<PhaseId> phases)
+   private void fireBeforePhases(final List<PhaseId> phases)
    {
       for (PhaseId phaseId : phases)
       {
@@ -96,7 +96,7 @@ public class PhaseEventBridgeTest
       }
    }
 
-   private void fireBeforePhase(PhaseId phaseId)
+   private void fireBeforePhase(final PhaseId phaseId)
    {
       phaseEventBridge.beforePhase(new PhaseEvent(facesContext, phaseId, lifecycle));
    }
@@ -106,7 +106,7 @@ public class PhaseEventBridgeTest
       fireAfterPhases(ALL_PHASES);
    }
 
-   private void fireAfterPhases(List<PhaseId> phases)
+   private void fireAfterPhases(final List<PhaseId> phases)
    {
       for (PhaseId phaseId : phases)
       {
@@ -114,7 +114,7 @@ public class PhaseEventBridgeTest
       }
    }
 
-   private void fireAfterPhase(PhaseId phaseId)
+   private void fireAfterPhase(final PhaseId phaseId)
    {
       phaseEventBridge.afterPhase(new PhaseEvent(facesContext, phaseId, lifecycle));
    }

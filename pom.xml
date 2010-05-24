@@ -31,15 +31,17 @@
 
 	<properties>
 		<seam.i18n.version>3.0.0-SNAPSHOT</seam.i18n.version>
-		<arquillian.version>1.0.0.Alpha1</arquillian.version>
-		<jsfmock.version>1.0.0</jsfmock.version>
+		<weldx.version>1.0.0.Alpha2</weldx.version>
+
+		<arquillian.version>1.0.0.Alpha2</arquillian.version>
 		<jsfunit.version>1.2.0.Final</jsfunit.version>
-		<weldx.version>1.0.0-SNAPSHOT</weldx.version>
+		<jsfmock.version>1.0.0</jsfmock.version>
 		<weld.api.version>1.0-SP1</weld.api.version>
+		<weld.core.version>1.0.1-Final</weld.core.version>
 		<junit.version>4.8.1</junit.version>
+		<slf4j.version>1.5.10</slf4j.version>
 		<emma.maven.plugin.version>1.0-alpha-2</emma.maven.plugin.version>
 		<emma4it.maven.plugin.version>1.3</emma4it.maven.plugin.version>
-		<slf4j.version>1.5.10</slf4j.version>
 	</properties>
 
 	<dependencyManagement>
@@ -53,6 +55,14 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<repositories>
+		<repository>
+			<id>jboss-public-repository-group</id>
+			<name>JBoss Public Maven Repository Group</name>
+			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -115,6 +125,19 @@
 			<version>${arquillian.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.jboss.weld</groupId>
+			<artifactId>weld-core</artifactId>
+			<version>${weld.core.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${slf4j.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.jboss.test-jsf</groupId>
 			<artifactId>jsf-mock</artifactId>
@@ -247,10 +270,8 @@
 	</developers>
 
 	<scm>
-		<connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/faces/trunk
-		</connection>
-		<developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/faces/trunk
-		</developerConnection>
+		<connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/faces/trunk </connection>
+		<developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/faces/trunk </developerConnection>
 		<url>http://fisheye.jboss.org/browse/Seam/modules/faces/trunk</url>
 	</scm>
 </project>
