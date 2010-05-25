@@ -41,7 +41,7 @@ import javax.faces.validator.ValidatorException;
 
 import org.jboss.seam.faces.event.qualifier.After;
 import org.jboss.seam.faces.event.qualifier.Before;
-import org.jboss.seam.faces.util.BeanManagerAccessor;
+import org.jboss.weld.extensions.beanManager.BeanManagerAccessor;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>

@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.seam.faces.display;
+package org.jboss.seam.faces.status;
 
 import java.io.Serializable;
 
@@ -38,28 +38,28 @@ import org.jboss.seam.international.status.Message;
 import org.jboss.seam.international.status.Messages;
 
 /**
- * Convert Seam Messages into FacesMessages <br>
+ * Convert Seam Messages into FacesMessages before RenderResponse phase.<br>
  * TODO perform EL evaluation.
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  * 
  */
 @SessionScoped
-public class SeamMessages implements Serializable
+public class MessagesAdapter implements Serializable
 {
    private static final long serialVersionUID = -2908193057765795662L;
 
    @Inject
-   Messages sm;
+   private Messages messages;
 
    @SuppressWarnings("unused")
    private void convert(@Observes @Before @RenderResponse final PhaseEvent event)
    {
-      for (Message m : sm.getAll())
+      for (Message m : messages.getAll())
       {
          event.getFacesContext().addMessage(m.getTargets(), new FacesMessage(getSeverity(m.getLevel()), m.getText(), null));
       }
-      sm.clear();
+      messages.clear();
    }
 
    private Severity getSeverity(final Level level)

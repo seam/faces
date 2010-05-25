@@ -8,9 +8,4 @@
 		<listener-class>org.jboss.seam.faces.beanManager.BeanManagerServletContextListener</listener-class>
 	</listener>
 
-	<context-param>
-		<param-name>javax.faces.FACELETS_RESOURCE_RESOLVER</param-name>
-		<param-value>org.jboss.seam.faces.environment.SeamResourceResolver</param-value>
-	</context-param>
-
 </web-fragment>

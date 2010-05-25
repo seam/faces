@@ -47,7 +47,7 @@ public class BeanManagerUtils
    private BeanManager manager;
 
    @Inject
-   FormValidationTypeOverrideExtension classExtension;
+   private FormValidationTypeOverrideExtension classExtension;
 
    /**
     * Perform @{@link Inject} on an object as if it were a bean managed by CDI.
@@ -79,6 +79,9 @@ public class BeanManagerUtils
       return result;
    }
 
+   /**
+    * Determine if a bean is {@link Dependent} scoped.
+    */
    @SuppressWarnings("unchecked")
    public <T> boolean isDependentScoped(final Class<T> type)
    {
@@ -100,14 +103,17 @@ public class BeanManagerUtils
    @SuppressWarnings("unchecked")
    public <T> T getContextualInstance(final Class<T> type)
    {
+      T result = null;
       Bean<T> bean = (Bean<T>) manager.resolve(manager.getBeans(type));
       if (bean != null)
       {
          CreationalContext<T> context = manager.createCreationalContext(bean);
-         T result = (T) manager.getReference(bean, type, context);
-         return result;
+         if (context != null)
+         {
+            result = (T) manager.getReference(bean, type, context);
+         }
       }
-      return null;
+      return result;
    }
 
    /**
@@ -123,7 +129,10 @@ public class BeanManagerUtils
       for (Bean<?> bean : manager.getBeans(type))
       {
          CreationalContext<T> context = (CreationalContext<T>) manager.createCreationalContext(bean);
-         result.add((T) manager.getReference(bean, type, context));
+         if (context != null)
+         {
+            result.add((T) manager.getReference(bean, type, context));
+         }
       }
       return result;
    }
