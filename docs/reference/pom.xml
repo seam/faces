@@ -23,6 +23,7 @@
 	</pluginRepositories>
 
 	<build>
+      <defaultGoal>jdocbook:generate</defaultGoal>
 		<plugins>
 			<plugin>
 				<groupId>org.jboss.maven.plugins</groupId>
