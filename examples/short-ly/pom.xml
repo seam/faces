@@ -100,9 +100,9 @@
 				<version>3.0</version>
 				<configuration>
 					<goalPrefix>glassfish</goalPrefix>
-					<app>test.war</app>
+					<app>${project.build.directory}/${build.finalName}.war</app>
 					<port>8080</port>
-					<contextRoot>test</contextRoot>
+					<contextRoot>${build.finalName}</contextRoot>
 				</configuration>
 				<executions>
 					<execution>

@@ -39,6 +39,8 @@ import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
+import org.jboss.test.faces.mock.context.MockFacesContext;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -58,8 +60,16 @@ public class MessagesAdapterTest extends PhaseTestBase
    @Inject
    Messages messages;
 
+   @Before
+   public void before()
+   {
+      facesContext = new MockFacesContext();
+      facesContext.getControl().resetToNice();
+      facesContext.getControl().replay();
+   }
+
    @Test
-   public void testBeforeRenderResponseObserver()
+   public void testMessagesAreTransferredBeforeRenderResponse()
    {
       messages.add(messages.info("Hey! This is a message"));
       assertEquals(1, messages.getAll().size());
@@ -70,4 +80,15 @@ public class MessagesAdapterTest extends PhaseTestBase
       // assertNotNull(facesContext.getMessages());
    }
 
+   @Test
+   public void testMessageTargetsTransferredToFacesMessageComponentId()
+   {
+      messages.add(messages.info("Hey! This is a message").targets("component"));
+      assertEquals(1, messages.getAll().size());
+
+      fireBeforePhase(PhaseId.RENDER_RESPONSE);
+
+      assertTrue(messages.getAll().isEmpty());
+      // assertNotNull(facesContext.getMessages("component"));
+   }
 }

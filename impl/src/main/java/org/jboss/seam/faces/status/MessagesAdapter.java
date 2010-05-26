@@ -24,7 +24,6 @@ package org.jboss.seam.faces.status;
 
 import java.io.Serializable;
 
-import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Observes;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
@@ -44,7 +43,6 @@ import org.jboss.seam.international.status.Messages;
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  * 
  */
-@SessionScoped
 public class MessagesAdapter implements Serializable
 {
    private static final long serialVersionUID = -2908193057765795662L;
@@ -53,7 +51,7 @@ public class MessagesAdapter implements Serializable
    private Messages messages;
 
    @SuppressWarnings("unused")
-   private void convert(@Observes @Before @RenderResponse final PhaseEvent event)
+   void convert(@Observes @Before @RenderResponse final PhaseEvent event)
    {
       for (Message m : messages.getAll())
       {

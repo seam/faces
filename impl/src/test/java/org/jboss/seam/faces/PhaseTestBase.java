@@ -41,7 +41,7 @@ public class PhaseTestBase
    @Inject
    PhaseEventBridge phaseEventBridge;
 
-   protected final MockFacesContext facesContext = new MockFacesContext();
+   protected MockFacesContext facesContext = new MockFacesContext();
    protected final MockLifecycle lifecycle = new MockLifecycle();
 
    static List<PhaseId> ALL_PHASES = new ArrayList<PhaseId>()
