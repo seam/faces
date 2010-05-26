@@ -21,22 +21,17 @@
  */
 package org.jboss.seam.faces.event;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.inject.Inject;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.seam.faces.PhaseTestBase;
 import org.jboss.seam.faces.MockLogger;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
-import org.jboss.test.faces.mock.context.MockFacesContext;
-import org.jboss.test.faces.mock.lifecycle.MockLifecycle;
 import org.jboss.weld.extensions.beanManager.BeanManagerAware;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,21 +42,8 @@ import org.junit.runner.RunWith;
  * 
  */
 @RunWith(Arquillian.class)
-public class PhaseEventBridgeTest
+public class PhaseEventBridgeTest extends PhaseTestBase
 {
-   private static List<PhaseId> ALL_PHASES = new ArrayList<PhaseId>()
-   {
-      private static final long serialVersionUID = 1L;
-
-      {
-         add(PhaseId.APPLY_REQUEST_VALUES);
-         add(PhaseId.INVOKE_APPLICATION);
-         add(PhaseId.PROCESS_VALIDATIONS);
-         add(PhaseId.RENDER_RESPONSE);
-         add(PhaseId.RESTORE_VIEW);
-         add(PhaseId.UPDATE_MODEL_VALUES);
-      }
-   };
 
    @Deployment
    public static JavaArchive createTestArchive()
@@ -70,54 +52,7 @@ public class PhaseEventBridgeTest
    }
 
    @Inject
-   PhaseEventBridge phaseEventBridge;
-   @Inject
    MockPhaseEventObserver observer;
-
-   private final MockFacesContext facesContext = new MockFacesContext();
-   private final MockLifecycle lifecycle = new MockLifecycle();
-
-   private void fireAllPhases()
-   {
-      fireAllBeforePhases();
-      fireAllAfterPhases();
-   }
-
-   private void fireAllBeforePhases()
-   {
-      fireBeforePhases(ALL_PHASES);
-   }
-
-   private void fireBeforePhases(final List<PhaseId> phases)
-   {
-      for (PhaseId phaseId : phases)
-      {
-         fireBeforePhase(phaseId);
-      }
-   }
-
-   private void fireBeforePhase(final PhaseId phaseId)
-   {
-      phaseEventBridge.beforePhase(new PhaseEvent(facesContext, phaseId, lifecycle));
-   }
-
-   private void fireAllAfterPhases()
-   {
-      fireAfterPhases(ALL_PHASES);
-   }
-
-   private void fireAfterPhases(final List<PhaseId> phases)
-   {
-      for (PhaseId phaseId : phases)
-      {
-         fireAfterPhase(phaseId);
-      }
-   }
-
-   private void fireAfterPhase(final PhaseId phaseId)
-   {
-      phaseEventBridge.afterPhase(new PhaseEvent(facesContext, phaseId, lifecycle));
-   }
 
    @Test
    public void testBeforeRenderResponseObserver()
