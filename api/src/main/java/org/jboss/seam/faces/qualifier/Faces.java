@@ -19,44 +19,34 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.seam.faces.international;
+package org.jboss.seam.faces.qualifier;
 
-import java.util.Locale;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
 import javax.enterprise.inject.Produces;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-
-import org.jboss.seam.faces.qualifier.Faces;
+import javax.inject.Qualifier;
 
 /**
- * A specialized version of the LocaleProducer that returns the Locale
- * associated with the current UIViewRoot or, if the UIViewRoot has not been
- * established, uses the ViewHandler to calculate the Locale.
+ * A @{@link Qualifier} for an object or @{@link Produces} method that depends
+ * on the presence of an active JSF life-cycle in order to be injected
+ * successfully. This means that JSF must currently be servicing an active
+ * Request in order for an object qualified with <b>this</b> annotation in order
+ * to be available.
  * 
- * @author Dan Allen
+ * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
+ * 
  */
-public class FacesLocaleResolver // extends LocaleResolver
+@Qualifier
+@Target( { TYPE, METHOD, FIELD, PARAMETER })
+@Retention(RUNTIME)
+public @interface Faces
 {
-   @Inject
-   FacesContext facesContext;
 
-   public boolean isActive()
-   {
-      return (facesContext != null) && (facesContext.getCurrentPhaseId() != null);
-   }
-
-   @Produces
-   @Faces
-   public Locale getLocale()
-   {
-      if (facesContext.getViewRoot() != null)
-      {
-         return facesContext.getViewRoot().getLocale();
-      }
-      else
-      {
-         return facesContext.getApplication().getViewHandler().calculateLocale(facesContext);
-      }
-   }
 }
