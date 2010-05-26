@@ -80,7 +80,7 @@ public class SystemEventBridge implements SystemEventListener
       beanManager.fireEvent(payload, qualifiers);
    }
 
-   private Annotation[] getQualifiers(SystemEvent e)
+   private Annotation[] getQualifiers(final SystemEvent e)
    {
       if (isViewEvent(e))
       {
@@ -98,38 +98,47 @@ public class SystemEventBridge implements SystemEventListener
       }
    }
 
-   private boolean isViewEvent(SystemEvent e)
+   private boolean isViewEvent(final SystemEvent e)
    {
       return (e instanceof PreRenderViewEvent) || (e instanceof PostConstructViewMapEvent) || (e instanceof PreDestroyViewMapEvent);
    }
 
    private class ComponentLiteral extends AnnotationLiteral<Component> implements Component
    {
-      private final String value;
+      private static final long serialVersionUID = -180390717920002323L;
+
+      private String value = "";
 
       public String value()
       {
          return value;
       }
 
-      public ComponentLiteral(String value)
+      public ComponentLiteral(final String value)
       {
-         this.value = value;
+         if (value != null)
+         {
+            this.value = value;
+         }
       }
    }
 
    private class ViewLiteral extends AnnotationLiteral<View> implements View
    {
-      private final String value;
+      private static final long serialVersionUID = -9101103836360031181L;
+      private String value = "";
 
       public String value()
       {
          return value;
       }
 
-      public ViewLiteral(String value)
+      public ViewLiteral(final String value)
       {
-         this.value = value;
+         if (value != null)
+         {
+            this.value = value;
+         }
       }
    }
 
