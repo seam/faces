@@ -248,7 +248,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
     * Returns the value which dictates the JSF lifecycle phase in which the
     * action is invoked. If the value of this attribute is
     * <literal>true</literal>, the action will be invoked in the Apply Request
-    * Values phase. If the value of this attribute is <literal>true</literal>,
+    * Values phase. If the value of this attribute is <literal>false</literal>,
     * the default, the action will be invoked in the Invoke Application Phase.
     */
    public boolean isImmediate()
@@ -377,7 +377,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2
 
    /**
     * Returns a boolean value that controls whether the action is invoked during
-    * faces (postback) request.
+    * faces (postback) request. The default is false.
     */
    public boolean isOnPostback()
    {
