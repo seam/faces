@@ -295,7 +295,7 @@ private String sectorTwo;]]></programlisting>
 	
 			<para>
 				You can also just specify the phase directly, using the name of the phase constant in the
-				<literal>PhaseId</literal> class.
+				<literal>PhaseId</literal> class (the case does not matter).
 			</para>
 	
 			<programlisting role="XML"><![CDATA[<s:viewAction action="#{sessionManager.validateSession}" phase="APPLY_REQUEST_VALUES"/>]]></programlisting>
@@ -319,6 +319,10 @@ private String sectorTwo;]]></programlisting>
 					</listitem>
 				</itemizedlist>
 			</tip>
+
+         <para>
+            If the phase is set, it takes precedence over the immediate flag.
+         </para>
 		</section>
 
 		<section>
