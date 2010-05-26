@@ -67,7 +67,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.jboss.seam.international</groupId>
-			<artifactId>seam-international</artifactId>
+			<artifactId>seam-international-api</artifactId>
 			<version>${seam.i18n.version}</version>
 		</dependency>
 

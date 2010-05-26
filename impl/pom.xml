@@ -43,6 +43,11 @@
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.jboss.seam.international</groupId>
+			<artifactId>seam-international</artifactId>
+			<version>${seam.i18n.version}</version>
+		</dependency>
 	</dependencies>
 
 	<profiles>
