@@ -1,39 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
-   "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" []>
+	"http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" []>
 <chapter id="components">
 	<title>Seam Faces Components</title>
-	<para>While Seam Faces does not provide layout components or other UI-design related features, it does provide
-	functional components designed to make developing JSF applications easier, more functional, more scalable, and
-	more practical.</para>
 	<para>
-	For layout and design components, take a look at <ulink url="http://jboss.org/richfaces">RichFaces</ulink>, a 
-	UI component library specifically tailored for easy, rich web-interfaces.
+		While Seam Faces does not provide layout components or other UI-design related features, it does provide
+		functional components designed to make developing JSF applications easier, more functional, more
+		scalable, and more practical.
 	</para>
+
+	<para>
+		For layout and design components, take a look at <ulink
+		url="http://jboss.org/richfaces">RichFaces</ulink>, a UI component library specifically tailored for
+		easy, rich web-interfaces.
+	</para>
+
 	<section id="basicUsage">
 		<title>Introduction</title>
 		<para>
 			In order to use the Seam Faces components, you must first add the namespace to your view file, 
 			just like the standard JSF component libraries.
+		</para>
 			
-			<programlisting><![CDATA[<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:s="http://jboss.com/products/seam/faces"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+		<programlisting role="XML"><![CDATA[<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:s="http://jboss.org/seam/faces"
+   xmlns:ui="http://java.sun.com/jsf/facelets">
       
-      <h1>This is a view using Seam Faces</h1>
-      <h:outputText value="#{bean.sayHello()}" />
+   <h1>Welcome to Seam Faces!</h1>
+   <p>
+      This view imports the Seam Faces component library.
+      Read on to discover what components it provides.
+	</p>
       
 </html>]]></programlisting>
-			<tip>
-				<para>
-					All Seam Faces components use the same namespace: 
-					<literal>http://jboss.com/products/seam/faces</literal>
-				</para>
-			</tip>
-		</para>
+		<tip>
+			<para>
+				All Seam Faces components use the following namespace: 
+				<literal>http://jboss.org/seam/faces</literal>
+			</para>
+		</tip>
+
 	</section>
+
 	<section id="validateForm">
 		<title>&lt;s:validateForm&gt;</title>
 		<para>
@@ -42,19 +52,22 @@
 			
 			Performing cross-field form validation is simple - just place the &lt;s:validateForm&gt; component
 			in the form you wish to validate, then attach your custom Validator.
-			<programlisting><![CDATA[<h:form id="locationForm">
-     <h:inputText id="city" value="#{bean.city}" />
-     <h:inputText id="state" value="#{bean.state}" />
-     <h:inputText id="zip" value="#{bean.zip}" />
-     <h:commandButton id="submit" value="Submit" action="#{bean.submitPost}" />
+		</para>
+
+		<programlisting role="XML"><![CDATA[<h:form id="locationForm">
+   <h:inputText id="city" value="#{bean.city}" />
+   <h:inputText id="state" value="#{bean.state}" />
+   <h:inputText id="zip" value="#{bean.zip}" />
+   <h:commandButton id="submit" value="Submit" action="#{bean.submitPost}" />
                   
-      <s:validateForm validatorId="locationValidator" />
+   <s:validateForm validatorId="locationValidator" />
 </h:form>]]></programlisting> 
 
-
-
+		<para>
 			The corresponding Validator for the example above would look something like this:
-			<programlisting>@FacesValidator("locationValidator")
+		</para>
+
+		<programlisting role="JAVA"><![CDATA[@FacesValidator("locationValidator")
 public class LocationValidator implements Validator
 {
    @Inject
@@ -73,77 +86,285 @@ public class LocationValidator implements Validator
    private ZipCode zip;
 
    @Override
-   public void validate(final FacesContext context, final UIComponent comp, final Object values) throws ValidatorException
+   public void validate(final FacesContext context, final UIComponent comp, final Object values)
+         throws ValidatorException
    {
       if(!directory.exists(city, state, zip))
       {
-         throw new ValidatorException(new FacesMessage("Sorry, that location is not in our database. Please try again."));
+         throw new ValidatorException(
+            new FacesMessage("Sorry, that location is not in our database. Please try again."));
       }
    }
-}</programlisting>
-		</para>
+}]]></programlisting>
 		
-			<tip>
-				<para>
-		You may inject the correct type directly.
-				<programlisting>@Inject
+		<tip>
+			<para>
+				You may inject the correct type directly.
+				<programlisting><![CDATA[@Inject
 @InputField
-private ZipCode zip;</programlisting>
-				</para>
-			</tip>
+private ZipCode zip;]]></programlisting>
+			</para>
+		</tip>
 		
 		<para>
 			Notice that the IDs of the inputText components match the IDs of your Validator 
 			@InputFields; each @Inject @InputField member will be injected with the value of the form input field
 			who's ID matches the name of the variable.
 		</para>
+
 		<para>
 			In other words - the name of the @InputField annotated member variable will automatically
 			be matched to the ID of the input component, unless overridden by using a field
 			ID alias (see below.) 
+		</para>
 			
-			<programlisting><![CDATA[<h:form id="locationForm">
-     <h:inputText id="cityId" value="#{bean.city}" />
-     <h:inputText id="stateId" value="#{bean.state}" />
-     <h:inputText id="zip" value="#{bean.zip}" />
-     <h:commandButton id="submit" value="Submit" action="#{bean.submitPost}" />
+		<programlisting role="XML"><![CDATA[<h:form id="locationForm">
+   <h:inputText id="cityId" value="#{bean.city}" />
+   <h:inputText id="stateId" value="#{bean.state}" />
+   <h:inputText id="zip" value="#{bean.zip}" />
+   <h:commandButton id="submit" value="Submit" action="#{bean.submitPost}" />
                   
-      <s:validateForm fields="city=cityId state=stateId" validatorId="locationValidator" />
+   <s:validateForm fields="city=cityId state=stateId" validatorId="locationValidator" />
 </h:form>]]></programlisting>
 
+		<para>
 			Notice that "zip" will still be referenced normally; you need only
 			specify aliases for fields that differ in name from the Validator @InputFields.
-			
 		</para>
-		<para>
 
-			<tip>
-				<para>
-					<literal>Using @InputField("customID")</literal> with an ID override can also be used to 
-					specify a custom ID, instead of using the default: the name of the field. This gives you
-					the ability to change the name of the private field, without worrying about changing the
-					name of input fields in the View itself.
-				<programlisting>@Inject
+		<tip>
+			<para>
+				<literal>Using @InputField("customID")</literal> with an ID override can also be used to specify a
+				custom ID, instead of using the default: the name of the field. This gives you the ability to
+				change the name of the private field, without worrying about changing the name of input fields in
+				the View itself.
+				<programlisting><![CDATA[@Inject
 @InputField("state")
-private String sectorTwo;</programlisting>
-				</para>
-			</tip>
-		</para>
+private String sectorTwo;]]></programlisting>
+			</para>
+		</tip>
+
 	</section>
-	
-	
-	
 	
 	<section id="viewaction">
 		<title>&lt;s:viewAction&gt;</title>
+
 		<para>
-			ViewAction doc
-			<programlisting><![CDATA[<s:viewAction> example]]></programlisting>
+			The view action component (<literal>UIViewAction</literal>) is an <literal>ActionSource2</literal>
+			<literal>UIComponent</literal> that specifies an application-specific command (or action), using
+			using an EL method expression, to be invoked during one of the JSF lifecycle phases proceeding Render
+			Response (i.e., view rendering).
+		</para>
+		
+		<para>
+			View actions provide a lightweight front-controller for JSF, allowing the application to accommodate
+			scenarios such as registration confirmation links, security and sanity checking a request (e.g.,
+			ensuring the resource can be loaded). They also allow JSF to work alongside action-oriented
+			frameworks, and existing applications that use them.
+		</para>
+
+		<section>
+			<title>Motivation</title>
+
+			<para>
+				JSF employs an event-oriented architecture. Listeners are invoked in response to user-interface
+				events, such as the user clicking on a button or changing the value of a form input. Unfortunately,
+				the most important event on the web, a URL request (initiated by the user clicking on a link,
+				entering a URL into the browser's location bar or selecting a bookmark), has long been overlooked in
+				JSF. Historically, listeners have exclusively been activated on postback, which has led to the common
+				complaint that in JSF, "everything is a POST."
+			</para>
+
+			<para>
+				<emphasis>We want to change that perception.</emphasis>
+			</para>
+
+			<para>
+				Processing a URL request event is commonly referred to as bookmarkable or GET support. Some GET
+				support was added to JSF 2.0 with the introduction of view parameters and the pre-render view event.
+				View parameters are used to bind query string parameters to model properties. The pre-render view
+				event gives the developer a window to invoke a listener immediately prior to the view being rendered.
+			</para>
+
+			<para>
+				<emphasis>That's a start.</emphasis>
+			</para>
+
+			<para>
+				Seam brings the GET support full circle by introducing the view action component. A view action is
+				the compliment of a <literal>UICommand</literal> for an initial (non-faces) request. Like its
+				cohort, it gets executed by default during the Invoke Application phase (now used on both faces
+				and non-faces requests). A view action can optionally be invoked on postback as well.
+			</para>
+
+			<para>
+				View actions (<literal>UIViewAction</literal>) are closely tied to view parameters
+				(<literal>UIViewParameter</literal>). Most of the time, the view parameter is used to populate the
+				model with data that is consumed by the method being invoked by a <literal>UIViewAction</literal>
+				component, much like form inputs populate the model with data to support the method being invoked
+				by a <literal>UICommand</literal> component.
+			</para>
+
+		</section>
+
+		<section>
+			<title>Usage</title>
+
+			<para>
+				Let's consider a typical scenario in web applications. You want to display the contents of a blog
+				entry that matches the identifier specified in the URL. We'll assume the URL is:
+			</para>
+
+			<programlisting>http://localhost:8080/blog/entry.jsf?id=10</programlisting>
+			
+			<para>
+				We'll use a view parameter to capture the identifier of the entry from the query string and a view
+				action to fetch the entry from the database.
+			</para>
+
+			<programlisting role="XML"><![CDATA[<f:metadata>
+   <f:viewParam name="id" value="#{blogManager.entryId}"/>  
+   <s:viewAction action="#{blogManager.loadEntry}"/>  
+</f:metadata>]]></programlisting>
+
 			<tip>
 				<para>
-					Maybe a tip here?
+					The view action component must be declared as a child of the view metadata facet (i.e.,
+					<literal>&lt;f:metadata&gt;</literal>) so that it gets incorporated into the JSF lifecycle on both
+					non-faces (initial) requests and faces (postback) requests. If you put it anywhere else in the
+					page, the behavior is undefined.
 				</para>
 			</tip>
-		</para>
+
+			<warning>
+				<para>
+					In JSF 2.0, there must be at least one view parameter for the view metadata facet to be processed.
+					This requirement was introduced into the JSF specification accidentally, but it's not so
+					unfortunate since view parameters are typically needed to capture input needed by the view action.
+				</para>
+			</warning>
+
+			<para>
+				What do we do if the entry can't be found? View actions support declarative navigation just like
+				<literal>UICommand</literal> components. So you can write a navigation rule that will be consulted
+				before the page is rendered. If the rule matches, navigation occurs just as though this were a
+				postback.
+			</para>
+
+			<programlisting role="XML"><![CDATA[<navigation-rule>
+      <from-view-id>/entry.xhtml</from-view-id>
+      <navigation-case>
+         <from-action>#{blogManager.loadEntry}</from-action>
+         <if>#{empty entry}</if>
+         <to-view-id>/home.xhtml</to-view-id>
+         <redirect/>
+      </navigation-case>
+   </navigation-rule>]]></programlisting>
+
+			<para>
+				After each view action is invoked, the navigation handler looks for a navigation case that matches
+				the action's EL method signature and outcome.  If a navigation case is matched, or the response is
+				marked complete by the action, subsequent view actions are short-circuited. The lifecycle then
+				advances appropriately.
+			</para>
+
+			<para>
+				By default, a view action is not executed on postback, since the primary intention of a view
+				action is to support a non-faces request. If your application (or use case) is decidedly stateless,
+				you may need the view action to execute on any type of request. You can enable the view action
+				on postback using the <literal>onPostback</literal> attribute:
+			</para>
+	
+			<programlisting role="XML"><![CDATA[<s:viewAction action="#{blogManager.loadEntry}" onPostback="true"/>]]></programlisting>
+	
+			<para>
+				You may only want the view action to be invoked under certain conditions. For instance, you may only
+				need it to be invoked if the conversation is transient. For that, you can use the
+				<literal>if</literal> attribute, which accepts an EL value expression:
+			</para>
+	
+			<programlisting role="XML"><![CDATA[<s:viewAction action="#{blogEditor.loadEntry}" if="#{conversation.transient}"/>]]></programlisting>
+	
+			<para>
+				There are two ways to control the phase in which the view action is invoked. You can set the
+				<literal>immediate</literal> attribute to true, which moves the invocation to the Apply Request Values phase
+				instead of the default, the Invoke Application phase.
+			</para>
+	
+			<programlisting role="XML"><![CDATA[<s:viewAction action="#{sessionManager.validateSession}" immediate="true"/>]]></programlisting>
+	
+			<para>
+				You can also just specify the phase directly, using the name of the phase constant in the
+				<literal>PhaseId</literal> class.
+			</para>
+	
+			<programlisting role="XML"><![CDATA[<s:viewAction action="#{sessionManager.validateSession}" phase="APPLY_REQUEST_VALUES"/>]]></programlisting>
+	
+			<tip>
+				<para>
+					The valid phases for a view action are:
+				</para>
+				<itemizedlist>
+					<listitem>
+						<para><literal>APPLY_REQUEST_VALUES</literal> (default if <literal>immediate="true"</literal>)</para>
+					</listitem>
+					<listitem>
+						<para><literal>UPDATE_MODEL_VALUES</literal></para>
+					</listitem>
+					<listitem>
+						<para><literal>PROCESS_VALIDATIONS</literal></para>
+					</listitem>
+					<listitem>
+						<para><literal>INVOKE_APPLICATION</literal> (default)</para>
+					</listitem>
+				</itemizedlist>
+			</tip>
+		</section>
+
+		<section>
+			<title>View actions vs the PreRenderViewEvent</title>
+			<para>
+				The purpose of the view action is similar to use of the PreRenderViewEvent. In fact, the code to
+				load a blog entry before the page is rendered could be written as:	
+			</para>
+
+			<programlisting role="XML"><![CDATA[<f:metadata>
+   <f:viewParam name="id" value="#{blogManager.entryId}"/>  
+   <f:event type="preRenderView" listener="#{blogManager.loadEntry}"/>  
+</f:metadata>]]></programlisting>
+
+			<para>
+				However, the view action has several important advantages:
+			</para>
+
+			<itemizedlist>
+				<listitem>
+					<para>It's lightweight</para>
+				</listitem>
+				<listitem>
+					<para>It's timing can be controlled</para>
+				</listitem>
+				<listitem>
+					<para>It's contextual</para>
+				</listitem>
+				<listitem>
+					<para>It can trigger navigation</para>
+				</listitem>
+			</itemizedlist>
+
+			<para>
+				View actions are lightweight because they get processed on a non-faces (initial) request
+				<emphasis>before</emphasis> the full component tree is built. When the view actions are invoked,
+				the component tree only contains view metadata.
+			</para>
+
+			<para>
+				As demonstrated above, you can specify a prerequisite condition for invoking the view action,
+				control whether it's invoked on postback, specify the phase in which it's invoked and tie the
+				invocation into the declarative navigation system. The PreRenderViewEvent is quite basic in
+				comparison.
+			</para>
+
+		</section>
 	</section>
 </chapter>
