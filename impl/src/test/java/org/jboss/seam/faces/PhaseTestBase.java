@@ -24,13 +24,14 @@ package org.jboss.seam.faces;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.inject.Inject;
 
 import org.jboss.seam.faces.event.PhaseEventBridge;
-import org.jboss.test.faces.mock.context.MockFacesContext;
 import org.jboss.test.faces.mock.lifecycle.MockLifecycle;
+import org.jboss.test.faces.stub.faces.StubFacesContext;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
@@ -41,7 +42,7 @@ public class PhaseTestBase
    @Inject
    PhaseEventBridge phaseEventBridge;
 
-   protected MockFacesContext facesContext = new MockFacesContext();
+   protected FacesContext facesContext = new StubFacesContext();
    protected final MockLifecycle lifecycle = new MockLifecycle();
 
    static List<PhaseId> ALL_PHASES = new ArrayList<PhaseId>()

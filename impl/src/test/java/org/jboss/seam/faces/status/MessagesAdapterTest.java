@@ -22,6 +22,7 @@
 package org.jboss.seam.faces.status;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import javax.faces.event.PhaseId;
@@ -39,7 +40,7 @@ import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
-import org.jboss.test.faces.mock.context.MockFacesContext;
+import org.jboss.test.faces.stub.faces.StubFacesContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,35 +61,38 @@ public class MessagesAdapterTest extends PhaseTestBase
    @Inject
    Messages messages;
 
+   String text = "Hey! This is a message";
+
    @Before
    public void before()
    {
-      facesContext = new MockFacesContext();
-      facesContext.getControl().resetToNice();
-      facesContext.getControl().replay();
+      facesContext = new StubFacesContext();
    }
 
    @Test
    public void testMessagesAreTransferredBeforeRenderResponse()
    {
-      messages.add(messages.info("Hey! This is a message"));
+      messages.add(messages.info(text));
       assertEquals(1, messages.getAll().size());
 
       fireBeforePhase(PhaseId.RENDER_RESPONSE);
 
       assertTrue(messages.getAll().isEmpty());
-      // assertNotNull(facesContext.getMessages());
+      assertNotNull(facesContext.getMessages());
+      assertEquals(text, facesContext.getMessages().next().getSummary());
+
    }
 
    @Test
    public void testMessageTargetsTransferredToFacesMessageComponentId()
    {
-      messages.add(messages.info("Hey! This is a message").targets("component"));
+      messages.add(messages.info(text).targets("component"));
       assertEquals(1, messages.getAll().size());
 
       fireBeforePhase(PhaseId.RENDER_RESPONSE);
 
       assertTrue(messages.getAll().isEmpty());
-      // assertNotNull(facesContext.getMessages("component"));
+      assertNotNull(facesContext.getMessages("component"));
+      assertEquals(text, facesContext.getMessages("component").next().getSummary());
    }
 }
