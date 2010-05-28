@@ -12,7 +12,7 @@
    <parent>
       <groupId>org.jboss.weld</groupId>
       <artifactId>weld-parent</artifactId>
-      <version>9</version>
+      <version>10-SNAPSHOT</version>
    </parent>
 
    <properties>
@@ -24,12 +24,6 @@
          <plugin>
             <groupId>org.jboss.maven.plugins</groupId>
             <artifactId>maven-jdocbook-plugin</artifactId>
-            <configuration>
-               <sourceDirectory>${project.basedir}/src/main/docbook</sourceDirectory>
-               <imageResource>
-                  <directory>${project.basedir}/src/main/docbook/en-US</directory>
-               </imageResource>
-            </configuration>
          </plugin>
       </plugins>
    </build>

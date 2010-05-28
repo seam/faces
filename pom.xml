@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.jboss.weld</groupId>
 		<artifactId>weld-parent</artifactId>
-		<version>9</version>
+		<version>10</version>
 	</parent>
 
 	<artifactId>seam-faces-parent</artifactId>
@@ -156,72 +156,6 @@
 					<version>${arquillian.version}</version>
 				</dependency>
 			</dependencies>
-		</profile>
-		<profile>
-			<id>code-coverage</id>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.codehaus.mojo</groupId>
-							<artifactId>emma-maven-plugin</artifactId>
-							<version>${emma.maven.plugin.version}</version>
-							<inherited>true</inherited>
-							<executions>
-								<execution>
-									<id>instrumentation</id>
-									<phase>process-classes</phase>
-									<goals>
-										<goal>instrument</goal>
-									</goals>
-									<configuration>
-										<verbose>true</verbose>
-									</configuration>
-								</execution>
-								<execution>
-									<id>cleaning</id>
-									<phase>clean</phase>
-									<goals>
-										<goal>clean</goal>
-									</goals>
-								</execution>
-							</executions>
-						</plugin>
-
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-surefire-plugin</artifactId>
-							<inherited>true</inherited>
-							<configuration>
-								<forkMode>once</forkMode>
-								<classesDirectory>${project.build.directory}/generated-classes/emma/classes</classesDirectory>
-							</configuration>
-						</plugin>
-
-						<plugin>
-							<groupId>org.sonatype.maven.plugin</groupId>
-							<artifactId>emma4it-maven-plugin</artifactId>
-							<version>${emma4it.maven.plugin.version}</version>
-							<executions>
-								<execution>
-									<id>report</id>
-									<phase>test</phase>
-									<goals>
-										<goal>report</goal>
-									</goals>
-									<configuration>
-										<sourceSets>
-											<sourceSet>
-												<directory>${project.build.sourceDirectory}</directory>
-											</sourceSet>
-										</sourceSets>
-									</configuration>
-								</execution>
-							</executions>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
 		</profile>
 	</profiles>
 
