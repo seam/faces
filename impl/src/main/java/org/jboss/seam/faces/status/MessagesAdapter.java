@@ -23,6 +23,7 @@
 package org.jboss.seam.faces.status;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.enterprise.event.Observes;
 import javax.faces.application.FacesMessage;
@@ -30,6 +31,8 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.event.PhaseEvent;
 import javax.inject.Inject;
 
+import org.jboss.seam.faces.context.FlashContext;
+import org.jboss.seam.faces.event.PreNavigateEvent;
 import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.international.status.Level;
@@ -47,13 +50,32 @@ public class MessagesAdapter implements Serializable
 {
    private static final long serialVersionUID = -2908193057765795662L;
 
+   private static final String FLASH_MESSAGES_KEY = MessagesAdapter.class.getName() + ".FLASH_KEY";
+
    @Inject
-   private Messages messages;
+   Messages messages;
 
-   // void flushBeforeNavigate(@Observes BeforeNavigateEvent event);
+   @Inject
+   FlashContext context;
 
+   void flushBeforeNavigate(@Observes final PreNavigateEvent event)
+   {
+      context.put(FLASH_MESSAGES_KEY, messages.getAll());
+      messages.clear();
+   }
+
+   @SuppressWarnings("unchecked")
    void convert(@Observes @Before @RenderResponse final PhaseEvent event)
    {
+      Set<Message> savedMessages = (Set<Message>) context.get(FLASH_MESSAGES_KEY);
+      if (savedMessages != null)
+      {
+         for (Message m : savedMessages)
+         {
+            event.getFacesContext().addMessage(m.getTargets(), new FacesMessage(getSeverity(m.getLevel()), m.getText(), null));
+         }
+      }
+
       for (Message m : messages.getAll())
       {
          event.getFacesContext().addMessage(m.getTargets(), new FacesMessage(getSeverity(m.getLevel()), m.getText(), null));

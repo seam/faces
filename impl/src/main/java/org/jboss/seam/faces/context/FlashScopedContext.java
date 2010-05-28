@@ -95,13 +95,14 @@ public class FlashScopedContext implements Context, PhaseListener, Serializable
          String currentId = getCurrentId();
          if (savedContextExists(currentId))
          {
-            FlashContext context = (FlashContext) getSessionMap().remove(getSessionKey(currentId));
+            FlashContext context = (FlashContext) getSessionMap().get(getSessionKey(currentId));
             currentContext = context;
          }
          else
          {
             FlashContextImpl context = new FlashContextImpl();
             context.setId(getNextFlashId());
+            getSessionMap().put(getSessionKey(context.getId()), context);
             currentContext = context;
          }
       }
@@ -144,6 +145,8 @@ public class FlashScopedContext implements Context, PhaseListener, Serializable
    {
       if (PhaseId.RENDER_RESPONSE.equals(event.getPhaseId()))
       {
+         getSessionMap().remove(getSessionKey(currentContext.getId()));
+
          Map<Contextual<?>, Object> componentInstanceMap = getComponentInstanceMap();
          Map<Contextual<?>, CreationalContext<?>> creationalContextMap = getCreationalContextMap();
 

@@ -10,6 +10,9 @@
 		<after>
 			<name>weld</name>
 		</after>
+		<before>
+			<others/>
+		</before>
 	</ordering>
 
 	<lifecycle>
@@ -21,6 +24,10 @@
 	</factory>
 
 	<application>
+		<navigation-handler>
+			org.jboss.seam.faces.event.PreNavigateEventProducer
+		</navigation-handler>
+		
 		<system-event-listener>
 			<system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
 			<system-event-class>javax.faces.event.ComponentSystemEvent</system-event-class>
