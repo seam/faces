@@ -27,6 +27,8 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
+import org.jboss.seam.faces.context.FlashScopedContext;
+
 /**
  * Provide CDI injection to PhaseListener artifacts by delegating through this
  * class.
@@ -77,7 +79,7 @@ public class DelegatingPhaseListener extends AbstractListener<PhaseListener> imp
    @SuppressWarnings("unchecked")
    private List<PhaseListener> getPhaseListeners()
    {
-      return getListeners(PhaseEventBridge.class);
+      return getListeners(FlashScopedContext.class, PhaseEventBridge.class);
    }
 
 }

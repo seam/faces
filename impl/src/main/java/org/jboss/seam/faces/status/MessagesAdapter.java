@@ -50,7 +50,8 @@ public class MessagesAdapter implements Serializable
    @Inject
    private Messages messages;
 
-   @SuppressWarnings("unused")
+   // void flushBeforeNavigate(@Observes BeforeNavigateEvent event);
+
    void convert(@Observes @Before @RenderResponse final PhaseEvent event)
    {
       for (Message m : messages.getAll())

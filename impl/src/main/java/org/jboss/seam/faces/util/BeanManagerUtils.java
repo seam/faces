@@ -100,8 +100,23 @@ public class BeanManagerUtils
     * @param type The class for which to return an instance.
     * @return The managed instance, or null if none could be provided.
     */
-   @SuppressWarnings("unchecked")
    public <T> T getContextualInstance(final Class<T> type)
+   {
+      return getContextualInstance(manager, type);
+   }
+
+   /**
+    * Get a single CDI managed instance of a specific class. Return only the
+    * first result if multiple beans are available.
+    * <p>
+    * <b>NOTE:</b> Using this method should be avoided at all costs.
+    * 
+    * @param manager The bean manager with which to perform the lookup.
+    * @param type The class for which to return an instance.
+    * @return The managed instance, or null if none could be provided.
+    */
+   @SuppressWarnings("unchecked")
+   public static <T> T getContextualInstance(final BeanManager manager, final Class<T> type)
    {
       T result = null;
       Bean<T> bean = (Bean<T>) manager.resolve(manager.getBeans(type));
