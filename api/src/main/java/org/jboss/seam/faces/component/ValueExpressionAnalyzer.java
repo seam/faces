@@ -1,3 +1,24 @@
+/*
+ * JBoss, Home of Professional Open Source
+ * Copyright 2010, Red Hat, Inc., and individual contributors
+ * by the @authors tag. See the copyright.txt in the distribution for a
+ * full listing of individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 package org.jboss.seam.faces.component;
 
 import java.beans.FeatureDescriptor;
@@ -13,8 +34,17 @@ import javax.el.VariableMapper;
 import javax.faces.el.CompositeComponentExpressionHolder;
 
 /**
- * Analyzes a {@link ValueExpression} and provides access to the base object and property
- * name to which the expression maps via the getReference() method.
+ * <p>Analyzes a {@link ValueExpression} and provides access to the base object and property name
+ * referenced by the expression.</p>
+ * 
+ * <p>The getValueReference(ELContext) method returns a {@link ValueReference} object, which
+ * encapsulates the base object and property name to which the expression maps. This process
+ * works by resolving the expression up until the last segment.</p>
+ *
+ * <p>Although access to the ValueReference was added in EL 2.2, the feature
+ * does not work correctly, which is why this custom class is required.</p>
+ *
+ * @author Dan Allen
  */
 class ValueExpressionAnalyzer
 {
