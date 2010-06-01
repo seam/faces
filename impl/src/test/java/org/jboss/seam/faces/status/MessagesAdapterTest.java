@@ -32,10 +32,13 @@ import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.faces.MockLogger;
 import org.jboss.seam.faces.PhaseTestBase;
+import org.jboss.seam.faces.context.MockFlashContext;
 import org.jboss.seam.faces.event.PhaseEventBridge;
 import org.jboss.seam.international.status.Bundles;
 import org.jboss.seam.international.status.MessageFactory;
 import org.jboss.seam.international.status.Messages;
+import org.jboss.seam.international.status.builder.BundleTemplateMessageImpl;
+import org.jboss.seam.international.status.builder.TemplateMessageImpl;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -55,7 +58,7 @@ public class MessagesAdapterTest extends PhaseTestBase
    @Deployment
    public static JavaArchive createTestArchive()
    {
-      return ShrinkWrap.create("test.jar", JavaArchive.class).addClasses(MessagesAdapter.class, Messages.class, MessageFactory.class, Bundles.class, PhaseEventBridge.class, MockLogger.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+      return ShrinkWrap.create("test.jar", JavaArchive.class).addClasses(MessagesAdapter.class, Messages.class, MockFlashContext.class, MessageFactory.class, TemplateMessageImpl.class, BundleTemplateMessageImpl.class, Bundles.class, PhaseEventBridge.class, MockLogger.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
    }
 
    @Inject
