@@ -96,10 +96,6 @@
    <build>
       <plugins>
          <plugin>
-            <groupId>org.glassfish</groupId>
-            <artifactId>maven-embedded-glassfish-plugin</artifactId>
-         </plugin>
-         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
             <configuration>
@@ -107,8 +103,27 @@
                <target>1.6</target>
             </configuration>
          </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+         </plugin>
       </plugins>
       <finalName>short.ly</finalName>
    </build>
+
+   <profiles>
+      <profile>
+         <id>glassfish</id>
+         <build>
+            <defaultGoal>install</defaultGoal>
+            <plugins>
+               <plugin>
+                  <groupId>org.glassfish</groupId>
+                  <artifactId>maven-embedded-glassfish-plugin</artifactId>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+   </profiles>
 
 </project>
