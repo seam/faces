@@ -1,0 +1,5 @@
+To create the Seam Faces distribution, run the following Maven command:
+
+mvn clean package -Ddist
+
+Release binaries will be produced in: dist/target
