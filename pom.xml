@@ -14,7 +14,7 @@
 
    <packaging>pom</packaging>
    <name>Seam Faces Module Parent POM</name>
-   
+
    <prerequisites>
       <maven>3.0</maven>
    </prerequisites>
@@ -51,6 +51,20 @@
             <groupId>org.jboss.seam.international</groupId>
             <artifactId>seam-international-api</artifactId>
             <version>${seam.i18n.version}</version>
+         </dependency>
+
+         <!-- Need to use dependencyManagement to override org.jboss.seam:seam for submodules -->
+         <dependency>
+            <groupId>org.jboss.seam.faces</groupId>
+            <artifactId>seam-faces-api</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+
+
+         <dependency>
+            <groupId>org.jboss.seam.faces</groupId>
+            <artifactId>seam-faces</artifactId>
+            <version>${project.version}</version>
          </dependency>
 
       </dependencies>
