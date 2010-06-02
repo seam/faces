@@ -9,7 +9,7 @@
 		following dependency to your pom.xml file:
 	</para>
 	<programlisting role="XML"><![CDATA[<dependency>
-	<groupId>org.jboss.seam</groupId>
+	<groupId>org.jboss.seam.faces</groupId>
 	<artifactId>seam-faces</artifactId>
 	<version>${seam-faces-version}</version>
 </dependency>]]></programlisting>	

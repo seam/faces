@@ -37,5 +37,6 @@ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
          <component-type>org.jboss.seam.faces.ValidateForm</component-type>
       </component>
    </tag>
+   <!-- org.jboss.seam.faces.InputContainer is a composite component, does not need taglib -->
 
 </facelet-taglib>

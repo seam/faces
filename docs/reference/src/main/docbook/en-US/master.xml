@@ -11,6 +11,7 @@
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="installation.xml" />
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="events.xml" />
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="scopes.xml" />
+   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="messages.xml" />
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="artifacts.xml" />
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="components.xml" />
 

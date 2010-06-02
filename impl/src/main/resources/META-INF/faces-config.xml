@@ -9,10 +9,8 @@
 	<ordering>
 		<after>
 			<name>weld</name>
-		</after>
-		<before>
 			<others/>
-		</before>
+		</after>
 	</ordering>
 
 	<lifecycle>

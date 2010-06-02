@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="messages">
+	<title>Messages API</title>
+	<para>
+		While JSF already has the concept of adding <literal>FacesMessage</literal> objects to the FacesContext in order for those messages to be
+		displayed to the user when the view is rendered, Seam Faces takes this concept one step farther with the Messages API provided by the
+		Seam International module. Messages are template-based, and can be added directly via the code, or templates can be loaded from resource
+		bundles using a <literal>BundleKey</literal>. 
+	</para>
+	<section id="adding">
+		<title>Adding Messages</title>
+		<para>
+			Consistent with the CDI programming model, the Messages API is provided via bean injection. To add a new message to be displayed to the user,
+			inject <literal>org.jboss.seam.international.display.Messages</literal> and call one of the Message factory methods. As mentioned earlier,
+			factory methods accept either a plain-text template, or a <literal>BundleKey</literal>, specifying the name of the resource bundle to use, and
+			the name of the key to use as a message template.
+<programlisting>
+@Named
+public class Example
+{
+   @Inject
+   Messages messages;
+
+   public String action()
+   {
+      messages.info("This is an {0} message, and will be displayed to {1}.", "INFO", "the user");
+      return null;
+   }
+}</programlisting>
+			Adds the message: "This is an INFO message, and will be displayed to the user." 
+		</para>
+		<para>		
+			Notice how {0}, {1} ... {N} are replaced with the given parameters, and may be used more than once in a given template. In the case where a
+			<literal>BundleKey</literal> is used to look up a message template, default text may be provided in case the resource cannot be loaded; default
+			text uses the same parameters supplied for the bundle template. If no default text is supplied, a String representation of the 
+			<literal>BundleKey</literal> and its parameters will be displayed instead.
+<programlisting>
+   public String action()
+   {
+      messages.warn(new BundleKey("org.jboss.seam.faces.exampleBundle", "messageKey"), "unique");
+      return null;
+   }</programlisting>
+	   </para>
+	   <para>
+classpath:/org/jboss/seam/faces/exampleBundle.properties
+<programlisting>messageKey=This {0} parameter is not so {0}, see?</programlisting>
+   			Adds the message: "This unique parameter is not so unique, see?"
+		</para>
+	</section>
+	<section id="displaying">
+		<title>Displaying pending messages</title>
+		<para>
+			It's great when messages are added to the internal buffer, but it doesn't do much good unless the user actually sees them. In order to display
+			messages, simply use the <literal>&lt;h:messages /&gt;</literal> tag from JSF. Any pending messages will be displayed on the page just like normal
+			<literal>FacesMessages</literal>.
+		</para>
+				<programlisting role="XML"><![CDATA[<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:s="http://jboss.org/seam/faces"
+   xmlns:ui="http://java.sun.com/jsf/facelets">
+      
+   <h1>Welcome to Seam Faces!</h1>
+   <p>All Messages and FacesMessages will be displayed below:</p>
+
+   <h:messages />
+      
+</html>]]></programlisting>
+		<para>
+			Messages added to the internal buffer via the Messages API are stored in a central location during each request, and may be displayed
+			by any view-technology that supports the Messages API. Seam Faces provides an integration that makes all of this automatic for you as a developer,
+			and in addition, messages will automatically survive JSF navigation and redirects, as long as the redirect URL was encoded using 
+			<literal>ExternalContext.encodeRedirectURL(...)</literal>. If you are using JSF-compliant navigation, all of this is handled for you. 
+		</para>
+	</section>
+</chapter>

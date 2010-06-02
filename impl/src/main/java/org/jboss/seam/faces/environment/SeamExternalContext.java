@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Typed;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.ExternalContextWrapper;
 import javax.inject.Inject;
@@ -13,6 +14,7 @@ import javax.inject.Inject;
 import org.jboss.seam.faces.context.FlashContext;
 import org.jboss.seam.faces.context.FlashScopedContext;
 
+@Typed(SeamExternalContext.class)
 @RequestScoped
 public class SeamExternalContext extends ExternalContextWrapper
 {
