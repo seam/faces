@@ -16,7 +16,7 @@
    <name>Seam Faces Module Parent POM</name>
    
    <prerequisites>
-      <maven>${minimum.maven.version}</maven>
+      <maven>3.0</maven>
    </prerequisites>
 
    <description>
@@ -52,7 +52,6 @@
       <seam.version>3.0.0.b01</seam.version>
       <!-- Seam i8ln doesn't have a release yet -->
       <seam.i18n.version>3.0.0-SNAPSHOT</seam.i18n.version>
-      <minimum.maven.version>3.0</minimum.maven.version>
    </properties>
 
    <dependencyManagement>
