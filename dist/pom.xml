@@ -19,11 +19,34 @@
       <maven.deploy.skip>true</maven.deploy.skip>
    </properties>
 
+   <!-- Need to use dependencyManagement to force us onto a snapshot -->
+   <dependencyManagement>
+      <dependencies>
+         <dependency>
+            <groupId>org.jboss.seam.faces</groupId>
+            <artifactId>seam-faces-api</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+
+
+         <dependency>
+            <groupId>org.jboss.seam.faces</groupId>
+            <artifactId>seam-faces</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+      </dependencies>
+   </dependencyManagement>
+
    <dependencies>
       <dependency>
          <groupId>org.jboss.seam.faces</groupId>
          <artifactId>seam-faces-api</artifactId>
-         <version>${project.version}</version>
+         <optional>true</optional>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.seam.faces</groupId>
+         <artifactId>seam-faces</artifactId>
          <optional>true</optional>
       </dependency>
 
@@ -43,19 +66,12 @@
          <optional>true</optional>
       </dependency>
 
-      <dependency>
-         <groupId>org.jboss.seam.faces</groupId>
-         <artifactId>seam-faces</artifactId>
-         <version>${project.version}</version>
-         <optional>true</optional>
-      </dependency>
 
       <dependency>
          <groupId>org.jboss.seam.faces</groupId>
          <artifactId>seam-faces</artifactId>
          <version>${project.version}</version>
          <classifier>sources</classifier>
-         <scope>provided</scope>
       </dependency>
 
       <dependency>
