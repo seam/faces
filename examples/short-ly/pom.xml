@@ -6,6 +6,7 @@
       <groupId>org.jboss.seam.faces</groupId>
       <artifactId>seam-faces-parent</artifactId>
       <version>3.0.0-SNAPSHOT</version>
+      <relativePath>../../pom.xml</relativePath>
    </parent>
 
    <groupId>org.jboss.seam.faces</groupId>
@@ -16,24 +17,6 @@
 
    <url>http://seamframework.org</url>
 
-   <!-- TODO Remove -->
-   <!-- Snapshots repo to get parent -->
-   <repositories>
-      <repository>
-         <id>oss.sonatype.org/jboss-snapshots</id>
-         <name>JBoss (Nexus) Snapshots Repository</name>
-         <url>http://oss.sonatype.org/content/repositories/jboss-snapshots
-         </url>
-         <releases>
-            <enabled>false</enabled>
-         </releases>
-         <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-         </snapshots>
-      </repository>
-   </repositories>
-
    <properties>
       <hibernate.version>3.5.1-Final</hibernate.version>
    </properties>
@@ -42,9 +25,10 @@
       <dependency>
          <groupId>org.jboss.seam.faces</groupId>
          <artifactId>seam-faces</artifactId>
-         <version>3.0.0-SNAPSHOT</version>
+         <version>${project.version}</version>
       </dependency>
 
+      <!-- TODO Replace this with the JBoss Java EE BOM stuff, not sure exactly what is needed (PLM) -->
       <dependency>
          <groupId>javax</groupId>
          <artifactId>javaee-web-api</artifactId>
@@ -55,40 +39,36 @@
       <dependency>
          <groupId>com.ocpsoft</groupId>
          <artifactId>ocpsoft-pretty-faces</artifactId>
-         <version>2.0.4</version>
       </dependency>
 
       <dependency>
          <groupId>com.ocpsoft</groupId>
          <artifactId>ocpsoft-pretty-time</artifactId>
-         <version>1.0.5</version>
       </dependency>
 
       <dependency>
          <groupId>org.hibernate</groupId>
          <artifactId>hibernate-core</artifactId>
-         <version>${hibernate.version}</version>
       </dependency>
+      
       <dependency>
          <groupId>org.hibernate</groupId>
          <artifactId>hibernate-annotations</artifactId>
-         <version>${hibernate.version}</version>
       </dependency>
+      
       <dependency>
          <groupId>org.hibernate</groupId>
          <artifactId>hibernate-entitymanager</artifactId>
-         <version>${hibernate.version}</version>
       </dependency>
+      
       <dependency>
          <groupId>org.hsqldb</groupId>
          <artifactId>hsqldb</artifactId>
-         <version>1.8.0.10</version>
       </dependency>
 
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>
-         <version>4.8.1</version>
          <scope>test</scope>
       </dependency>
    </dependencies>

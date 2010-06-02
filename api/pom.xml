@@ -5,6 +5,7 @@
 		<artifactId>seam-faces-parent</artifactId>
 		<groupId>org.jboss.seam.faces</groupId>
 		<version>3.0.0-SNAPSHOT</version>
+      <relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>seam-faces-api</artifactId>
@@ -12,23 +13,6 @@
 
 	<packaging>jar</packaging>
 	<name>Seam Faces Module API</name>
-
-	<!-- Snapshots repo to get parent -->
-	<repositories>
-		<repository>
-			<id>oss.sonatype.org/jboss-snapshots</id>
-			<name>JBoss (Nexus) Snapshots Repository</name>
-			<url>http://oss.sonatype.org/content/repositories/jboss-snapshots
-			</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-			</snapshots>
-		</repository>
-	</repositories>
 	
 	<profiles>
 		<profile>

@@ -6,6 +6,7 @@
 		<artifactId>seam-faces-parent</artifactId>
 		<groupId>org.jboss.seam.faces</groupId>
 		<version>3.0.0-SNAPSHOT</version>
+      <relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>seam-faces</artifactId>
@@ -14,29 +15,13 @@
 	<packaging>jar</packaging>
 	<name>Seam Faces Module Core Implementation</name>
 
-	<!-- Snapshots repo to get parent -->
-	<repositories>
-		<repository>
-			<id>oss.sonatype.org/jboss-snapshots</id>
-			<name>JBoss (Nexus) Snapshots Repository</name>
-			<url>http://oss.sonatype.org/content/repositories/jboss-snapshots
-			</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-			</snapshots>
-		</repository>
-	</repositories>
-
 	<dependencies>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
+         <!-- Required until the Servlet 3.0 API can be resolved in Central -->
+         <groupId>org.jboss.spec.javax.servlet</groupId>
+         <artifactId>jboss-servlet-api_3.0_spec</artifactId>
+         <scope>provided</scope>
+      </dependency>
 		<dependency>
 			<artifactId>seam-faces-api</artifactId>
 			<groupId>org.jboss.seam.faces</groupId>

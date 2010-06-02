@@ -15,24 +15,6 @@
    <description>Builds a Seam Faces release distribution</description>
    <packaging>pom</packaging>
 
-   <!-- TODO Remove -->
-   <!-- Snapshots repo to get parent -->
-   <repositories>
-      <repository>
-         <id>oss.sonatype.org/jboss-snapshots</id>
-         <name>JBoss (Nexus) Snapshots Repository</name>
-         <url>http://oss.sonatype.org/content/repositories/jboss-snapshots
-         </url>
-         <releases>
-            <enabled>false</enabled>
-         </releases>
-         <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-         </snapshots>
-      </repository>
-   </repositories>
-
    <properties>
       <maven.deploy.skip>true</maven.deploy.skip>
    </properties>
@@ -42,6 +24,7 @@
          <groupId>org.jboss.seam.faces</groupId>
          <artifactId>seam-faces-api</artifactId>
          <version>${project.version}</version>
+         <scope>provided</scope>
       </dependency>
 
       <dependency>
@@ -49,6 +32,7 @@
          <artifactId>seam-faces-api</artifactId>
          <version>${project.version}</version>
          <classifier>sources</classifier>
+         <scope>provided</scope>
       </dependency>
 
       <dependency>
@@ -56,12 +40,14 @@
          <artifactId>seam-faces-api</artifactId>
          <version>${project.version}</version>
          <classifier>javadoc</classifier>
+         <scope>provided</scope>
       </dependency>
 
       <dependency>
          <groupId>org.jboss.seam.faces</groupId>
          <artifactId>seam-faces</artifactId>
          <version>${project.version}</version>
+         <scope>provided</scope>
       </dependency>
 
       <dependency>
@@ -69,6 +55,7 @@
          <artifactId>seam-faces</artifactId>
          <version>${project.version}</version>
          <classifier>sources</classifier>
+         <scope>provided</scope>
       </dependency>
 
       <dependency>
@@ -76,6 +63,7 @@
          <artifactId>seam-faces</artifactId>
          <version>${project.version}</version>
          <classifier>javadoc</classifier>
+         <scope>provided</scope>
       </dependency>
 
       <dependency>
@@ -83,6 +71,7 @@
          <artifactId>seam-faces-reference-guide</artifactId>
          <version>${project.version}</version>
          <type>war</type>
+         <scope>provided</scope>
       </dependency>
 
       <dependency>
@@ -90,6 +79,7 @@
          <artifactId>seam-faces-examples-short-ly</artifactId>
          <version>${project.version}</version>
          <type>zip</type>
+         <scope>provided</scope>
       </dependency>
 
    </dependencies>
