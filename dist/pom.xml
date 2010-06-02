@@ -24,7 +24,7 @@
          <groupId>org.jboss.seam.faces</groupId>
          <artifactId>seam-faces-api</artifactId>
          <version>${project.version}</version>
-         <scope>provided</scope>
+         <optional>true</optional>
       </dependency>
 
       <dependency>
@@ -32,7 +32,7 @@
          <artifactId>seam-faces-api</artifactId>
          <version>${project.version}</version>
          <classifier>sources</classifier>
-         <scope>provided</scope>
+         <optional>true</optional>
       </dependency>
 
       <dependency>
@@ -40,14 +40,14 @@
          <artifactId>seam-faces-api</artifactId>
          <version>${project.version}</version>
          <classifier>javadoc</classifier>
-         <scope>provided</scope>
+         <optional>true</optional>
       </dependency>
 
       <dependency>
          <groupId>org.jboss.seam.faces</groupId>
          <artifactId>seam-faces</artifactId>
          <version>${project.version}</version>
-         <scope>provided</scope>
+         <optional>true</optional>
       </dependency>
 
       <dependency>
@@ -63,7 +63,7 @@
          <artifactId>seam-faces</artifactId>
          <version>${project.version}</version>
          <classifier>javadoc</classifier>
-         <scope>provided</scope>
+         <optional>true</optional>
       </dependency>
 
       <dependency>
@@ -71,7 +71,7 @@
          <artifactId>seam-faces-reference-guide</artifactId>
          <version>${project.version}</version>
          <type>war</type>
-         <scope>provided</scope>
+         <optional>true</optional>
       </dependency>
 
       <dependency>
@@ -79,7 +79,7 @@
          <artifactId>seam-faces-examples-short-ly</artifactId>
          <version>${project.version}</version>
          <type>zip</type>
-         <scope>provided</scope>
+         <optional>true</optional>
       </dependency>
 
    </dependencies>
