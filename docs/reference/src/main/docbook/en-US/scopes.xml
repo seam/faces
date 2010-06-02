@@ -10,7 +10,7 @@
 		 same page.
 	</para>
 	<section id="flashscoped">
-		<title>@FlashScope</title>
+		<title>@FlashScoped</title>
 		<para>
 			You should think about using the Flash scope if you want to store information that will be relevant to the user even after an action
 			sends them to another view. For instance, when a user submits a form, you may want to invoke JSF navigation and redirect 
@@ -22,7 +22,7 @@
 			To scope a bean to the Flash, use the <literal>@javax.faces.bean.FlashScoped</literal> annotation. This means that your bean will be stored in the 
 			<literal>org.jboss.seam.context.FlashContext</literal> until the next page is rendered, at which point the FlashScope will be cleared.
 
-<programlisting>
+<programlisting>@FlashScoped
 public class Bean {
 	// ...
 }</programlisting>
@@ -42,7 +42,7 @@ public class Bean {
 		</para>
 	</section>
 	<section id="viewscoped">
-		<title>@ViewScope</title>
+		<title>@ViewScoped</title>
 		<para>
 			To scope a bean to the View, use the <literal>@javax.faces.bean.ViewScoped</literal> annotation. This means that your bean will be stored in the 
 			<literal>javax.faces.component.UIViewRoot</literal> object associated with the view in which it was accessed. Each JSF view (faces-page) will store

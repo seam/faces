@@ -16,6 +16,15 @@
 	<tip>
 		<para>Replace ${seam-faces-version} with the most recent or appropriate version of Seam Faces.</para>			
 	</tip>
+	<para>
+		In a Servlet 3.0 or Java EE 6 environment, your configuration is now complete; however, if you are still using Servlet 2.5 or Java EE 5, then you
+		need to add the following code to your application's web.xml file:
+	</para>
+	<programlisting><![CDATA[<web-app>
+	<listener>
+		<listener-class>org.jboss.seam.faces.beanManager.BeanManagerServletContextListener</listener-class>
+	</listener>
+</web-app>]]></programlisting>
 
 <!-- 
 	<section id="configuration">
