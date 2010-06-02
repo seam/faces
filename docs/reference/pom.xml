@@ -10,28 +10,11 @@
    <name>Seam Faces Module Reference Guide</name>
 
    <parent>
-      <groupId>org.jboss.weld</groupId>
-      <artifactId>weld-parent</artifactId>
-      <version>11-SNAPSHOT</version>
+      <groupId>org.jboss.seam.faces</groupId>
+      <artifactId>seam-faces-parent</artifactId>
+      <version>3.0.0-SNAPSHOT</version>
+      <relativePath>../../pom.xml</relativePath>
    </parent>
-
-   <!-- TODO Remove -->
-   <!-- Snapshots repo to get parent -->
-   <repositories>
-      <repository>
-         <id>oss.sonatype.org/jboss-snapshots</id>
-         <name>JBoss (Nexus) Snapshots Repository</name>
-         <url>http://oss.sonatype.org/content/repositories/jboss-snapshots
-         </url>
-         <releases>
-            <enabled>false</enabled>
-         </releases>
-         <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-         </snapshots>
-      </repository>
-   </repositories>
 
    <properties>
       <pdf.name>${project.artifactId}.pdf</pdf.name>
