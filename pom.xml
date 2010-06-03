@@ -9,7 +9,7 @@
 
    <artifactId>seam-faces-parent</artifactId>
    <groupId>org.jboss.seam.faces</groupId>
-   <version>3.0.0.Alpha3</version>
+   <version>3.0.0-SNAPSHOT</version>
 
    <packaging>pom</packaging>
    <name>Seam Faces Module Parent POM</name>
@@ -209,9 +209,9 @@
    </developers>
 
    <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/faces/tags/3.0.0.Alpha3 </connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/faces/tags/3.0.0.Alpha3 </developerConnection>
-      <url>http://fisheye.jboss.org/browse/Seam/modules/faces/tags/3.0.0.Alpha3</url>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/faces/trunk </connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/faces/trunk </developerConnection>
+      <url>http://fisheye.jboss.org/browse/Seam/modules/faces/trunk</url>
    </scm>
 </project>
 
