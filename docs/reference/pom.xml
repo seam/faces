@@ -56,7 +56,7 @@
          <id>distribution</id>
          <activation>
             <property>
-               <name>dist</name>
+               <name>release</name>
             </property>
          </activation>
          <build>
