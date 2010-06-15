@@ -37,7 +37,8 @@ import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.international.status.Level;
 import org.jboss.seam.international.status.Message;
-import org.jboss.seam.international.status.Messages;
+import org.jboss.seam.international.status.MessagesImpl;
+import org.slf4j.Logger;
 
 /**
  * Convert Seam Messages into FacesMessages before RenderResponse phase.<br>
@@ -53,15 +54,22 @@ public class MessagesAdapter implements Serializable
    private static final String FLASH_MESSAGES_KEY = MessagesAdapter.class.getName() + ".FLASH_KEY";
 
    @Inject
-   Messages messages;
+   MessagesImpl messages;
 
    @Inject
    FlashContext context;
 
+   @Inject
+   Logger log;
+
    void flushBeforeNavigate(@Observes final PreNavigateEvent event)
    {
-      context.put(FLASH_MESSAGES_KEY, messages.getAll());
-      messages.clear();
+      if (!messages.isEmpty())
+      {
+         log.debug("Saving status Messages to Flash Scope");
+         context.put(FLASH_MESSAGES_KEY, messages.getAll());
+         messages.clear();
+      }
    }
 
    @SuppressWarnings("unchecked")
