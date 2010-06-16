@@ -37,7 +37,7 @@ import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.international.status.Level;
 import org.jboss.seam.international.status.Message;
-import org.jboss.seam.international.status.MessagesImpl;
+import org.jboss.seam.international.status.Messages;
 import org.slf4j.Logger;
 
 /**
@@ -54,7 +54,7 @@ public class MessagesAdapter implements Serializable
    private static final String FLASH_MESSAGES_KEY = MessagesAdapter.class.getName() + ".FLASH_KEY";
 
    @Inject
-   MessagesImpl messages;
+   Messages messages;
 
    @Inject
    FlashContext context;
@@ -64,7 +64,7 @@ public class MessagesAdapter implements Serializable
 
    void flushBeforeNavigate(@Observes final PreNavigateEvent event)
    {
-      if (!messages.isEmpty())
+      if (!messages.getAll().isEmpty())
       {
          log.debug("Saving status Messages to Flash Scope");
          context.put(FLASH_MESSAGES_KEY, messages.getAll());
