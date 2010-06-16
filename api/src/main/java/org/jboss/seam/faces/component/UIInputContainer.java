@@ -44,6 +44,7 @@ import javax.validation.Validation;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import javax.validation.metadata.PropertyDescriptor;
 
 /**
  * <strong>UIInputContainer</strong> is a supplemental component for a JSF 2.0
@@ -92,6 +93,13 @@ import javax.validation.ValidatorFactory;
  * <li>append styleClass "invalid" to label, inputs and messages when invalid</li>
  * </ul>
  * 
+ * <p>
+ * NOTE: Firefox does not properly associate a label with the target input if the input id contains
+ * a colon (:), the default separator character in JSF. JSF 2 allows developers to set the value via
+ * an initialization parameter (context-param in web.xml) keyed to javax.faces.SEPARATOR_CHAR. We
+ * recommend that you override this setting to make the separator an underscore (_).
+ * </p>
+ *
  * @author Dan Allen
  */
 @FacesComponent(UIInputContainer.COMPONENT_TYPE)
@@ -120,8 +128,9 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
    }
 
    /**
-    * The name of the auto-generated composite component attribute that holds a
-    * boolean indicating whether the the template contains an invalid input.
+    * The name of the auto-generated composite component attribute
+    * that holds a boolean indicating whether the the template contains
+    * an invalid input.
     */
    public String getInvalidAttributeName()
    {
@@ -129,8 +138,9 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
    }
 
    /**
-    * The name of the auto-generated composite component attribute that holds a
-    * boolean indicating whether the template contains a required input.
+    * The name of the auto-generated composite component attribute
+    * that holds a boolean indicating whether the template contains
+    * a required input.
     */
    public String getRequiredAttributeName()
    {
@@ -138,9 +148,10 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
    }
 
    /**
-    * The name of the composite component attribute that holds the string label
-    * for this set of inputs. If the label attribute is not provided, one will
-    * be generated from the id of the composite component or, if the id is
+    * The name of the composite component attribute that
+    * holds the string label for this set of inputs. If the
+    * label attribute is not provided, one will be generated
+    * from the id of the composite component or, if the id is
     * defaulted, the name of the property bound to the first input.
     */
    public String getLabelAttributeName()
@@ -149,9 +160,10 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
    }
 
    /**
-    * The name of the auto-generated composite component attribute that holds
-    * the elements in this input container. The elements include the label, a
-    * list of inputs and a cooresponding list of messages.
+    * The name of the auto-generated composite component attribute
+    * that holds the elements in this input container. The
+    * elements include the label, a list of inputs and a cooresponding
+    * list of messages.
     */
    public String getElementsAttributeName()
    {
@@ -160,8 +172,8 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
 
    /**
     * The name of the composite component attribute that holds a boolean
-    * indicating whether the component template should be enclosed in an HTML
-    * element, so that it be referenced from JavaScript.
+    * indicating whether the component template should be enclosed in
+    * an HTML element, so that it be referenced from JavaScript.
     */
    public String getEncloseAttributeName()
    {
@@ -209,8 +221,7 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
          getAttributes().put(getInvalidAttributeName(), true);
       }
 
-      // set the required attribute, but only if the user didn't already assign
-      // it
+      // set the required attribute, but only if the user didn't already assign it
       if (!getAttributes().containsKey(getRequiredAttributeName()) && elements.hasRequiredInput())
       {
          getAttributes().put(getRequiredAttributeName(), true);
@@ -283,10 +294,9 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
          elements = new InputContainerElements();
       }
 
-      // NOTE we need to walk the tree ignoring rendered attribute because it's
-      // condition
+      // NOTE we need to walk the tree ignoring rendered attribute because it's condition
       // could be based on what we discover
-      if ((elements.getLabel() == null) && (component instanceof HtmlOutputLabel))
+      if (elements.getLabel() == null && component instanceof HtmlOutputLabel)
       {
          elements.setLabel((HtmlOutputLabel) component);
       }
@@ -308,7 +318,7 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
    }
 
    // assigning ids seems to break form submissions, but I don't know why
-   public void assignIds(final InputContainerElements elements, final FacesContext context)
+   public void assignIds(final InputContainerElements elements, FacesContext context)
    {
       boolean refreshIds = false;
       if (getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX))
@@ -357,14 +367,13 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
    /**
     * Wire the label and messages to the input(s)
     */
-   protected void wire(final InputContainerElements elements, final FacesContext context)
+   protected void wire(final InputContainerElements elements, FacesContext context)
    {
       elements.wire(context);
    }
 
    /**
-    * Get the default Bean Validation Validator to read the contraints for a
-    * property.
+    * Get the default Bean Validation Validator to read the contraints for a property.
     */
    private Validator getDefaultValidator(final FacesContext context) throws FacesException
    {
@@ -494,10 +503,12 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
             return false;
          }
 
-         // NOTE believe it or not, getValueReference on ValueExpression is
-         // broken, so we have to do it ourselves
-         ValueReference vref = new ValueExpressionAnalyzer(((UIComponent) input).getValueExpression("value")).getValueReference(context.getELContext());
-         return validator.getConstraintsForClass(vref.getBase().getClass()).getConstraintsForProperty((String) vref.getProperty()).hasConstraints();
+         // NOTE believe it or not, getValueReference on ValueExpression is broken, so we have to do it ourselves
+         ValueReference vref = new ValueExpressionAnalyzer(((UIComponent) input).getValueExpression("value"))
+               .getValueReference(context.getELContext());
+         PropertyDescriptor d = validator.getConstraintsForClass(vref.getBase().getClass())
+               .getConstraintsForProperty((String) vref.getProperty());
+         return d != null && d.hasConstraints();
       }
 
       public String getPropertyName(final FacesContext context)
@@ -512,7 +523,8 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
             return null;
          }
 
-         propertyName = (String) new ValueExpressionAnalyzer(((UIComponent) inputs.get(0)).getValueExpression("value")).getValueReference(context.getELContext()).getProperty();
+         propertyName = (String) new ValueExpressionAnalyzer(((UIComponent) inputs.get(0)).getValueExpression("value"))
+               .getValueReference(context.getELContext()).getProperty();
          return propertyName;
       }
 
