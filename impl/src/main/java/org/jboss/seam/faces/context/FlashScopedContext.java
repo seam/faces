@@ -68,6 +68,10 @@ public class FlashScopedContext implements Context, PhaseListener, Serializable
    @RequestScoped
    public FlashContext getFlashContext()
    {
+      if (currentContext == null)
+      {
+         initializeCurrentContext();
+      }
       return currentContext;
    }
 
@@ -85,26 +89,20 @@ public class FlashScopedContext implements Context, PhaseListener, Serializable
       }
    }
 
-   /*
-    * PhaseListener Methods
-    */
-   public void beforePhase(final PhaseEvent event)
+   private void initializeCurrentContext()
    {
-      if (PhaseId.RESTORE_VIEW.equals(event.getPhaseId()))
+      String currentId = getCurrentId();
+      if (savedContextExists(currentId))
       {
-         String currentId = getCurrentId();
-         if (savedContextExists(currentId))
-         {
-            FlashContext context = (FlashContext) getSessionMap().get(getSessionKey(currentId));
-            currentContext = context;
-         }
-         else
-         {
-            FlashContextImpl context = new FlashContextImpl();
-            context.setId(getNextFlashId());
-            getSessionMap().put(getSessionKey(context.getId()), context);
-            currentContext = context;
-         }
+         FlashContext context = (FlashContext) getSessionMap().get(getSessionKey(currentId));
+         currentContext = context;
+      }
+      else
+      {
+         FlashContextImpl context = new FlashContextImpl();
+         context.setId(getNextFlashId());
+         getSessionMap().put(getSessionKey(context.getId()), context);
+         currentContext = context;
       }
    }
 
@@ -162,6 +160,11 @@ public class FlashScopedContext implements Context, PhaseListener, Serializable
             }
          }
       }
+   }
+
+   public void beforePhase(PhaseEvent arg0)
+   {
+      /* intentionally empty */
    }
 
    public PhaseId getPhaseId()
