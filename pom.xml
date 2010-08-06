@@ -1,10 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
 
    <parent>
       <groupId>org.jboss.seam</groupId>
       <artifactId>seam-parent</artifactId>
-      <version>2</version>
+      <version>3</version>
    </parent>
 
    <artifactId>seam-faces-parent</artifactId>
@@ -52,7 +53,8 @@
             <version>${seam.i18n.version}</version>
          </dependency>
 
-         <!-- Need to use dependencyManagement to override org.jboss.seam:seam for submodules -->
+         <!-- Need to use dependencyManagement to override org.jboss.seam:seam 
+            for submodules -->
          <dependency>
             <groupId>org.jboss.seam.faces</groupId>
             <artifactId>seam-faces-api</artifactId>
@@ -175,6 +177,45 @@
                <artifactId>arquillian-glassfish-embedded-30</artifactId>
             </dependency>
          </dependencies>
+      </profile>
+      <profile>
+         <id>jboss-public-repository</id>
+         <activation>
+            <property>
+               <name>jboss-public-repository</name>
+               <value>!false</value>
+            </property>
+         </activation>
+         <repositories>
+            <repository>
+               <id>jboss-public-repository-group</id>
+               <name>JBoss Public Maven Repository Group</name>
+               <url>http://repository.jboss.org/nexus/content/groups/public</url>
+               <releases>
+                  <enabled>true</enabled>
+                  <updatePolicy>never</updatePolicy>
+               </releases>
+               <snapshots>
+                  <enabled>false</enabled>
+                  <updatePolicy>never</updatePolicy>
+               </snapshots>
+            </repository>
+         </repositories>
+         <pluginRepositories>
+            <pluginRepository>
+               <id>jboss-public-repository-group</id>
+               <name>JBoss Public Maven Repository Group</name>
+               <url>http://repository.jboss.org/nexus/content/groups/public</url>
+               <releases>
+                  <enabled>true</enabled>
+                  <updatePolicy>never</updatePolicy>
+               </releases>
+               <snapshots>
+                  <enabled>false</enabled>
+                  <updatePolicy>never</updatePolicy>
+               </snapshots>
+            </pluginRepository>
+         </pluginRepositories>
       </profile>
    </profiles>
 
