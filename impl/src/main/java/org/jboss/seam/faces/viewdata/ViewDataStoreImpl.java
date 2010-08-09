@@ -27,11 +27,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 
 /**
  * Data store for view specific data.
@@ -48,6 +50,26 @@ public class ViewDataStoreImpl implements ViewDataStore
    private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> cache = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>>();
    
    private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>> data = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>>();
+
+   /**
+    * setup the bean with the configuration from the extension
+    * 
+    * It would be better if the extension could do this, but the extension
+    * cannot resolve the bean until after all lifecycle events have been
+    * processed
+    * 
+    */
+   @Inject
+   public void setup(ViewDataConfigurationExtension extension)
+   {
+      for (Entry<String, Set<Annotation>> e : extension.getData().entrySet())
+      {
+         for (Annotation i : e.getValue())
+         {
+            addData(e.getKey(), i);
+         }
+      }
+   }
 
    public synchronized void addData(String viewId, Annotation annotation)
    {
