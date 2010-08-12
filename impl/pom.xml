@@ -1,70 +1,59 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-   <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-   <parent>
-      <artifactId>seam-faces-parent</artifactId>
-      <groupId>org.jboss.seam.faces</groupId>
-      <version>3.0.0-SNAPSHOT</version>
+	<parent>
+		<artifactId>seam-faces-parent</artifactId>
+		<groupId>org.jboss.seam.faces</groupId>
+		<version>3.0.0-SNAPSHOT</version>
       <relativePath>../pom.xml</relativePath>
-   </parent>
+	</parent>
 
-   <artifactId>seam-faces</artifactId>
-   <version>3.0.0-SNAPSHOT</version>
+	<artifactId>seam-faces</artifactId>
+	<version>3.0.0-SNAPSHOT</version>
 
-   <packaging>jar</packaging>
-   <name>Seam Faces Module Core Implementation</name>
+	<packaging>jar</packaging>
+	<name>Seam Faces Module Core Implementation</name>
 
-   <dependencies>
-      <dependency>
+	<dependencies>
+		<dependency>
          <!-- Required until the Servlet 3.0 API can be resolved in Central -->
          <groupId>org.jboss.spec.javax.servlet</groupId>
          <artifactId>jboss-servlet-api_3.0_spec</artifactId>
          <scope>provided</scope>
       </dependency>
-      <dependency>
-         <artifactId>seam-faces-api</artifactId>
-         <groupId>org.jboss.seam.faces</groupId>
-         <version>${project.version}</version>
-         <scope>compile</scope>
-      </dependency>
-      <dependency>
-         <artifactId>seam-persistence-api</artifactId>
-         <groupId>org.jboss.seam.persistence</groupId>
-         <version>${project.version}</version>
-         <scope>compile</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.seam.international</groupId>
-         <artifactId>seam-international</artifactId>
-         <version>${seam.i18n.version}</version>
-      </dependency>
-      <dependency>
-         <groupId>javax.transaction</groupId>
-         <artifactId>jta</artifactId>
-         <scope>provided</scope>
-      </dependency>
-   </dependencies>
+		<dependency>
+			<artifactId>seam-faces-api</artifactId>
+			<groupId>org.jboss.seam.faces</groupId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.seam.international</groupId>
+			<artifactId>seam-international</artifactId>
+			<version>${seam.i18n.version}</version>
+		</dependency>
+	</dependencies>
 
-   <profiles>
-      <profile>
-         <id>code-coverage</id>
-         <build>
-            <plugins>
-               <plugin>
-                  <groupId>org.codehaus.mojo</groupId>
-                  <artifactId>emma-maven-plugin</artifactId>
-               </plugin>
-               <plugin>
-                  <groupId>org.apache.maven.plugins</groupId>
-                  <artifactId>maven-surefire-plugin</artifactId>
-               </plugin>
-               <plugin>
-                  <groupId>org.sonatype.maven.plugin</groupId>
-                  <artifactId>emma4it-maven-plugin</artifactId>
-               </plugin>
-            </plugins>
-         </build>
-      </profile>
-   </profiles>
+	<profiles>
+		<profile>
+			<id>code-coverage</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>emma-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.sonatype.maven.plugin</groupId>
+						<artifactId>emma4it-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
