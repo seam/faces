@@ -40,8 +40,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Verify that the ExternalContextProducer produces the same ExternalContext as
- * returned by FacesContext#getExternalContext() and the CDI producer method.
+ * Verify that the ExternalContextProducer produces the same ExternalContext as returned by
+ * FacesContext#getExternalContext() and the CDI producer method.
  * 
  * @author Dan Allen
  */
@@ -51,7 +51,9 @@ public class ExternalContextProducerTest
    @Deployment
    public static Archive<?> createTestArchive()
    {
-      return ShrinkWrap.create("test.jar", JavaArchive.class).addClass(FacesContextProducer.class).addClass(ExternalContextProducer.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+      return ShrinkWrap.create("test.jar", JavaArchive.class).addClass(FacesContextProducer.class).addClass(
+               ExternalContextProducer.class).addManifestResource(new ByteArrayAsset(new byte[0]),
+               ArchivePaths.create("beans.xml"));
    }
 
    @Inject

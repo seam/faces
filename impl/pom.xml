@@ -32,6 +32,18 @@
 			<artifactId>seam-international</artifactId>
 			<version>${seam.i18n.version}</version>
 		</dependency>
+		<dependency>
+			<artifactId>seam-persistence-api</artifactId>
+			<groupId>org.jboss.seam.persistence</groupId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 
 	<profiles>
