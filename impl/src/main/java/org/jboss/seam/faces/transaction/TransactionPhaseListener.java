@@ -31,7 +31,7 @@ import javax.faces.event.PhaseListener;
 import javax.inject.Inject;
 
 import org.jboss.seam.faces.viewdata.ViewDataStore;
-import org.jboss.seam.persistence.transaction.PersistenceContexts;
+import org.jboss.seam.persistence.PersistenceContexts;
 import org.jboss.seam.persistence.transaction.SeamTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
