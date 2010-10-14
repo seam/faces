@@ -76,7 +76,7 @@ public class UIValidateForm extends UIInput
    public void validate(final FacesContext context)
    {
       context.getApplication().publishEvent(context, PreValidateEvent.class, UIValidateForm.class, this);
-      BeanManager manager = BeanManagerAccessor.getManager();
+      BeanManager manager = BeanManagerAccessor.getBeanManager();
       manager.fireEvent(this, BEFORE);
 
       Validator validator = context.getApplication().createValidator(validatorId);

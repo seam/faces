@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
 
    <parent>
@@ -33,6 +34,9 @@
       <seam.version>3.0.0.b01</seam.version>
       <!-- Seam i8ln doesn't have a release yet -->
       <seam.i18n.version>3.0.0.Alpha1</seam.i18n.version>
+      <seam.persistence.version>3.0.0.Alpha1</seam.persistence.version>
+      <weld.extensions.version>1.0.0.Beta1</weld.extensions.version>
+      <jboss.logging.version>3.0.0.Beta4</jboss.logging.version>
    </properties>
 
    <dependencyManagement>
@@ -48,110 +52,43 @@
 
          <dependency>
             <groupId>org.jboss.seam.international</groupId>
-            <artifactId>seam-international-api</artifactId>
+            <artifactId>seam-international</artifactId>
             <version>${seam.i18n.version}</version>
          </dependency>
+         <dependency>
+            <artifactId>seam-persistence-api</artifactId>
+            <groupId>org.jboss.seam.persistence</groupId>
+            <version>${seam.persistence.version}</version>
+            <scope>compile</scope>
+         </dependency>
 
-         <!-- Need to use dependencyManagement to override org.jboss.seam:seam for submodules -->
+         <!-- Need to use dependencyManagement to override org.jboss.seam:seam 
+            for submodules -->
          <dependency>
             <groupId>org.jboss.seam.faces</groupId>
             <artifactId>seam-faces-api</artifactId>
             <version>${project.version}</version>
          </dependency>
-
-
          <dependency>
             <groupId>org.jboss.seam.faces</groupId>
             <artifactId>seam-faces</artifactId>
             <version>${project.version}</version>
          </dependency>
 
+         <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging</artifactId>
+            <version>${jboss.logging.version}</version>
+            <scope>provided</scope>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-extensions</artifactId>
+            <version>${weld.extensions.version}</version>
+         </dependency>
+
       </dependencies>
    </dependencyManagement>
-
-   <!-- TODO Move these to the correct sub-module -->
-   <dependencies>
-
-      <dependency>
-         <groupId>org.jboss.seam.international</groupId>
-         <artifactId>seam-international-api</artifactId>
-      </dependency>
-
-      <!-- Environment Dependencies -->
-      <dependency>
-         <!-- This is necessary until a new JSF-API is published to central -->
-         <groupId>javax.faces</groupId>
-         <artifactId>jsf-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.spec.javax.interceptor</groupId>
-         <artifactId>jboss-interceptors-api_1.1_spec</artifactId>
-         <scope>provided</scope>
-      </dependency>
-      <dependency>
-         <groupId>javax.el</groupId>
-         <artifactId>el-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
-      <dependency>
-         <groupId>javax.enterprise</groupId>
-         <artifactId>cdi-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
-      <dependency>
-         <groupId>javax.annotation</groupId>
-         <artifactId>jsr250-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
-      <dependency>
-         <groupId>javax.validation</groupId>
-         <artifactId>validation-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.weld</groupId>
-         <artifactId>weld-extensions</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.slf4j</groupId>
-         <artifactId>slf4j-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
-
-      <!-- Test Dependencies -->
-      <dependency>
-         <groupId>junit</groupId>
-         <artifactId>junit</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.arquillian</groupId>
-         <artifactId>arquillian-junit</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.arquillian.container</groupId>
-         <artifactId>arquillian-weld-embedded</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.weld</groupId>
-         <artifactId>weld-core</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.slf4j</groupId>
-         <artifactId>slf4j-simple</artifactId>
-         <scope>test</scope>
-      </dependency>
-
-      <dependency>
-         <groupId>org.jboss.test-jsf</groupId>
-         <artifactId>jsf-mock</artifactId>
-         <scope>test</scope>
-      </dependency>
-   </dependencies>
 
    <profiles>
       <profile>

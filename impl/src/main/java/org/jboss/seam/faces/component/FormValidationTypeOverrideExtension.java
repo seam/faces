@@ -33,7 +33,7 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 
 import org.jboss.seam.faces.validation.InputField;
-import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
+import org.jboss.weld.extensions.reflection.annotated.AnnotatedTypeBuilder;
 
 /**
  * Ensure that any field annotated with {@link InputField} is produced by the
@@ -49,8 +49,9 @@ public class FormValidationTypeOverrideExtension implements Extension
 
    public <T> void processAnnotatedType(@Observes final ProcessAnnotatedType<T> event)
    {
-      AnnotatedTypeBuilder<T> builder = AnnotatedTypeBuilder.newInstance(event.getAnnotatedType());
-      builder.readAnnotationsFromUnderlyingType();
+      AnnotatedTypeBuilder<T> builder = new AnnotatedTypeBuilder<T>();
+      builder.readFromType(event.getAnnotatedType());
+
       boolean modifiedType = false;
 
       for (AnnotatedField<?> f : event.getAnnotatedType().getFields())

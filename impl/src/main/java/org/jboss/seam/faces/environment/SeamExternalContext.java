@@ -46,7 +46,11 @@ public class SeamExternalContext extends ExternalContextWrapper
          {
             parameters = new HashMap<String, List<String>>();
          }
-         parameters.put(context.getRequestParameterName(), Arrays.asList(flash.getId()));
+         if (flash.getId() != null)
+         {
+            String id = String.valueOf(flash.getId());
+            parameters.put(context.getRequestParameterName(), Arrays.asList(id));
+         }
       }
       return super.encodeRedirectURL(baseUrl, parameters);
    }

@@ -77,7 +77,7 @@ public class FlashScopedContext implements Context, PhaseListener, Serializable
 
    private FlashContext getCurrentFlashContext()
    {
-      BeanManager manager = BeanManagerAccessor.getManager();
+      BeanManager manager = BeanManagerAccessor.getBeanManager();
       return BeanManagerUtils.getContextualInstance(manager, FlashContext.class);
    }
 
@@ -85,15 +85,18 @@ public class FlashScopedContext implements Context, PhaseListener, Serializable
    {
       if (!isActive())
       {
-         throw new ContextNotActiveException("Seam context with scope annotation @FlashScoped is not active with respect to the current thread");
+         throw new ContextNotActiveException("Seam context with scope annotation @FlashScoped is not active with respect to the current thread. " +
+               "This is probably caused by attempting to access the Flash before it was created or after it was destroyed.");
       }
    }
 
    private void initializeCurrentContext()
    {
-      String currentId = getCurrentId();
+      Integer currentId = getCurrentId();
+
       if (savedContextExists(currentId))
       {
+         // getFlashForCurrentIdAndReferrer
          FlashContext context = (FlashContext) getSessionMap().get(getSessionKey(currentId));
          currentContext = context;
       }
@@ -104,35 +107,43 @@ public class FlashScopedContext implements Context, PhaseListener, Serializable
          getSessionMap().put(getSessionKey(context.getId()), context);
          currentContext = context;
       }
+
    }
 
-   private String getNextFlashId()
+   private int getNextFlashId()
    {
-      String result = null;
-
       Map<String, Object> sessionMap = getSessionMap();
-      int i = 0;
-      while (result == null)
-      {
-         if (!sessionMap.containsKey(getSessionKey(result)))
-         {
-            result = String.valueOf(i);
-         }
-      }
+      int id = 0;
 
-      return result;
+      while (sessionMap.containsKey(getSessionKey(id)))
+      {
+         id++;
+      }
+      return id;
    }
 
-   private boolean savedContextExists(final String id)
+   private boolean savedContextExists(final int id)
    {
       return getSessionMap().get(getSessionKey(id)) instanceof FlashContext;
    }
 
-   private String getCurrentId()
+   private Integer getCurrentId()
    {
       Map<String, String> requestParameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
       String currentId = requestParameterMap.get(requestParameterName);
-      return currentId;
+      Integer result = null;
+      try
+      {
+         if (currentId != null)
+         {
+            result = Integer.valueOf(currentId);
+         }
+      }
+      catch (NumberFormatException e)
+      {
+         // ignored!
+      }
+      return result;
    }
 
    /**
@@ -260,13 +271,10 @@ public class FlashScopedContext implements Context, PhaseListener, Serializable
       return externalContext.getSessionMap();
    }
 
-   private String getSessionKey(final String id)
+   private String getSessionKey(final int id)
    {
       String result = SESSION_KEY_PREFIX;
-      if (id != null)
-      {
-         result += "_" + id;
-      }
+      result += "_" + id;
       return result;
    }
 

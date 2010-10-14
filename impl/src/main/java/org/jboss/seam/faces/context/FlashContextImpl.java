@@ -36,7 +36,8 @@ import javax.enterprise.inject.Typed;
 public class FlashContextImpl implements FlashContext, Serializable
 {
    private static final long serialVersionUID = 7502050909452181348L;
-   private String id = null;
+
+   private Integer id = null;
    private final Map<String, Object> map = new ConcurrentHashMap<String, Object>();
 
    public Object get(final String key)
@@ -44,12 +45,12 @@ public class FlashContextImpl implements FlashContext, Serializable
       return map.get(key);
    }
 
-   public String getId()
+   public Integer getId()
    {
       return id;
    }
 
-   public void setId(final String id)
+   public void setId(final int id)
    {
       this.id = id;
    }

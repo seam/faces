@@ -30,12 +30,10 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.inject.Inject;
 
+import org.jboss.logging.Logger;
 import org.jboss.seam.faces.viewdata.ViewDataStore;
 import org.jboss.seam.persistence.PersistenceContexts;
 import org.jboss.seam.persistence.transaction.SeamTransaction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 /**
  * Phase listener that is resposible for seam managed transactions. It is also
@@ -49,7 +47,7 @@ public class TransactionPhaseListener implements PhaseListener
 {
    private static final long serialVersionUID = -9127555729455066493L;
 
-   private static final Logger log = LoggerFactory.getLogger(TransactionPhaseListener.class);
+   private static final Logger log = Logger.getLogger(TransactionPhaseListener.class);
 
    @Inject
    SeamTransaction transaction;
@@ -80,7 +78,6 @@ public class TransactionPhaseListener implements PhaseListener
       handleTransactionsAfterPhase(event);
    }
 
-
    public void handleTransactionsBeforePhase(PhaseEvent event)
    {
       PhaseId phaseId = event.getPhaseId();
@@ -90,7 +87,7 @@ public class TransactionPhaseListener implements PhaseListener
          {
             persistenceContexts.beforeRender();
          }
-         boolean beginTran = (phaseId == PhaseId.RENDER_RESPONSE || phaseId == PhaseId.RESTORE_VIEW);
+         boolean beginTran = ((phaseId == PhaseId.RENDER_RESPONSE) || (phaseId == PhaseId.RESTORE_VIEW));
          if (beginTran)
          {
             begin(phaseId);
@@ -103,8 +100,8 @@ public class TransactionPhaseListener implements PhaseListener
       PhaseId phaseId = event.getPhaseId();
       if (seamManagedTransactionStatus(phaseId))
       {
-         boolean commitTran = phaseId == PhaseId.INVOKE_APPLICATION || event.getFacesContext().getRenderResponse() ||
-               event.getFacesContext().getResponseComplete() || phaseId == PhaseId.RENDER_RESPONSE;
+         boolean commitTran = (phaseId == PhaseId.INVOKE_APPLICATION) || event.getFacesContext().getRenderResponse() ||
+               event.getFacesContext().getResponseComplete() || (phaseId == PhaseId.RENDER_RESPONSE);
 
          if (commitTran)
          {
@@ -151,7 +148,7 @@ public class TransactionPhaseListener implements PhaseListener
                log.debug("committing transaction " + phaseString);
                transaction.commit();
 
-             }
+            }
             catch (IllegalStateException e)
             {
                log.warn("TX commit failed with illegal state exception. This may be because the tx timed out and was rolled back in the background.", e);
@@ -187,7 +184,7 @@ public class TransactionPhaseListener implements PhaseListener
       {
          return false;
       }
-      else if (config == SeamManagedTransactionType.RENDER_RESPONSE && phase != PhaseId.RENDER_RESPONSE)
+      else if ((config == SeamManagedTransactionType.RENDER_RESPONSE) && (phase != PhaseId.RENDER_RESPONSE))
       {
          return false;
       }

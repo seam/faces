@@ -34,8 +34,7 @@ import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 /**
  * Extension that scans enums for view specific configuration
@@ -46,7 +45,7 @@ import org.slf4j.LoggerFactory;
 public class ViewDataConfigurationExtension implements Extension
 {
 
-   private final Logger log = LoggerFactory.getLogger(ViewDataConfigurationExtension.class);
+   private static final Logger log = Logger.getLogger(ViewDataConfigurationExtension.class);
 
    private final Map<String, Set<Annotation>> data = new HashMap<String, Set<Annotation>>();
 
@@ -57,7 +56,7 @@ public class ViewDataConfigurationExtension implements Extension
       {
          if (!tp.getJavaClass().isEnum())
          {
-            log.warn("ViewConfig annotation should only be applied to enums, and {} is not an enum.", tp.getJavaClass());
+            log.warn("ViewConfig annotation should only be applied to enums, and [" + tp.getJavaClass() + "] is not an enum.");
          }
          else
          {

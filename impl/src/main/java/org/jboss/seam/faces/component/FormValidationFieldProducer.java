@@ -39,10 +39,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.inject.Inject;
 
+import org.jboss.logging.Logger;
 import org.jboss.seam.faces.event.qualifier.After;
 import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.faces.validation.InputField;
-import org.slf4j.Logger;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
@@ -51,8 +51,7 @@ import org.slf4j.Logger;
 @RequestScoped
 public class FormValidationFieldProducer
 {
-   @Inject
-   Logger log;
+   Logger log = Logger.getLogger(FormValidationFieldProducer.class);
 
    @Inject
    FacesContext context;

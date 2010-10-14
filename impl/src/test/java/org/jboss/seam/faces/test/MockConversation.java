@@ -18,38 +18,61 @@
  * License along with this software; if not, write to the Free
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
- */
+ */ 
+package org.jboss.seam.faces.test;
 
-package org.jboss.seam.faces.context;
+import javax.enterprise.context.Conversation;
+import javax.enterprise.context.RequestScoped;
 
 /**
- * A context that lives from Restore View to the next Render Response.
+ * Provide a mocked conversation object for use in Unit tests. This entire class
+ * is a no-op; it does <i>nothing</i>.
  * 
- * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
+ * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * 
  */
-public interface FlashContext
+@RequestScoped
+public class MockConversation implements Conversation
 {
+   private long timeout;
+   private String id;
+   private boolean persistent;
 
-   /**
-    * Returns true if the current {@link FlashContext} contains no data.
-    */
-   boolean isEmpty();
+   public void begin()
+   {
+      this.id = "generated";
+      persistent = true;
+   }
 
-   /**
-    * Return the current ID of this request's {@link FlashContext}. If the ID
-    * has not yet been set as part of a redirect, the ID will be null.
-    */
-   Integer getId();
+   public void begin(final String id)
+   {
+      this.id = id;
+      persistent = true;
+   }
 
-   /**
-    * Get a key value pair from the {@link FlashContext}.
-    */
-   Object get(String key);
+   public void end()
+   {
+      persistent = false;
+   }
 
-   /**
-    * Put a key value pair into the {@link FlashContext}.
-    */
-   void put(String key, Object value);
+   public String getId()
+   {
+      return id;
+   }
+
+   public long getTimeout()
+   {
+      return timeout;
+   }
+
+   public boolean isTransient()
+   {
+      return this.persistent == false;
+   }
+
+   public void setTimeout(final long milliseconds)
+   {
+      this.timeout = milliseconds;
+   }
 
 }

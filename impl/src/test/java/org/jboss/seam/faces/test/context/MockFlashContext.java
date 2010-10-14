@@ -20,36 +20,52 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.seam.faces.context;
+package org.jboss.seam.faces.test.context;
+
+import java.io.Serializable;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.enterprise.inject.Typed;
+
+import org.jboss.seam.faces.context.FlashContext;
 
 /**
- * A context that lives from Restore View to the next Render Response.
+ * A mock {@link FlashContext} that can be injected into tests.
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  * 
  */
-public interface FlashContext
+@Typed(FlashContext.class)
+public class MockFlashContext implements FlashContext, Serializable
 {
+   private static final long serialVersionUID = 7502050909452181348L;
+   private Integer id = null;
+   private final Map<String, Object> map = new ConcurrentHashMap<String, Object>();
 
-   /**
-    * Returns true if the current {@link FlashContext} contains no data.
-    */
-   boolean isEmpty();
+   public Object get(final String key)
+   {
+      return map.get(key);
+   }
 
-   /**
-    * Return the current ID of this request's {@link FlashContext}. If the ID
-    * has not yet been set as part of a redirect, the ID will be null.
-    */
-   Integer getId();
+   public Integer getId()
+   {
+      return id;
+   }
 
-   /**
-    * Get a key value pair from the {@link FlashContext}.
-    */
-   Object get(String key);
+   public void setId(final Integer id)
+   {
+      this.id = id;
+   }
 
-   /**
-    * Put a key value pair into the {@link FlashContext}.
-    */
-   void put(String key, Object value);
+   public boolean isEmpty()
+   {
+      return map.isEmpty();
+   }
+
+   public void put(final String key, final Object value)
+   {
+      map.put(key, value);
+   }
 
 }

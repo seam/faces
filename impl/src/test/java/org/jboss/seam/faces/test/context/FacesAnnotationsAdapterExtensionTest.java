@@ -19,37 +19,36 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+package org.jboss.seam.faces.test.context;
 
-package org.jboss.seam.faces.context;
+import static org.junit.Assert.assertTrue;
+
+import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.seam.faces.context.FacesAnnotationsAdapterExtension;
+import org.jboss.shrinkwrap.api.ArchivePaths;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
- * A context that lives from Restore View to the next Render Response.
- * 
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
- * 
  */
-public interface FlashContext
+@RunWith(Arquillian.class)
+public class FacesAnnotationsAdapterExtensionTest
 {
 
-   /**
-    * Returns true if the current {@link FlashContext} contains no data.
-    */
-   boolean isEmpty();
+   @Deployment
+   public static JavaArchive createTestArchive()
+   {
+      return ShrinkWrap.create("test.jar", JavaArchive.class).addClasses(ImproperlyAnnotatedBean.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+   }
 
-   /**
-    * Return the current ID of this request's {@link FlashContext}. If the ID
-    * has not yet been set as part of a redirect, the ID will be null.
-    */
-   Integer getId();
-
-   /**
-    * Get a key value pair from the {@link FlashContext}.
-    */
-   Object get(String key);
-
-   /**
-    * Put a key value pair into the {@link FlashContext}.
-    */
-   void put(String key, Object value);
-
+   @Test
+   public void testImproperlyAnnotatedClassIsCaptured()
+   {
+      assertTrue(FacesAnnotationsAdapterExtension.getAliasedbeans().containsKey(ImproperlyAnnotatedBean.class));
+   }
 }

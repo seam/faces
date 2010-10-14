@@ -20,36 +20,34 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.seam.faces.context;
+package org.jboss.seam.faces.test.component;
+
+import javax.faces.component.UIViewRoot;
+
+import org.jboss.seam.faces.component.UIValidateForm;
+import org.jboss.test.faces.mock.application.MockApplication;
+import org.jboss.test.faces.mock.context.MockFacesContext;
+import org.junit.Test;
 
 /**
- * A context that lives from Restore View to the next Render Response.
- * 
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  * 
  */
-public interface FlashContext
+public class UIValidateFormTest
 {
 
-   /**
-    * Returns true if the current {@link FlashContext} contains no data.
-    */
-   boolean isEmpty();
+   private final MockFacesContext facesContext = new MockFacesContext();
+   private final MockApplication application = new MockApplication();
+   private static final UIViewRoot uiViewRoot = new UIViewRoot();
 
-   /**
-    * Return the current ID of this request's {@link FlashContext}. If the ID
-    * has not yet been set as part of a redirect, the ID will be null.
-    */
-   Integer getId();
+   static
+   {
+      uiViewRoot.setViewId("foo.xhtml");
+   }
 
-   /**
-    * Get a key value pair from the {@link FlashContext}.
-    */
-   Object get(String key);
-
-   /**
-    * Put a key value pair into the {@link FlashContext}.
-    */
-   void put(String key, Object value);
-
+   @Test
+   public void testCanLocateChildComponents() throws Exception
+   {
+      UIValidateForm vf = new UIValidateForm();
+   }
 }

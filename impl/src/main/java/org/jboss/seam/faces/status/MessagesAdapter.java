@@ -31,6 +31,7 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.event.PhaseEvent;
 import javax.inject.Inject;
 
+import org.jboss.logging.Logger;
 import org.jboss.seam.faces.context.FlashContext;
 import org.jboss.seam.faces.event.PreNavigateEvent;
 import org.jboss.seam.faces.event.qualifier.Before;
@@ -38,7 +39,6 @@ import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.international.status.Level;
 import org.jboss.seam.international.status.Message;
 import org.jboss.seam.international.status.Messages;
-import org.slf4j.Logger;
 
 /**
  * Convert Seam Messages into FacesMessages before RenderResponse phase.<br>
@@ -50,6 +50,7 @@ import org.slf4j.Logger;
 public class MessagesAdapter implements Serializable
 {
    private static final long serialVersionUID = -2908193057765795662L;
+   private static final Logger log = Logger.getLogger(MessagesAdapter.class);
 
    private static final String FLASH_MESSAGES_KEY = MessagesAdapter.class.getName() + ".FLASH_KEY";
 
@@ -58,9 +59,6 @@ public class MessagesAdapter implements Serializable
 
    @Inject
    FlashContext context;
-
-   @Inject
-   Logger log;
 
    void flushBeforeNavigate(@Observes final PreNavigateEvent event)
    {

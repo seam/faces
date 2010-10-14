@@ -19,37 +19,24 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+package org.jboss.seam.faces.test.viewdata;
 
-package org.jboss.seam.faces.context;
+import org.jboss.seam.faces.viewdata.ViewConfig;
+import org.jboss.seam.faces.viewdata.ViewData;
 
-/**
- * A context that lives from Restore View to the next Render Response.
- * 
- * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
- * 
- */
-public interface FlashContext
+@ViewConfig
+public enum ViewDataConfigurationEnum
 {
-
-   /**
-    * Returns true if the current {@link FlashContext} contains no data.
-    */
-   boolean isEmpty();
-
-   /**
-    * Return the current ID of this request's {@link FlashContext}. If the ID
-    * has not yet been set as part of a redirect, the ID will be null.
-    */
-   Integer getId();
-
-   /**
-    * Get a key value pair from the {@link FlashContext}.
-    */
-   Object get(String key);
-
-   /**
-    * Put a key value pair into the {@link FlashContext}.
-    */
-   void put(String key, Object value);
-
+   @ViewData("/*")
+   @Icon("default.gif")
+   DEFAULT,
+   @ViewData("/happy/*")
+   @Icon("happy.gif")
+   HAPPY,
+   @ViewData("/sad/*")
+   @Icon("sad.gif")
+   SAD,
+   @ViewData("/happy/done.xhtml")
+   @Icon("finished.gif")
+   HAPPY_DONE;
 }

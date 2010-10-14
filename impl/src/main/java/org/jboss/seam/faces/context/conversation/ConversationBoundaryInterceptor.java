@@ -32,8 +32,8 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
+import org.jboss.logging.Logger;
 import org.jboss.seam.faces.util.Annotations;
-import org.slf4j.Logger;
 
 /**
  * Intercepts methods annotated as Conversational entry points: @{@link Begin}
@@ -47,8 +47,7 @@ public class ConversationBoundaryInterceptor implements Serializable
 {
    private static final long serialVersionUID = -2729227895205287477L;
 
-   @Inject
-   Logger log;
+   Logger log = Logger.getLogger(ConversationBoundaryInterceptor.class);
 
    @Inject
    Conversation conversation;

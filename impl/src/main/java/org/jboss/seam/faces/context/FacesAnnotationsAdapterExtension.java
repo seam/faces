@@ -52,7 +52,12 @@ public class FacesAnnotationsAdapterExtension implements Extension
    /*
     * For unit testing
     */
-   static final Map<Class<?>, Class<? extends Annotation>> aliasedBeans = new HashMap<Class<?>, Class<? extends Annotation>>();
+   private static final Map<Class<?>, Class<? extends Annotation>> aliasedBeans = new HashMap<Class<?>, Class<? extends Annotation>>();
+
+   public static Map<Class<?>, Class<? extends Annotation>> getAliasedbeans()
+   {
+      return aliasedBeans;
+   }
 
    public FacesAnnotationsAdapterExtension()
    {

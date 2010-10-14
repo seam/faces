@@ -31,6 +31,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.inject.Inject;
 
+import org.jboss.logging.Logger;
 import org.jboss.seam.faces.event.qualifier.After;
 import org.jboss.seam.faces.event.qualifier.ApplyRequestValues;
 import org.jboss.seam.faces.event.qualifier.Before;
@@ -39,7 +40,6 @@ import org.jboss.seam.faces.event.qualifier.ProcessValidations;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.faces.event.qualifier.RestoreView;
 import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
-import org.slf4j.Logger;
 
 /**
  * A PhaseListener used to bridge JSF phase events to the CDI event model.
@@ -66,9 +66,8 @@ public class PhaseEventBridge implements PhaseListener
 {
    private static final long serialVersionUID = -6181019551463318453L;
 
-   @Inject
-   private Logger log;
-   
+   private static final Logger log = Logger.getLogger(PhaseEventBridge.class);
+
    @Inject
    private BeanManager beanManager;
 
@@ -115,7 +114,7 @@ public class PhaseEventBridge implements PhaseListener
        * This propagates the event to CDI
        */
       Annotation[] qualifiers = new Annotation[] { whenQualifier, phaseQualifier };
-      log.debug("Fired event #0 with qualifiers #1", event, qualifiers);
+      log.debugf("Fired event [" + event + "] with qualifiers [" + qualifiers + "]");
       beanManager.fireEvent(event, qualifiers);
    }
 

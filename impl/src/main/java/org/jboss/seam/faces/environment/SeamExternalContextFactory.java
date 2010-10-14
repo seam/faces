@@ -23,7 +23,7 @@ public class SeamExternalContextFactory extends ExternalContextFactory
    {
       try
       {
-         BeanManager manager = BeanManagerAccessor.getManager();
+         BeanManager manager = BeanManagerAccessor.getBeanManager();
 
          SeamExternalContext seamExternalContext = BeanManagerUtils.getContextualInstance(manager, SeamExternalContext.class);
          seamExternalContext.setWrapped(parent.getExternalContext(context, request, response));

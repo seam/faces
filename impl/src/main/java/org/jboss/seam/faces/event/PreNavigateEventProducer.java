@@ -60,7 +60,7 @@ public class PreNavigateEventProducer extends ConfigurableNavigationHandler
    @Override
    public void handleNavigation(final FacesContext context, final String fromAction, final String outcome)
    {
-      BeanManager manager = BeanManagerAccessor.getManager();
+      BeanManager manager = BeanManagerAccessor.getBeanManager();
       NavigationCase navigationCase = getNavigationCase(context, fromAction, outcome);
       manager.fireEvent(new PreNavigateEvent(context, fromAction, outcome, navigationCase));
       parent.handleNavigation(context, fromAction, outcome);
