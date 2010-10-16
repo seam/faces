@@ -29,6 +29,7 @@ import javax.faces.event.PhaseListener;
 
 import org.jboss.seam.faces.context.FlashScopedContext;
 import org.jboss.seam.faces.transaction.TransactionPhaseListener;
+import org.jboss.weld.extensions.reflection.Reflections;
 
 /**
  * Provide CDI injection to PhaseListener artifacts by delegating through this
@@ -80,7 +81,17 @@ public class DelegatingPhaseListener extends AbstractListener<PhaseListener> imp
    @SuppressWarnings("unchecked")
    private List<PhaseListener> getPhaseListeners()
    {
-      return getListeners(FlashScopedContext.class, PhaseEventBridge.class, TransactionPhaseListener.class);
+      try
+      {
+         // if seam persistence is not on the CP then don't add the phase
+         // listener
+         Reflections.classForName("org.jboss.seam.persistence.transaction.SeamTransaction", getClass().getClassLoader());
+         return getListeners(FlashScopedContext.class, PhaseEventBridge.class, TransactionPhaseListener.class);
+      }
+      catch (ClassNotFoundException e)
+      {
+         return getListeners(FlashScopedContext.class, PhaseEventBridge.class);
+      }
    }
 
 }

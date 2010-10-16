@@ -36,8 +36,8 @@ import org.jboss.seam.persistence.PersistenceContexts;
 import org.jboss.seam.persistence.transaction.SeamTransaction;
 
 /**
- * Phase listener that is resposible for seam managed transactions. It is also
- * resposible for setting the correct flush mode on the persistence context
+ * Phase listener that is responsible for seam managed transactions. It is also
+ * responsible for setting the correct flush mode on the persistence context
  * during the render response phase
  * 
  * @author Stuart Douglas
@@ -169,7 +169,7 @@ public class TransactionPhaseListener implements PhaseListener
 
    private boolean seamManagedTransactionStatus(PhaseId phase)
    {
-      SeamManagedTransaction an = dataStore.getData(SeamManagedTransaction.class);
+      SeamManagedTransaction an = dataStore.getDataForCurrentViewId(SeamManagedTransaction.class);
       SeamManagedTransactionType config;
       if (an == null)
       {
