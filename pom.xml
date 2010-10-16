@@ -146,9 +146,9 @@
    </developers>
 
    <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/faces/trunk </connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/faces/trunk </developerConnection>
-      <url>http://fisheye.jboss.org/browse/Seam/modules/faces/trunk</url>
+      <connection>scm:git:git://github.com/seam/faces.git </connection>
+      <developerConnection>scm:git:git@github.com:seam/faces.git </developerConnection>
+      <url>http://github.com/seam/faces</url>
    </scm>
 </project>
 

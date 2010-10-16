@@ -35,7 +35,7 @@
  Seam 3 Home Page:     http://www.sfwk.org/Seam3
  Downloads:            http://www.sfwk.org/Seam3/DistributionDownloads
  Forums:               http://www.sfwk.org/Community/Seam3Users
- Source Code:          http://anonsvn.jboss.org/repos/seam/modules/faces
+ Source Code:          git://github.com/seam/faces.git
  Issue Tracking:       http://jira.jboss.org/jira/browse/SEAMFACES
 
  Release Notes
