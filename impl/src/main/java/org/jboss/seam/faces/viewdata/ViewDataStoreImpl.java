@@ -92,7 +92,7 @@ public class ViewDataStoreImpl implements ViewDataStore
       return null;
    }
 
-   public <T extends Annotation> T getData(Class<T> type)
+   public <T extends Annotation> T getDataForCurrentViewId(Class<T> type)
    {
       return getData(FacesContext.getCurrentInstance().getViewRoot().getViewId(), type);
    }
@@ -107,7 +107,7 @@ public class ViewDataStoreImpl implements ViewDataStore
       return null;
    }
 
-   public <T extends Annotation> List<T> getAllData(Class<T> type)
+   public <T extends Annotation> List<T> getAllDataForCurrentViewId(Class<T> type)
    {
       return getAllData(FacesContext.getCurrentInstance().getViewRoot().getViewId(), type);
    }

@@ -49,7 +49,7 @@ public interface ViewDataStore
    /**
     * gets the most specific data for the current viewId
     */
-   public abstract <T extends Annotation> T getData(Class<T> type);
+   public abstract <T extends Annotation> T getDataForCurrentViewId(Class<T> type);
 
    /**
     * returns all data for a given viewId, with the most specific data at the
@@ -61,6 +61,6 @@ public interface ViewDataStore
     * returns all data for the current viewId, with the most specific data at
     * the start of the list
     */
-   public abstract <T extends Annotation> List<T> getAllData(Class<T> type);
+   public abstract <T extends Annotation> List<T> getAllDataForCurrentViewId(Class<T> type);
 
 }
