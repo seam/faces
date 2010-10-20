@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import org.jboss.logging.Logger;
 import org.jboss.seam.faces.viewdata.ViewDataStore;
 import org.jboss.seam.persistence.PersistenceContexts;
+import org.jboss.seam.persistence.transaction.DefaultTransaction;
 import org.jboss.seam.persistence.transaction.SeamTransaction;
 
 /**
@@ -50,6 +51,7 @@ public class TransactionPhaseListener implements PhaseListener
    private static final Logger log = Logger.getLogger(TransactionPhaseListener.class);
 
    @Inject
+   @DefaultTransaction
    SeamTransaction transaction;
 
    @Inject
