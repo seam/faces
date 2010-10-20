@@ -50,8 +50,8 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.faces.event.SystemEventBridge;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
 import org.jboss.test.faces.mock.application.MockApplication;
 import org.jboss.test.faces.mock.context.MockFacesContext;
 import org.jboss.weld.extensions.beanManager.BeanManagerAware;
@@ -70,7 +70,7 @@ public class SystemEventBridgeTest
    @Deployment
    public static JavaArchive createTestArchive()
    {
-      return ShrinkWrap.create("test.jar", JavaArchive.class).addClasses(SystemEventObserver.class, SystemEventBridge.class, BeanManagerAware.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+      return ShrinkWrap.create(JavaArchive.class).addClasses(SystemEventObserver.class, SystemEventBridge.class, BeanManagerAware.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
    }
 
    @Inject

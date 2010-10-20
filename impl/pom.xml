@@ -62,7 +62,31 @@
          <artifactId>jta</artifactId>
          <scope>provided</scope>
       </dependency>
-
+      <dependency>
+         <groupId>javax.enterprise</groupId>
+         <artifactId>cdi-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.glassfish.web</groupId>
+         <artifactId>el-impl</artifactId>
+         <scope>provided</scope>
+      </dependency>
+      <dependency>
+         <groupId>javax.el</groupId>
+         <artifactId>el-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.spec.javax.servlet</groupId>
+         <artifactId>jboss-servlet-api_3.0_spec</artifactId>
+         <scope>provided</scope>
+      </dependency>
+      <dependency>
+         <groupId>javax.faces</groupId>
+         <artifactId>jsf-api</artifactId>
+         <scope>provided</scope>
+      </dependency>   
 
       <!-- Test Dependencies -->
       <dependency>
@@ -82,7 +106,7 @@
       </dependency>
       <dependency>
          <groupId>org.jboss.arquillian.container</groupId>
-         <artifactId>arquillian-weld-embedded</artifactId>
+         <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
          <scope>test</scope>
       </dependency>
       <dependency>
@@ -95,7 +119,27 @@
          <artifactId>slf4j-simple</artifactId>
          <scope>test</scope>
       </dependency>
+     
+      <dependency>
+         <groupId>org.jboss.spec</groupId>
+         <artifactId>jboss-javaee-6.0</artifactId>
+         <version>${jboss-javaee6-spec.version}</version>
+         <type>pom</type>
+         <scope>provided</scope>
+      </dependency>
    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.weld</groupId>
+                <artifactId>weld-core-bom</artifactId>
+                <version>${weld.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            
+        </dependencies>
+    </dependencyManagement>   
 
    <profiles>
       <profile>

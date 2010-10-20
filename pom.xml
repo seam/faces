@@ -20,8 +20,8 @@
    </prerequisites>
 
    <description>
-		The Parent for Seam Faces Modules
-	</description>
+       The Parent for Seam Faces Modules
+   </description>
 
    <url>http://www.seamframework.org</url>
 
@@ -37,6 +37,12 @@
       <seam.persistence.version>3.0.0.Alpha1</seam.persistence.version>
       <weld.extensions.version>1.0.0.Beta1</weld.extensions.version>
       <jboss.logging.version>3.0.0.Beta4</jboss.logging.version>
+      <arquillian.version>1.0.0.Alpha4</arquillian.version>
+      <jetty.version>8.0.0.M1</jetty.version>
+      <cdi-api.version>1.0-SP2</cdi-api.version>
+      <weld.version>1.1.0.Beta1</weld.version>
+      <jboss-javaee6-spec.version>1.0.0.Beta4</jboss-javaee6-spec.version>
+      <jsf-api.version>2.0</jsf-api.version>
    </properties>
 
    <dependencyManagement>
@@ -55,6 +61,7 @@
             <artifactId>seam-international</artifactId>
             <version>${seam.i18n.version}</version>
          </dependency>
+         
          <dependency>
             <artifactId>seam-persistence-api</artifactId>
             <groupId>org.jboss.seam.persistence</groupId>
@@ -69,6 +76,7 @@
             <artifactId>seam-faces-api</artifactId>
             <version>${project.version}</version>
          </dependency>
+         
          <dependency>
             <groupId>org.jboss.seam.faces</groupId>
             <artifactId>seam-faces</artifactId>
@@ -81,12 +89,55 @@
             <version>${jboss.logging.version}</version>
             <scope>provided</scope>
          </dependency>
+         
          <dependency>
             <groupId>org.jboss.weld</groupId>
             <artifactId>weld-extensions</artifactId>
             <version>${weld.extensions.version}</version>
          </dependency>
+         
+         <dependency>
+            <groupId>org.jboss.arquillian.container</groupId>
+            <artifactId>arquillian-jetty-embedded-7</artifactId>
+            <version>${arquillian.version}</version>
+         </dependency>
+         
+         <dependency>
+            <groupId>org.jboss.arquillian.container</groupId>
+            <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
+            <version>${arquillian.version}</version>
+         </dependency>
+         
+         <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>${jetty.version}</version>
+         </dependency>
+         
+         <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-plus</artifactId>
+            <version>${jetty.version}</version>
+         </dependency>
 
+         <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <version>${cdi-api.version}</version>
+         </dependency>        
+         
+         <dependency>
+            <groupId>javax.faces</groupId>
+            <artifactId>jsf-api</artifactId>
+            <version>${jsf-api.version}</version>
+         </dependency>   
+
+         <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-core</artifactId>
+            <version>${weld.version}</version>
+         </dependency>
+                 
       </dependencies>
    </dependencyManagement>
 
