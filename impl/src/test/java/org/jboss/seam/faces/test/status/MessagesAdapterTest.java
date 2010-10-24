@@ -42,8 +42,8 @@ import org.jboss.seam.international.status.builder.BundleTemplateMessageImpl;
 import org.jboss.seam.international.status.builder.TemplateMessageImpl;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
 import org.jboss.test.faces.stub.faces.StubFacesContext;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +59,7 @@ public class MessagesAdapterTest extends PhaseTestBase
    @Deployment
    public static JavaArchive createTestArchive()
    {
-      return ShrinkWrap.create("test.jar", JavaArchive.class).addClasses(MessagesAdapter.class, Messages.class, MockFlashContext.class, MessageFactory.class, TemplateMessageImpl.class, BundleTemplateMessageImpl.class, Bundles.class, PhaseEventBridge.class, MockLogger.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+      return ShrinkWrap.create(JavaArchive.class).addClasses(MessagesAdapter.class, Messages.class, MockFlashContext.class, MessageFactory.class, TemplateMessageImpl.class, BundleTemplateMessageImpl.class, Bundles.class, PhaseEventBridge.class, MockLogger.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
    }
 
    @Inject

@@ -34,8 +34,8 @@ import org.jboss.seam.faces.viewdata.ViewDataStoreImpl;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.jboss.shrinkwrap.impl.base.asset.ByteArrayAsset;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -46,7 +46,7 @@ public class ViewDataConfigurationTest
    @Deployment
    public static Archive<?> createTestArchive()
    {
-      JavaArchive archive = ShrinkWrap.create("test.jar", JavaArchive.class)
+      JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
             .addClass(ViewDataStoreImpl.class)
             .addPackage(ViewDataConfigurationTest.class.getPackage())
             .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
