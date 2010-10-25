@@ -37,7 +37,7 @@ import org.jboss.weld.extensions.el.Resolver;
  * 
  */
 @Resolver
-public class FacesContextELResolver extends ELResolver
+public class FacesELResolver extends ELResolver
 {
    private ELResolver wrapped;
 

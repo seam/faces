@@ -25,6 +25,8 @@ package org.jboss.seam.faces.transaction;
 import static javax.faces.event.PhaseId.ANY_PHASE;
 import static javax.faces.event.PhaseId.RENDER_RESPONSE;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.inject.Instance;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
@@ -36,9 +38,8 @@ import org.jboss.seam.persistence.PersistenceContexts;
 import org.jboss.seam.persistence.transaction.SeamTransaction;
 
 /**
- * Phase listener that is responsible for seam managed transactions. It is also
- * responsible for setting the correct flush mode on the persistence context
- * during the render response phase
+ * Phase listener that is responsible for seam managed transactions. It is also responsible for setting the correct
+ * flush mode on the persistence context during the render response phase
  * 
  * @author Stuart Douglas
  * 
@@ -50,35 +51,58 @@ public class TransactionPhaseListener implements PhaseListener
    private static final Logger log = Logger.getLogger(TransactionPhaseListener.class);
 
    @Inject
-   SeamTransaction transaction;
+   private Instance<SeamTransaction> transactionInstance;
 
    @Inject
-   ViewDataStore dataStore;
+   private ViewDataStore dataStore;
 
    @Inject
-   PersistenceContexts persistenceContexts;
+   private Instance<PersistenceContexts> persistenceContextsInstance;
+
+   private boolean enabled = false;
+
+   private PersistenceContexts persistenceContexts;
+   private SeamTransaction transaction;
+
+   @PostConstruct
+   public void init()
+   {
+      if (transactionInstance.isUnsatisfied() || persistenceContextsInstance.isUnsatisfied())
+      {
+         enabled = false;
+      }
+      else
+      {
+         enabled = true;
+         transaction = transactionInstance.get();
+         persistenceContexts = persistenceContextsInstance.get();
+      }
+   }
 
    public PhaseId getPhaseId()
    {
       return ANY_PHASE;
    }
 
-   public void beforePhase(PhaseEvent event)
+   public void beforePhase(final PhaseEvent event)
    {
       log.trace("before phase: " + event.getPhaseId());
-      handleTransactionsBeforePhase(event);
+      if (enabled)
+      {
+         handleTransactionsBeforePhase(event);
+      }
    }
 
-   public void afterPhase(PhaseEvent event)
+   public void afterPhase(final PhaseEvent event)
    {
-      if (event.getPhaseId() == RENDER_RESPONSE)
+      if (enabled && (event.getPhaseId() == RENDER_RESPONSE))
       {
          persistenceContexts.afterRender();
       }
       handleTransactionsAfterPhase(event);
    }
 
-   public void handleTransactionsBeforePhase(PhaseEvent event)
+   public void handleTransactionsBeforePhase(final PhaseEvent event)
    {
       PhaseId phaseId = event.getPhaseId();
       if (seamManagedTransactionStatus(phaseId))
@@ -95,13 +119,13 @@ public class TransactionPhaseListener implements PhaseListener
       }
    }
 
-   public void handleTransactionsAfterPhase(PhaseEvent event)
+   public void handleTransactionsAfterPhase(final PhaseEvent event)
    {
       PhaseId phaseId = event.getPhaseId();
       if (seamManagedTransactionStatus(phaseId))
       {
          boolean commitTran = (phaseId == PhaseId.INVOKE_APPLICATION) || event.getFacesContext().getRenderResponse() ||
-               event.getFacesContext().getResponseComplete() || (phaseId == PhaseId.RENDER_RESPONSE);
+                  event.getFacesContext().getResponseComplete() || (phaseId == PhaseId.RENDER_RESPONSE);
 
          if (commitTran)
          {
@@ -111,12 +135,12 @@ public class TransactionPhaseListener implements PhaseListener
       }
    }
 
-   void begin(PhaseId phaseId)
+   void begin(final PhaseId phaseId)
    {
       begin("prior to phase: " + phaseId);
    }
 
-   void begin(String phaseString)
+   void begin(final String phaseString)
    {
       try
       {
@@ -132,12 +156,12 @@ public class TransactionPhaseListener implements PhaseListener
       }
    }
 
-   void commitOrRollback(PhaseId phaseId)
+   void commitOrRollback(final PhaseId phaseId)
    {
       commitOrRollback("after phase: " + phaseId);
    }
 
-   void commitOrRollback(String phaseString)
+   void commitOrRollback(final String phaseString)
    {
       try
       {
@@ -151,7 +175,8 @@ public class TransactionPhaseListener implements PhaseListener
             }
             catch (IllegalStateException e)
             {
-               log.warn("TX commit failed with illegal state exception. This may be because the tx timed out and was rolled back in the background.", e);
+               log.warn("TX commit failed with illegal state exception. This may be because the tx timed out and was rolled back in the background.",
+                        e);
             }
          }
          else if (transaction.isRolledBackOrMarkedRollback())
@@ -167,7 +192,7 @@ public class TransactionPhaseListener implements PhaseListener
       }
    }
 
-   private boolean seamManagedTransactionStatus(PhaseId phase)
+   private boolean seamManagedTransactionStatus(final PhaseId phase)
    {
       SeamManagedTransaction an = dataStore.getDataForCurrentViewId(SeamManagedTransaction.class);
       SeamManagedTransactionType config;

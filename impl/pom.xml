@@ -33,8 +33,6 @@
       <dependency>
          <artifactId>seam-persistence-api</artifactId>
          <groupId>org.jboss.seam.persistence</groupId>
-         <scope>provided</scope>
-         <optional>true</optional>
       </dependency>
       <dependency>
          <groupId>org.jboss.spec.javax.interceptor</groupId>
