@@ -25,7 +25,6 @@ package org.jboss.seam.faces.el;
 import java.beans.FeatureDescriptor;
 import java.util.Iterator;
 
-import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
@@ -37,50 +36,47 @@ import org.jboss.weld.extensions.el.Resolver;
  * 
  */
 @Resolver
-public class FacesELResolver extends ELResolver
+public class FacesContextELResolver extends ELResolver
 {
-   private ELResolver wrapped;
-
-   @PostConstruct
-   public void postConstruct()
+   private ELResolver getWrapped()
    {
-      this.wrapped = FacesContext.getCurrentInstance().getELContext().getELResolver();
+      return FacesContext.getCurrentInstance().getELContext().getELResolver();
    }
 
    @Override
    public Object getValue(ELContext context, Object base, Object property)
    {
-      return wrapped.getValue(context, base, property);
+      return getWrapped().getValue(context, base, property);
    }
 
    @Override
    public Class<?> getType(ELContext context, Object base, Object property)
    {
-      return null;
+      return getWrapped().getType(context, base, property);
    }
 
    @Override
    public void setValue(ELContext context, Object base, Object property, Object value)
    {
-      wrapped.setValue(context, base, property, value);
+      getWrapped().setValue(context, base, property, value);
    }
 
    @Override
    public boolean isReadOnly(ELContext context, Object base, Object property)
    {
-      return wrapped.isReadOnly(context, base, property);
+      return getWrapped().isReadOnly(context, base, property);
    }
 
    @Override
    public Iterator<FeatureDescriptor> getFeatureDescriptors(ELContext context, Object base)
    {
-      return wrapped.getFeatureDescriptors(context, base);
+      return getWrapped().getFeatureDescriptors(context, base);
    }
 
    @Override
    public Class<?> getCommonPropertyType(ELContext context, Object base)
    {
-      return wrapped.getCommonPropertyType(context, base);
+      return getWrapped().getCommonPropertyType(context, base);
    }
 
 }

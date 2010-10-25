@@ -22,17 +22,20 @@
          <scope>compile</scope>
       </dependency>
       <dependency>
+         <groupId>org.jboss.seam.international</groupId>
+         <artifactId>seam-international</artifactId>
+         <scope>compile</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.seam.persistence</groupId>
+         <artifactId>seam-persistence-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+
+      <dependency>
          <groupId>org.jboss.logging</groupId>
          <artifactId>jboss-logging</artifactId>
          <scope>provided</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.seam.international</groupId>
-         <artifactId>seam-international</artifactId>
-      </dependency>
-      <dependency>
-         <artifactId>seam-persistence-api</artifactId>
-         <groupId>org.jboss.seam.persistence</groupId>
       </dependency>
       <dependency>
          <groupId>org.jboss.spec.javax.interceptor</groupId>
@@ -40,19 +43,9 @@
          <scope>provided</scope>
       </dependency>
       <dependency>
-         <groupId>javax.enterprise</groupId>
-         <artifactId>cdi-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
-      <dependency>
          <!-- Required until the Servlet 3.0 API can be resolved in Central -->
          <groupId>org.jboss.spec.javax.servlet</groupId>
          <artifactId>jboss-servlet-api_3.0_spec</artifactId>
-         <scope>provided</scope>
-      </dependency>
-      <dependency>
-         <groupId>javax.faces</groupId>
-         <artifactId>jsf-api</artifactId>
          <scope>provided</scope>
       </dependency>
       <dependency>
@@ -65,26 +58,6 @@
          <artifactId>cdi-api</artifactId>
          <scope>provided</scope>
       </dependency>
-      <dependency>
-         <groupId>org.glassfish.web</groupId>
-         <artifactId>el-impl</artifactId>
-         <scope>provided</scope>
-      </dependency>
-      <dependency>
-         <groupId>javax.el</groupId>
-         <artifactId>el-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.spec.javax.servlet</groupId>
-         <artifactId>jboss-servlet-api_3.0_spec</artifactId>
-         <scope>provided</scope>
-      </dependency>
-      <dependency>
-         <groupId>javax.faces</groupId>
-         <artifactId>jsf-api</artifactId>
-         <scope>provided</scope>
-      </dependency>   
 
       <!-- Test Dependencies -->
       <dependency>
@@ -117,7 +90,7 @@
          <artifactId>slf4j-simple</artifactId>
          <scope>test</scope>
       </dependency>
-     
+
       <dependency>
          <groupId>org.jboss.spec</groupId>
          <artifactId>jboss-javaee-6.0</artifactId>
@@ -126,18 +99,11 @@
          <scope>provided</scope>
       </dependency>
    </dependencies>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.jboss.weld</groupId>
-                <artifactId>weld-core-bom</artifactId>
-                <version>${weld.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            
-        </dependencies>
-    </dependencyManagement>   
+
+   <dependencyManagement>
+      <dependencies>
+      </dependencies>
+   </dependencyManagement>
 
    <profiles>
       <profile>

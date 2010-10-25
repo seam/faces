@@ -40,18 +40,18 @@ public class SeamExternalContext extends ExternalContextWrapper
    @Override
    public String encodeRedirectURL(final String baseUrl, Map<String, List<String>> parameters)
    {
-      if (!flash.isEmpty())
+      String redirectURL = "";
+      if ((flash.getId() != null) && (context.countFlashContexts() > 1))
       {
          if (parameters == null)
          {
             parameters = new HashMap<String, List<String>>();
          }
-         if (flash.getId() != null)
-         {
-            String id = String.valueOf(flash.getId());
-            parameters.put(context.getRequestParameterName(), Arrays.asList(id));
-         }
+         String id = String.valueOf(flash.getId());
+         parameters.put(context.getRequestParameterName(), Arrays.asList(id));
       }
-      return super.encodeRedirectURL(baseUrl, parameters);
+
+      redirectURL = super.encodeRedirectURL(baseUrl, parameters);
+      return redirectURL;
    }
 }

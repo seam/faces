@@ -55,6 +55,16 @@
             <scope>import</scope>
             <type>pom</type>
          </dependency>
+         
+         <!-- 
+         <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-core-bom</artifactId>
+            <version>${weld.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
+         -->
 
          <dependency>
             <groupId>org.jboss.seam.international</groupId>

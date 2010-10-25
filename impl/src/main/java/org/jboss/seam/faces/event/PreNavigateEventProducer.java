@@ -28,6 +28,7 @@ import java.util.Set;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
+import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 
 import org.jboss.weld.extensions.beanManager.BeanManagerAccessor;
@@ -61,7 +62,17 @@ public class PreNavigateEventProducer extends ConfigurableNavigationHandler
    public void handleNavigation(final FacesContext context, final String fromAction, final String outcome)
    {
       BeanManager manager = BeanManagerAccessor.getBeanManager();
-      NavigationCase navigationCase = getNavigationCase(context, fromAction, outcome);
+      NavigationHandler navigationHandler = context.getApplication().getNavigationHandler();
+
+      NavigationCase navigationCase;
+      if (navigationHandler instanceof ConfigurableNavigationHandler)
+      {
+         navigationCase = ((ConfigurableNavigationHandler) navigationHandler).getNavigationCase(context, fromAction, outcome);
+      }
+      else
+      {
+         navigationCase = getNavigationCase(context, fromAction, outcome);
+      }
       manager.fireEvent(new PreNavigateEvent(context, fromAction, outcome, navigationCase));
       parent.handleNavigation(context, fromAction, outcome);
    }
