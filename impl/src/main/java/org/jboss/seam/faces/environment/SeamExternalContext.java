@@ -11,8 +11,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.ExternalContextWrapper;
 import javax.inject.Inject;
 
-import org.jboss.seam.faces.context.FlashContext;
-import org.jboss.seam.faces.context.FlashScopedContext;
+import org.jboss.seam.faces.context.RenderScopedContext;
+import org.jboss.seam.faces.context.RenderScopedPhaseListener;
 
 @Typed(SeamExternalContext.class)
 @RequestScoped
@@ -21,10 +21,10 @@ public class SeamExternalContext extends ExternalContextWrapper
    private ExternalContext wrapped;
 
    @Inject
-   FlashContext flash;
+   RenderScopedContext flash;
 
    @Inject
-   FlashScopedContext context;
+   RenderScopedPhaseListener context;
 
    public void setWrapped(final ExternalContext wrapped)
    {

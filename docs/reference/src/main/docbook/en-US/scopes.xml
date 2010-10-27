@@ -4,43 +4,89 @@
 <chapter id="scopes">
 	<title>Faces Scoping Support</title>
 	<para>
-		JSF 2.0 introduced the concept of the @FlashScope and the @ViewScope; however, JSF 2.0 did not provide annotations for accessing the FlashScope,
-		 and CDI does not support the non-standard ViewScope by default. The Seam Faces module does both. Beans stored in the FlashScope will survive
-		 until the next page is rendered, and for the most part, beans stored in the ViewScope will survive as long as a user remains on the
-		 same page.
+		JSF 2.0 introduced the concept of the Flash object and the @ViewScope; however, JSF 2.0 did not provide annotations accessing the Flash,
+		 and CDI does not support the non-standard ViewScope by default. The Seam Faces module does both, in addition to adding a new @RenderScoped context. 
+         Beans stored in the Render Scope will survive until the next page is rendered. For the most part, beans stored in the ViewScope will survive as
+         long as a user remains on the same page, and data in the JSF 2 Flash will survive as long as the flash survives).
 	</para>
-	<section id="flashscoped">
-		<title>@FlashScoped</title>
+	<section id="RenderScoped">
+		<title>@RenderScoped</title>
 		<para>
-			You should think about using the Flash scope if you want to store information that will be relevant to the user even after an action
+			You should think about using the Render scope if you want to store information that will be relevant to the user even after an action
 			sends them to another view. For instance, when a user submits a form, you may want to invoke JSF navigation and redirect 
 			the user to another page in the site; if you needed to store a message to be displayed when the next page is rendered -but no longer- 
-			you would store that message in the FlashContext. Fortunately, Seam provides FlashScoped messages by default, via the 
+			you would store that message in the RenderScopedContext. Fortunately, Seam provides RenderScoped messages by default, via the 
 			<link linkend="messages">Seam Messages API</link>. 
 		</para>
 		<para>
-			To scope a bean to the Flash, use the <literal>@javax.faces.bean.FlashScoped</literal> annotation. This means that your bean will be stored in the 
-			<literal>org.jboss.seam.context.FlashContext</literal> until the next page is rendered, at which point the FlashScope will be cleared.
+			To place a bean in the RenderScoped context, use the <literal>@javax.faces.bean.RenderScoped</literal> annotation. This means that your
+             bean will be stored in the  <literal>org.jboss.seam.context.RenderScopedContext</literal> object until the next page is rendered, at 
+             which point the RenderScope will be cleared.
 
-<programlisting>@FlashScoped
+<programlisting>@RenderScoped
 public class Bean {
 	// ...
 }</programlisting>
+            <para>
+               @RenderScoped beans are destroyed when the next JSF RENDER_RESPONSE phase ends, however, if a user has multiple browser windows
+                    open for the same user-session, multiple RenderScopedContexts will be created, one for each incoming request. Seam Faces keeps
+                    track of which RenderScopedContext belongs to each request, and will restore/destroy them appropriately. If there is more than
+                    one active RenderScopedContext at the time when you issue a redirect, you will see a URL parameter "?fid=..." appended to the
+                    end of the outbound URL, this is to ensure the correct context is restored when the request is received by the server, and will
+                    not be present if only one context is active.
+            </para>
 
 			<caution>
 				<para>
-					@FlashScoped beans are destroyed when the Flash is cleared. This means that the	life-span of @FlashScoped beans last only until
-					the next Render Response phase is executed.
-				</para>
-				<para>
-					If you want to use the Flash Scope with custom navigation in your application, 
+					If you want to use the Render Scope with custom navigation in your application, 
 					be sure to call <literal>ExternalContext.encodeRedirectURL(String url, Map&lt;String, List&lt;String&gt;&gt; queryParams)</literal>
-					on any URL before using it to issue a redirect. This will ensure that the FlashContext ID is properly appended to the URL, enabling
-					the FlashContext to be restored on the subsequent request. This is only necessary if issuing a Servlet Redirect.
+					on any URL before using it to issue a redirect. This will ensure that the RenderScopedContext ID is properly appended to the URL, enabling
+					the RenderScopedContext to be restored on the subsequent request. This is only necessary if issuing a Servlet Redirect; for the
+                    cases where Faces non-redirecting navigation is used, no URL parameter is necessary, and the context will be destroyed at the end
+                    of the current request.
 				</para>
 			</caution>
 		</para>
 	</section>
+    <section id="flashproducer">
+      <title>@Inject javax.faces.contet.Flash flash</title>
+      <para>
+         JSF 2 does not provide proper system events to create a functional <literal>@FlashScoped</literal> context annotation integrated with CDI, so until
+         a workaround can be found, or JSF 2 is enhanced, you can access the Flash via the @Inject annotation. For more information on the 
+               <ulink url="https://javaserverfaces.dev.java.net/nonav/docs/2.0/javadocs/javax/faces/context/Flash.html">JSF Flash</ulink>, read 
+               <ulink url="https://javaserverfaces.dev.java.net/nonav/docs/2.0/javadocs/javax/faces/context/Flash.html">this API doc</ulink>.
+         <programlisting>
+public class Bean {
+   @Inject private Flash flash;
+   // ...
+}</programlisting>
+      </para>
+    </section>
+ <!--  
+ <section id="flashscoped">
+      <title>@FlashScoped</title>
+      <para>
+         To scope a bean to the JSF Flash (similar to @RenderScoped, but subtly different - favor @RenderScoped if you are unsure), use the 
+         <literal>@javax.faces.bean.ViewScoped</literal> annotation. This means that your bean will be stored in the <literal>javax.faces.context.Flash</literal>
+         object, which is accessible via: <literal>FacesContext.getCurrentInstance().getExternalContext().getFlash()</literal>, but for convenience, can
+         be injected into your beans with <literal>@Inject Flash flash;</literal>
+         <programlisting>@FlashScoped
+public class Bean {
+   // ...
+}</programlisting>
+         <caution>
+            <para>
+               @FlashScoped beans are destroyed when the JSF Flash context is emptied. This means that the
+               life-span of @FlashScoped beans is dependent on the <literal>javax.faces.context.Flash</literal> implementation supplied by
+               your JSF implementation. For more information on the 
+               <ulink url="https://javaserverfaces.dev.java.net/nonav/docs/2.0/javadocs/javax/faces/context/Flash.html">JSF Flash</ulink>, read 
+               <ulink url="https://javaserverfaces.dev.java.net/nonav/docs/2.0/javadocs/javax/faces/context/Flash.html">this API doc</ulink>.
+            </para>
+         </caution>
+      </para>
+   </section>
+   
+    --> 
 	<section id="viewscoped">
 		<title>@ViewScoped</title>
 		<para>

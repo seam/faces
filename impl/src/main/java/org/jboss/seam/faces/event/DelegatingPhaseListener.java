@@ -27,7 +27,7 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
-import org.jboss.seam.faces.context.FlashScopedContext;
+import org.jboss.seam.faces.context.RenderScopedPhaseListener;
 import org.jboss.seam.faces.transaction.TransactionPhaseListener;
 import org.jboss.weld.extensions.reflection.Reflections;
 
@@ -86,11 +86,11 @@ public class DelegatingPhaseListener extends AbstractListener<PhaseListener> imp
          // if seam persistence is not on the CP then don't add the phase
          // listener
          Reflections.classForName("org.jboss.seam.persistence.transaction.SeamTransaction", getClass().getClassLoader());
-         return getListeners(FlashScopedContext.class, PhaseEventBridge.class, TransactionPhaseListener.class);
+         return getListeners(RenderScopedPhaseListener.class, PhaseEventBridge.class, TransactionPhaseListener.class);
       }
       catch (ClassNotFoundException e)
       {
-         return getListeners(FlashScopedContext.class, PhaseEventBridge.class);
+         return getListeners(RenderScopedPhaseListener.class, PhaseEventBridge.class);
       }
    }
 

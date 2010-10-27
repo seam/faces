@@ -1,5 +1,5 @@
 org.jboss.seam.faces.component.FormValidationTypeOverrideExtension
 org.jboss.seam.faces.context.ViewScopedExtension
-org.jboss.seam.faces.context.FlashScopedExtension
+org.jboss.seam.faces.context.RenderScopedExtension
 org.jboss.seam.faces.context.FacesAnnotationsAdapterExtension
 org.jboss.seam.faces.viewdata.ViewDataConfigurationExtension

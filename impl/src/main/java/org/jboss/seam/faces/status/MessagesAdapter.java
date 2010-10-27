@@ -32,7 +32,7 @@ import javax.faces.event.PhaseEvent;
 import javax.inject.Inject;
 
 import org.jboss.logging.Logger;
-import org.jboss.seam.faces.context.FlashContext;
+import org.jboss.seam.faces.context.RenderScopedContext;
 import org.jboss.seam.faces.event.PreNavigateEvent;
 import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
@@ -58,7 +58,7 @@ public class MessagesAdapter implements Serializable
    Messages messages;
 
    @Inject
-   FlashContext context;
+   RenderScopedContext context;
 
    void flushBeforeNavigate(@Observes final PreNavigateEvent event)
    {

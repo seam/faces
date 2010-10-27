@@ -28,16 +28,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.enterprise.inject.Typed;
 
-import org.jboss.seam.faces.context.FlashContext;
+import org.jboss.seam.faces.context.RenderScopedContext;
 
 /**
- * A mock {@link FlashContext} that can be injected into tests.
+ * A mock {@link RenderScopedContext} that can be injected into tests.
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  * 
  */
-@Typed(FlashContext.class)
-public class MockFlashContext implements FlashContext, Serializable
+@Typed(RenderScopedContext.class)
+public class MockFlashContext implements RenderScopedContext, Serializable
 {
    private static final long serialVersionUID = 7502050909452181348L;
    private Integer id = null;

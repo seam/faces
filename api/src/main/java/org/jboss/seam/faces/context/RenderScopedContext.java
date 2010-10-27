@@ -19,30 +19,37 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+
 package org.jboss.seam.faces.context;
 
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.AfterBeanDiscovery;
-import javax.enterprise.inject.spi.BeforeBeanDiscovery;
-import javax.enterprise.inject.spi.Extension;
-import javax.faces.bean.FlashScoped;
-
 /**
- * An extension to provide @FlashScoped CDI / JSF 2 integration.
+ * A context that lives from Restore View to the next Render Response.
  * 
- * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
+ * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
+ * 
  */
-public class FlashScopedExtension implements Extension
+public interface RenderScopedContext
 {
 
-   public void addScope(@Observes final BeforeBeanDiscovery event)
-   {
-      event.addScope(FlashScoped.class, true, true);
-   }
+   /**
+    * Returns true if the current {@link RenderScopedContext} contains no data.
+    */
+   boolean isEmpty();
 
-   public void registerContext(@Observes final AfterBeanDiscovery event)
-   {
-      event.addContext(new FlashScopedContext());
-   }
+   /**
+    * Return the current ID of this request's {@link RenderScopedContext}. If the ID
+    * has not yet been set as part of a redirect, the ID will be null.
+    */
+   Integer getId();
+
+   /**
+    * Get a key value pair from the {@link RenderScopedContext}.
+    */
+   Object get(String key);
+
+   /**
+    * Put a key value pair into the {@link RenderScopedContext}.
+    */
+   void put(String key, Object value);
 
 }

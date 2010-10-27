@@ -19,29 +19,50 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package javax.faces.bean;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.annotation.ElementType;
+package org.jboss.seam.faces.context;
 
-import javax.enterprise.context.NormalScope;
+import java.io.Serializable;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.enterprise.inject.Typed;
 
 /**
- * Defines a CDI bean as Flash scoped. A bean put in the JSF2 flash will survive
- * one page transition, or navigation, then be cleared.
+ * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  * 
- * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
-@NormalScope
-@Inherited
-@Documented
-@Target(ElementType.TYPE)
-@Retention(value = RetentionPolicy.RUNTIME)
-public @interface FlashScoped
+@Typed()
+public class RenderScopedContextImpl implements RenderScopedContext, Serializable
 {
+   private static final long serialVersionUID = 7502050909452181348L;
+
+   private Integer id = null;
+   private final Map<String, Object> map = new ConcurrentHashMap<String, Object>();
+
+   public Object get(final String key)
+   {
+      return map.get(key);
+   }
+
+   public Integer getId()
+   {
+      return id;
+   }
+
+   public void setId(final int id)
+   {
+      this.id = id;
+   }
+
+   public boolean isEmpty()
+   {
+      return map.isEmpty();
+   }
+
+   public void put(final String key, final Object value)
+   {
+      map.put(key, value);
+   }
 
 }
