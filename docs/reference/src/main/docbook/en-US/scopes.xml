@@ -11,16 +11,19 @@
 	</para>
 	<section id="RenderScoped">
 		<title>@RenderScoped</title>
-		<para>
+	  <para>
+            Beans placed in the @RenderScoped context are effectively scoped to, and live through but not after, "the next Render Response phase". 
+     </para>
+      <para>
 			You should think about using the Render scope if you want to store information that will be relevant to the user even after an action
 			sends them to another view. For instance, when a user submits a form, you may want to invoke JSF navigation and redirect 
 			the user to another page in the site; if you needed to store a message to be displayed when the next page is rendered -but no longer- 
-			you would store that message in the RenderScopedContext. Fortunately, Seam provides RenderScoped messages by default, via the 
+			you would store that message in the RenderContext. Fortunately, Seam provides RenderScoped messages by default, via the 
 			<link linkend="messages">Seam Messages API</link>. 
 		</para>
 		<para>
-			To place a bean in the RenderScoped context, use the <literal>@javax.faces.bean.RenderScoped</literal> annotation. This means that your
-             bean will be stored in the  <literal>org.jboss.seam.context.RenderScopedContext</literal> object until the next page is rendered, at 
+			To place a bean in the Render scope, use the <literal>@javax.faces.bean.RenderScoped</literal> annotation. This means that your
+             bean will be stored in the  <literal>org.jboss.seam.context.RenderContext</literal> object until the next page is rendered, at 
              which point the RenderScope will be cleared.
 
 <programlisting>@RenderScoped
@@ -29,9 +32,9 @@ public class Bean {
 }</programlisting>
             <para>
                @RenderScoped beans are destroyed when the next JSF RENDER_RESPONSE phase ends, however, if a user has multiple browser windows
-                    open for the same user-session, multiple RenderScopedContexts will be created, one for each incoming request. Seam Faces keeps
-                    track of which RenderScopedContext belongs to each request, and will restore/destroy them appropriately. If there is more than
-                    one active RenderScopedContext at the time when you issue a redirect, you will see a URL parameter "?fid=..." appended to the
+                    open for the same user-session, multiple RenderContexts will be created, one for each incoming request. Seam Faces keeps
+                    track of which RenderContext belongs to each request, and will restore/destroy them appropriately. If there is more than
+                    one active RenderContext at the time when you issue a redirect, you will see a URL parameter "?fid=..." appended to the
                     end of the outbound URL, this is to ensure the correct context is restored when the request is received by the server, and will
                     not be present if only one context is active.
             </para>
@@ -40,8 +43,8 @@ public class Bean {
 				<para>
 					If you want to use the Render Scope with custom navigation in your application, 
 					be sure to call <literal>ExternalContext.encodeRedirectURL(String url, Map&lt;String, List&lt;String&gt;&gt; queryParams)</literal>
-					on any URL before using it to issue a redirect. This will ensure that the RenderScopedContext ID is properly appended to the URL, enabling
-					the RenderScopedContext to be restored on the subsequent request. This is only necessary if issuing a Servlet Redirect; for the
+					on any URL before using it to issue a redirect. This will ensure that the RenderContext ID is properly appended to the URL, enabling
+					the RenderContext to be restored on the subsequent request. This is only necessary if issuing a Servlet Redirect; for the
                     cases where Faces non-redirecting navigation is used, no URL parameter is necessary, and the context will be destroyed at the end
                     of the current request.
 				</para>

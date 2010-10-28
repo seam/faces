@@ -33,7 +33,7 @@ import javax.enterprise.inject.Typed;
  * 
  */
 @Typed()
-public class RenderScopedContextImpl implements RenderScopedContext, Serializable
+public class RenderContextImpl implements RenderContext, Serializable
 {
    private static final long serialVersionUID = 7502050909452181348L;
 

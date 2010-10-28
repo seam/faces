@@ -49,30 +49,33 @@ import org.jboss.seam.faces.util.BeanManagerUtils;
 import org.jboss.weld.extensions.beanManager.BeanManagerAccessor;
 
 /**
- * This class provides lifecycle management for the {@link RenderScopedContext}
+ * This class provides lifecycle management for the {@link RenderContext}
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * @author Brian Leathem
  */
 @RequestScoped
-public class RenderScopedPhaseListener implements Context, PhaseListener, Serializable
+public class RenderScopedContext implements Context, PhaseListener, Serializable
 {
+   // TODO probably need a way to clean up old contexts - e.g: after a certain
+   // expiry, the context is probably dead, and to prevent leaks if sessions
+   // live for a long time, it would be important to clean these up
    private static final long serialVersionUID = -1580689204988513798L;
 
-   private static final String SESSION_KEY_PREFIX = RenderScopedPhaseListener.class.getName() + ".context";
-   private final static String COMPONENT_MAP_NAME = RenderScopedPhaseListener.class.getName() + ".componentInstanceMap";
-   private final static String CREATIONAL_MAP_NAME = RenderScopedPhaseListener.class.getName()
+   private static final String SESSION_KEY_PREFIX = RenderScopedContext.class.getName() + ".context";
+   private final static String COMPONENT_MAP_NAME = RenderScopedContext.class.getName() + ".componentInstanceMap";
+   private final static String CREATIONAL_MAP_NAME = RenderScopedContext.class.getName()
             + ".creationalInstanceMap";
-   public static final String FLASH_URL_KEY = RenderScopedPhaseListener.class.getName() + ".url.key";
+   public static final String FLASH_URL_KEY = RenderScopedContext.class.getName() + ".url.key";
 
    String requestParameterName = "fid";
 
-   RenderScopedContext currentContext = null;
+   RenderContext currentContext = null;
 
    @Produces
    @Named
    @RequestScoped
-   public RenderScopedContext getFlashContext()
+   public RenderContext getContextInstance()
    {
       if (currentContext == null)
       {
@@ -81,10 +84,10 @@ public class RenderScopedPhaseListener implements Context, PhaseListener, Serial
       return currentContext;
    }
 
-   private RenderScopedContext getCurrentFlashContext()
+   private RenderContext getCurrentFlashContext()
    {
       BeanManager manager = BeanManagerAccessor.getBeanManager();
-      return BeanManagerUtils.getContextualInstance(manager, RenderScopedContext.class);
+      return BeanManagerUtils.getContextualInstance(manager, RenderContext.class);
    }
 
    private void assertActive()
@@ -99,7 +102,7 @@ public class RenderScopedPhaseListener implements Context, PhaseListener, Serial
    }
 
    @SuppressWarnings("unused")
-   private void setTargetVerifyURL(@Observes final PreNavigateEvent event, final RenderScopedContext flash)
+   private void setTargetVerifyURL(@Observes final PreNavigateEvent event, final RenderContext flash)
    {
       String outcome = "";
       NavigationCase navCase = event.getNavigationCase();
@@ -107,7 +110,7 @@ public class RenderScopedPhaseListener implements Context, PhaseListener, Serial
       {
          outcome = navCase.getToViewId(FacesContext.getCurrentInstance());
       }
-      flash.put(RenderScopedPhaseListener.FLASH_URL_KEY, outcome);
+      flash.put(RenderScopedContext.FLASH_URL_KEY, outcome);
    }
 
    private void initializeCurrentContext()
@@ -117,7 +120,7 @@ public class RenderScopedPhaseListener implements Context, PhaseListener, Serial
       if ((currentId != null) && savedContextExists(currentId))
       {
          // getFlashForCurrentIdAndReferrer
-         RenderScopedContext context = getFlashContextMap().get(currentId);
+         RenderContext context = getFlashContextMap().get(currentId);
 
          String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
          if (context.get(FLASH_URL_KEY).equals(viewId))
@@ -128,7 +131,7 @@ public class RenderScopedPhaseListener implements Context, PhaseListener, Serial
 
       if (currentContext == null)
       {
-         RenderScopedContextImpl context = new RenderScopedContextImpl();
+         RenderContextImpl context = new RenderContextImpl();
          context.setId(getNextFlashId());
          getFlashContextMap().put(context.getId(), context);
          currentContext = context;
@@ -137,7 +140,7 @@ public class RenderScopedPhaseListener implements Context, PhaseListener, Serial
 
    private int getNextFlashId()
    {
-      Map<Integer, RenderScopedContext> flashContextMap = getFlashContextMap();
+      Map<Integer, RenderContext> flashContextMap = getFlashContextMap();
       int id = 0;
 
       while (flashContextMap.containsKey(id))
@@ -149,7 +152,7 @@ public class RenderScopedPhaseListener implements Context, PhaseListener, Serial
 
    private boolean savedContextExists(final int id)
    {
-      return getFlashContextMap().get(id) instanceof RenderScopedContext;
+      return getFlashContextMap().get(id) instanceof RenderContext;
    }
 
    private Integer getCurrentId()
@@ -184,7 +187,7 @@ public class RenderScopedPhaseListener implements Context, PhaseListener, Serial
    {
       if (PhaseId.RENDER_RESPONSE.equals(event.getPhaseId()))
       {
-         getFlashContextMap().remove(getFlashContext().getId());
+         getFlashContextMap().remove(getContextInstance().getId());
 
          Map<Contextual<?>, Object> componentInstanceMap = getComponentInstanceMap();
          Map<Contextual<?>, CreationalContext<?>> creationalContextMap = getCreationalContextMap();
@@ -298,18 +301,18 @@ public class RenderScopedPhaseListener implements Context, PhaseListener, Serial
    }
 
    @SuppressWarnings("unchecked")
-   private synchronized Map<Integer, RenderScopedContext> getFlashContextMap()
+   private synchronized Map<Integer, RenderContext> getFlashContextMap()
    {
       ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
       Map<String, Object> sessionMap = externalContext.getSessionMap();
-      Map<Integer, RenderScopedContext> flashContextMap;
+      Map<Integer, RenderContext> flashContextMap;
       if (sessionMap.containsKey(SESSION_KEY_PREFIX))
       {
-         flashContextMap = (Map<Integer, RenderScopedContext>) sessionMap.get(SESSION_KEY_PREFIX);
+         flashContextMap = (Map<Integer, RenderContext>) sessionMap.get(SESSION_KEY_PREFIX);
       }
       else
       {
-         flashContextMap = new ConcurrentHashMap<Integer, RenderScopedContext>();
+         flashContextMap = new ConcurrentHashMap<Integer, RenderContext>();
          sessionMap.put(SESSION_KEY_PREFIX, flashContextMap);
       }
       return flashContextMap;
@@ -321,7 +324,7 @@ public class RenderScopedPhaseListener implements Context, PhaseListener, Serial
    }
 
    /**
-    * Get the name of the request parameter to contain the current {@link RenderScopedContext} id.
+    * Get the name of the request parameter to contain the current {@link RenderContext} id.
     */
    public String getRequestParameterName()
    {

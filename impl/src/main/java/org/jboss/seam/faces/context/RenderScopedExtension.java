@@ -28,7 +28,7 @@ import javax.enterprise.inject.spi.Extension;
 import javax.faces.bean.RenderScoped;
 
 /**
- * An extension to provide @FlashScoped CDI / JSF 2 integration.
+ * An extension to provide {@link RenderScoped} CDI / JSF 2 integration.
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
@@ -42,7 +42,7 @@ public class RenderScopedExtension implements Extension
 
    public void registerContext(@Observes final AfterBeanDiscovery event)
    {
-      event.addContext(new RenderScopedPhaseListener());
+      event.addContext(new RenderScopedContext());
    }
 
 }
