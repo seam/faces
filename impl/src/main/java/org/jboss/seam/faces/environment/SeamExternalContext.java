@@ -1,5 +1,6 @@
 package org.jboss.seam.faces.environment;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -53,5 +54,11 @@ public class SeamExternalContext extends ExternalContextWrapper
 
       redirectURL = super.encodeRedirectURL(baseUrl, parameters);
       return redirectURL;
+   }
+
+   @Override
+   public void redirect(final String url) throws IOException
+   {
+      super.redirect(url);
    }
 }

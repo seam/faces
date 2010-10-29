@@ -23,7 +23,7 @@
 
 	<application>
 		<navigation-handler>
-			org.jboss.seam.faces.event.PreNavigateEventProducer
+			org.jboss.seam.faces.event.SeamPreNavigationHandler
 		</navigation-handler>
 		
 		<system-event-listener>

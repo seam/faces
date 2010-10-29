@@ -32,10 +32,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.spi.Context;
 import javax.enterprise.context.spi.Contextual;
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.faces.application.NavigationCase;
 import javax.faces.bean.RenderScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -44,7 +42,6 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.inject.Named;
 
-import org.jboss.seam.faces.event.PreNavigateEvent;
 import org.jboss.seam.faces.util.BeanManagerUtils;
 import org.jboss.weld.extensions.beanManager.BeanManagerAccessor;
 
@@ -101,18 +98,6 @@ public class RenderScopedContext implements Context, PhaseListener, Serializable
       }
    }
 
-   @SuppressWarnings("unused")
-   private void setTargetVerifyURL(@Observes final PreNavigateEvent event, final RenderContext flash)
-   {
-      String outcome = "";
-      NavigationCase navCase = event.getNavigationCase();
-      if (navCase != null)
-      {
-         outcome = navCase.getToViewId(FacesContext.getCurrentInstance());
-      }
-      flash.put(RenderScopedContext.FLASH_URL_KEY, outcome);
-   }
-
    private void initializeCurrentContext()
    {
       Integer currentId = getCurrentId();
@@ -121,12 +106,7 @@ public class RenderScopedContext implements Context, PhaseListener, Serializable
       {
          // getFlashForCurrentIdAndReferrer
          RenderContext context = getFlashContextMap().get(currentId);
-
-         String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
-         if (context.get(FLASH_URL_KEY).equals(viewId))
-         {
-            currentContext = context;
-         }
+         currentContext = context;
       }
 
       if (currentContext == null)
@@ -182,25 +162,30 @@ public class RenderScopedContext implements Context, PhaseListener, Serializable
    /**
     * Destroy the current context since Render Response has completed.
     */
-   @SuppressWarnings({ "unchecked", "rawtypes" })
+   @SuppressWarnings({ "unchecked", "rawtypes", "unused" })
    public void afterPhase(final PhaseEvent event)
    {
       if (PhaseId.RENDER_RESPONSE.equals(event.getPhaseId()))
       {
-         getFlashContextMap().remove(getContextInstance().getId());
-
-         Map<Contextual<?>, Object> componentInstanceMap = getComponentInstanceMap();
-         Map<Contextual<?>, CreationalContext<?>> creationalContextMap = getCreationalContextMap();
-
-         if ((componentInstanceMap != null) && (creationalContextMap != null))
+         RenderContext contextInstance = getContextInstance();
+         if (contextInstance != null)
          {
-            for (Entry<Contextual<?>, Object> componentEntry : componentInstanceMap.entrySet())
-            {
-               Contextual contextual = componentEntry.getKey();
-               Object instance = componentEntry.getValue();
-               CreationalContext creational = creationalContextMap.get(contextual);
+            Integer id = contextInstance.getId();
+            RenderContext removed = getFlashContextMap().remove(id);
 
-               contextual.destroy(instance, creational);
+            Map<Contextual<?>, Object> componentInstanceMap = getComponentInstanceMap();
+            Map<Contextual<?>, CreationalContext<?>> creationalContextMap = getCreationalContextMap();
+
+            if ((componentInstanceMap != null) && (creationalContextMap != null))
+            {
+               for (Entry<Contextual<?>, Object> componentEntry : componentInstanceMap.entrySet())
+               {
+                  Contextual contextual = componentEntry.getKey();
+                  Object instance = componentEntry.getValue();
+                  CreationalContext creational = creationalContextMap.get(contextual);
+
+                  contextual.destroy(instance, creational);
+               }
             }
          }
       }

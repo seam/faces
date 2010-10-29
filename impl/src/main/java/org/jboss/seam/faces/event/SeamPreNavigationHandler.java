@@ -37,11 +37,11 @@ import org.jboss.weld.extensions.beanManager.BeanManagerAccessor;
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  * 
  */
-public class PreNavigateEventProducer extends ConfigurableNavigationHandler
+public class SeamPreNavigationHandler extends ConfigurableNavigationHandler
 {
    private final ConfigurableNavigationHandler parent;
 
-   public PreNavigateEventProducer(final ConfigurableNavigationHandler parent)
+   public SeamPreNavigationHandler(final ConfigurableNavigationHandler parent)
    {
       this.parent = parent;
    }
