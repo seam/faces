@@ -154,13 +154,16 @@ public class FormValidationFieldProducer
       if (!components.containsKey(clientId))
       {
          comp = form.findComponent(clientId);
-         if (!(comp instanceof UIInput))
+         if (comp == null)
          {
-            throw new IllegalArgumentException("Component [" + form.getClientId() + ":" + alias + "] must be a UIInput component.");
+            throw new IllegalArgumentException("org.jboss.seam.component.UIValidateForm-- Could not locate component ["
+                     + form.getClientId() + ":" + alias + "]");
          }
-         else if (comp == null)
+         else if (!(comp instanceof UIInput))
          {
-            throw new IllegalArgumentException("Could not locate component [" + form.getClientId() + ":" + alias + "]");
+            throw new IllegalArgumentException("org.jboss.seam.component.UIValidateForm-- Selected component ["
+                     + form.getClientId() + ":" + alias + "] must be a UIInput component, was ["
+                     + comp.getClass().getName() + "]");
          }
       }
       else

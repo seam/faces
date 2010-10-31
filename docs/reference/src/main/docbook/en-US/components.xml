@@ -371,4 +371,58 @@ private String sectorTwo;]]></programlisting>
 
 		</section>
 	</section>
+   
+   <section id="UIInputContainer">
+      <title>UI Input Container</title>
+      <para>
+         UIInputContainer is a supplemental component for a JSF 2.0 composite component encapsulating 
+         one or more input components (EditableValueHolder), their corresponding message components 
+         (UIMessage) and a label (HtmlOutputLabel). 
+      </para>
+      <para>
+         This component takes care of wiring the label to 
+         the first input and the messages to each input in sequence. It also assigns two implicit attribute 
+         values, "required" and "invalid" to indicate that a required input field is present and whether 
+         there are any validation errors, respectively. To determine if a input field is required, both 
+         the required attribute is consulted and whether the property has Bean Validation constraints. 
+      </para>
+      <para>
+         Finally, if the "label" attribute is not provided on the composite component, the label value will 
+         be derived from the id of the composite component, for convenience.
+      </para>
+         
+      <para>
+         Composite component definition example (minus layout):
+      </para>
+      <programlisting role="XML"><![CDATA[<cc:interface componentType="org.jboss.seam.faces.InputContainer"/>
+ <cc:implementation>
+   <h:outputLabel id="label" value="#{cc.attrs.label}:" styleClass="#{cc.attrs.invalid ? 'invalid' : ''}">
+     <h:outputText styleClass="required" rendered="#{cc.attrs.required}" value="*"/>
+   </h:outputLabel>
+   <cc:insertChildren/>
+   <h:message id="message" errorClass="invalid message" rendered="#{cc.attrs.invalid}"/>
+ </cc:implementation>]]></programlisting>
+      <para>
+         Composite component usage example:
+      </para>
+      <programlisting role="XML"><![CDATA[<example:inputContainer id="name">
+   <h:inputText id="input" value="#{person.name}"/>
+ </example:inputContainer>]]></programlisting>
+      <tip>
+         <para>
+            NOTE: Firefox does not properly associate a label with the target input if the input id
+            contains a colon (:), the default separator character in JSF. JSF 2 allows developers to
+            set the value via an initialization parameter (context-param in web.xml) keyed to 
+            <literal>javax.faces.SEPARATOR_CHAR</literal>. We recommend that you override this setting to make the 
+            separator an underscore (_).
+         </para>
+      </tip>
+            
+   </section>
+   
+   
+ 
+
+ 
+ 
 </chapter>
