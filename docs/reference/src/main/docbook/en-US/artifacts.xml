@@ -3,44 +3,148 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="artifacts">
 	<title>Faces Artifact Injection</title>
-	<para>
-		When creating CDI managed beans for use in the Web/UI layer, it is often necessary to access the FacesContext, NavigationHandler, and other
-		artifacts of the JSF environment. Seam Faces provides producers to allow injection of these artifacts in the proper scopes, enabling mock-testing
-		and other situations where the artifact may be difficult or tedious to resolve.
+   <para>
+      One of the goals of the Seam Faces Module is to make support for CDI a more ubiquitous experience, by
+      allowing injection of JSF Lifecycle Artifacts into managed beans, and also by providing support for
+      @Inject where it would not normally be available. This section describes the additional CDI integration
+      for faces artifact injection 
 	</para>
-	<para>
-		This is the full list of inject-able artifacts provided through Seam Faces.
-		<informaltable>
-			<tgroup cols="2">
-				<colspec colnum="1" colwidth="2*" />
-				<colspec colnum="2" colwidth="3*" />
-				<thead>
-					<row>
-						<entry>Artifact Class</entry>
-						<entry>Example</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>javax.faces.context.FacesContext</entry>
-						<entry><programlisting>public class Bean {
-	@Inject FacesContext context;
-}</programlisting></entry>
-					</row>
-					<row>
-						<entry>javax.faces.context.ExternalContext</entry>
-						<entry><programlisting>public class Bean {
-	@Inject ExternalContext context;
-}</programlisting></entry>
-					</row>
-					<row>
-						<entry>javax.faces.application.NavigationHandler</entry>
-						<entry><programlisting>public class Bean {
-	@Inject NavigationHandler handler;
-}</programlisting></entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</informaltable>
-	</para>
+    
+    <section id="enhanced_artifacts">
+      <title>@*Scoped and @Inject in Validators and Converters</title>
+      <para>
+         Frequently when performing complex validation, it is necessary to access data stored in a database
+         or in other contextual objects within the application itself. JSF does not, by default, provide
+         support for <literal>@Inject</literal> in Converters and Validators, but Seam Faces makes this 
+         available. In addition to injection, it is sometimes convenient to be able to scope a validator
+         just as we would scope a managed bean; this feature is also added by Seam Faces.
+      </para>
+      <para>
+         Notice how the Validator below is actually <literal>@RequestScoped</literal>, in addition to using
+         injection to obtain an instance of the <literal>UserService</literal> with which to perform an email
+         database lookup. 
+      </para>
+      <programlisting role="JAVA"><![CDATA[@RequestScoped
+@FacesValidator("emailAvailabilityValidator")
+public class EmailAvailabilityValidator implements Validator
+{
+   @Inject
+   UserService us;
+
+   @Override
+   public void validate(final FacesContext context, final UIComponent component, final Object value)
+            throws ValidatorException
+   {
+      String field = value.toString();
+      try
+      {
+         us.getUserByEmail(field);
+         FacesMessage msg = new FacesMessage("That email address is unavailable");
+         throw new ValidatorException(msg);
+      }
+      catch (NoSuchObjectException e)
+      {
+      }
+   }
+}]]></programlisting>
+      <warning>
+         <para>
+            We recommend to always use <literal>@RequestScoped</literal> converters/validators unless a
+            longer scope is required, in which case you should use the appropriate scope annotation, but
+            it should not be omitted.
+         </para>
+         <para>   
+            Because of the way JSF persists Validators between requests, particularly when using 
+            <literal>@Inject</literal> inside a validator or converter, forgetting to use a 
+            <literal>@*Scoped</literal> annotation could in fact cause <literal>@Inject</literal>'ed
+            objects to become null.
+         </para>
+      </warning>
+      <para>
+         An example Converter using @Inject
+      </para>
+      <programlisting role="JAVA"><![CDATA[@SessionScoped
+@FacesConverter("authorConverter")
+public class UserConverter implements Converter
+{
+   @Inject
+   private UserService service;
+ 
+   @PostConstruct
+   public void setup()
+   {
+      System.out.println("UserConverter started up");
+   }
+ 
+   @PreDestroy
+   public void shutdown()
+   {
+      System.out.println("UserConverter shutting down");
+   }
+ 
+   @Override
+   public Object getAsObject(final FacesContext arg0, final UIComponent arg1, final String userName)
+   {
+      // ...
+      return service.getUserByName(userName);
+   }
+ 
+   @Override
+   public String getAsString(final FacesContext context, final UIComponent comp, final Object user)
+   {
+      // ...
+      return ((User)user).getUsername();
+   }
+}]]></programlisting>
+    </section>
+    
+    <section id="injectable_artifacts">
+      <title>@Inject'able Faces Artifacts</title>
+      	<para>
+      		This is the list of inject-able artifacts provided through Seam Faces. These objects would
+               normally require static method-calls in order to obtain handles, but Seam Faces attempts
+               to break that coupling by providing @Inject'able artifacts. This means it will be possible
+               to more easily provide mocked objects during unit and integration testing, and also simplify
+               bean code in the application itself.
+                 
+      		<informaltable>
+      			<tgroup cols="2">
+      				<colspec colnum="1" colwidth="2*" />
+      				<colspec colnum="2" colwidth="3*" />
+      				<thead>
+      					<row>
+      						<entry>Artifact Class</entry>
+      						<entry>Example</entry>
+      					</row>
+      				</thead>
+      				<tbody>
+      					<row>
+      						<entry>javax.faces.context.FacesContext</entry>
+      						<entry><programlisting>public class Bean {
+      	@Inject FacesContext context;
+      }</programlisting></entry>
+      					</row>
+      					<row>
+      						<entry>javax.faces.context.ExternalContext</entry>
+      						<entry><programlisting>public class Bean {
+      	@Inject ExternalContext context;
+      }</programlisting></entry>
+      					</row>
+      					<row>
+      						<entry>javax.faces.application.NavigationHandler</entry>
+      						<entry><programlisting>public class Bean {
+      	@Inject NavigationHandler handler;
+      }</programlisting></entry>
+      					</row>
+                        <row>
+                        <entry>javax.faces.context.Flash</entry>
+                        <entry><programlisting>public class Bean {
+         @Inject Flash flash;
+      }</programlisting></entry>
+                     </row>
+      				</tbody>
+      			</tgroup>
+      		</informaltable>
+      	</para>
+    </section>
 </chapter>

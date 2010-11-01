@@ -3,12 +3,12 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <authorgroup>
    <author>
-      <firstname>Dan</firstname>
-      <surname>Allen</surname>
-   </author>
-   <author>
       <firstname>Lincoln</firstname>
       <surname>Baxter III</surname>
+   </author>
+   <author>
+      <firstname>Dan</firstname>
+      <surname>Allen</surname>
    </author>
    <author>
       <firstname>Nicklas</firstname>
