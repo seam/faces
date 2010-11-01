@@ -41,7 +41,7 @@
 
       <dependency>
          <groupId>com.ocpsoft</groupId>
-         <artifactId>ocpsoft-pretty-faces</artifactId>
+         <artifactId>prettyfaces-jsf2</artifactId>
       </dependency>
 
       <dependency>

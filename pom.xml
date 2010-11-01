@@ -5,7 +5,7 @@
    <parent>
       <groupId>org.jboss.seam</groupId>
       <artifactId>seam-parent</artifactId>
-      <version>3</version>
+      <version>4</version>
    </parent>
 
    <artifactId>seam-faces-parent</artifactId>
@@ -31,17 +31,10 @@
    </modules>
 
    <properties>
-      <seam.version>3.0.0.b01</seam.version>
-      <!-- Seam i8ln doesn't have a release yet -->
+      <seam.version>3.0.0.b03</seam.version>
       <seam.i18n.version>3.0.0.Alpha2</seam.i18n.version>
-      <seam.persistence.version>3.0.0.Alpha1</seam.persistence.version>
-      <weld.extensions.version>1.0.0.Beta1</weld.extensions.version>
-      <jboss.logging.version>3.0.0.Beta4</jboss.logging.version>
-      <arquillian.version>1.0.0.Alpha4</arquillian.version>
-      <jetty.version>8.0.0.M1</jetty.version>
+      <jboss.javaee.version>1.0.0.Beta4</jboss.javaee.version>
       <cdi-api.version>1.0-SP2</cdi-api.version>
-      <weld.version>1.1.0.Beta1</weld.version>
-      <jboss-javaee6-spec.version>1.0.0.Beta4</jboss-javaee6-spec.version>
       <jsf-api.version>2.0</jsf-api.version>
    </properties>
 
@@ -50,15 +43,11 @@
 
          <dependency>
             <groupId>org.jboss.seam</groupId>
-            <artifactId>seam</artifactId>
+            <artifactId>seam-bom</artifactId>
             <version>${seam.version}</version>
             <scope>import</scope>
             <type>pom</type>
          </dependency>
-
-         <!-- <dependency> <groupId>org.jboss.weld</groupId> <artifactId>weld-core-bom</artifactId> 
-            <version>${weld.version}</version> <type>pom</type> <scope>import</scope> 
-            </dependency> -->
 
          <dependency>
             <groupId>org.jboss.seam.international</groupId>
@@ -67,10 +56,9 @@
          </dependency>
 
          <dependency>
-            <artifactId>seam-persistence-api</artifactId>
-            <groupId>org.jboss.seam.persistence</groupId>
-            <version>${seam.persistence.version}</version>
-            <scope>compile</scope>
+            <groupId>org.jboss.seam.international</groupId>
+            <artifactId>seam-international-api</artifactId>
+            <version>${seam.i18n.version}</version>
          </dependency>
 
          <!-- Need to use dependencyManagement to override org.jboss.seam:seam 
@@ -88,43 +76,6 @@
          </dependency>
 
          <dependency>
-            <groupId>org.jboss.logging</groupId>
-            <artifactId>jboss-logging</artifactId>
-            <version>${jboss.logging.version}</version>
-            <scope>provided</scope>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.weld</groupId>
-            <artifactId>weld-extensions</artifactId>
-            <version>${weld.extensions.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.arquillian.container</groupId>
-            <artifactId>arquillian-jetty-embedded-7</artifactId>
-            <version>${arquillian.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.arquillian.container</groupId>
-            <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
-            <version>${arquillian.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-webapp</artifactId>
-            <version>${jetty.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-plus</artifactId>
-            <version>${jetty.version}</version>
-         </dependency>
-
-         <dependency>
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
             <version>${cdi-api.version}</version>
@@ -134,12 +85,6 @@
             <groupId>javax.faces</groupId>
             <artifactId>jsf-api</artifactId>
             <version>${jsf-api.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.weld</groupId>
-            <artifactId>weld-core</artifactId>
-            <version>${weld.version}</version>
          </dependency>
 
       </dependencies>
