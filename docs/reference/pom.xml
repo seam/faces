@@ -1,18 +1,17 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
    <modelVersion>4.0.0</modelVersion>
 
    <groupId>org.jboss.seam.faces</groupId>
    <artifactId>seam-faces-reference-guide</artifactId>
-   <version>3.0.0-SNAPSHOT</version>
+   <version>3.0.0.Beta1</version>
    <packaging>jdocbook</packaging>
    <name>Seam Faces Module Reference Guide</name>
 
    <parent>
       <groupId>org.jboss.seam.faces</groupId>
       <artifactId>seam-faces-parent</artifactId>
-      <version>3.0.0-SNAPSHOT</version>
+      <version>3.0.0.Beta1</version>
       <relativePath>../../pom.xml</relativePath>
    </parent>
 
