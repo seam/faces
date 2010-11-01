@@ -23,12 +23,13 @@
 package org.jboss.seam.faces.component;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.io.Serializable;
 import java.util.Map;
 
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.util.AnnotationLiteral;
 import javax.faces.component.FacesComponent;
+import javax.faces.component.StateHelper;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIInput;
@@ -61,10 +62,9 @@ public class UIValidateForm extends UIInput
 
    public static final String COMPONENT_TYPE = "org.jboss.seam.faces.ValidateForm";
    public static final String COMPONENT_FAMILY = "org.jboss.seam.faces.ValidateForm";
-
-   private String validatorId = "";
-   private String fields = "";
-   private Map<String, UIInput> components = new HashMap<String, UIInput>();
+   private static final String VALIDATOR_ID_KEY = COMPONENT_TYPE + "_ID_KEY";
+   private static final Serializable COMPONENTS_MAP_KEY = COMPONENT_TYPE + "_COMPONENTS_MAP_KEY";
+   private static final Serializable FIELDS_KEY = COMPONENT_TYPE + "_FIELDS_KEY";
 
    @Override
    public String getFamily()
@@ -79,12 +79,23 @@ public class UIValidateForm extends UIInput
       BeanManager manager = BeanManagerAccessor.getBeanManager();
       manager.fireEvent(this, BEFORE);
 
-      Validator validator = context.getApplication().createValidator(validatorId);
-      if (validator == null)
+      Validator validator = null;
+      try
       {
-         throw new IllegalArgumentException("Could not create Validator with id: [" + validatorId + "]");
+         validator = context.getApplication().createValidator(getValidatorId());
+         if (validator == null)
+         {
+            throw new IllegalArgumentException("Seam UIValidateForm - Could not create Validator with id: ["
+                     + getValidatorId() + "]");
+         }
+      }
+      catch (Exception e)
+      {
+         throw new IllegalStateException("Seam UIValidateForm - Could not create validator with id ["
+                  + getValidatorId() + "] because: nested exception is:" + e.getMessage(), e);
       }
 
+      Map<String, UIInput> components = getComponents();
       try
       {
          UIComponent parent = this.getParent();
@@ -107,8 +118,8 @@ public class UIValidateForm extends UIInput
    }
 
    /**
-    * Attempt to locate the form in which this component resides. If the
-    * component is not within a UIForm tag, throw an exception.
+    * Attempt to locate the form in which this component resides. If the component is not within a UIForm tag, throw an
+    * exception.
     */
    public UIForm locateForm()
    {
@@ -117,7 +128,8 @@ public class UIValidateForm extends UIInput
       {
          if ((parent == null) || (parent instanceof UIViewRoot))
          {
-            throw new IllegalStateException("The UIValidateForm (<s:validateForm />) component must be placed within a UIForm (<h:form>)");
+            throw new IllegalStateException(
+                     "The UIValidateForm (<s:validateForm />) component must be placed within a UIForm (<h:form>)");
          }
          parent = parent.getParent();
       }
@@ -155,29 +167,38 @@ public class UIValidateForm extends UIInput
 
    public String getFields()
    {
-      return fields;
+      StateHelper helper = this.getStateHelper(true);
+      return (String) helper.get(FIELDS_KEY);
    }
 
    public void setFields(final String fields)
    {
-      this.fields = fields;
+      StateHelper helper = this.getStateHelper(true);
+      helper.put(FIELDS_KEY, fields);
    }
 
    public String getValidatorId()
    {
-      return validatorId;
+      StateHelper helper = this.getStateHelper(true);
+      return (String) helper.get(VALIDATOR_ID_KEY);
    }
 
    public void setValidatorId(final String validatorId)
    {
-      this.validatorId = validatorId;
+      StateHelper helper = this.getStateHelper(true);
+      helper.put(VALIDATOR_ID_KEY, validatorId);
    }
 
-   /**
-    * @param components
-    */
+   @SuppressWarnings("unchecked")
+   private Map<String, UIInput> getComponents()
+   {
+      StateHelper helper = this.getStateHelper(true);
+      return (Map<String, UIInput>) helper.get(COMPONENTS_MAP_KEY);
+   }
+
    public void setComponents(final Map<String, UIInput> components)
    {
-      this.components = components;
+      StateHelper helper = this.getStateHelper(true);
+      helper.put(COMPONENTS_MAP_KEY, components);
    }
 }
