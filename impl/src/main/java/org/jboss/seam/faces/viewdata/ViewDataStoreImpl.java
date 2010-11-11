@@ -27,11 +27,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
@@ -94,7 +95,16 @@ public class ViewDataStoreImpl implements ViewDataStore
 
    public <T extends Annotation> T getDataForCurrentViewId(Class<T> type)
    {
-      return getData(FacesContext.getCurrentInstance().getViewRoot().getViewId(), type);
+      FacesContext context = FacesContext.getCurrentInstance();
+      if(context != null)
+      {
+         UIViewRoot viewRoot = context.getViewRoot();
+         if(viewRoot != null)
+         {
+            return getData(viewRoot.getViewId(), type);
+         }
+      }
+      return null;
    }
 
    public <T extends Annotation> List<T> getAllData(String viewId, Class<T> type)
