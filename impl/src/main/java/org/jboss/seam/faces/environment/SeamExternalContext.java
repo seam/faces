@@ -42,7 +42,7 @@ public class SeamExternalContext extends ExternalContextWrapper
    public String encodeRedirectURL(final String baseUrl, Map<String, List<String>> parameters)
    {
       String redirectURL = "";
-      if ((flash.getId() != null) && (context.countFlashContexts() > 1))
+      if ((flash.getId() != null) && (context.countRenderContexts() > 1))
       {
          if (parameters == null)
          {

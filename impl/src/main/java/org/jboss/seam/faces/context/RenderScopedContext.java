@@ -63,7 +63,7 @@ public class RenderScopedContext implements Context, PhaseListener, Serializable
    private final static String COMPONENT_MAP_NAME = RenderScopedContext.class.getName() + ".componentInstanceMap";
    private final static String CREATIONAL_MAP_NAME = RenderScopedContext.class.getName()
             + ".creationalInstanceMap";
-   public static final String FLASH_URL_KEY = RenderScopedContext.class.getName() + ".url.key";
+   public static final String RENDER_SCOPE_URL_KEY = RenderScopedContext.class.getName() + ".url.key";
 
    String requestParameterName = "fid";
 
@@ -81,7 +81,7 @@ public class RenderScopedContext implements Context, PhaseListener, Serializable
       return currentContext;
    }
 
-   private RenderContext getCurrentFlashContext()
+   private RenderContext getCurrentRenderContext()
    {
       BeanManager manager = BeanManagerAccessor.getBeanManager();
       return BeanManagerUtils.getContextualInstance(manager, RenderContext.class);
@@ -92,7 +92,7 @@ public class RenderScopedContext implements Context, PhaseListener, Serializable
       if (!isActive())
       {
          throw new ContextNotActiveException(
-                  "Seam context with scope annotation @FlashScoped is not active with respect to the current thread. "
+                  "Seam context with scope annotation @RenderScoped is not active with respect to the current thread. "
                            +
                            "This is probably caused by attempting to access the Flash before it was created or after it was destroyed.");
       }
@@ -104,26 +104,26 @@ public class RenderScopedContext implements Context, PhaseListener, Serializable
 
       if ((currentId != null) && savedContextExists(currentId))
       {
-         // getFlashForCurrentIdAndReferrer
-         RenderContext context = getFlashContextMap().get(currentId);
+         // getRenderContextForCurrentIdAndReferrer
+         RenderContext context = getRenderContextMap().get(currentId);
          currentContext = context;
       }
 
       if (currentContext == null)
       {
          RenderContextImpl context = new RenderContextImpl();
-         context.setId(getNextFlashId());
-         getFlashContextMap().put(context.getId(), context);
+         context.setId(getNextRenderContextId());
+         getRenderContextMap().put(context.getId(), context);
          currentContext = context;
       }
    }
 
-   private int getNextFlashId()
+   private int getNextRenderContextId()
    {
-      Map<Integer, RenderContext> flashContextMap = getFlashContextMap();
+      Map<Integer, RenderContext> renderContextMap = getRenderContextMap();
       int id = 0;
 
-      while (flashContextMap.containsKey(id))
+      while (renderContextMap.containsKey(id))
       {
          id++;
       }
@@ -132,14 +132,14 @@ public class RenderScopedContext implements Context, PhaseListener, Serializable
 
    private boolean savedContextExists(final int id)
    {
-      return getFlashContextMap().get(id) instanceof RenderContext;
+      return getRenderContextMap().get(id) instanceof RenderContext;
    }
 
    private Integer getCurrentId()
    {
-      if (countFlashContexts() == 1)
+      if (countRenderContexts() == 1)
       {
-         return getFlashContextMap().keySet().iterator().next();
+         return getRenderContextMap().keySet().iterator().next();
       }
       Map<String, String> requestParameterMap = FacesContext.getCurrentInstance().getExternalContext()
                .getRequestParameterMap();
@@ -171,7 +171,7 @@ public class RenderScopedContext implements Context, PhaseListener, Serializable
          if (contextInstance != null)
          {
             Integer id = contextInstance.getId();
-            RenderContext removed = getFlashContextMap().remove(id);
+            RenderContext removed = getRenderContextMap().remove(id);
 
             Map<Contextual<?>, Object> componentInstanceMap = getComponentInstanceMap();
             Map<Contextual<?>, CreationalContext<?>> creationalContextMap = getCreationalContextMap();
@@ -258,13 +258,13 @@ public class RenderScopedContext implements Context, PhaseListener, Serializable
    @SuppressWarnings("unchecked")
    private Map<Contextual<?>, Object> getComponentInstanceMap()
    {
-      ConcurrentHashMap<Contextual<?>, Object> map = (ConcurrentHashMap<Contextual<?>, Object>) getCurrentFlashContext()
+      ConcurrentHashMap<Contextual<?>, Object> map = (ConcurrentHashMap<Contextual<?>, Object>) getCurrentRenderContext()
                .get(COMPONENT_MAP_NAME);
 
       if (map == null)
       {
          map = new ConcurrentHashMap<Contextual<?>, Object>();
-         getCurrentFlashContext().put(COMPONENT_MAP_NAME, map);
+         getCurrentRenderContext().put(COMPONENT_MAP_NAME, map);
       }
 
       return map;
@@ -273,39 +273,39 @@ public class RenderScopedContext implements Context, PhaseListener, Serializable
    @SuppressWarnings("unchecked")
    private Map<Contextual<?>, CreationalContext<?>> getCreationalContextMap()
    {
-      Map<Contextual<?>, CreationalContext<?>> map = (ConcurrentHashMap<Contextual<?>, CreationalContext<?>>) getCurrentFlashContext()
+      Map<Contextual<?>, CreationalContext<?>> map = (ConcurrentHashMap<Contextual<?>, CreationalContext<?>>) getCurrentRenderContext()
                .get(CREATIONAL_MAP_NAME);
 
       if (map == null)
       {
          map = new ConcurrentHashMap<Contextual<?>, CreationalContext<?>>();
-         getCurrentFlashContext().put(CREATIONAL_MAP_NAME, map);
+         getCurrentRenderContext().put(CREATIONAL_MAP_NAME, map);
       }
 
       return map;
    }
 
    @SuppressWarnings("unchecked")
-   private synchronized Map<Integer, RenderContext> getFlashContextMap()
+   private synchronized Map<Integer, RenderContext> getRenderContextMap()
    {
       ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
       Map<String, Object> sessionMap = externalContext.getSessionMap();
-      Map<Integer, RenderContext> flashContextMap;
+      Map<Integer, RenderContext> renderContextMap;
       if (sessionMap.containsKey(SESSION_KEY_PREFIX))
       {
-         flashContextMap = (Map<Integer, RenderContext>) sessionMap.get(SESSION_KEY_PREFIX);
+         renderContextMap = (Map<Integer, RenderContext>) sessionMap.get(SESSION_KEY_PREFIX);
       }
       else
       {
-         flashContextMap = new ConcurrentHashMap<Integer, RenderContext>();
-         sessionMap.put(SESSION_KEY_PREFIX, flashContextMap);
+         renderContextMap = new ConcurrentHashMap<Integer, RenderContext>();
+         sessionMap.put(SESSION_KEY_PREFIX, renderContextMap);
       }
-      return flashContextMap;
+      return renderContextMap;
    }
 
-   public int countFlashContexts()
+   public int countRenderContexts()
    {
-      return getFlashContextMap().size();
+      return getRenderContextMap().size();
    }
 
    /**
