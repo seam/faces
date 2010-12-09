@@ -44,6 +44,11 @@
          <optional>true</optional>
       </dependency>
       <dependency>
+         <groupId>org.jboss.seam.catch</groupId>
+         <artifactId>seam-catch-impl</artifactId>
+         <scope>compile</scope>
+      </dependency>
+      <dependency>
          <groupId>org.jboss.logging</groupId>
          <artifactId>jboss-logging</artifactId>
       </dependency>
