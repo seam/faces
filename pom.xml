@@ -35,6 +35,7 @@
       <jboss.javaee.version>1.0.0.Beta4</jboss.javaee.version>
       <cdi-api.version>1.0-SP2</cdi-api.version>
       <jsf-api.version>2.0</jsf-api.version>
+      <seam.catch.version>3.0.0.Alpha2</seam.catch.version>
    </properties>
 
    <dependencyManagement>
@@ -72,6 +73,12 @@
             <groupId>org.jboss.seam.faces</groupId>
             <artifactId>seam-faces</artifactId>
             <version>${project.version}</version>
+         </dependency>
+         
+         <dependency>
+            <groupId>org.jboss.seam.catch</groupId>
+            <artifactId>seam-catch-impl</artifactId>
+            <version>${seam.catch.version}</version>
          </dependency>
 
          <dependency>

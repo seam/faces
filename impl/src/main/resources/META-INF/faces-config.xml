@@ -20,6 +20,10 @@
 	<factory>
 		<external-context-factory>org.jboss.seam.faces.environment.SeamExternalContextFactory</external-context-factory>
 	</factory>
+	
+	<factory>
+		<exception-handler-factory>org.jboss.seam.faces.exception.CatchExceptionHandlerFactory</exception-handler-factory>
+	</factory>
 
 	<application>
 		<navigation-handler>
