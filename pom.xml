@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
  
@@ -12,17 +13,15 @@
    <version>3.0.0-SNAPSHOT</version>
 
    <packaging>pom</packaging>
-   <name>Seam Faces Module Parent POM</name>
+   <name>Seam Faces Module Parent</name>
 
    <prerequisites>
       <maven>3.0</maven>
    </prerequisites>
 
-   <description>
-       The Parent for Seam Faces Modules
-   </description>
+   <description>CDI integration and numerous other enhancements for JSF</description>
 
-   <url>http://www.seamframework.org</url>
+   <url>http://seamframework.org/Seam3/FacesModule</url>
 
    <modules>
       <module>api</module>
@@ -32,8 +31,7 @@
    <properties>
       <seam.version>3.0.0.b03</seam.version>
       <seam.i18n.version>3.0.0.Alpha2</seam.i18n.version>
-      <jboss.javaee.version>1.0.0.Beta4</jboss.javaee.version>
-      <cdi-api.version>1.0-SP2</cdi-api.version>
+      <jboss.javaee.version>1.0.0.CR1</jboss.javaee.version>
       <jsf-api.version>2.0</jsf-api.version>
    </properties>
 
@@ -70,14 +68,8 @@
 
          <dependency>
             <groupId>org.jboss.seam.faces</groupId>
-            <artifactId>seam-faces</artifactId>
+            <artifactId>seam-faces-impl</artifactId>
             <version>${project.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>javax.enterprise</groupId>
-            <artifactId>cdi-api</artifactId>
-            <version>${cdi-api.version}</version>
          </dependency>
 
          <dependency>
@@ -102,15 +94,6 @@
             <module>docs/reference</module>
             <module>examples/short-ly</module>
          </modules>
-      </profile>
-      <profile>
-         <id>arquillian-glassfish-embedded-30</id>
-         <dependencies>
-            <dependency>
-               <groupId>org.jboss.arquillian.container</groupId>
-               <artifactId>arquillian-glassfish-embedded-30</artifactId>
-            </dependency>
-         </dependencies>
       </profile>
       <profile>
          <id>jboss-public-repository</id>
