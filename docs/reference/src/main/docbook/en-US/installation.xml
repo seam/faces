@@ -17,7 +17,7 @@
 	   </para>
 	   <programlisting role="XML"><![CDATA[<dependency>
    <groupId>org.jboss.seam.faces</groupId>
-   <artifactId>seam-faces-impl</artifactId>
+   <artifactId>seam-faces</artifactId>
    <version>${seam.faces.version}</version>
 </dependency>]]></programlisting>
 	   <tip>
