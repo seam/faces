@@ -4,27 +4,77 @@
 <chapter id="faces.installation">
 	<title>Installation</title>
 	<para>
-		Most features of Seam Faces are installed automatically by including the seam-faces.jar and seam-faces-api.jar
-		in the web application library folder. If you are using <ulink url="http://maven.apache.org/">Maven</ulink> as your build tool, you can add the
-		following dependency to your pom.xml file:
-	</para>
-	<programlisting role="XML"><![CDATA[<dependency>
-	<groupId>org.jboss.seam.faces</groupId>
-	<artifactId>seam-faces</artifactId>
-	<version>${seam-faces-version}</version>
-</dependency>]]></programlisting>	
-	<tip>
-		<para>Replace ${seam-faces-version} with the most recent or appropriate version of Seam Faces.</para>			
-	</tip>
-	<para>
-		In a Servlet 3.0 or Java EE 6 environment, your configuration is now complete; however, if you are still using Servlet 2.5 or Java EE 5, then you
-		need to add the following code to your application's web.xml file:
-	</para>
-	<programlisting><![CDATA[<web-app>
-	<listener>
-		<listener-class>org.jboss.seam.faces.beanManager.BeanManagerServletContextListener</listener-class>
-	</listener>
-</web-app>]]></programlisting>
+     To use the Seam Faces module, you need to put the API and implementation JARs on the classpath of your web
+     application. Most of the features of Seam Faces are enabled automatically when it's added to the classpath. Some
+     extra configuration, covered below, is required if you are not using a Servlet 3-compliant container.
+   </para>
+
+   <section id="maven-dependencies">
+      <title>Maven dependency configuration</title>
+      <para>
+	   	If you are using <ulink url="http://maven.apache.org/">Maven</ulink> as your build tool, you can add the
+	   	following single dependency to your pom.xml file to include Seam Faces:
+	   </para>
+	   <programlisting role="XML"><![CDATA[<dependency>
+   <groupId>org.jboss.seam.faces</groupId>
+   <artifactId>seam-faces</artifactId>
+   <version>${seam.faces.version}</version>
+</dependency>]]></programlisting>
+	   <tip>
+	   	<para>
+            Substitute the expression ${seam.faces.version} with the most recent or appropriate version of Seam Faces.
+            Alternatively, you can create a <ulink
+            href="http://www.sonatype.com/books/mvnref-book/reference/resource-filtering-sect-properties.html#resource-filtering-sect-user-defined">Maven
+            user-defined property</ulink> to satisfy this substitution so you can centrally manage the version.
+         </para>
+	   </tip>
+      <para>
+         Alternatively, you can use the API at compile time and only include the implementation at runtime. This protects
+         you from inadvertantly depending on an implementation class.
+      </para>
+	   <programlisting role="XML"><![CDATA[<dependency>
+   <groupId>org.jboss.seam.faces</groupId>
+   <artifactId>seam-faces-api</artifactId>
+   <version>${seam.faces.version}</version>
+   <scope>compile</scope>
+</dependency>
+
+<dependency>
+   <groupId>org.jboss.seam.faces</groupId>
+   <artifactId>seam-faces-impl</artifactId>
+   <version>${seam.faces.version}</version>
+   <scope>runtime</scope>
+</dependency>]]></programlisting>
+      <para>
+         If you are deploying to a platform other than JBoss AS, you also need to add the JBoss Logging implementation (a
+         portable logging abstraction).
+      </para>
+	   <programlisting role="XML"><![CDATA[<dependency>
+   <groupId>org.jboss.logging</groupId>
+   <artifactId>jboss-logging</artifactId>
+   <version>3.0.0.Beta4</version>
+   <scope>compile</scope>
+</dependency>]]></programlisting>
+	   <para>
+         In a Servlet 3.0 or Java EE 6 environment, <emphasis>your configuration is now complete!</emphasis>
+      </para>
+   </section>
+   
+   <section id="pre-servlet-3">
+      <title>Pre-Servlet 3.0 configuration</title>
+      <para>
+         <emphasis>If you are using Java EE 5 or some other Servlet 2.5 container</emphasis>, then you need to manually
+         register several Servlet components in your application's web.xml to activate the features provided by this
+         module:
+	   </para>
+	   <programlisting role="XML"><![CDATA[<listener>
+   <listener-class>org.jboss.seam.faces.beanManager.BeanManagerServletContextListener</listener-class>
+</listener>]]></programlisting>
+   </section>
+
+   <para>
+      You're now ready to dive into the JSF enhancements provided for you by the Seam Faces module!
+   </para>
 
 <!-- 
 	<section id="configuration">

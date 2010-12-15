@@ -49,7 +49,7 @@ public class ViewDataStoreImpl implements ViewDataStore
     * cache of viewId to a given data list
     */
    private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> cache = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>>();
-   
+
    private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>> data = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>>();
 
    /**
@@ -86,7 +86,7 @@ public class ViewDataStoreImpl implements ViewDataStore
    public <T extends Annotation> T getData(String viewId, Class<T> type)
    {
       List<T> data = prepareCache(viewId, type);
-      if (data != null)
+      if ((data != null) && (data.size() > 0))
       {
          return data.get(0);
       }
@@ -96,10 +96,10 @@ public class ViewDataStoreImpl implements ViewDataStore
    public <T extends Annotation> T getDataForCurrentViewId(Class<T> type)
    {
       FacesContext context = FacesContext.getCurrentInstance();
-      if(context != null)
+      if (context != null)
       {
          UIViewRoot viewRoot = context.getViewRoot();
-         if(viewRoot != null)
+         if (viewRoot != null)
          {
             return getData(viewRoot.getViewId(), type);
          }
@@ -124,7 +124,8 @@ public class ViewDataStoreImpl implements ViewDataStore
 
    private <T extends Annotation> List<T> prepareCache(String viewId, Class<T> type)
    {
-      // we need to synchonise to make sure that no threads see a half completed
+      // we need to synchronize to make sure that no threads see a half
+      // completed
       // list due to instruction re-ordering
       ConcurrentHashMap<String, List<? extends Annotation>> map = cache.get(type);
       if (map == null)

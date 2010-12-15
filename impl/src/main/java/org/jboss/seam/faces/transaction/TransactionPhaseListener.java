@@ -25,8 +25,6 @@ package org.jboss.seam.faces.transaction;
 import static javax.faces.event.PhaseId.ANY_PHASE;
 import static javax.faces.event.PhaseId.RENDER_RESPONSE;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.inject.spi.BeanManager;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
@@ -34,9 +32,9 @@ import javax.inject.Inject;
 import javax.transaction.UserTransaction;
 
 import org.jboss.logging.Logger;
-import org.jboss.seam.faces.util.BeanManagerUtils;
 import org.jboss.seam.faces.viewdata.ViewDataStore;
 import org.jboss.seam.persistence.PersistenceContexts;
+import org.jboss.seam.persistence.transaction.DefaultTransaction;
 import org.jboss.seam.persistence.transaction.SeamTransaction;
 
 /**
@@ -57,19 +55,11 @@ public class TransactionPhaseListener implements PhaseListener
    private ViewDataStore dataStore;
 
    @Inject
-   private BeanManager manager;
+   @DefaultTransaction
+   private SeamTransaction transaction;
 
-   // TODO this is a weld bug that causes deployment to fail if inspected fields
-   // classes cannot be found:-- https://jira.jboss.org/browse/WELD-740
-   private Object persistenceContexts;
-   private Object transaction;
-
-   @PostConstruct
-   public void init()
-   {
-      transaction = BeanManagerUtils.getContextualInstance(manager, SeamTransaction.class);
-      persistenceContexts = BeanManagerUtils.getContextualInstance(manager, PersistenceContexts.class);
-   }
+   @Inject
+   private PersistenceContexts persistenceContexts;
 
    public PhaseId getPhaseId()
    {
@@ -86,7 +76,7 @@ public class TransactionPhaseListener implements PhaseListener
    {
       if (event.getPhaseId() == RENDER_RESPONSE)
       {
-         ((org.jboss.seam.persistence.PersistenceContexts) persistenceContexts).afterRender();
+         (persistenceContexts).afterRender();
       }
       handleTransactionsAfterPhase(event);
    }
@@ -98,7 +88,7 @@ public class TransactionPhaseListener implements PhaseListener
       {
          if (phaseId == RENDER_RESPONSE)
          {
-            ((PersistenceContexts) persistenceContexts).beforeRender();
+            (persistenceContexts).beforeRender();
          }
          boolean beginTran = ((phaseId == PhaseId.RENDER_RESPONSE) || (phaseId == PhaseId.RESTORE_VIEW));
          if (beginTran)
@@ -133,7 +123,7 @@ public class TransactionPhaseListener implements PhaseListener
    {
       try
       {
-         if (!((SeamTransaction) transaction).isActiveOrMarkedRollback())
+         if (!(transaction).isActiveOrMarkedRollback())
          {
             log.debug("beginning transaction " + phaseString);
             ((UserTransaction) transaction).begin();
@@ -154,7 +144,7 @@ public class TransactionPhaseListener implements PhaseListener
    {
       try
       {
-         if (((SeamTransaction) transaction).isActive())
+         if ((transaction).isActive())
          {
             try
             {
@@ -168,7 +158,7 @@ public class TransactionPhaseListener implements PhaseListener
                         e);
             }
          }
-         else if (((SeamTransaction) transaction).isRolledBackOrMarkedRollback())
+         else if ((transaction).isRolledBackOrMarkedRollback())
          {
             log.debug("rolling back transaction " + phaseString);
             ((UserTransaction) transaction).rollback();

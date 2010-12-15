@@ -9,12 +9,11 @@
    </parent>
 
    <groupId>org.jboss.seam.faces</groupId>
-   <artifactId>seam-faces-examples-short-ly</artifactId>
-   <version>3.0.0-SNAPSHOT</version>
+   <artifactId>seam-faces-example-short-ly</artifactId>
    <packaging>war</packaging>
-   <name>Seam Faces Example bit.ly clone with PrettyFaces</name>
-
-   <url>http://seamframework.org</url>
+   <name>Seam Faces Example: bit.ly clone with PrettyFaces</name>
+   <!-- url required for JAR Manifest -->
+   <url>${project.parent.url}</url>
 
    <properties>
       <hibernate.version>3.5.1-Final</hibernate.version>
@@ -23,7 +22,7 @@
    <dependencies>
       <dependency>
          <groupId>org.jboss.seam.faces</groupId>
-         <artifactId>seam-faces</artifactId>
+         <artifactId>seam-faces-impl</artifactId>
          <version>${project.version}</version>
       </dependency>
 
