@@ -97,7 +97,6 @@
       </profile>
       <profile>
          <id>jboss-public-repository</id>
-         <!-- Repository is active unless explicitly disabled e.g. -P!jboss-public-repository -->
          <activation>
             <property>
                <name>jboss-public-repository</name>
@@ -109,7 +108,6 @@
                <id>jboss-public-repository-group</id>
                <name>JBoss Public Maven Repository Group</name>
                <url>http://repository.jboss.org/nexus/content/groups/public</url>
-               <layout>default</layout>
                <releases>
                   <enabled>true</enabled>
                   <updatePolicy>never</updatePolicy>
@@ -125,19 +123,29 @@
                <id>jboss-public-repository-group</id>
                <name>JBoss Public Maven Repository Group</name>
                <url>http://repository.jboss.org/nexus/content/groups/public</url>
-               <layout>default</layout>
                <releases>
                   <enabled>true</enabled>
                   <updatePolicy>never</updatePolicy>
                </releases>
                <snapshots>
-                  <enabled>true</enabled>
+                  <enabled>false</enabled>
                   <updatePolicy>never</updatePolicy>
                </snapshots>
             </pluginRepository>
          </pluginRepositories>
       </profile>
    </profiles>
+
+   <scm>
+      <connection>scm:git:git://github.com/seam/faces.git</connection>
+      <developerConnection>scm:git:git@github.com:seam/faces.git</developerConnection>
+      <url>http://github.com/seam/faces</url>
+   </scm>
+
+   <issueManagement>
+      <system>JIRA</system>
+      <url>http://issues.jboss.org/browse/SEAMFACES</url>
+   </issueManagement>
 
    <developers>
       <developer>
@@ -168,11 +176,5 @@
          </roles>
       </developer>
    </developers>
-
-   <scm>
-      <connection>scm:git:git://github.com/seam/faces.git </connection>
-      <developerConnection>scm:git:git@github.com:seam/faces.git </developerConnection>
-      <url>http://github.com/seam/faces</url>
-   </scm>
 </project>
 
