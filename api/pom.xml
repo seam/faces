@@ -12,26 +12,15 @@
 	<artifactId>seam-faces-api</artifactId>
 
 	<packaging>jar</packaging>
-	<name>Seam Faces Module API</name>
+	<name>Seam Faces API</name>
    <!-- url required for JAR Manifest -->
    <url>${project.parent.url}</url>
    
    <dependencies>
       <dependency>
-         <groupId>org.jboss.weld</groupId>
-         <artifactId>weld-extensions</artifactId>
-         <exclusions>
-            <exclusion>
-               <groupId>javax.transaction</groupId>
-               <artifactId>jta</artifactId>
-            </exclusion>
-            <exclusion>
-               <groupId>javax.el</groupId>
-               <artifactId>el-api</artifactId>
-            </exclusion>
-         </exclusions>
+         <groupId>org.jboss.seam.solder</groupId>
+         <artifactId>seam-solder-api</artifactId>
       </dependency>
-   
       <dependency>
          <groupId>javax.faces</groupId>
          <artifactId>jsf-api</artifactId>
@@ -43,13 +32,13 @@
          <scope>provided</scope>
       </dependency>
       <dependency>
-         <groupId>javax.el</groupId>
-         <artifactId>el-api</artifactId>
+         <groupId>org.jboss.spec.javax.el</groupId>
+         <artifactId>jboss-el-api_2.2_spec</artifactId>
          <scope>provided</scope>
       </dependency>
       <dependency>
-         <groupId>javax.annotation</groupId>
-         <artifactId>jsr250-api</artifactId>
+         <groupId>org.jboss.spec.javax.annotation</groupId>
+         <artifactId>jboss-annotations-api_1.1_spec</artifactId>
          <scope>provided</scope>
       </dependency>
       <dependency>

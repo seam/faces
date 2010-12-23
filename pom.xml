@@ -5,34 +5,28 @@
    <parent>
       <groupId>org.jboss.seam</groupId>
       <artifactId>seam-parent</artifactId>
-      <version>4</version>
+      <version>5</version>
    </parent>
 
    <artifactId>seam-faces-parent</artifactId>
    <groupId>org.jboss.seam.faces</groupId>
+   <packaging>pom</packaging>
    <version>3.0.0-SNAPSHOT</version>
 
-   <packaging>pom</packaging>
-   <name>Seam Faces Module Parent</name>
-
-   <prerequisites>
-      <maven>3.0</maven>
-   </prerequisites>
-
+   <name>Seam Faces Module</name>
    <description>CDI integration and numerous other enhancements for JSF</description>
-
    <url>http://seamframework.org/Seam3/FacesModule</url>
+   <inceptionYear>2009</inceptionYear>
 
    <modules>
       <module>api</module>
       <module>impl</module>
+      <module>combined</module>
    </modules>
 
    <properties>
-      <seam.version>3.0.0.b03</seam.version>
-      <seam.i18n.version>3.0.0.Alpha2</seam.i18n.version>
-      <jboss.javaee.version>1.0.0.CR1</jboss.javaee.version>
-      <jsf-api.version>2.0</jsf-api.version>
+      <seam.version>3.0.0.b04</seam.version>
+      <seam.international.version>3.0.0.Alpha3</seam.international.version>
    </properties>
 
    <dependencyManagement>
@@ -46,20 +40,7 @@
             <type>pom</type>
          </dependency>
 
-         <dependency>
-            <groupId>org.jboss.seam.international</groupId>
-            <artifactId>seam-international</artifactId>
-            <version>${seam.i18n.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.seam.international</groupId>
-            <artifactId>seam-international-api</artifactId>
-            <version>${seam.i18n.version}</version>
-         </dependency>
-
-         <!-- Need to use dependencyManagement to override org.jboss.seam:seam 
-            for submodules -->
+         <!-- Override org.jboss.seam:seam-bom for submodules -->
          <dependency>
             <groupId>org.jboss.seam.faces</groupId>
             <artifactId>seam-faces-api</artifactId>
@@ -73,9 +54,21 @@
          </dependency>
 
          <dependency>
-            <groupId>javax.faces</groupId>
-            <artifactId>jsf-api</artifactId>
-            <version>${jsf-api.version}</version>
+            <groupId>org.jboss.seam.faces</groupId>
+            <artifactId>seam-faces</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.jboss.seam.international</groupId>
+            <artifactId>seam-international-api</artifactId>
+            <version>${seam.international.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.jboss.seam.international</groupId>
+            <artifactId>seam-international-impl</artifactId>
+            <version>${seam.international.version}</version>
          </dependency>
 
       </dependencies>
@@ -90,9 +83,9 @@
             </property>
          </activation>
          <modules>
-            <module>dist</module>
             <module>docs/reference</module>
             <module>examples/short-ly</module>
+            <module>dist</module>
          </modules>
       </profile>
       <profile>
@@ -146,6 +139,11 @@
       <system>JIRA</system>
       <url>http://issues.jboss.org/browse/SEAMFACES</url>
    </issueManagement>
+
+   <ciManagement>
+      <system>Hudson</system>
+      <url>http://hudson.jboss.org/hudson/view/Seam/job/Seam-3.X-faces-CI</url>
+   </ciManagement>
 
    <developers>
       <developer>

@@ -42,7 +42,7 @@ import javax.faces.validator.ValidatorException;
 
 import org.jboss.seam.faces.event.qualifier.After;
 import org.jboss.seam.faces.event.qualifier.Before;
-import org.jboss.weld.extensions.beanManager.BeanManagerAccessor;
+import org.jboss.seam.solder.beanManager.BeanManagerLocator;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
@@ -76,7 +76,7 @@ public class UIValidateForm extends UIInput
    public void validate(final FacesContext context)
    {
       context.getApplication().publishEvent(context, PreValidateEvent.class, UIValidateForm.class, this);
-      BeanManager manager = BeanManagerAccessor.getBeanManager();
+      BeanManager manager = new BeanManagerLocator().getBeanManager();
       manager.fireEvent(this, BEFORE);
 
       Validator validator = null;

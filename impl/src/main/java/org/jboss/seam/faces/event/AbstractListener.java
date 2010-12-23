@@ -27,7 +27,7 @@ import java.util.List;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 
-import org.jboss.weld.extensions.beanManager.BeanManagerAware;
+import org.jboss.seam.solder.beanManager.BeanManagerAware;
 
 /**
  * Superclass for event listeners

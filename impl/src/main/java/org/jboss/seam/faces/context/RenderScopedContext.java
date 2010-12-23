@@ -43,7 +43,7 @@ import javax.faces.event.PhaseListener;
 import javax.inject.Named;
 
 import org.jboss.seam.faces.util.BeanManagerUtils;
-import org.jboss.weld.extensions.beanManager.BeanManagerAccessor;
+import org.jboss.seam.solder.beanManager.BeanManagerLocator;
 
 /**
  * This class provides lifecycle management for the {@link RenderContext}
@@ -83,7 +83,7 @@ public class RenderScopedContext implements Context, PhaseListener, Serializable
 
    private RenderContext getCurrentRenderContext()
    {
-      BeanManager manager = BeanManagerAccessor.getBeanManager();
+      BeanManager manager = new BeanManagerLocator().getBeanManager();
       return BeanManagerUtils.getContextualInstance(manager, RenderContext.class);
    }
 

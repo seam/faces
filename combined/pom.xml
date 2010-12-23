@@ -14,7 +14,7 @@
    <artifactId>seam-faces</artifactId>
 
    <packaging>jar</packaging>
-   <name>Seam Faces Module</name>
+   <name>Seam Faces</name>
    <!-- url required for JAR Manifest -->
    <url>${project.parent.url}</url>
 

@@ -22,19 +22,21 @@
    <dependencies>
       <dependency>
          <groupId>org.jboss.seam.faces</groupId>
+         <artifactId>seam-faces-api</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.seam.faces</groupId>
          <artifactId>seam-faces-impl</artifactId>
          <version>${project.version}</version>
       </dependency>
 
-      <!--
-         TODO Replace this with the JBoss Java EE BOM stuff, not sure
-         exactly what is needed (PLM)
-      -->
       <dependency>
-         <groupId>javax</groupId>
-         <artifactId>javaee-web-api</artifactId>
-         <version>6.0</version>
+         <groupId>org.jboss.spec</groupId>
+         <artifactId>jboss-javaee-6.0</artifactId>
          <scope>provided</scope>
+         <type>pom</type>
       </dependency>
 
       <dependency>
@@ -54,11 +56,6 @@
 
       <dependency>
          <groupId>org.hibernate</groupId>
-         <artifactId>hibernate-annotations</artifactId>
-      </dependency>
-
-      <dependency>
-         <groupId>org.hibernate</groupId>
          <artifactId>hibernate-entitymanager</artifactId>
       </dependency>
 
@@ -70,7 +67,6 @@
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>
-         <scope>test</scope>
       </dependency>
    </dependencies>
 
@@ -105,7 +101,7 @@
          <id>distribution</id>
          <activation>
             <property>
-               <name>dist</name>
+               <name>release</name>
             </property>
          </activation>
          <build>

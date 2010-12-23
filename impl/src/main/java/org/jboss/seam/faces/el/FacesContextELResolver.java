@@ -29,7 +29,7 @@ import javax.el.ELContext;
 import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
 
-import org.jboss.weld.extensions.el.Resolver;
+import org.jboss.seam.solder.el.Resolver;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>

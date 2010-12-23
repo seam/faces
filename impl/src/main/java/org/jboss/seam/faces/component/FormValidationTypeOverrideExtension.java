@@ -33,7 +33,7 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 
 import org.jboss.seam.faces.validation.InputField;
-import org.jboss.weld.extensions.reflection.annotated.AnnotatedTypeBuilder;
+import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
 
 /**
  * Ensure that any field annotated with {@link InputField} is produced by the

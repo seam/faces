@@ -29,7 +29,7 @@ import javax.faces.event.PhaseListener;
 
 import org.jboss.seam.faces.context.RenderScopedContext;
 import org.jboss.seam.faces.transaction.TransactionPhaseListener;
-import org.jboss.weld.extensions.reflection.Reflections;
+import org.jboss.seam.solder.reflection.Reflections;
 
 /**
  * Provide CDI injection to PhaseListener artifacts by delegating through this

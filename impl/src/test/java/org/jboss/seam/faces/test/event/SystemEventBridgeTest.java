@@ -48,13 +48,13 @@ import javax.inject.Inject;
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.faces.event.SystemEventBridge;
+import org.jboss.seam.solder.beanManager.BeanManagerAware;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.test.faces.mock.application.MockApplication;
 import org.jboss.test.faces.mock.context.MockFacesContext;
-import org.jboss.weld.extensions.beanManager.BeanManagerAware;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

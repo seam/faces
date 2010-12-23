@@ -29,11 +29,11 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.faces.event.PhaseEventBridge;
 import org.jboss.seam.faces.test.MockLogger;
 import org.jboss.seam.faces.test.PhaseTestBase;
+import org.jboss.seam.solder.beanManager.BeanManagerAware;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.jboss.weld.extensions.beanManager.BeanManagerAware;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

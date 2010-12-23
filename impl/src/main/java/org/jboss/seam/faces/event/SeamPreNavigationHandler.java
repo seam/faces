@@ -31,7 +31,7 @@ import javax.faces.application.NavigationCase;
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 
-import org.jboss.weld.extensions.beanManager.BeanManagerAccessor;
+import org.jboss.seam.solder.beanManager.BeanManagerLocator;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
@@ -61,7 +61,7 @@ public class SeamPreNavigationHandler extends ConfigurableNavigationHandler
    @Override
    public void handleNavigation(final FacesContext context, final String fromAction, final String outcome)
    {
-      BeanManager manager = BeanManagerAccessor.getBeanManager();
+      BeanManager manager = new BeanManagerLocator().getBeanManager();
       NavigationHandler navigationHandler = context.getApplication().getNavigationHandler();
 
       NavigationCase navigationCase;

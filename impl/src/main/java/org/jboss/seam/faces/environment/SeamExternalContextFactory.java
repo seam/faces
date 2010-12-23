@@ -6,7 +6,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.ExternalContextFactory;
 
 import org.jboss.seam.faces.util.BeanManagerUtils;
-import org.jboss.weld.extensions.beanManager.BeanManagerAccessor;
+import org.jboss.seam.solder.beanManager.BeanManagerLocator;
 
 public class SeamExternalContextFactory extends ExternalContextFactory
 {
@@ -23,7 +23,7 @@ public class SeamExternalContextFactory extends ExternalContextFactory
    {
       try
       {
-         BeanManager manager = BeanManagerAccessor.getBeanManager();
+         BeanManager manager = new BeanManagerLocator().getBeanManager();
 
          SeamExternalContext seamExternalContext = BeanManagerUtils.getContextualInstance(manager, SeamExternalContext.class);
          seamExternalContext.setWrapped(parent.getExternalContext(context, request, response));

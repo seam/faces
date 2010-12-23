@@ -12,7 +12,7 @@
    <artifactId>seam-faces-impl</artifactId>
 
    <packaging>jar</packaging>
-   <name>Seam Faces Module Implementation</name>
+   <name>Seam Faces Implementation</name>
    <!-- url required for JAR Manifest -->
    <url>${project.parent.url}</url>
 
@@ -20,23 +20,32 @@
       <dependency>
          <artifactId>seam-faces-api</artifactId>
          <groupId>org.jboss.seam.faces</groupId>
-         <scope>compile</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.seam.solder</groupId>
+         <artifactId>seam-solder-api</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.seam.solder</groupId>
+         <artifactId>seam-solder-impl</artifactId>
       </dependency>
       <dependency>
          <groupId>org.jboss.seam.international</groupId>
-         <artifactId>seam-international</artifactId>
-         <scope>compile</scope>
+         <artifactId>seam-international-api</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.seam.international</groupId>
+         <artifactId>seam-international-impl</artifactId>
       </dependency>
       <dependency>
          <groupId>org.jboss.seam.persistence</groupId>
          <artifactId>seam-persistence-api</artifactId>
          <scope>provided</scope>
+         <optional>true</optional>
       </dependency>
-
       <dependency>
          <groupId>org.jboss.logging</groupId>
          <artifactId>jboss-logging</artifactId>
-         <scope>provided</scope>
       </dependency>
       <dependency>
          <groupId>org.jboss.spec.javax.interceptor</groupId>
@@ -44,14 +53,13 @@
          <scope>provided</scope>
       </dependency>
       <dependency>
-         <!-- Required until the Servlet 3.0 API can be resolved in Central -->
          <groupId>org.jboss.spec.javax.servlet</groupId>
          <artifactId>jboss-servlet-api_3.0_spec</artifactId>
          <scope>provided</scope>
       </dependency>
       <dependency>
-         <groupId>javax.transaction</groupId>
-         <artifactId>jta</artifactId>
+         <groupId>org.jboss.spec.javax.transaction</groupId>
+         <artifactId>jboss-transaction-api_1.1_spec</artifactId>
          <scope>provided</scope>
       </dependency>
       <dependency>
@@ -64,22 +72,18 @@
       <dependency>
          <groupId>org.jboss.test-jsf</groupId>
          <artifactId>jsf-mock</artifactId>
-         <scope>test</scope>
       </dependency>
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>
-         <scope>test</scope>
       </dependency>
       <dependency>
          <groupId>org.jboss.arquillian</groupId>
          <artifactId>arquillian-junit</artifactId>
-         <scope>test</scope>
       </dependency>
       <dependency>
-         <groupId>org.jboss.arquillian.container</groupId>
+         <groupId>org.jboss.weld.arquillian.container</groupId>
          <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
-         <scope>test</scope>
       </dependency>
       <dependency>
          <groupId>org.jboss.weld</groupId>
@@ -91,20 +95,13 @@
          <artifactId>slf4j-simple</artifactId>
          <scope>test</scope>
       </dependency>
-
       <dependency>
          <groupId>org.jboss.spec</groupId>
          <artifactId>jboss-javaee-6.0</artifactId>
-         <version>${jboss.javaee.version}</version>
          <scope>provided</scope>
          <type>pom</type>
       </dependency>
    </dependencies>
-
-   <dependencyManagement>
-      <dependencies>
-      </dependencies>
-   </dependencyManagement>
 
    <profiles>
       <profile>
