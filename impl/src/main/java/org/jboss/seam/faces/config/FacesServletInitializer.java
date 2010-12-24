@@ -1,5 +1,6 @@
 package org.jboss.seam.faces.config;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -38,10 +39,10 @@ public class FacesServletInitializer implements ServletContainerInitializer
          registerFacesServlet(ctx);
       }
    }
-
+   
    private void registerFacesServlet(ServletContext ctx)
    {
-      log.info("Auto-registering FacesServlet with mappings " + FACES_SERVLET_MAPPINGS);
+      log.info("Auto-registering FacesServlet with mappings: " + Arrays.asList(FACES_SERVLET_MAPPINGS));
       ServletRegistration.Dynamic facesServlet = ctx.addServlet(FACES_SERVLET_NAME, FACES_SERVLET_CLASS_NAME);
       facesServlet.addMapping(FACES_SERVLET_MAPPINGS);
    }
