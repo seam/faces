@@ -45,16 +45,6 @@
    <version>${seam.faces.version}</version>
    <scope>runtime</scope>
 </dependency>]]></programlisting>
-      <para>
-         If you are deploying to a platform other than JBoss AS, you also need to add the JBoss Logging implementation (a
-         portable logging abstraction).
-      </para>
-	   <programlisting role="XML"><![CDATA[<dependency>
-   <groupId>org.jboss.logging</groupId>
-   <artifactId>jboss-logging</artifactId>
-   <version>3.0.0.Beta4</version>
-   <scope>compile</scope>
-</dependency>]]></programlisting>
 	   <para>
          In a Servlet 3.0 or Java EE 6 environment, <emphasis>your configuration is now complete!</emphasis>
       </para>
