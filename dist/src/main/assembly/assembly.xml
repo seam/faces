@@ -28,6 +28,7 @@
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
             <include>org.jboss.seam.faces:seam-faces-api</include>
+            <include>org.jboss.seam.faces:seam-faces-impl</include>
             <include>org.jboss.seam.faces:seam-faces</include>
          </includes>
          <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
@@ -39,6 +40,8 @@
          <useTransitiveDependencies>true</useTransitiveDependencies>
          <excludes>
             <exclude>org.jboss.seam.faces:*</exclude>
+            <exclude>org.jboss.seam.solder:seam-solder-*</exclude>
+            <exclude>org.jboss.seam.international:seam-international-*</exclude>
          </excludes>
          <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
       </dependencySet>

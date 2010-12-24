@@ -11,7 +11,7 @@
 
    <artifactId>seam-faces-distribution</artifactId>
    <name>Seam Faces Distribution</name>
-   <description>Builds a Seam Faces release distribution</description>
+   <description>Builds the Seam Faces release distribution</description>
    <packaging>pom</packaging>
 
    <properties>
@@ -27,6 +27,12 @@
 
       <dependency>
          <groupId>org.jboss.seam.faces</groupId>
+         <artifactId>seam-faces-impl</artifactId>
+         <optional>true</optional>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.seam.faces</groupId>
          <artifactId>seam-faces</artifactId>
          <optional>true</optional>
       </dependency>
@@ -41,26 +47,17 @@
 
       <dependency>
          <groupId>org.jboss.seam.faces</groupId>
+         <artifactId>seam-faces-impl</artifactId>
+         <version>${project.version}</version>
+         <classifier>sources</classifier>
+         <optional>true</optional>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.seam.faces</groupId>
          <artifactId>seam-faces-api</artifactId>
          <version>${project.version}</version>
          <classifier>javadoc</classifier>
-         <optional>true</optional>
-      </dependency>
-
-
-      <dependency>
-         <groupId>org.jboss.seam.faces</groupId>
-         <artifactId>seam-faces</artifactId>
-         <version>${project.version}</version>
-         <classifier>sources</classifier>
-      </dependency>
-
-      <dependency>
-         <groupId>org.jboss.seam.faces</groupId>
-         <artifactId>seam-faces</artifactId>
-         <version>${project.version}</version>
-         <classifier>javadoc</classifier>
-         <optional>true</optional>
       </dependency>
 
       <dependency>

@@ -1,6 +1,6 @@
 
-                              Seam Faces Module
-                               3.0.0 SNAPSHOT
+ Seam Faces Module
+ 3.0.0.Beta2
 
  What is it?
  ===========
@@ -12,6 +12,14 @@
  Contents of distribution
  ========================
 
+ artifacts/
+ 
+    Provided libraries
+
+ lib/
+
+    Dependencies
+
  docs/
 
     API Docs and reference guide.
@@ -19,8 +27,6 @@
  examples/
 
     Seam Faces examples
-  
- ...
   
  Licensing
  =========
@@ -31,20 +37,20 @@
  Seam Faces URLs
  ===============
 
- Seam 3 Faces Module:  http://www.sfwk.org/Seam3/FacesModule
+ Seam 3 Faces Module:  http://www.sfwk.org/Seam3/Faces
  Seam 3 Home Page:     http://www.sfwk.org/Seam3
  Downloads:            http://www.sfwk.org/Seam3/DistributionDownloads
  Forums:               http://www.sfwk.org/Community/Seam3Users
- Source Code:          git://github.com/seam/faces.git
+ Source Code:          http://github.com/seam/faces
  Issue Tracking:       http://jira.jboss.org/jira/browse/SEAMFACES
 
  Release Notes
  =============
 
-    *  View actions
-    * javax.faces.bean.*Scoped aliases
-    * @FlashScoped and @ViewScoped
-    * CDI / Faces Phase & System Event bridge
-    * JSF API producers (FacesContext, ExternalContext, NavigationHandler, etc...)
-    * Simplified EL name to conversation: #{conversation.transient}
-
+ * [SEAMFACES-62] - ViewDataStoreImpl - NullPointerException
+ * [SEAMFACES-64] - TransactionPhaseListener - NullPointerException
+ * [SEAMFACES-67] - Provide a ServletContainerInitializer that automatically registers the FacesServlet
+ * [SEAMFACES-69] - Add combined jar (api + impl) to build
+ * [SEAMFACES-61] - change name of web-fragment.xml
+ * [SEAMFACES-66] - rename seam-faces artifact to seam-faces-impl, add combined build
+ * [SEAMFACES-68] - Migrate to Seam Solder
