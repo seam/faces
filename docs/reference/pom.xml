@@ -6,7 +6,7 @@
    <artifactId>seam-faces-reference-guide</artifactId>
    <version>3.0.0-SNAPSHOT</version>
    <packaging>jdocbook</packaging>
-   <name>Seam Faces Module Reference Guide</name>
+   <name>Seam Faces Reference Guide</name>
 
    <parent>
       <groupId>org.jboss.seam.faces</groupId>
