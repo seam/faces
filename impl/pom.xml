@@ -18,6 +18,15 @@
 
    <dependencies>
       <dependency>
+         <!-- JBoss Java EE 6.0 spec bom uses wrong groupId
+         <groupId>javax.faces</groupId>
+         -->
+         <groupId>com.sun.faces</groupId>
+         <artifactId>jsf-api</artifactId>
+         <version>2.0.4-b07</version>
+         <scope>provided</scope>
+      </dependency>
+      <dependency>
          <artifactId>seam-faces-api</artifactId>
          <groupId>org.jboss.seam.faces</groupId>
       </dependency>
@@ -46,7 +55,8 @@
       <dependency>
          <groupId>org.jboss.seam.catch</groupId>
          <artifactId>seam-catch-impl</artifactId>
-         <scope>compile</scope>
+         <scope>provided</scope>
+         <optional>true</optional> 
       </dependency>
       <dependency>
          <groupId>org.jboss.logging</groupId>

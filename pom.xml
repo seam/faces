@@ -5,7 +5,7 @@
    <parent>
       <groupId>org.jboss.seam</groupId>
       <artifactId>seam-parent</artifactId>
-      <version>5</version>
+      <version>6</version>
    </parent>
 
    <artifactId>seam-faces-parent</artifactId>
@@ -25,9 +25,7 @@
    </modules>
 
    <properties>
-      <seam.version>3.0.0.b04</seam.version>
-      <seam.international.version>3.0.0.Alpha3</seam.international.version>
-      <seam.catch.version>3.0.0.Alpha3</seam.catch.version>
+      <seam.version>3.0.0.b05</seam.version>
    </properties>
 
    <dependencyManagement>
@@ -58,30 +56,6 @@
             <groupId>org.jboss.seam.faces</groupId>
             <artifactId>seam-faces</artifactId>
             <version>${project.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.seam.international</groupId>
-            <artifactId>seam-international-api</artifactId>
-            <version>${seam.international.version}</version>
-         </dependency>
-         
-         <dependency>
-            <groupId>org.jboss.seam.catch</groupId>
-            <artifactId>seam-catch-impl</artifactId>
-            <version>${seam.catch.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.seam.international</groupId>
-            <artifactId>seam-international-impl</artifactId>
-            <version>${seam.international.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.seam.international</groupId>
-            <artifactId>seam-international</artifactId>
-            <version>${seam.international.version}</version>
          </dependency>
 
       </dependencies>
@@ -188,4 +162,3 @@
       </developer>
    </developers>
 </project>
-

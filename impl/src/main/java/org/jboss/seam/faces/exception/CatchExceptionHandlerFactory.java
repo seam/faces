@@ -27,12 +27,14 @@ import javax.faces.context.ExceptionHandlerFactory;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.beanManager.BeanManagerLocator;
+import org.jboss.seam.solder.beanManager.BeanManagerUnavailableException;
 
 /**
  * This class is registered with the JSF framework to invoke the <code>CatchExceptionHandler</code>
  * as part of the JSF lifecycle
  * 
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
+ * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
 public class CatchExceptionHandlerFactory extends ExceptionHandlerFactory 
 {
@@ -41,6 +43,8 @@ public class CatchExceptionHandlerFactory extends ExceptionHandlerFactory
 	private ExceptionHandlerFactory parent;
 	
 	private transient boolean catchUnavailable = false;
+	
+	private transient BeanManagerLocator locator;
 	
 	public CatchExceptionHandlerFactory(ExceptionHandlerFactory parent) 
 	{
@@ -61,22 +65,23 @@ public class CatchExceptionHandlerFactory extends ExceptionHandlerFactory
         BeanManager beanManager = null;
         try
         {
-           BeanManagerLocator beanManagerLocator = new BeanManagerLocator();
-           beanManager = beanManagerLocator.getBeanManager();
+           beanManager = locator.getBeanManager();
         }
-        catch (IllegalArgumentException e)
+        catch (BeanManagerUnavailableException e)
         {
            log.info("Could not location BeanManager, Catch integration disabled");
            catchUnavailable = true;
            return parent.getExceptionHandler();
         }
         
+        // TODO this looks like a nice utility for Solder
         if (beanManager.getBeans(CatchExceptionHandler.class).isEmpty())
         {
            log.info("Catch not available, Catch integration disabled");
            catchUnavailable = true;
            return parent.getExceptionHandler();
         }
+        
         log.info("Catch integration enabled");
         return new CatchExceptionHandler(parent.getExceptionHandler(), beanManager);
 	}	

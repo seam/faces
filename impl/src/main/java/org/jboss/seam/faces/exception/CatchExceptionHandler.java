@@ -32,7 +32,6 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ExceptionQueuedEvent;
 
 import org.jboss.logging.Logger;
-import org.jboss.logging.Logger.Level;
 import org.jboss.seam.exception.control.ExceptionToCatch;
 import org.jboss.seam.faces.literal.FacesLiteral;
 import org.jboss.seam.solder.core.Requires;
@@ -41,6 +40,7 @@ import org.jboss.seam.solder.core.Requires;
  * This class fires Exceptions from the JSF lifecycle into Seam Catch.
  * 
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
+ * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
 @Requires("org.jboss.seam.exception.control.extension.CatchExtension")
 public class CatchExceptionHandler extends ExceptionHandlerWrapper
@@ -82,7 +82,7 @@ public class CatchExceptionHandler extends ExceptionHandlerWrapper
                 log.trace("Firing event");
                 if (catchEvent.isHandled())
                 {
-                    log.log(Level.DEBUG, MessageFormat.format("Exception handled {0}", t.getClass().getName()));
+                    log.debug(MessageFormat.format("Exception handled {0}", t.getClass().getName()));
                     it.remove();
                 }
             }
@@ -93,5 +93,4 @@ public class CatchExceptionHandler extends ExceptionHandlerWrapper
             getWrapped().handle();
         }
     }
-
 }
