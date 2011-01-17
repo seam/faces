@@ -65,6 +65,7 @@ public class CatchExceptionHandlerFactory extends ExceptionHandlerFactory
         BeanManager beanManager = null;
         try
         {
+           locator = new BeanManagerLocator();
            beanManager = locator.getBeanManager();
         }
         catch (BeanManagerUnavailableException e)
