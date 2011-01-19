@@ -35,6 +35,15 @@
                            <include>org.jboss.seam.faces:*</include>
                         </includes>
                      </artifactSet>
+                     <filters>
+                        <filter>
+                           <artifact>org.jboss.seam.faces:seam-faces-api</artifact>
+                           <excludes>
+                              <exclude>META-INF/beans.xml</exclude>
+                              <exclude>META-INF/faces-config.xml</exclude>
+                           </excludes>
+                        </filter>
+                     </filters>
                   </configuration>
                </execution>
             </executions>
