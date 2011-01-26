@@ -32,11 +32,7 @@
       </dependency>
       <dependency>
          <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder-api</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder-impl</artifactId>
+         <artifactId>seam-solder</artifactId>
       </dependency>
       <dependency>
          <groupId>org.jboss.seam.international</groupId>
