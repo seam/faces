@@ -13,7 +13,7 @@
 		<title>Adding Messages</title>
 		<para>
 			Consistent with the CDI programming model, the Messages API is provided via bean injection. To add a new message to be displayed to the user,
-			inject <literal>org.jboss.seam.international.display.Messages</literal> and call one of the Message factory methods. As mentioned earlier,
+			inject <literal>org.jboss.seam.international.status.Messages</literal> and call one of the Message factory methods. As mentioned earlier,
 			factory methods accept either a plain-text template, or a <literal>BundleKey</literal>, specifying the name of the resource bundle to use, and
 			the name of the key to use as a message template.
 <programlisting>
