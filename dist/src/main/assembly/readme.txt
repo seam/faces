@@ -32,7 +32,7 @@
  =========
 
  This distribution, as a whole, is licensed under the terms of the Apache
- License, Version 2.0 (see apl.txt).
+ Software License, Version 2.0 (see license.txt).
 
  Seam Faces URLs
  ===============

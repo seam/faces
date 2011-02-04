@@ -16,7 +16,8 @@
          <outputDirectory>.</outputDirectory>
          <includes>
             <include>readme.txt</include>
-            <include>lgpl.txt</include>
+            <include>license.txt</include>
+            <include>notice.txt</include>
          </includes>
       </fileSet>
    </fileSets>
