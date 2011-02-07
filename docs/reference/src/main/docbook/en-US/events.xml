@@ -33,19 +33,21 @@
 			</para>
 			<para>
 				Creating an observer method in CDI is simple; just provide a method in a managed bean that is annotated with
-				<literal>@Observes</literal>. Each observer method must accept one method parameter: the event object; 
-				the type of this object determines the type of event being observed.
+				<literal>@Observes</literal>. Each observer method must accept at least one method parameter: the event object; 
+				the type of this object determines the type of event being observed.  Additional parameters may also be specified,
+				and their values will be automatically injected by the container as per the CDI specification.
 			</para>
 			<para>
 				In this case, the event object passed along from the phase listener is a 
 				<literal>javax.faces.event.PhaseEvent</literal>. The following example observes all Phase events.
+		  </para>
 				
-				<programlisting role="Java">
+				<programlisting role="JAVA">
 public void observeAll(@Observes PhaseEvent e)
 {
 	// Do something with the event object
 } </programlisting>
-			</para>
+
 			<para>
 			Events can be further filtered by adding Qualifiers. The name of the method itself is not significant. 
 			(See the CDI Reference Guide for more information on events and observing.)
@@ -56,7 +58,8 @@ public void observeAll(@Observes PhaseEvent e)
 				fired before and after each, for a total of 12 events. The <literal>@Before</literal> and 
 				<literal>@After</literal> "temporal" qualifiers can be used to observe events occurring only before or only after
 				a Phase event. For example:
-				<programlisting role="Java">
+			</para>
+				<programlisting role="JAVA">
 public void observeBefore(@Observes @Before PhaseEvent e)
 {
 	// Do something with the "before" event object
@@ -66,24 +69,28 @@ public void observeAfter(@Observes @After PhaseEvent e)
 {
 	// Do something with the "after" event object
 } </programlisting>
-			</para>
+
 			<para>
 				If we are interested in both the "before" and "after" event of a particular phase, we can limit them
 				by adding a "lifecycle" qualifier that corresponds to the phase:
-				<programlisting role="Java">
+			</para>
+			
+				<programlisting role="JAVA">
 public void observeRenderResponse(@Observes @RenderResponse PhaseEvent e)
 {
 	// Do something with the "render response" event object
 } </programlisting>
-			</para>
+
 			<para>
 				By combining a temporal and lifecycle qualifier, we can achieve the most specific qualification:
-				<programlisting role="Java">
+			</para>
+			
+				<programlisting role="JAVA">
 public void observeBeforeRenderResponse(@Observes @Before @RenderResponse PhaseEvent e)
 {
 	// Do something with the "before render response" event object
 } </programlisting>
-			</para>
+
 		</section>
 		
 		
@@ -163,21 +170,18 @@ public void observeBeforeRenderResponse(@Observes @Before @RenderResponse PhaseE
 		</para>
 		
 		
-		
-		
-		
 		<section id="events.system.seam">
 			<title>Seam Faces System events</title>
 			<para>
 				This is an example of observing a Faces system event:
 			</para>
-			<para>
-				<programlisting role="Java">
+
+				<programlisting role="JAVA">
 public void observesThisEvent(@Observes ExceptionQueuedEvent e)
 {
 	// Do something with the event object
 } </programlisting>
-			</para>
+
 		</section>
 		
 		
@@ -295,21 +299,27 @@ public void observesThisEvent(@Observes ExceptionQueuedEvent e)
 				There is one qualifier, <literal>@Component</literal> that can be used with component events by specifying the component ID. Note that
 				view-centric component events <literal>PreRenderViewEvent</literal>, <literal>PostConstructViewMapEvent</literal> and  
 				<literal>PreDestroyViewMapEvent</literal> do not fire with the <literal>@Component</literal> qualifier.
-				<programlisting role="Java">
+      </para>
+      				
+				<programlisting role="JAVA">
 public void observePrePasswordValidation(@Observes @Component("form:password") PreValidateEvent e)
 {
 // Do something with the "before password is validated" event object
 } </programlisting>
+
+      <para>
 				Global system events are observer without the component qualifier
-				<programlisting role="Java">
+		  </para>
+				<programlisting role="JAVA">
 public void observeApplicationConstructed(@Observes PostConstructApplicationEvent e)
 {
 // Do something with the "after application is constructed" event object
 } </programlisting>
+
+      <para>
 				The name of the observing method is not relevant; observers are defined solely via annotations.
 			</para>
-		</section>
-		
+		</section>		
 		
 	</section>
 </chapter>

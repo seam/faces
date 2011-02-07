@@ -119,28 +119,28 @@ public class UserConverter implements Converter
       				</thead>
       				<tbody>
       					<row>
-      						<entry>javax.faces.context.FacesContext</entry>
+      						<entry>javax.faces.context.FacesContext</entry>      						
       						<entry><programlisting>public class Bean {
-      	@Inject FacesContext context;
-      }</programlisting></entry>
+   @Inject FacesContext context;
+}</programlisting></entry>
       					</row>
       					<row>
       						<entry>javax.faces.context.ExternalContext</entry>
       						<entry><programlisting>public class Bean {
-      	@Inject ExternalContext context;
-      }</programlisting></entry>
+   @Inject ExternalContext context;
+}</programlisting></entry>
       					</row>
       					<row>
       						<entry>javax.faces.application.NavigationHandler</entry>
       						<entry><programlisting>public class Bean {
-      	@Inject NavigationHandler handler;
-      }</programlisting></entry>
+   @Inject NavigationHandler handler;
+}</programlisting></entry>
       					</row>
                         <row>
                         <entry>javax.faces.context.Flash</entry>
                         <entry><programlisting>public class Bean {
-         @Inject Flash flash;
-      }</programlisting></entry>
+   @Inject Flash flash;
+}</programlisting></entry>
                      </row>
       				</tbody>
       			</tgroup>

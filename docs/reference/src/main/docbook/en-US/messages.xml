@@ -16,8 +16,9 @@
 			inject <literal>org.jboss.seam.international.status.Messages</literal> and call one of the Message factory methods. As mentioned earlier,
 			factory methods accept either a plain-text template, or a <literal>BundleKey</literal>, specifying the name of the resource bundle to use, and
 			the name of the key to use as a message template.
-<programlisting>
-@Named
+		</para>
+			
+<programlisting role="JAVA"><![CDATA[@Named
 public class Example
 {
    @Inject
@@ -28,7 +29,8 @@ public class Example
       messages.info("This is an {0} message, and will be displayed to {1}.", "INFO", "the user");
       return null;
    }
-}</programlisting>
+}]]></programlisting>
+    <para>
 			Adds the message: "This is an INFO message, and will be displayed to the user." 
 		</para>
 		<para>		
@@ -36,18 +38,22 @@ public class Example
 			<literal>BundleKey</literal> is used to look up a message template, default text may be provided in case the resource cannot be loaded; default
 			text uses the same parameters supplied for the bundle template. If no default text is supplied, a String representation of the 
 			<literal>BundleKey</literal> and its parameters will be displayed instead.
-<programlisting>
-   public String action()
-   {
-      messages.warn(new BundleKey("org.jboss.seam.faces.exampleBundle", "messageKey"), "unique");
-      return null;
-   }</programlisting>
-	   </para>
-	   <para>
-classpath:/org/jboss/seam/faces/exampleBundle.properties
+	  </para>
+	  
+<programlisting role="JAVA"><![CDATA[public String action()
+{
+   messages.warn(new BundleKey("org.jboss.seam.faces.exampleBundle", "messageKey"), "unique");
+   return null;
+}]]></programlisting>
+   
+	   <para><literal>classpath:/org/jboss/seam/faces/exampleBundle.properties</literal></para>
+	   
 <programlisting>messageKey=This {0} parameter is not so {0}, see?</programlisting>
+
+    <para>
    			Adds the message: "This unique parameter is not so unique, see?"
 		</para>
+		
 	</section>
 	<section id="displaying">
 		<title>Displaying pending messages</title>
@@ -56,6 +62,7 @@ classpath:/org/jboss/seam/faces/exampleBundle.properties
 			messages, simply use the <literal>&lt;h:messages /&gt;</literal> tag from JSF. Any pending messages will be displayed on the page just like normal
 			<literal>FacesMessages</literal>.
 		</para>
+		
 				<programlisting role="XML"><![CDATA[<html xmlns="http://www.w3.org/1999/xhtml"
    xmlns:f="http://java.sun.com/jsf/core"
    xmlns:h="http://java.sun.com/jsf/html"
