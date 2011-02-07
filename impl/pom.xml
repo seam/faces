@@ -26,53 +26,54 @@
          <version>2.0.4-b07</version>
          <scope>provided</scope>
       </dependency>
+
       <dependency>
          <artifactId>seam-faces-api</artifactId>
          <groupId>org.jboss.seam.faces</groupId>
       </dependency>
+
       <dependency>
          <groupId>org.jboss.seam.solder</groupId>
          <artifactId>seam-solder</artifactId>
       </dependency>
+
       <dependency>
          <groupId>org.jboss.seam.international</groupId>
-         <artifactId>seam-international-api</artifactId>
+         <artifactId>seam-international</artifactId>
       </dependency>
-      <dependency>
-         <groupId>org.jboss.seam.international</groupId>
-         <artifactId>seam-international-impl</artifactId>
-      </dependency>
+
       <dependency>
          <groupId>org.jboss.seam.persistence</groupId>
          <artifactId>seam-persistence-api</artifactId>
          <scope>provided</scope>
          <optional>true</optional>
       </dependency>
+
       <dependency>
          <groupId>org.jboss.seam.catch</groupId>
          <artifactId>seam-catch-impl</artifactId>
          <scope>provided</scope>
          <optional>true</optional> 
       </dependency>
-      <dependency>
-         <groupId>org.jboss.logging</groupId>
-         <artifactId>jboss-logging</artifactId>
-      </dependency>
+
       <dependency>
          <groupId>org.jboss.spec.javax.interceptor</groupId>
          <artifactId>jboss-interceptors-api_1.1_spec</artifactId>
          <scope>provided</scope>
       </dependency>
+
       <dependency>
          <groupId>org.jboss.spec.javax.servlet</groupId>
          <artifactId>jboss-servlet-api_3.0_spec</artifactId>
          <scope>provided</scope>
       </dependency>
+
       <dependency>
          <groupId>org.jboss.spec.javax.transaction</groupId>
          <artifactId>jboss-transaction-api_1.1_spec</artifactId>
          <scope>provided</scope>
       </dependency>
+
       <dependency>
          <groupId>javax.enterprise</groupId>
          <artifactId>cdi-api</artifactId>
