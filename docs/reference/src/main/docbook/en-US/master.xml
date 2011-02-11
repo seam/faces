@@ -3,17 +3,17 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <book lang="en">
 
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="book_info.xml" />
+   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-book_info.xml" />
 
    <toc />
 
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="preface.xml" />
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="installation.xml" />
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="scopes.xml" />
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="messages.xml" />
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="components.xml" />
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="artifacts.xml" />
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="events.xml" />
+   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-preface.xml" />
+   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-installation.xml" />
+   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-scopes.xml" />
+   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-messages.xml" />
+   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-components.xml" />
+   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-artifacts.xml" />
+   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-events.xml" />
 
    <!--
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="chapterXX.xml" />
