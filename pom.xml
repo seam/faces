@@ -25,7 +25,7 @@
    </modules>
 
    <properties>
-      <seam.version>3.0.0.b07</seam.version>
+      <seam.version>3.0.0.b09</seam.version>
    </properties>
 
    <dependencyManagement>
