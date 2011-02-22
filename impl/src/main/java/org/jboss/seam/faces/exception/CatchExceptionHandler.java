@@ -78,8 +78,15 @@ public class CatchExceptionHandler extends ExceptionHandlerWrapper
             if (!(t instanceof AbortProcessingException)) // Why is this needed
             {
                 ExceptionToCatch catchEvent = new ExceptionToCatch(t, FacesLiteral.INSTANCE);
-                beanManager.fireEvent(catchEvent);
-                log.trace("Firing event");
+                try
+                {
+                    log.trace("Firing event");
+                    beanManager.fireEvent(catchEvent);
+                }
+                catch (Exception e)
+                {
+                    continue;  // exception will be handled by getWrapped().handle() below
+                }
                 if (catchEvent.isHandled())
                 {
                     log.debug(MessageFormat.format("Exception handled {0}", t.getClass().getName()));
