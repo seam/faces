@@ -83,7 +83,7 @@ public class CatchExceptionHandler extends ExceptionHandlerWrapper
                 	beanManager.fireEvent(catchEvent);
                 }catch (Exception e) {
                 	//the exception will be handled by getWrapped().handle(); at the method's bottom
-                	break;
+                	continue;
 				}
                 
                 if (catchEvent.isHandled())
