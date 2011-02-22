@@ -117,7 +117,10 @@ public class SeamApplicationWrapper extends ApplicationWrapper
 
       if (result == null)
       {
-         log.warnf("Using JSF provided instance, unable to find a BeanManaged instance for class %s", base.getClass().getName());
+         if (! base.getClass().getName().startsWith("javax."))
+         {
+            log.warnf("Using JSF provided instance, unable to find a BeanManaged instance for class %s", base.getClass().getName());
+         }
          result = base;
       }
 

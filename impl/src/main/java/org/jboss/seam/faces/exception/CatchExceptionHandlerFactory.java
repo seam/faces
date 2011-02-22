@@ -83,7 +83,10 @@ public class CatchExceptionHandlerFactory extends ExceptionHandlerFactory
            return parent.getExceptionHandler();
         }
         
-        log.info("Catch integration enabled");
+        if (log.isTraceEnabled())
+        {
+            log.trace("Catch integration enabled");
+        }
         return new CatchExceptionHandler(parent.getExceptionHandler(), beanManager);
 	}	
 }
