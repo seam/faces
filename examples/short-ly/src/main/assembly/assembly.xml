@@ -16,6 +16,7 @@
             <exclude>.project</exclude>
             <exclude>.settings/**</exclude>
             <exclude>gfembed*/**</exclude>
+            <exclude>src/main/assembly/**</exclude>
          </excludes>
       </fileSet>
    </fileSets>

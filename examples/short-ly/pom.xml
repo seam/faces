@@ -22,13 +22,7 @@
    <dependencies>
       <dependency>
          <groupId>org.jboss.seam.faces</groupId>
-         <artifactId>seam-faces-api</artifactId>
-         <version>${project.version}</version>
-      </dependency>
-
-      <dependency>
-         <groupId>org.jboss.seam.faces</groupId>
-         <artifactId>seam-faces-impl</artifactId>
+         <artifactId>seam-faces</artifactId>
          <version>${project.version}</version>
       </dependency>
 
@@ -71,25 +65,17 @@
          <groupId>com.ocpsoft</groupId>
          <artifactId>ocpsoft-pretty-time</artifactId>
       </dependency>
-
-      <dependency>
-         <groupId>org.hibernate</groupId>
-         <artifactId>hibernate-core</artifactId>
-      </dependency>
-
-      <dependency>
-         <groupId>org.hibernate</groupId>
-         <artifactId>hibernate-entitymanager</artifactId>
-      </dependency>
-
-      <dependency>
-         <groupId>org.hsqldb</groupId>
-         <artifactId>hsqldb</artifactId>
-      </dependency>
+      
+      <dependency> 
+         <groupId>org.hibernate.javax.persistence</groupId> 
+         <artifactId>hibernate-jpa-2.0-api</artifactId> 
+         <scope>provided</scope>
+      </dependency>       
 
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>
+         <scope>test</scope>
       </dependency>
    </dependencies>
 

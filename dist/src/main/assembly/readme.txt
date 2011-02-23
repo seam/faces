@@ -1,6 +1,6 @@
 
  Seam Faces Module
- 3.0.0.Beta2
+ ${project.version}
 
  What is it?
  ===========
@@ -20,13 +20,17 @@
 
     Dependencies
 
- docs/
+ doc/
 
     API Docs and reference guide.
   
  examples/
 
     Seam Faces examples
+    
+ source/
+ 
+    Source code for this module
   
  Licensing
  =========

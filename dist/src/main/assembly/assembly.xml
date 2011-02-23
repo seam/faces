@@ -14,6 +14,7 @@
       <fileSet>
          <directory>src/main/assembly</directory>
          <outputDirectory>.</outputDirectory>
+         <filtered>true</filtered>
          <includes>
             <include>readme.txt</include>
             <include>license.txt</include>
@@ -28,12 +29,15 @@
          <outputDirectory>artifacts</outputDirectory>
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
-            <include>org.jboss.seam.faces:seam-faces-api</include>
-            <include>org.jboss.seam.faces:seam-faces-impl</include>
             <include>org.jboss.seam.faces:seam-faces</include>
          </includes>
+         <excludes>
+            <exclude>org.jboss.seam.faces:*:*:javadoc</exclude>
+            <exclude>org.jboss.seam.faces:*:*:sources</exclude>
+         </excludes>
          <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
       </dependencySet>
+      
       <!-- Add necessary dependencies -->
       <dependencySet>
          <outputDirectory>lib</outputDirectory>
@@ -46,24 +50,32 @@
          </excludes>
          <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
       </dependencySet>
-      <!-- Pull in javadoc for api -->
-      <dependencySet>
-         <outputDirectory>doc/apidocs</outputDirectory>
-         <unpack>true</unpack>
-         <useProjectArtifact>false</useProjectArtifact>
-         <includes>
-            <include>org.jboss.seam.faces:seam-faces-api:jar:javadoc</include>
-         </includes>
-      </dependencySet>
+           
       <!-- Pull in the example projects -->
       <dependencySet>
          <outputDirectory>examples</outputDirectory>
          <unpack>true</unpack>
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
-            <include>org.jboss.seam.faces:seam-faces-examples-short-ly</include>
+            <include>org.jboss.seam.faces:seam-faces-example-short-ly</include>
          </includes>
       </dependencySet>
+      
+      <!-- JavaDoc -->
+      <dependencySet>
+         <outputDirectory>doc/api</outputDirectory>
+         <unpack>true</unpack>
+         <useProjectArtifact>false</useProjectArtifact>
+         <includes>
+            <include>org.jboss.seam.faces:seam-faces-api:jar:javadoc</include>
+         </includes>
+         <unpackOptions>
+            <excludes>
+               <exclude>META-INF/</exclude>
+            </excludes>
+         </unpackOptions>
+      </dependencySet>      
+      
       <!-- Pull in docbook artifacts -->
       <dependencySet>
          <outputDirectory>doc/reference</outputDirectory>
@@ -78,5 +90,21 @@
             </excludes>
          </unpackOptions>
       </dependencySet>
+      
+      <!-- Source code -->
+      <dependencySet>
+         <outputDirectory>source</outputDirectory>
+         <unpack>true</unpack>
+         <useProjectArtifact>false</useProjectArtifact>
+         <includes>
+            <include>org.jboss.seam.faces:seam-faces-api:*:sources</include>
+            <include>org.jboss.seam.faces:seam-faces-impl:*:sources</include>
+         </includes>
+         <unpackOptions>
+            <excludes>
+               <exclude>META-INF/</exclude>
+            </excludes>
+         </unpackOptions>
+      </dependencySet>        
    </dependencySets>
 </assembly>
