@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.jboss.seam.faces.examples.tinyurl;
 
 import javax.persistence.Column;
