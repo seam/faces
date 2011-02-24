@@ -37,7 +37,7 @@
 		</ui:repeat>
 
 		<h:commandButton action="#{linkBean.deleteAll}" value="deleteAll"
-			immediate="true" rendered="#{!linkBean.links.isEmpty()}" />
+			immediate="true" rendered="#{!empty linkBean.links}" />
 	</h:form>
 </h:body>
 
