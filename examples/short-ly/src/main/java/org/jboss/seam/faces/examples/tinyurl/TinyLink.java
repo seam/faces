@@ -25,7 +25,7 @@ public class TinyLink
    @Column(unique = true, updatable = false)
    private String name;
 
-   @Pattern(regexp = "((http|ftp)://)?(www.)?((\\w+\\.)+(\\w+)(/.*)?)", message = "Must be a valid web address")
+   @Pattern(regexp = "((http|ftp)://)?((www.)?((\\w+\\.)+(\\w+)|localhost(\\:\\d+)?)(/.*)?)", message = "Must be a valid web address")
    private String target;
 
    public Long getId()

@@ -37,3 +37,11 @@ see
 for a workaround
 
 
+Functional tests
+----------------
+
+To run the functional tests, start the application server, deploy the example using one of the methods described above and run the following command:
+
+ mvn verify -Pftest
+
+
