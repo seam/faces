@@ -7,8 +7,10 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.faces.FacesException;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ExceptionQueuedEvent;
+import javax.faces.event.ExceptionQueuedEventContext;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.exception.control.ExceptionToCatch;
@@ -59,11 +61,19 @@ public class CatchExceptionHandler extends ExceptionHandlerWrapper
                 ExceptionToCatch catchEvent = new ExceptionToCatch(t, FacesLiteral.INSTANCE);
                 try
                 {
-                    log.trace("Firing event");
+                    if (log.isTraceEnabled())
+                    {
+                        log.trace("Firing event");
+                    }
                     beanManager.fireEvent(catchEvent);
                 }
                 catch (Exception e)
                 {
+                    if (! e.equals(t))
+                    {
+                        log.debug("Throwing exception thrown from within Seam Catch");
+                        throw new RuntimeException(e);
+                    }
                     continue;  // exception will be handled by getWrapped().handle() below
                 }
                 if (catchEvent.isHandled())
