@@ -4,6 +4,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 
 /**
  * <p>
@@ -27,6 +28,7 @@ import javax.faces.context.FacesContext;
  */
 public class ExternalContextProducer
 {
+   @Named
    @Produces
    @RequestScoped
    public ExternalContext getExternalContext(final FacesContext context)
