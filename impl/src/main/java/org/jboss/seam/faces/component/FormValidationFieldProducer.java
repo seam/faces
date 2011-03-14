@@ -20,11 +20,12 @@ import javax.inject.Inject;
 import org.jboss.logging.Logger;
 import org.jboss.seam.faces.event.qualifier.After;
 import org.jboss.seam.faces.event.qualifier.Before;
+import org.jboss.seam.faces.validation.InputElement;
 import org.jboss.seam.faces.validation.InputField;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
- * 
+ * @author <a href="http://community.jboss.org/people/spinner)">Jose Rodolfo freitas</a>
  */
 @RequestScoped
 public class FormValidationFieldProducer
@@ -85,7 +86,39 @@ public class FormValidationFieldProducer
 
       return result;
    }
-
+   
+   @Produces
+   @Dependent
+   @SuppressWarnings("rawtypes")
+   public InputElement produceInputElement(final InjectionPoint ip) throws Exception
+   {
+      if (isInitialized()){
+    	  String id = ip.getMember().getName();
+    	  
+    	  UIInput component = findComponent(id, id);
+    	  components.put(id, component);
+    	  
+    	  InputElement inputElementResult = new InputElement();
+    	  inputElementResult.setId(id);
+    	  inputElementResult.setClientId(id);
+    	  inputElementResult.setComponent(component);
+    	  
+    	  if (component.isLocalValueSet()){
+    		  inputElementResult.setValue(component.getValue());
+    	  }else{
+    		  Converter converter = component.getConverter();
+    		  if (converter != null){
+    			  Object value = converter.getAsObject(context, component, (String) component.getSubmittedValue());
+    			  inputElementResult.setValue(value);
+    		  }else{
+    			  inputElementResult.setValue(component.getSubmittedValue());
+    		  }
+    	  }
+    	  return inputElementResult;
+      }
+      return null;
+   }
+   
    private boolean isInitialized()
    {
       return form != null;
