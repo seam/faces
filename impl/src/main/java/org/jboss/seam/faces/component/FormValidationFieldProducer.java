@@ -89,8 +89,7 @@ public class FormValidationFieldProducer
    
    @Produces
    @Dependent
-   @SuppressWarnings("rawtypes")
-   public InputElement produceInputElement(final InjectionPoint ip) throws Exception
+   public InputElement produceInputElement(final InjectionPoint ip)
    {
       if (isInitialized()){
     	  String id = ip.getMember().getName();
