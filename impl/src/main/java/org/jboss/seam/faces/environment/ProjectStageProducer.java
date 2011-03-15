@@ -1,14 +1,15 @@
 package org.jboss.seam.faces.environment;
 
 import javax.enterprise.inject.Produces;
+import javax.faces.application.ProjectStage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 /**
  * <p>
- * A producer which retrieves the Project Stage for the current
- * request of the JavaServer Faces application, storing the result as a
- * dependent-scoped bean instance.
+ * A producer which retrieves the ProjectStage for the current request
+ * of the JavaServer Faces application, storing the result as a
+ * ApplicationScoped bean instance.
  * </p>
  * 
  * <p>
@@ -25,8 +26,8 @@ public class ProjectStageProducer
 {
    @Named
    @Produces
-   public String getProjectStage(final FacesContext context)
+   public ProjectStage getProjectStage(final FacesContext context)
    {
-      return context.getExternalContext().getInitParameter("javax.faces.PROJECT_STAGE");
+      return context.getApplication().getProjectStage();
    }
 }
