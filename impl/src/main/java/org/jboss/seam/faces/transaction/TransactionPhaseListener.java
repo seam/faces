@@ -7,13 +7,13 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.inject.Inject;
-import javax.transaction.UserTransaction;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.faces.viewdata.ViewDataStore;
 import org.jboss.seam.persistence.PersistenceContexts;
 import org.jboss.seam.persistence.transaction.DefaultTransaction;
 import org.jboss.seam.persistence.transaction.SeamTransaction;
+import org.jboss.seam.solder.core.Requires;
 
 /**
  * Phase listener that is responsible for seam managed transactions. It is also
@@ -23,6 +23,7 @@ import org.jboss.seam.persistence.transaction.SeamTransaction;
  * @author Stuart Douglas
  * 
  */
+@Requires({"org.jboss.seam.persistence.PersistenceContextsImpl", "org.jboss.seam.persistence.transaction.TransactionExtension"})
 public class TransactionPhaseListener implements PhaseListener
 {
    private static final long serialVersionUID = -9127555729455066493L;
@@ -54,7 +55,7 @@ public class TransactionPhaseListener implements PhaseListener
    {
       if (event.getPhaseId() == RENDER_RESPONSE)
       {
-         (persistenceContexts).afterRender();
+         persistenceContexts.afterRender();
       }
       handleTransactionsAfterPhase(event);
    }
@@ -66,7 +67,7 @@ public class TransactionPhaseListener implements PhaseListener
       {
          if (phaseId == RENDER_RESPONSE)
          {
-            (persistenceContexts).beforeRender();
+            persistenceContexts.beforeRender();
          }
          boolean beginTran = ((phaseId == PhaseId.RENDER_RESPONSE) || (phaseId == PhaseId.RESTORE_VIEW));
          if (beginTran)
@@ -101,10 +102,10 @@ public class TransactionPhaseListener implements PhaseListener
    {
       try
       {
-         if (!(transaction).isActiveOrMarkedRollback())
+         if (!transaction.isActiveOrMarkedRollback())
          {
             log.debug("beginning transaction " + phaseString);
-            ((UserTransaction) transaction).begin();
+            transaction.begin();
          }
       }
       catch (Exception e)
@@ -122,12 +123,12 @@ public class TransactionPhaseListener implements PhaseListener
    {
       try
       {
-         if ((transaction).isActive())
+         if (transaction.isActive())
          {
             try
             {
                log.debug("committing transaction " + phaseString);
-               ((UserTransaction) transaction).commit();
+               transaction.commit();
 
             }
             catch (IllegalStateException e)
@@ -136,10 +137,10 @@ public class TransactionPhaseListener implements PhaseListener
                         e);
             }
          }
-         else if ((transaction).isRolledBackOrMarkedRollback())
+         else if (transaction.isRolledBackOrMarkedRollback())
          {
             log.debug("rolling back transaction " + phaseString);
-            ((UserTransaction) transaction).rollback();
+            transaction.rollback();
          }
 
       }
