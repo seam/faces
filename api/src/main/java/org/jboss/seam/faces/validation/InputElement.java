@@ -28,25 +28,28 @@ import org.jboss.seam.solder.core.Veto;
 @Veto
 public class InputElement<T> implements Serializable{
 	
-	private String id;
-	private String clientId;
+	public InputElement(String id, String clientId, UIInput component) {
+		super();
+		this.id = id;
+		this.clientId = clientId;
+		this.component = component;
+	}
+
+	private final String id;
+	private final String clientId;
+	private final UIInput component;
 	private Object value;
-	private UIInput component;
 	
 	public String getId() {
 		return id;
-	}
-	
-	public void setId(String id) {
-		this.id = id;
 	}
 	
 	public String getClientId() {
 		return clientId;
 	}
 	
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
+	public UIInput getComponent() {
+		return component;
 	}
 	
 	public T getValue() {
@@ -57,13 +60,6 @@ public class InputElement<T> implements Serializable{
 		this.value = value;
 	}
 	
-	public UIInput getComponent() {
-		return component;
-	}
-	
-	public void setComponent(UIInput component) {
-		this.component = component;
-	}
 	
 
 }

@@ -97,10 +97,7 @@ public class FormValidationFieldProducer
     	  UIInput component = findComponent(id, id);
     	  components.put(id, component);
     	  
-    	  InputElement inputElementResult = new InputElement();
-    	  inputElementResult.setId(id);
-    	  inputElementResult.setClientId(id);
-    	  inputElementResult.setComponent(component);
+    	  InputElement inputElementResult = new InputElement(id, component.getClientId(context), component);
     	  
     	  if (component.isLocalValueSet()){
     		  inputElementResult.setValue(component.getValue());
