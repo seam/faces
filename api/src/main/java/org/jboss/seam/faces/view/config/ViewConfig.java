@@ -1,4 +1,4 @@
-package org.jboss.seam.faces.viewdata;
+package org.jboss.seam.faces.view.config;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

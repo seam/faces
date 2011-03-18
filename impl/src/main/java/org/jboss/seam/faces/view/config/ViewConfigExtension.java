@@ -1,4 +1,4 @@
-package org.jboss.seam.faces.viewdata;
+package org.jboss.seam.faces.view.config;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -21,10 +21,10 @@ import org.jboss.logging.Logger;
  * @author stuart
  * 
  */
-public class ViewDataConfigurationExtension implements Extension
+public class ViewConfigExtension implements Extension
 {
 
-   private static final Logger log = Logger.getLogger(ViewDataConfigurationExtension.class);
+   private static final Logger log = Logger.getLogger(ViewConfigExtension.class);
 
    private final Map<String, Set<Annotation>> data = new HashMap<String, Set<Annotation>>();
 
@@ -41,16 +41,16 @@ public class ViewDataConfigurationExtension implements Extension
          {
             for (Field f : tp.getJavaClass().getDeclaredFields())
             {
-               if (f.isAnnotationPresent(ViewData.class))
+               if (f.isAnnotationPresent(ViewPattern.class))
                {
-                  ViewData viewConfig = f.getAnnotation(ViewData.class);
-                  Set<Annotation> viewData = new HashSet<Annotation>();
-                  data.put(viewConfig.value(), viewData);
+                  ViewPattern viewConfig = f.getAnnotation(ViewPattern.class);
+                  Set<Annotation> viewPattern = new HashSet<Annotation>();
+                  data.put(viewConfig.value(), viewPattern);
                   for (Annotation a : f.getAnnotations())
                   {
-                     if (a.annotationType() != ViewData.class)
+                     if (a.annotationType() != ViewPattern.class)
                      {
-                        viewData.add(a);
+                        viewPattern.add(a);
                      }
                   }
                }

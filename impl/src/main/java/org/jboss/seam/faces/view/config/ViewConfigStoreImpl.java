@@ -1,4 +1,4 @@
-package org.jboss.seam.faces.viewdata;
+package org.jboss.seam.faces.view.config;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import javax.inject.Inject;
  * 
  */
 @ApplicationScoped
-public class ViewDataStoreImpl implements ViewDataStore
+public class ViewConfigStoreImpl implements ViewConfigStore
 {
    /**
     * cache of viewId to a given data list
@@ -40,7 +40,7 @@ public class ViewDataStoreImpl implements ViewDataStore
     * 
     */
    @Inject
-   public void setup(ViewDataConfigurationExtension extension)
+   public void setup(ViewConfigExtension extension)
    {
       for (Entry<String, Set<Annotation>> e : extension.getData().entrySet())
       {
@@ -120,11 +120,11 @@ public class ViewDataStoreImpl implements ViewDataStore
       if (annotationData == null)
       {
          List<Annotation> newList = new ArrayList<Annotation>();
-         Map<String, Annotation> viewData = data.get(type);
+         Map<String, Annotation> viewPattern = data.get(type);
          List<String> resultingViews = new ArrayList<String>();
-         if (viewData != null)
+         if (viewPattern != null)
          {
-            for (Entry<String, Annotation> e : viewData.entrySet())
+            for (Entry<String, Annotation> e : viewPattern.entrySet())
             {
                if (e.getKey().endsWith("*"))
                {
@@ -147,7 +147,7 @@ public class ViewDataStoreImpl implements ViewDataStore
             Collections.sort(resultingViews, StringLengthComparator.INSTANCE);
             for (String i : resultingViews)
             {
-               newList.add(viewData.get(i));
+               newList.add(viewPattern.get(i));
             }
          }
 

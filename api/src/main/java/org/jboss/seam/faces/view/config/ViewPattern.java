@@ -1,4 +1,4 @@
-package org.jboss.seam.faces.viewdata;
+package org.jboss.seam.faces.view.config;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 @Documented
-public @interface ViewData
+public @interface ViewPattern
 {
    String value();
 }

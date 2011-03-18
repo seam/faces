@@ -1,4 +1,4 @@
-package org.jboss.seam.faces.viewdata;
+package org.jboss.seam.faces.view.config;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.List;
  * @author Stuart Douglas
  *
  */
-public interface ViewDataStore
+public interface ViewConfigStore
 {
 
    /**

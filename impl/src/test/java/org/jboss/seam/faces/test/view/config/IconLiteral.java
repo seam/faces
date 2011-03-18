@@ -1,4 +1,4 @@
-package org.jboss.seam.faces.test.viewdata;
+package org.jboss.seam.faces.test.view.config;
 
 import javax.enterprise.util.AnnotationLiteral;
 
