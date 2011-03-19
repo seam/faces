@@ -14,6 +14,9 @@ import org.jboss.seam.faces.status.MessagesAdapter;
 import org.jboss.seam.faces.test.MockLogger;
 import org.jboss.seam.faces.test.PhaseTestBase;
 import org.jboss.seam.faces.test.context.MockFlashContext;
+import org.jboss.seam.international.locale.DefaultLocaleProducer;
+import org.jboss.seam.international.locale.UserLocaleProducer;
+import org.jboss.seam.international.status.ApplicationBundles;
 import org.jboss.seam.international.status.Bundles;
 import org.jboss.seam.international.status.MessageFactory;
 import org.jboss.seam.international.status.Messages;
@@ -43,7 +46,7 @@ public class MessagesAdapterTest extends PhaseTestBase
                .create(JavaArchive.class)
                .addClasses(MessagesAdapter.class, MessagesImpl.class, MockFlashContext.class, MessageFactory.class,
                         TemplateMessageImpl.class, BundleTemplateMessageImpl.class, Bundles.class,
-                        PhaseEventBridge.class, MockLogger.class)
+                        PhaseEventBridge.class, MockLogger.class, ApplicationBundles.class, UserLocaleProducer.class, DefaultLocaleProducer.class)
                .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
    }
 
