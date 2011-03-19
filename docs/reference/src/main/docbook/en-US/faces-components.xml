@@ -238,17 +238,18 @@ private String sectorTwo;]]></programlisting>
 
 			<warning>
 				<para>
-					In JSF 2.0, there must be at least one view parameter for the view metadata facet to be processed.
-					This requirement was introduced into the JSF specification accidentally, but it's not so
-					unfortunate since view parameters are typically needed to capture input needed by the view action.
+               The JSF 2 specification specifies that there must be at least one view parameter for the view metadata
+               facet to be processed on an initial request. This requirement was introduced into the JSF specification
+               inadvertently. But not to worry. Seam Faces inserts a placeholder view parameter into the view metadata
+               if contains other components but no view parameters. That means you can use a view action without a view
+               parameter, contrary to the JSF specification.
 				</para>
 			</warning>
 
 			<para>
-				What do we do if the entry can't be found? View actions support declarative navigation just like
-				<literal>UICommand</literal> components. So you can write a navigation rule that will be consulted
-				before the page is rendered. If the rule matches, navigation occurs just as though this were a
-				postback.
+            What do we do if the blog entry can't be found? View actions support declarative navigation just like
+            <literal>UICommand</literal> components. So you can write a navigation rule that will be consulted before
+            the page is rendered. If the rule matches, navigation occurs just as though this were a postback.
 			</para>
 
 			<programlisting role="XML"><![CDATA[<navigation-rule>
@@ -420,9 +421,4 @@ private String sectorTwo;]]></programlisting>
             
    </section>
    
-   
- 
-
- 
- 
 </chapter>
