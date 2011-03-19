@@ -11,8 +11,8 @@ import javax.inject.Inject;
 import org.jboss.logging.Logger;
 import org.jboss.seam.faces.viewdata.ViewDataStore;
 import org.jboss.seam.persistence.PersistenceContexts;
-import org.jboss.seam.persistence.transaction.DefaultTransaction;
-import org.jboss.seam.persistence.transaction.SeamTransaction;
+import org.jboss.seam.transaction.DefaultTransaction;
+import org.jboss.seam.transaction.SeamTransaction;
 import org.jboss.seam.solder.core.Requires;
 
 /**
