@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Target(ElementType.METHOD)
 public @interface Restrict
 {
     String value();

@@ -11,10 +11,11 @@ import java.lang.annotation.Target;
  * information
  * 
  * @author Stuart Douglas
+ * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Target(ElementType.METHOD)
 @Documented
 public @interface ViewPattern
 {

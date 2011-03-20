@@ -4,18 +4,18 @@ import org.jboss.seam.faces.view.config.ViewConfig;
 import org.jboss.seam.faces.view.config.ViewPattern;
 
 @ViewConfig
-public enum ViewConfigEnum
+public interface ViewConfigEnum
 {
    @ViewPattern("/*")
    @Icon("default.gif")
-   DEFAULT,
+   void DEFAULT();
    @ViewPattern("/happy/*")
    @Icon("happy.gif")
-   HAPPY,
+   void HAPPY();
    @ViewPattern("/sad/*")
    @Icon("sad.gif")
-   SAD,
+   void SAD();
    @ViewPattern("/happy/done.xhtml")
    @Icon("finished.gif")
-   HAPPY_DONE;
+   void HAPPY_DONE();
 }

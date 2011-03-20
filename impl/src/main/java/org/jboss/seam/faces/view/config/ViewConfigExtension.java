@@ -1,7 +1,7 @@
 package org.jboss.seam.faces.view.config;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,6 +19,7 @@ import org.jboss.logging.Logger;
  * Extension that scans enums for view specific configuration
  * 
  * @author stuart
+ * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  * 
  */
 public class ViewConfigExtension implements Extension
@@ -39,20 +40,20 @@ public class ViewConfigExtension implements Extension
       }
       if (tp.isAnnotationPresent(ViewConfig.class))
       {
-         if (!tp.getJavaClass().isEnum())
+         if (!tp.getJavaClass().isInterface())
          {
-            log.warn("ViewConfig annotation should only be applied to enums, and [" + tp.getJavaClass() + "] is not an enum.");
+            log.warn("ViewConfig annotation should only be applied to interfaces, and [" + tp.getJavaClass() + "] is not an interface.");
          }
          else
          {
-            for (Field f : tp.getJavaClass().getDeclaredFields())
+            for (Method method : tp.getJavaClass().getDeclaredMethods())
             {
-               if (f.isAnnotationPresent(ViewPattern.class))
+               if (method.isAnnotationPresent(ViewPattern.class))
                {
-                  ViewPattern viewConfig = f.getAnnotation(ViewPattern.class);
+                  ViewPattern viewConfig = method.getAnnotation(ViewPattern.class);
                   Set<Annotation> viewPattern = new HashSet<Annotation>();
                   data.put(viewConfig.value(), viewPattern);
-                  for (Annotation a : f.getAnnotations())
+                  for (Annotation a : method.getAnnotations())
                   {
                      if (a.annotationType() != ViewPattern.class)
                      {
