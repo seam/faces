@@ -143,7 +143,44 @@ private ZipCode zip;]]></programlisting>
 private String sectorTwo;]]></programlisting>
 			</para>
 		</tip>
+		
+		<para>
+			Another way to get those fields on the validator is to inject an InputElement. It works mostly like the 
+			@InputField, except that besides the field value, it keeps some more info: clientId and a JSF UIComponent.
+		</para>
+		<programlisting role="JAVA"><![CDATA[@FacesValidator("fooValidator")
+public class FooValidator implements Validator {
+	@Inject
+    private InputElement<String> firstNameElement;
+    @Inject
+    private InputElement<String> lastNameElement;
+    
+    @Inject
+    private InputElement<Date> startDateElement;
 
+    @Inject
+    private InputElement<Date> endDateElement;
+    ...
+    
+    }]]></programlisting>
+		
+		
+		<para>
+			Use get methods to access those information
+		</para>
+		<programlisting role="JAVA"><![CDATA[public void validate(final FacesContext ctx, final UIComponent form, final Object value) throws ValidatorException {
+        Date startDate = startDateElement.getValue();
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        
+        if (startDate.before(calendar.getTime())) {
+            String message = messageBuilder.get().key(new DefaultBundleKey("booking_checkInNotFutureDate"))
+                    .targets(  startDateElement.getClientId()  ).build().getText();
+            throw new ValidatorException(new FacesMessage(message));
+        } 
+    	...
+    }]]></programlisting>
 	</section>
 	
 	<section id="viewaction">
@@ -238,17 +275,18 @@ private String sectorTwo;]]></programlisting>
 
 			<warning>
 				<para>
-					In JSF 2.0, there must be at least one view parameter for the view metadata facet to be processed.
-					This requirement was introduced into the JSF specification accidentally, but it's not so
-					unfortunate since view parameters are typically needed to capture input needed by the view action.
+               The JSF 2 specification specifies that there must be at least one view parameter for the view metadata
+               facet to be processed on an initial request. This requirement was introduced into the JSF specification
+               inadvertently. But not to worry. Seam Faces inserts a placeholder view parameter into the view metadata
+               if contains other components but no view parameters. That means you can use a view action without a view
+               parameter, contrary to the JSF specification.
 				</para>
 			</warning>
 
 			<para>
-				What do we do if the entry can't be found? View actions support declarative navigation just like
-				<literal>UICommand</literal> components. So you can write a navigation rule that will be consulted
-				before the page is rendered. If the rule matches, navigation occurs just as though this were a
-				postback.
+            What do we do if the blog entry can't be found? View actions support declarative navigation just like
+            <literal>UICommand</literal> components. So you can write a navigation rule that will be consulted before
+            the page is rendered. If the rule matches, navigation occurs just as though this were a postback.
 			</para>
 
 			<programlisting role="XML"><![CDATA[<navigation-rule>
@@ -420,9 +458,4 @@ private String sectorTwo;]]></programlisting>
             
    </section>
    
-   
- 
-
- 
- 
 </chapter>
