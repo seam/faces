@@ -22,6 +22,12 @@
          <artifactId>seam-solder-api</artifactId>
       </dependency>
       <dependency>
+         <groupId>org.jboss.seam.security</groupId>
+         <artifactId>seam-security-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+      
+      <dependency>
          <!-- JBoss Java EE 6.0 spec bom uses wrong groupId
          <groupId>javax.faces</groupId>
          -->

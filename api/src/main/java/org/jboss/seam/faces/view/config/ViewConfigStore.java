@@ -35,6 +35,6 @@ public interface ViewConfigStore
     * returns all qualified data for a given viewId, with the most specific data at the
     * start of the list
     */
-   public abstract <T extends Annotation> List<T> getAllQualifiedAnnotationData(String viewId, Class<T> qualifier);
+   public abstract List<? extends Annotation> getAllQualifierData(String viewId, Class<? extends Annotation> qualifier);
 
 }

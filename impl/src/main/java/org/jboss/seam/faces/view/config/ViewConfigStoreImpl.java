@@ -28,7 +28,8 @@ public class ViewConfigStoreImpl implements ViewConfigStore
    private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> annotationCache = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>>();
    private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> qualifierCache = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>>();
 
-   private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>> viewPatternData = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>>();
+   private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>> viewPatternDataByAnnotation = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>>();
+   private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>> viewPatternDataByQualifier = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>>();
 
    /**
     * setup the bean with the configuration from the extension
@@ -53,19 +54,35 @@ public class ViewConfigStoreImpl implements ViewConfigStore
    @Override
    public synchronized void addAnnotationData(String viewId, Annotation annotation)
    {
-      ConcurrentHashMap<String, Annotation> map = viewPatternData.get(annotation.annotationType());
-      if (map == null)
+      ConcurrentHashMap<String, Annotation> annotationMap = viewPatternDataByAnnotation.get(annotation.annotationType());
+      if (annotationMap == null)
       {
-         map = new ConcurrentHashMap<String, Annotation>();
-         viewPatternData.put(annotation.annotationType(), map);
+         annotationMap = new ConcurrentHashMap<String, Annotation>();
+         viewPatternDataByAnnotation.put(annotation.annotationType(), annotationMap);
       }
-      map.put(viewId, annotation);
+      annotationMap.put(viewId, annotation);
+
+      Annotation[] annotations = annotation.getClass().getAnnotations();
+      for (Annotation qualifier : annotations)
+      {
+         if (qualifier.getClass().getName().startsWith("java."))
+         {
+             continue;
+         }
+         ConcurrentHashMap<String, Annotation> qualifierMap = viewPatternDataByQualifier.get(qualifier.annotationType());
+         if (qualifierMap == null)
+         {
+            qualifierMap = new ConcurrentHashMap<String, Annotation>();
+            viewPatternDataByQualifier.put(qualifier.annotationType(), qualifierMap);
+         }
+         qualifierMap.put(viewId, qualifier);
+      }
    }
 
     @Override
    public <T extends Annotation> T getAnnotationData(String viewId, Class<T> type)
    {
-      List<T> data = prepareAnnotationCache(viewId, type);
+      List<T> data = prepareCache(viewId, type, annotationCache, viewPatternDataByAnnotation);
       if ((data != null) && (data.size() > 0))
       {
          return data.get(0);
@@ -76,7 +93,7 @@ public class ViewConfigStoreImpl implements ViewConfigStore
    @Override
    public <T extends Annotation> List<T> getAllAnnotationData(String viewId, Class<T> type)
    {
-      List<T> data = prepareAnnotationCache(viewId, type);
+      List<T> data = prepareCache(viewId, type, annotationCache, viewPatternDataByAnnotation);
       if (data != null)
       {
          return Collections.unmodifiableList(data);
@@ -85,20 +102,26 @@ public class ViewConfigStoreImpl implements ViewConfigStore
    }
 
     @Override
-    public <T extends Annotation> List<T> getAllQualifiedAnnotationData(String viewId, Class<T> qualifier) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<? extends Annotation> getAllQualifierData(String viewId, Class<? extends Annotation> qualifier) {
+        List<? extends Annotation> data = prepareCache(viewId, qualifier, qualifierCache, viewPatternDataByQualifier);
+      if (data != null)
+      {
+         return Collections.unmodifiableList(data);
+      }
+      return null;
     }
 
-   private <T extends Annotation> List<T> prepareAnnotationCache(String viewId, Class<T> annotationType)
+   private <T extends Annotation> List<T> prepareCache(String viewId, Class<T> annotationType,
+           ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> cache,
+           ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>> viewPatternData)
    {
-      // we need to synchronize to make sure that no threads see a half
-      // completed
-      // list due to instruction re-ordering
-      ConcurrentHashMap<String, List<? extends Annotation>> map = annotationCache.get(annotationType);
+      // we need to synchronize to make sure that no threads see a half 
+      // completed list due to instruction re-ordering
+      ConcurrentHashMap<String, List<? extends Annotation>> map = cache.get(annotationType);
       if (map == null)
       {
          ConcurrentHashMap<String, List<? extends Annotation>> newMap = new ConcurrentHashMap<String, List<? extends Annotation>>();
-         map = annotationCache.putIfAbsent(annotationType, newMap);
+         map = cache.putIfAbsent(annotationType, newMap);
          if (map == null)
          {
             map = newMap;
