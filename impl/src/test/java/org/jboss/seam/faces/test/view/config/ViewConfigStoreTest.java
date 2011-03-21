@@ -7,21 +7,27 @@ import junit.framework.Assert;
 
 import org.jboss.seam.faces.view.config.ViewConfigStore;
 import org.jboss.seam.faces.view.config.ViewConfigStoreImpl;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 public class ViewConfigStoreTest
 {
-   @Test
-   public void testViewConfigStore()
+   ViewConfigStore store;
+   
+   @Before
+   public void setp()
    {
-      ViewConfigStore store = new ViewConfigStoreImpl();
+      store  = new ViewConfigStoreImpl();
       store.addAnnotationData("/*", new IconLiteral("default.gif"));
       store.addAnnotationData("/sad/*", new IconLiteral("sad.gif"));
       store.addAnnotationData("/happy/*", new IconLiteral("happy.gif"));
       store.addAnnotationData("/happy/done.xhtml", new IconLiteral("finished.gif"));
       store.addAnnotationData("/qualified/yes.xhtml", new QualifiedIconLiteral("qualified.gif"));
-
+   }
+   @Test
+   public void testViewConfigStore()
+   {
       Icon data;
       data = store.getAnnotationData("/happy/done.xhtml", Icon.class);
       Assert.assertEquals("finished.gif", data.value());
@@ -49,16 +55,8 @@ public class ViewConfigStoreTest
    }
    
    @Test
-   @Ignore
    public void testViewConfigStoreQualified()
    {
-      ViewConfigStore store = new ViewConfigStoreImpl();
-      store.addAnnotationData("/*", new IconLiteral("default.gif"));
-      store.addAnnotationData("/sad/*", new IconLiteral("sad.gif"));
-      store.addAnnotationData("/happy/*", new IconLiteral("happy.gif"));
-      store.addAnnotationData("/happy/done.xhtml", new IconLiteral("finished.gif"));
-      store.addAnnotationData("/qualified/yes.xhtml", new QualifiedIconLiteral("qualified.gif"));
-      
       List<? extends Annotation> qdlist;
       qdlist = store.getAllQualifierData("/qualified/yes.xhtml", TestQualifier.class);
       Assert.assertEquals(1, qdlist.size());

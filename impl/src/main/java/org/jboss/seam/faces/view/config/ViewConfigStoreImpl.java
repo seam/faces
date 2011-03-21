@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import org.jboss.logging.Logger;
 
 /**
  * Data store for view specific data.
@@ -22,6 +23,7 @@ import javax.inject.Inject;
 @ApplicationScoped
 public class ViewConfigStoreImpl implements ViewConfigStore
 {
+   private static final Logger log = Logger.getLogger(ViewConfigSecurityEnforcer.class);
    /**
     * cache of viewId to a given data list
     */
@@ -59,14 +61,17 @@ public class ViewConfigStoreImpl implements ViewConfigStore
       {
          annotationMap = new ConcurrentHashMap<String, Annotation>();
          viewPatternDataByAnnotation.put(annotation.annotationType(), annotationMap);
+         log.infof("Putting new annotation map for anotation type %s", annotation.annotationType().getName());
       }
       annotationMap.put(viewId, annotation);
+      log.infof("Putting new annotation (type: %s) for viewId: %s", annotation.annotationType().getName(), viewId);
 
-      Annotation[] annotations = annotation.getClass().getAnnotations();
+      Annotation[] annotations = annotation.annotationType().getAnnotations();
       for (Annotation qualifier : annotations)
       {
-         if (qualifier.getClass().getName().startsWith("java."))
+         if (qualifier.annotationType().getName().startsWith("java."))
          {
+             log.infof("Disregarding java.* package %s", qualifier.annotationType().getName());
              continue;
          }
          ConcurrentHashMap<String, Annotation> qualifierMap = viewPatternDataByQualifier.get(qualifier.annotationType());
@@ -74,6 +79,7 @@ public class ViewConfigStoreImpl implements ViewConfigStore
          {
             qualifierMap = new ConcurrentHashMap<String, Annotation>();
             viewPatternDataByQualifier.put(qualifier.annotationType(), qualifierMap);
+            log.infof("Putting new qualifier map for qualifier type %s", qualifier.annotationType().getName());
          }
          qualifierMap.put(viewId, qualifier);
       }
