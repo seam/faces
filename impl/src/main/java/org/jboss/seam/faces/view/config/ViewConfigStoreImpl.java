@@ -31,7 +31,7 @@ public class ViewConfigStoreImpl implements ViewConfigStore
    private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> qualifierCache = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>>();
 
    private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>> viewPatternDataByAnnotation = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>>();
-   private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>> viewPatternDataByQualifier = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>>();
+   private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> viewPatternDataByQualifier = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>>();
 
    /**
     * setup the bean with the configuration from the extension
@@ -74,21 +74,28 @@ public class ViewConfigStoreImpl implements ViewConfigStore
              log.infof("Disregarding java.* package %s", qualifier.annotationType().getName());
              continue;
          }
-         ConcurrentHashMap<String, Annotation> qualifierMap = viewPatternDataByQualifier.get(qualifier.annotationType());
+         ConcurrentHashMap<String, List<? extends Annotation>> qualifierMap = viewPatternDataByQualifier.get(qualifier.annotationType());
          if (qualifierMap == null)
          {
-            qualifierMap = new ConcurrentHashMap<String, Annotation>();
+            qualifierMap = new ConcurrentHashMap<String, List<? extends Annotation>>();
             viewPatternDataByQualifier.put(qualifier.annotationType(), qualifierMap);
             log.infof("Putting new qualifier map for qualifier type %s", qualifier.annotationType().getName());
          }
-         qualifierMap.put(viewId, annotation);
+         List<Annotation> qualifiedAnnotations = new ArrayList<Annotation>();
+         List<? extends Annotation> exisitngQualifiedAnnotations = qualifierMap.get(viewId);
+         if (exisitngQualifiedAnnotations != null && ! exisitngQualifiedAnnotations.isEmpty())
+         {
+            qualifiedAnnotations.addAll(exisitngQualifiedAnnotations);
+         }
+         qualifiedAnnotations.add(annotation);
+         qualifierMap.put(viewId, qualifiedAnnotations);
       }
    }
 
     @Override
    public <T extends Annotation> T getAnnotationData(String viewId, Class<T> type)
    {
-      List<T> data = prepareCache(viewId, type, annotationCache, viewPatternDataByAnnotation);
+      List<T> data = prepareAnnotationCache(viewId, type, annotationCache, viewPatternDataByAnnotation);
       if ((data != null) && (data.size() > 0))
       {
          return data.get(0);
@@ -99,7 +106,7 @@ public class ViewConfigStoreImpl implements ViewConfigStore
    @Override
    public <T extends Annotation> List<T> getAllAnnotationData(String viewId, Class<T> type)
    {
-      List<T> data = prepareCache(viewId, type, annotationCache, viewPatternDataByAnnotation);
+      List<T> data = prepareAnnotationCache(viewId, type, annotationCache, viewPatternDataByAnnotation);
       if (data != null)
       {
          return Collections.unmodifiableList(data);
@@ -109,7 +116,7 @@ public class ViewConfigStoreImpl implements ViewConfigStore
 
     @Override
     public List<? extends Annotation> getAllQualifierData(String viewId, Class<? extends Annotation> qualifier) {
-        List<? extends Annotation> data = prepareCache(viewId, qualifier, qualifierCache, viewPatternDataByQualifier);
+        List<? extends Annotation> data = prepareQualifierCache(viewId, qualifier, qualifierCache, viewPatternDataByQualifier);
       if (data != null)
       {
          return Collections.unmodifiableList(data);
@@ -117,7 +124,7 @@ public class ViewConfigStoreImpl implements ViewConfigStore
       return null;
     }
 
-   private <T extends Annotation> List<T> prepareCache(String viewId, Class<T> annotationType,
+   private <T extends Annotation> List<T> prepareAnnotationCache(String viewId, Class<T> annotationType,
            ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> cache,
            ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>> viewPatternData)
    {
@@ -140,7 +147,7 @@ public class ViewConfigStoreImpl implements ViewConfigStore
          Map<String, Annotation> viewPatterns = viewPatternData.get(annotationType);
          if (viewPatterns != null)
          {
-            List<String> resultingViews = findViewsWithPatternsThatMatch(viewId, viewPatterns);
+            List<String> resultingViews = findViewsWithPatternsThatMatch(viewId, viewPatterns.keySet());
             for (String i : resultingViews)
             {
                newList.add(viewPatterns.get(i));
@@ -156,24 +163,63 @@ public class ViewConfigStoreImpl implements ViewConfigStore
       return (List) annotationData;
    }
    
-   private List<String> findViewsWithPatternsThatMatch(String viewId, Map<String, Annotation> viewPatterns)
+   private <T extends Annotation> List<T> prepareQualifierCache(String viewId, Class<T> annotationType,
+           ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> cache,
+           ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> viewPatternData)
+   {
+      // we need to synchronize to make sure that no threads see a half 
+      // completed list due to instruction re-ordering
+      ConcurrentHashMap<String, List<? extends Annotation>> map = cache.get(annotationType);
+      if (map == null)
+      {
+         ConcurrentHashMap<String, List<? extends Annotation>> newMap = new ConcurrentHashMap<String, List<? extends Annotation>>();
+         map = cache.putIfAbsent(annotationType, newMap);
+         if (map == null)
+         {
+            map = newMap;
+         }
+      }
+      List<? extends Annotation> annotationData = map.get(viewId);
+      if (annotationData == null)
+      {
+         List<Annotation> newList = new ArrayList<Annotation>();
+         Map<String, List<? extends Annotation>> viewPatterns = viewPatternData.get(annotationType);
+         if (viewPatterns != null)
+         {
+            List<String> resultingViews = findViewsWithPatternsThatMatch(viewId, viewPatterns.keySet());
+            for (String i : resultingViews)
+            {
+               newList.addAll(viewPatterns.get(i));
+            }
+         }
+         Collections.sort(newList, new AnnotationNameComparator());
+         annotationData = map.putIfAbsent(viewId, newList);
+         if (annotationData == null)
+         {
+            annotationData = newList;
+         }
+      }
+      return (List) annotationData;
+   }
+   
+   private List<String> findViewsWithPatternsThatMatch(String viewId, Set<String> viewPatterns)
    {
       List<String> resultingViews = new ArrayList<String>();
-      for (Entry<String, Annotation> e : viewPatterns.entrySet())
+      for (String viewPattern : viewPatterns)
       {
-         if (e.getKey().endsWith("*"))
+         if (viewPattern.endsWith("*"))
          {
-            String cutView = e.getKey().substring(0, e.getKey().length() - 1);
+            String cutView = viewPattern.substring(0, viewPattern.length() - 1);
             if (viewId.startsWith(cutView))
             {
-               resultingViews.add(e.getKey());
+               resultingViews.add(viewPattern);
             }
          }
          else
          {
-            if (e.getKey().equals(viewId))
+            if (viewPattern.equals(viewId))
             {
-               resultingViews.add(e.getKey());
+               resultingViews.add(viewPattern);
             }
          }
       }
@@ -197,6 +243,19 @@ public class ViewConfigStoreImpl implements ViewConfigStore
             return 1;
          }
          return 0;
+      }
+
+      public static final StringLengthComparator INSTANCE = new StringLengthComparator();
+
+   }
+   
+   private static class AnnotationNameComparator implements Comparator<Annotation>
+   {
+
+      @Override
+      public int compare(Annotation o1, Annotation o2)
+      {
+         return o1.annotationType().getName().compareTo(o2.annotationType().getName());
       }
 
       public static final StringLengthComparator INSTANCE = new StringLengthComparator();

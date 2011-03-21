@@ -23,6 +23,7 @@ public class ViewConfigStoreTest
       store.addAnnotationData("/sad/*", new IconLiteral("sad.gif"));
       store.addAnnotationData("/happy/*", new IconLiteral("happy.gif"));
       store.addAnnotationData("/happy/done.xhtml", new IconLiteral("finished.gif"));
+      store.addAnnotationData("/qualified/yes.xhtml", new QualifiedUrlLiteral("http://example.com"));
       store.addAnnotationData("/qualified/yes.xhtml", new QualifiedIconLiteral("qualified.gif"));
    }
    @Test
@@ -38,6 +39,9 @@ public class ViewConfigStoreTest
       QualifiedIcon qualifiedData;
       qualifiedData = store.getAnnotationData("/qualified/yes.xhtml", QualifiedIcon.class);
       Assert.assertEquals("qualified.gif", qualifiedData.value());
+      QualifiedUrl qualifiedUrl;
+      qualifiedUrl = store.getAnnotationData("/qualified/yes.xhtml", QualifiedUrl.class);
+      Assert.assertEquals("http://example.com", qualifiedUrl.value());
 
       List<Icon> dlist;
       dlist = store.getAllAnnotationData("/happy/done.xhtml", Icon.class);
@@ -59,7 +63,8 @@ public class ViewConfigStoreTest
    {
       List<? extends Annotation> qdlist;
       qdlist = store.getAllQualifierData("/qualified/yes.xhtml", TestQualifier.class);
-      Assert.assertEquals(1, qdlist.size());
+      Assert.assertEquals(2, qdlist.size());
       Assert.assertEquals("qualified.gif", ((QualifiedIcon) qdlist.get(0)).value());
+      Assert.assertEquals("http://example.com", ((QualifiedUrl) qdlist.get(1)).value());
    }
 }
