@@ -11,8 +11,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 /**
@@ -27,9 +25,10 @@ public class ViewConfigStoreImpl implements ViewConfigStore
    /**
     * cache of viewId to a given data list
     */
-   private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> cache = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>>();
+   private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> annotationCache = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>>();
+   private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> qualifierCache = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>>();
 
-   private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>> data = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>>();
+   private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>> viewPatternData = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>>();
 
    /**
     * setup the bean with the configuration from the extension
@@ -46,25 +45,27 @@ public class ViewConfigStoreImpl implements ViewConfigStore
       {
          for (Annotation i : e.getValue())
          {
-            addData(e.getKey(), i);
+            addAnnotationData(e.getKey(), i);
          }
       }
    }
 
-   public synchronized void addData(String viewId, Annotation annotation)
+   @Override
+   public synchronized void addAnnotationData(String viewId, Annotation annotation)
    {
-      ConcurrentHashMap<String, Annotation> map = data.get(annotation.annotationType());
+      ConcurrentHashMap<String, Annotation> map = viewPatternData.get(annotation.annotationType());
       if (map == null)
       {
          map = new ConcurrentHashMap<String, Annotation>();
-         data.put(annotation.annotationType(), map);
+         viewPatternData.put(annotation.annotationType(), map);
       }
       map.put(viewId, annotation);
    }
 
-   public <T extends Annotation> T getData(String viewId, Class<T> type)
+    @Override
+   public <T extends Annotation> T getAnnotationData(String viewId, Class<T> type)
    {
-      List<T> data = prepareCache(viewId, type);
+      List<T> data = prepareAnnotationCache(viewId, type);
       if ((data != null) && (data.size() > 0))
       {
          return data.get(0);
@@ -72,23 +73,10 @@ public class ViewConfigStoreImpl implements ViewConfigStore
       return null;
    }
 
-   public <T extends Annotation> T getDataForCurrentViewId(Class<T> type)
+   @Override
+   public <T extends Annotation> List<T> getAllAnnotationData(String viewId, Class<T> type)
    {
-      FacesContext context = FacesContext.getCurrentInstance();
-      if (context != null)
-      {
-         UIViewRoot viewRoot = context.getViewRoot();
-         if (viewRoot != null)
-         {
-            return getData(viewRoot.getViewId(), type);
-         }
-      }
-      return null;
-   }
-
-   public <T extends Annotation> List<T> getAllData(String viewId, Class<T> type)
-   {
-      List<T> data = prepareCache(viewId, type);
+      List<T> data = prepareAnnotationCache(viewId, type);
       if (data != null)
       {
          return Collections.unmodifiableList(data);
@@ -96,21 +84,21 @@ public class ViewConfigStoreImpl implements ViewConfigStore
       return null;
    }
 
-   public <T extends Annotation> List<T> getAllDataForCurrentViewId(Class<T> type)
-   {
-      return getAllData(FacesContext.getCurrentInstance().getViewRoot().getViewId(), type);
-   }
+    @Override
+    public <T extends Annotation> List<T> getAllQualifiedAnnotationData(String viewId, Class<T> qualifier) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
-   private <T extends Annotation> List<T> prepareCache(String viewId, Class<T> type)
+   private <T extends Annotation> List<T> prepareAnnotationCache(String viewId, Class<T> annotationType)
    {
       // we need to synchronize to make sure that no threads see a half
       // completed
       // list due to instruction re-ordering
-      ConcurrentHashMap<String, List<? extends Annotation>> map = cache.get(type);
+      ConcurrentHashMap<String, List<? extends Annotation>> map = annotationCache.get(annotationType);
       if (map == null)
       {
          ConcurrentHashMap<String, List<? extends Annotation>> newMap = new ConcurrentHashMap<String, List<? extends Annotation>>();
-         map = cache.putIfAbsent(type, newMap);
+         map = annotationCache.putIfAbsent(annotationType, newMap);
          if (map == null)
          {
             map = newMap;
@@ -120,34 +108,13 @@ public class ViewConfigStoreImpl implements ViewConfigStore
       if (annotationData == null)
       {
          List<Annotation> newList = new ArrayList<Annotation>();
-         Map<String, Annotation> viewPattern = data.get(type);
-         List<String> resultingViews = new ArrayList<String>();
-         if (viewPattern != null)
+         Map<String, Annotation> viewPatterns = viewPatternData.get(annotationType);
+         if (viewPatterns != null)
          {
-            for (Entry<String, Annotation> e : viewPattern.entrySet())
-            {
-               if (e.getKey().endsWith("*"))
-               {
-                  String cutView = e.getKey().substring(0, e.getKey().length() - 1);
-                  if (viewId.startsWith(cutView))
-                  {
-                     resultingViews.add(e.getKey());
-                  }
-               }
-               else
-               {
-                  if (e.getKey().equals(viewId))
-                  {
-                     resultingViews.add(e.getKey());
-                  }
-               }
-            }
-            // sort the keys by length, longest is the most specific and so
-            // should go first
-            Collections.sort(resultingViews, StringLengthComparator.INSTANCE);
+            List<String> resultingViews = findViewsWithPatternsThatMatch(viewId, viewPatterns);
             for (String i : resultingViews)
             {
-               newList.add(viewPattern.get(i));
+               newList.add(viewPatterns.get(i));
             }
          }
 
@@ -159,10 +126,37 @@ public class ViewConfigStoreImpl implements ViewConfigStore
       }
       return (List) annotationData;
    }
+   
+   private List<String> findViewsWithPatternsThatMatch(String viewId, Map<String, Annotation> viewPatterns)
+   {
+      List<String> resultingViews = new ArrayList<String>();
+      for (Entry<String, Annotation> e : viewPatterns.entrySet())
+      {
+         if (e.getKey().endsWith("*"))
+         {
+            String cutView = e.getKey().substring(0, e.getKey().length() - 1);
+            if (viewId.startsWith(cutView))
+            {
+               resultingViews.add(e.getKey());
+            }
+         }
+         else
+         {
+            if (e.getKey().equals(viewId))
+            {
+               resultingViews.add(e.getKey());
+            }
+         }
+      }
+      // sort the keys by length, longest is the most specific and so should go first
+      Collections.sort(resultingViews, StringLengthComparator.INSTANCE);
+      return resultingViews;
+   }
 
    private static class StringLengthComparator implements Comparator<String>
    {
 
+      @Override
       public int compare(String o1, String o2)
       {
          if (o1.length() > o2.length())

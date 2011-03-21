@@ -1,5 +1,6 @@
 package org.jboss.seam.faces.transaction;
 
+import javax.faces.context.FacesContext;
 import static javax.faces.event.PhaseId.ANY_PHASE;
 import static javax.faces.event.PhaseId.RENDER_RESPONSE;
 
@@ -152,7 +153,7 @@ public class TransactionPhaseListener implements PhaseListener
 
    private boolean seamManagedTransactionStatus(final PhaseId phase)
    {
-      SeamManagedTransaction an = dataStore.getDataForCurrentViewId(SeamManagedTransaction.class);
+      SeamManagedTransaction an = dataStore.getAnnotationData(FacesContext.getCurrentInstance().getViewRoot().getViewId(), SeamManagedTransaction.class);
       SeamManagedTransactionType config;
       if (an == null)
       {
