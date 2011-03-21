@@ -18,4 +18,7 @@ public interface ViewConfigEnum
    @ViewPattern("/happy/done.xhtml")
    @Icon("finished.gif")
    void HAPPY_DONE();
+   @ViewPattern("/qualified/*")
+   @QualifiedIcon("qualified.gif")
+   void QUALIFIED();
 }
