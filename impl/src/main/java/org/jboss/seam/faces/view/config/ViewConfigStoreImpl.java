@@ -23,7 +23,7 @@ import org.jboss.logging.Logger;
 @ApplicationScoped
 public class ViewConfigStoreImpl implements ViewConfigStore
 {
-   private static final Logger log = Logger.getLogger(ViewConfigSecurityEnforcer.class);
+   private transient final Logger log = Logger.getLogger(ViewConfigSecurityEnforcer.class);
    /**
     * cache of viewId to a given data list
     */
@@ -81,7 +81,7 @@ public class ViewConfigStoreImpl implements ViewConfigStore
             viewPatternDataByQualifier.put(qualifier.annotationType(), qualifierMap);
             log.infof("Putting new qualifier map for qualifier type %s", qualifier.annotationType().getName());
          }
-         qualifierMap.put(viewId, qualifier);
+         qualifierMap.put(viewId, annotation);
       }
    }
 

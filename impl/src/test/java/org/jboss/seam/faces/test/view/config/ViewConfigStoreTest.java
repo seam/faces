@@ -60,5 +60,6 @@ public class ViewConfigStoreTest
       List<? extends Annotation> qdlist;
       qdlist = store.getAllQualifierData("/qualified/yes.xhtml", TestQualifier.class);
       Assert.assertEquals(1, qdlist.size());
+      Assert.assertEquals("qualified.gif", ((QualifiedIcon) qdlist.get(0)).value());
    }
 }

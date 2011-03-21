@@ -24,7 +24,7 @@ import org.jboss.seam.solder.el.Expressions;
 @Requires("org.jboss.seam.security.extension.SecurityExtension")
 public class ViewConfigSecurityEnforcer
 {
-   private static final Logger log = Logger.getLogger(ViewConfigSecurityEnforcer.class);
+   private transient final Logger log = Logger.getLogger(ViewConfigSecurityEnforcer.class);
 
    @Inject
    private ViewConfigStore viewConfigStore;
