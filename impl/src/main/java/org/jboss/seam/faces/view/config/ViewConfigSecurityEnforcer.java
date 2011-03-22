@@ -1,13 +1,21 @@
 package org.jboss.seam.faces.view.config;
 
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.List;
+import java.util.logging.Level;
 import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
+import javax.faces.FacesException;
+import javax.faces.application.NavigationHandler;
 import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PhaseEvent;
 import javax.inject.Inject;
+import javax.security.auth.login.LoginException;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.faces.event.PhaseIdType;
@@ -37,33 +45,30 @@ public class ViewConfigSecurityEnforcer
    public void observeRenderResponse(@Observes @Before @RenderResponse PhaseEvent event)
    {
       log.info("Before Render Response event");
-      UIViewRoot viewRoot = (UIViewRoot) event.getFacesContext().getViewRoot();
-      
-      if (isRestrictPhase(PhaseIdType.RENDER_RESPONSE, viewRoot.getViewId(), event.getFacesContext().isPostback()))
-      {
-         enforce(viewRoot);
-      }
+      performObservation(event, PhaseIdType.RENDER_RESPONSE);
     }
    
    public void observeInvokeApplication(@Observes @Before @InvokeApplication PhaseEvent event)
    {
       log.info("Before Render Response event");
-      UIViewRoot viewRoot = (UIViewRoot) event.getFacesContext().getViewRoot();
-      if (isRestrictPhase(PhaseIdType.INVOKE_APPLICATION, viewRoot.getViewId(), event.getFacesContext().isPostback()))
-      {
-         enforce(viewRoot);
-      }
+      performObservation(event, PhaseIdType.INVOKE_APPLICATION);
     }
    
    public void observeRestoreView(@Observes @After @RestoreView PhaseEvent event)
    {
       log.info("After Restore View event");
-      UIViewRoot viewRoot = (UIViewRoot) event.getFacesContext().getViewRoot();
-      if (isRestrictPhase(PhaseIdType.RESTORE_VIEW, viewRoot.getViewId(), event.getFacesContext().isPostback()))
-      {
-         enforce(viewRoot);
-      }
+      performObservation(event, PhaseIdType.RESTORE_VIEW);
     }
+   
+   private void performObservation(PhaseEvent event, PhaseIdType phaseIdType)
+   {
+       UIViewRoot viewRoot = (UIViewRoot) event.getFacesContext().getViewRoot();
+      if (isRestrictPhase(phaseIdType, viewRoot.getViewId(), event.getFacesContext().isPostback()))
+      {
+         log.infof("Enforcing on phase %s", phaseIdType);
+         enforce(event.getFacesContext(), viewRoot);
+      }
+   }
    
    public boolean isRestrictPhase(PhaseIdType currentPhase, String viewId,  boolean isPostback)
    {
@@ -71,16 +76,16 @@ public class ViewConfigSecurityEnforcer
       PhaseIdType restrictAtPhaseType = null;
       if (restrictAtPhase != null)
       {
-         restrictAtPhaseType = isPostback ? restrictAtPhase.postback() : RestrictAtPhase.RESTRICT_INITIAL_DEFAULT;
+         restrictAtPhaseType = isPostback ? restrictAtPhase.postback() : restrictAtPhase.initial();
       }
       if (restrictAtPhaseType == null)
       {
-         restrictAtPhaseType = isPostback ? RestrictAtPhase.RESTRICT_POSTBACK_DEFAULT : RestrictAtPhase.RESTRICT_INITIAL_DEFAULT;
+         restrictAtPhaseType = isPostback ? RestrictAtPhaseDefault.RESTRICT_POSTBACK_DEFAULT : RestrictAtPhaseDefault.RESTRICT_INITIAL_DEFAULT;
       }
       return restrictAtPhaseType.equals(currentPhase);
    }
    
-   private void enforce(UIViewRoot viewRoot)
+   private void enforce(FacesContext facesContext, UIViewRoot viewRoot)
    {
       List<? extends Annotation> annotations = viewConfigStore.getAllQualifierData(viewRoot.getViewId(), SecurityBindingType.class);
       if (annotations == null || annotations.isEmpty())
@@ -92,8 +97,25 @@ public class ViewConfigSecurityEnforcer
       securityCheckEvent.fire(securityEvent);
       if (! securityEvent.isAuthorized())
       {
-         throw new AbortProcessingException("Access denied");
+         LoginView loginView = viewConfigStore.getAnnotationData(viewRoot.getViewId(), LoginView.class);
+         if (loginView == null || loginView.value() == null || loginView.value().isEmpty())
+         {
+             facesContext.getExternalContext().setResponseStatus(401);
+             HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+                try {
+                    response.sendError(401);
+                } catch (IOException ex) {
+                    throw new FacesException("Error writing to HttpServlerResponse", ex);
+                }
+                facesContext.responseComplete();
+             return;
+         }
+         String loginViewId = loginView.value();
+         NavigationHandler navHandler = facesContext.getApplication().getNavigationHandler();
+         navHandler.handleNavigation(facesContext, "", loginViewId);
+         facesContext.renderResponse();
+         return;
       }
-      log.info("Access allowed");
+      log.info("Access granted");
    }
 }
