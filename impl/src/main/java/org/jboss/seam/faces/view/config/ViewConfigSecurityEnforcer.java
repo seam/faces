@@ -3,6 +3,7 @@ package org.jboss.seam.faces.view.config;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.faces.component.UIViewRoot;
 import javax.faces.event.AbortProcessingException;
@@ -10,8 +11,6 @@ import javax.faces.event.PreRenderViewEvent;
 import javax.inject.Inject;
 
 import org.jboss.logging.Logger;
-import org.jboss.seam.faces.security.Restrict;
-import org.jboss.seam.security.annotations.Secures;
 import org.jboss.seam.security.annotations.SecurityBindingType;
 import org.jboss.seam.solder.core.Requires;
 import org.jboss.seam.solder.el.Expressions;
@@ -30,6 +29,8 @@ public class ViewConfigSecurityEnforcer
    private ViewConfigStore viewConfigStore;
    @Inject
    private Expressions expressions;
+   @Inject
+   private Event<SecurityCheckEvent> securityCheckEvent;
 
    public void enforce(@Observes PreRenderViewEvent event) {
         log.info("PostConstructViewMapEvent");
@@ -39,34 +40,11 @@ public class ViewConfigSecurityEnforcer
             log.info("Annotations is null/empty");
             return;
         }
-        for (Annotation annotationLoop : annotations) {
-            Restrict annotation = (Restrict) annotationLoop;
-            log.info("Evaluating Annotation");
-            String el = annotation.value();
-            Boolean allowed = expressions.evaluateMethodExpression(el, Boolean.class);
-            if (allowed) {
-                log.info("Access allowed");
-                return;
-            } else {
-                log.info("Access denied");
-                throw new AbortProcessingException("Access denied");
-            }
+        SecurityCheckEvent securityEvent = new SecurityCheckEvent(annotations);
+        securityCheckEvent.fire(securityEvent);
+        if (! securityEvent.isAuthorized()) {
+            throw new AbortProcessingException("Access denied");
         }
+        log.info("Access allowed");
     }
-   
-   private <T extends Annotation> List<T> getSecurityBindingTypes(List<T> allAnnotations)
-   {
-       if (allAnnotations == null || allAnnotations.isEmpty())
-       {
-           return null;
-       }
-       List<T> securityAnnotations = new ArrayList<T>();
-       for (T annotation : allAnnotations) {
-           if (annotation.getClass().isAnnotationPresent(SecurityBindingType.class)) {
-               securityAnnotations.add(annotation);
-           }
-       }
-       return securityAnnotations;
-   }
-   
 }
