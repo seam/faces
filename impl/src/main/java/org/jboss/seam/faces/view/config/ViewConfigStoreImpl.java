@@ -61,17 +61,17 @@ public class ViewConfigStoreImpl implements ViewConfigStore
       {
          annotationMap = new ConcurrentHashMap<String, Annotation>();
          viewPatternDataByAnnotation.put(annotation.annotationType(), annotationMap);
-         log.infof("Putting new annotation map for anotation type %s", annotation.annotationType().getName());
+         log.debugf("Putting new annotation map for anotation type %s", annotation.annotationType().getName());
       }
       annotationMap.put(viewId, annotation);
-      log.infof("Putting new annotation (type: %s) for viewId: %s", annotation.annotationType().getName(), viewId);
+      log.debugf("Putting new annotation (type: %s) for viewId: %s", annotation.annotationType().getName(), viewId);
 
       Annotation[] annotations = annotation.annotationType().getAnnotations();
       for (Annotation qualifier : annotations)
       {
          if (qualifier.annotationType().getName().startsWith("java."))
          {
-             log.infof("Disregarding java.* package %s", qualifier.annotationType().getName());
+             log.debugf("Disregarding java.* package %s", qualifier.annotationType().getName());
              continue;
          }
          ConcurrentHashMap<String, List<? extends Annotation>> qualifierMap = viewPatternDataByQualifier.get(qualifier.annotationType());
@@ -79,7 +79,7 @@ public class ViewConfigStoreImpl implements ViewConfigStore
          {
             qualifierMap = new ConcurrentHashMap<String, List<? extends Annotation>>();
             viewPatternDataByQualifier.put(qualifier.annotationType(), qualifierMap);
-            log.infof("Putting new qualifier map for qualifier type %s", qualifier.annotationType().getName());
+            log.debugf("Putting new qualifier map for qualifier type %s", qualifier.annotationType().getName());
          }
          List<Annotation> qualifiedAnnotations = new ArrayList<Annotation>();
          List<? extends Annotation> exisitngQualifiedAnnotations = qualifierMap.get(viewId);

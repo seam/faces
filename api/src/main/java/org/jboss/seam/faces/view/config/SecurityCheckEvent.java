@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.jboss.seam.faces.view.config;
 
 import java.lang.annotation.Annotation;
@@ -30,7 +25,7 @@ public class SecurityCheckEvent {
         return authorized;
     }
 
-    public void setAuthorized(Boolean authorized) {
+    public void setAuthorized(boolean authorized) {
         this.authorized = authorized;
     }
 

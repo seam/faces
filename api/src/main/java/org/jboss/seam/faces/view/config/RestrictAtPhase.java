@@ -15,6 +15,9 @@ import org.jboss.seam.faces.event.PhaseIdType;
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface RestrictAtPhase
 {
+   public static PhaseIdType RESTRICT_INITIAL_DEFAULT = PhaseIdType.RENDER_RESPONSE;
+   public static PhaseIdType RESTRICT_POSTBACK_DEFAULT = PhaseIdType.INVOKE_APPLICATION;
+   
    public PhaseIdType initial() default PhaseIdType.RENDER_RESPONSE;
    public PhaseIdType postback() default PhaseIdType.INVOKE_APPLICATION;
 }
