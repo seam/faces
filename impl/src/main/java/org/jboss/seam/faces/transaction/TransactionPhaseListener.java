@@ -23,7 +23,7 @@ import org.jboss.seam.solder.core.Requires;
  * @author Stuart Douglas
  * 
  */
-@Requires({"org.jboss.seam.persistence.PersistenceContextsImpl", "org.jboss.seam.persistence.transaction.TransactionExtension"})
+@Requires({"org.jboss.seam.persistence.PersistenceContextsImpl", "org.jboss.seam.transaction.TransactionExtension"})
 public class TransactionPhaseListener implements PhaseListener
 {
    private static final long serialVersionUID = -9127555729455066493L;
