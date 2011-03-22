@@ -1,5 +1,12 @@
 package org.jboss.seam.faces.test.view.config;
 
+import org.jboss.seam.faces.test.view.config.annotation.QualifiedUrlLiteral;
+import org.jboss.seam.faces.test.view.config.annotation.QualifiedIcon;
+import org.jboss.seam.faces.test.view.config.annotation.QualifiedIconLiteral;
+import org.jboss.seam.faces.test.view.config.annotation.QualifiedUrl;
+import org.jboss.seam.faces.test.view.config.annotation.TestQualifier;
+import org.jboss.seam.faces.test.view.config.annotation.Icon;
+import org.jboss.seam.faces.test.view.config.annotation.IconLiteral;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
@@ -8,7 +15,6 @@ import junit.framework.Assert;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
 import org.jboss.seam.faces.view.config.ViewConfigStoreImpl;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ViewConfigStoreTest
@@ -16,7 +22,7 @@ public class ViewConfigStoreTest
    ViewConfigStore store;
    
    @Before
-   public void setp()
+   public void setup()
    {
       store  = new ViewConfigStoreImpl();
       store.addAnnotationData("/*", new IconLiteral("default.gif"));
@@ -26,6 +32,7 @@ public class ViewConfigStoreTest
       store.addAnnotationData("/qualified/yes.xhtml", new QualifiedUrlLiteral("http://example.com"));
       store.addAnnotationData("/qualified/yes.xhtml", new QualifiedIconLiteral("qualified.gif"));
    }
+   
    @Test
    public void testViewConfigStore()
    {

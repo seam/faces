@@ -1,5 +1,6 @@
 package org.jboss.seam.faces.view.config;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -13,6 +14,7 @@ import org.jboss.seam.faces.event.PhaseIdType;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
+@Documented
 public @interface RestrictAtPhase
 {
    public static PhaseIdType RESTRICT_INITIAL_DEFAULT = PhaseIdType.RENDER_RESPONSE;

@@ -1,5 +1,7 @@
 package org.jboss.seam.faces.test.view.config;
 
+import org.jboss.seam.faces.test.view.config.annotation.Icon;
+import org.jboss.seam.faces.test.view.config.annotation.IconLiteral;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -8,6 +10,7 @@ import junit.framework.Assert;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.seam.faces.test.view.config.annotation.ViewConfigEnum;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
 import org.jboss.seam.faces.view.config.ViewConfigStoreImpl;
 import org.jboss.shrinkwrap.api.Archive;
@@ -21,13 +24,13 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class ViewConfigTest
 {
-
    @Deployment
    public static Archive<?> createTestArchive()
    {
       JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
+            .addClass(ViewConfigTest.class)
             .addClass(ViewConfigStoreImpl.class)
-            .addPackage(ViewConfigTest.class.getPackage())
+            .addPackage(ViewConfigEnum.class.getPackage())
             .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
       return archive;
    }
