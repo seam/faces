@@ -24,7 +24,7 @@
 		</para>
 		
 		<para>
-			To place a bean in the Render scope, use the <literal>@javax.faces.bean.RenderScoped</literal> annotation. This means that your
+			To place a bean in the Render scope, use the <literal>@org.jboss.seam.faces.context.RenderScoped</literal> annotation. This means that your
       bean will be stored in the  <literal>org.jboss.seam.context.RenderContext</literal> object until the next page is rendered, 
       at which point the RenderScope will be cleared.
     </para>

@@ -4,7 +4,6 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
-import javax.faces.bean.RenderScoped;
 
 /**
  * An extension to provide {@link RenderScoped} CDI / JSF 2 integration.

@@ -1,4 +1,4 @@
-package javax.faces.bean;
+package org.jboss.seam.faces.context;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
