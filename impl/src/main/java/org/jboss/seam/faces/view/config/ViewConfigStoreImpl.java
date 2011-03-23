@@ -18,12 +18,13 @@ import org.jboss.logging.Logger;
  * Data store for view specific data.
  * 
  * @author Stuart Douglas
+ * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  * 
  */
 @ApplicationScoped
 public class ViewConfigStoreImpl implements ViewConfigStore
 {
-   private transient final Logger log = Logger.getLogger(ViewConfigSecurityEnforcer.class);
+   private transient final Logger log = Logger.getLogger(SecurityPhaseListener.class);
    /**
     * cache of viewId to a given data list
     */
@@ -92,7 +93,7 @@ public class ViewConfigStoreImpl implements ViewConfigStore
       }
    }
 
-    @Override
+   @Override
    public <T extends Annotation> T getAnnotationData(String viewId, Class<T> type)
    {
       List<T> data = prepareAnnotationCache(viewId, type, annotationCache, viewPatternDataByAnnotation);

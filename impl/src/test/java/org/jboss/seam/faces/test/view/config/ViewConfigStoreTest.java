@@ -17,6 +17,11 @@ import org.jboss.seam.faces.view.config.ViewConfigStoreImpl;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * @author Stuart Douglas
+ * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
+ */
+
 public class ViewConfigStoreTest
 {
    ViewConfigStore store;

@@ -3,9 +3,10 @@ package org.jboss.seam.faces.view.config;
 import java.lang.annotation.Annotation;
 import java.util.List;
 /**
- * stores data specific to a given view is a heiracial fashion
+ * stores data specific to a given view is a hierarchical fashion
+ * 
  * @author Stuart Douglas
- *
+ * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 public interface ViewConfigStore
 {

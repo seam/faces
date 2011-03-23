@@ -21,6 +21,10 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * @author Stuart Douglas
+ * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
+ */
 @RunWith(Arquillian.class)
 public class ViewConfigTest
 {
@@ -36,7 +40,7 @@ public class ViewConfigTest
    }
 
    @Inject
-   ViewConfigStore store;
+   private ViewConfigStore store;
 
    @Test
    public void testViewConfigStore()

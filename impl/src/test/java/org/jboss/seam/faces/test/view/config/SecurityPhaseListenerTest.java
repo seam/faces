@@ -10,7 +10,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.faces.event.PhaseIdType;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.faces.test.view.config.annotation.ViewConfigEnum;
-import org.jboss.seam.faces.view.config.ViewConfigSecurityEnforcer;
+import org.jboss.seam.faces.view.config.SecurityPhaseListener;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
 import org.jboss.seam.faces.view.config.ViewConfigStoreImpl;
 import org.jboss.seam.security.annotations.SecurityBindingType;
@@ -20,22 +20,22 @@ import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- *
- * @author bleathem
+ * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 @RunWith(Arquillian.class)
-public class ViewConfigSecurityEnforcerTest
+public class SecurityPhaseListenerTest
 {
    @Deployment
    public static Archive<?> createTestArchive()
    {
       JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
             .addClass(ViewConfigStoreImpl.class)
-            .addClass(ViewConfigSecurityEnforcer.class)
+            .addClass(SecurityPhaseListener.class)
             .addClass(SecurityBindingType.class)
             .addClass(SecurityExtension.class)
             .addClass(PhaseIdType.class)
@@ -46,13 +46,13 @@ public class ViewConfigSecurityEnforcerTest
    }
 
    @Inject
-   ViewConfigStore store;
+   private ViewConfigStore store;
     
    @Inject
-   ViewConfigSecurityEnforcer enforcer;
+   private SecurityPhaseListener listener;
 
    
-//   @Before
+   @Before
    public void setup()
    {
       store  = new ViewConfigStoreImpl();
@@ -69,22 +69,22 @@ public class ViewConfigSecurityEnforcerTest
    {
       setup();
       boolean restrict;
-      restrict = enforcer.isRestrictPhase(PhaseIdType.RENDER_RESPONSE, "/happy/cat.xhtml",  true);
+      restrict = listener.isRestrictPhase(PhaseIdType.RENDER_RESPONSE, "/happy/cat.xhtml",  true);
       Assert.assertEquals(false, restrict);
       
-      restrict = enforcer.isRestrictPhase(PhaseIdType.RENDER_RESPONSE, "/happy/cat.xhtml",  false);
+      restrict = listener.isRestrictPhase(PhaseIdType.RENDER_RESPONSE, "/happy/cat.xhtml",  false);
       Assert.assertEquals(true, restrict);
       
-      restrict = enforcer.isRestrictPhase(PhaseIdType.INVOKE_APPLICATION, "/happy/cat.xhtml",  true);
+      restrict = listener.isRestrictPhase(PhaseIdType.INVOKE_APPLICATION, "/happy/cat.xhtml",  true);
       Assert.assertEquals(true, restrict);
       
-      restrict = enforcer.isRestrictPhase(PhaseIdType.INVOKE_APPLICATION, "/happy/cat.xhtml",  false);
+      restrict = listener.isRestrictPhase(PhaseIdType.INVOKE_APPLICATION, "/happy/cat.xhtml",  false);
       Assert.assertEquals(false, restrict);
       
-      restrict = enforcer.isRestrictPhase(PhaseIdType.RESTORE_VIEW, "/happy/cat.xhtml",  true);
+      restrict = listener.isRestrictPhase(PhaseIdType.RESTORE_VIEW, "/happy/cat.xhtml",  true);
       Assert.assertEquals(false, restrict);
       
-      restrict = enforcer.isRestrictPhase(PhaseIdType.RESTORE_VIEW, "/happy/cat.xhtml",  false);
+      restrict = listener.isRestrictPhase(PhaseIdType.RESTORE_VIEW, "/happy/cat.xhtml",  false);
       Assert.assertEquals(false, restrict);
    }
 }

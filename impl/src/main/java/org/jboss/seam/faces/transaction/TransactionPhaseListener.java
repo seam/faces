@@ -22,6 +22,7 @@ import org.jboss.seam.solder.core.Requires;
  * during the render response phase
  * 
  * @author Stuart Douglas
+ * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  * 
  */
 @Requires({"org.jboss.seam.persistence.PersistenceContextsImpl", "org.jboss.seam.transaction.TransactionExtension"})

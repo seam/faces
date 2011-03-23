@@ -2,7 +2,6 @@ package org.jboss.seam.faces.view.config;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,14 +32,17 @@ public class ViewConfigExtension implements Extension
    public <T> void processAnnotatedType(@Observes ProcessAnnotatedType<T> event)
    {
       AnnotatedType<T> tp = event.getAnnotatedType();
-      if (log.isTraceEnabled()){
-          log.tracef("Annotated Type: %s", tp.getJavaClass().getName());
-          for (Annotation annotation : tp.getAnnotations()) {
-              log.tracef("|-- Annotation: %s", annotation.annotationType().getName());
-              for (Annotation qualifier : annotation.getClass().getAnnotations()) {
-                  log.tracef("    |-- Qualifier: %s", qualifier.annotationType().getName());
-              }
-          }
+      if (log.isTraceEnabled())
+      {
+         log.tracef("Annotated Type: %s", tp.getJavaClass().getName());
+         for (Annotation annotation : tp.getAnnotations())
+         {
+            log.tracef("|-- Annotation: %s", annotation.annotationType().getName());
+            for (Annotation qualifier : annotation.getClass().getAnnotations())
+            {
+               log.tracef("    |-- Qualifier: %s", qualifier.annotationType().getName());
+            }
+         }
       }
       if (tp.isAnnotationPresent(ViewConfig.class))
       {
