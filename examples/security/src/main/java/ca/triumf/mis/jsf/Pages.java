@@ -1,0 +1,37 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package ca.triumf.mis.jsf;
+
+import org.jboss.seam.faces.view.config.AccessDeniedView;
+import org.jboss.seam.faces.view.config.LoginView;
+import org.jboss.seam.faces.view.config.ViewConfig;
+import org.jboss.seam.faces.view.config.ViewPattern;
+
+/**
+ *
+ * @author bleathem
+ */
+@ViewConfig
+public interface Pages {
+
+    static enum Pages1 {
+
+        @ViewPattern("/*")
+        @AccessDeniedView("/item/list.xhtml")
+        @LoginView("/login.xhtml")
+        ALL,
+        
+        @ViewPattern("/index.xhtml")
+        INDEX,
+        
+        @ViewPattern("/status.xhtml")
+        @Public
+        STATUS,
+        
+        @ViewPattern("/item.xhtml")
+        @Owner
+        ITEM;
+    }
+}
