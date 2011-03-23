@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.FIELD, ElementType.TYPE})
 public @interface AccessDeniedView
 {
    String value();

@@ -6,19 +6,26 @@ import org.jboss.seam.faces.view.config.ViewPattern;
 @ViewConfig
 public interface ViewConfigEnum
 {
-   @ViewPattern("/*")
-   @Icon("default.gif")
-   void DEFAULT();
-   @ViewPattern("/happy/*")
-   @Icon("happy.gif")
-   void HAPPY();
-   @ViewPattern("/sad/*")
-   @Icon("sad.gif")
-   void SAD();
-   @ViewPattern("/happy/done.xhtml")
-   @Icon("finished.gif")
-   void HAPPY_DONE();
-   @ViewPattern("/qualified/*")
-   @QualifiedIcon("qualified.gif")
-   void QUALIFIED();
+    static enum Pages
+    {
+       @ViewPattern("/*")
+       @Icon("default.gif")
+       DEFAULT,
+
+       @ViewPattern("/happy/*")
+       @Icon("happy.gif")
+       HAPPY,
+
+       @ViewPattern("/sad/*")
+       @Icon("sad.gif")
+       SAD(),
+
+       @ViewPattern("/happy/done.xhtml")
+       @Icon("finished.gif")
+       HAPPY_DONE(),
+
+       @ViewPattern("/qualified/*")
+       @QualifiedIcon("qualified.gif")
+       QUALIFIED;
+    }
 }

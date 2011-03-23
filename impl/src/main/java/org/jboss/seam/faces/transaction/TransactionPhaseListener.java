@@ -153,8 +153,12 @@ public class TransactionPhaseListener implements PhaseListener
 
    private boolean seamManagedTransactionStatus(final PhaseId phase)
    {
-      SeamManagedTransaction an = dataStore.getAnnotationData(FacesContext.getCurrentInstance().getViewRoot().getViewId(), SeamManagedTransaction.class);
+      SeamManagedTransaction an = null;
       SeamManagedTransactionType config;
+      if (FacesContext.getCurrentInstance() != null && FacesContext.getCurrentInstance().getViewRoot() != null)
+      {
+         an = dataStore.getAnnotationData(FacesContext.getCurrentInstance().getViewRoot().getViewId(), SeamManagedTransaction.class);
+      }
       if (an == null)
       {
          // enable seam managed transactions by default

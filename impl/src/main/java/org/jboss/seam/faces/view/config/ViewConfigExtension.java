@@ -1,6 +1,7 @@
 package org.jboss.seam.faces.view.config;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
@@ -49,14 +50,15 @@ public class ViewConfigExtension implements Extension
          }
          else
          {
-            for (Method method : tp.getJavaClass().getDeclaredMethods())
+            for (Class clazz : tp.getJavaClass().getClasses())
             {
-               if (method.isAnnotationPresent(ViewPattern.class))
+               for (Field enumm : clazz.getFields())
+               if (enumm.isAnnotationPresent(ViewPattern.class))
                {
-                  ViewPattern viewConfig = method.getAnnotation(ViewPattern.class);
+                  ViewPattern viewConfig = enumm.getAnnotation(ViewPattern.class);
                   Set<Annotation> viewPattern = new HashSet<Annotation>();
                   data.put(viewConfig.value(), viewPattern);
-                  for (Annotation a : method.getAnnotations())
+                  for (Annotation a : enumm.getAnnotations())
                   {
                      if (a.annotationType() != ViewPattern.class)
                      {
