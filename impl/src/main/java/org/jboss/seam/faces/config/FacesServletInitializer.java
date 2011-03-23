@@ -3,12 +3,12 @@ package org.jboss.seam.faces.config;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletContainerInitializer;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
+import org.jboss.logging.Logger;
 
 /**
  * Automatically registers the JSF FacesServlet if it's not already configured
@@ -32,6 +32,7 @@ public class FacesServletInitializer implements ServletContainerInitializer
 
    private static final String[] FACES_SERVLET_MAPPINGS = new String[] { "/faces/*", "*.jsf", "*.faces" };
 
+   @Override
    public void onStartup(Set<Class<?>> c, ServletContext ctx) throws ServletException
    {
       if (!isFacesServletConfigured(ctx))
@@ -52,6 +53,7 @@ public class FacesServletInitializer implements ServletContainerInitializer
       Map<String, ? extends ServletRegistration> servletRegistrations = ctx.getServletRegistrations();
       for (ServletRegistration registration : servletRegistrations.values())
       {
+         log.debugf("Servlet %s is registered", registration.getClassName());
          if (FACES_SERVLET_CLASS_NAME.equals(registration.getClassName()))
          {
             return true;
