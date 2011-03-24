@@ -1,4 +1,4 @@
-package ca.triumf.mis.jsf;
+package org.jboss.seam.faces.examples.security;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,5 +13,5 @@ import org.jboss.seam.security.annotations.SecurityBindingType;
 @SecurityBindingType
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.TYPE})
-public @interface Public {
+public @interface Owner {
 }

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ca.triumf.mis.jsf;
+package org.jboss.seam.faces.examples.security;
 
 import org.jboss.seam.faces.view.config.AccessDeniedView;
 import org.jboss.seam.faces.view.config.LoginView;

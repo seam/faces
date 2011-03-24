@@ -1,16 +1,37 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:h="http://java.sun.com/jsf/html">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Login Page</title>
     </h:head>
     <h:body>
-        <h:form>
-            A page where you will be asked to login
-        </h:form>
+        <p>This example demonstrates how to implement a simple Authenticator</p>
+        <h:panelGroup rendered="#{identity.loggedIn}">
+            <div>Currently logged in as: <b>#{identity.user.id}</b></div>
+            <h:form>
+                <h:commandButton id="logout" value="Log out" action="#{identity.logout}"/>
+                <br/>
+                <h:commandLink action="item.xhtml" value="Continue to the item page" />
+            </h:form>
+        </h:panelGroup>
+        <h:form id="loginForm" rendered="#{not identity.loggedIn}">
+            <h:messages />
+            <div class="loginRow">
+                <h:outputLabel for="name" value="Username" styleClass="loginLabel"/>
+                <h:inputText id="name" value="#{credentials.username}"/>
+            </div>
+            <div class="loginRow">
+                <h:outputLabel for="password" value="Password" styleClass="loginLabel"/>
+                <h:inputSecret id="password" value="#{credentials.password}" redisplay="true"/>
+            </div>
+            <div class="loginRow">
+            </div>
+            <div class="buttons">
+                <h:commandButton id="login" value="LOGIN" action="#{identity.login}" styleClass="loginButton"/>
+            </div>     
+            Tip: you can login with a username/password of demo/demo.
+        </h:form>    
+        <br style="clear:both"/>
     </h:body>
 </html>
-

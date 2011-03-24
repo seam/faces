@@ -1,20 +1,19 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:h="http://java.sun.com/jsf/html">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Index Page</title>
     </h:head>
     <h:body>
+        <p>This example demonstrates how to secure pages using the @ViewConfig annotation</p>
         <h:form>
             <ul>
                 <li>
             <h:commandLink action="/item.xhtml?faces-redirect=true" value="Item (Protected)"></h:commandLink>
                 </li>
                 <li>
-            <h:commandLink action="/status.xhtml?faces-redirect=true" value="Item (Not Protected)"></h:commandLink>
+            <h:commandLink action="/status.xhtml?faces-redirect=true" value="Status (Not Protected)"></h:commandLink>
                 </li>
             </ul>
         </h:form>
