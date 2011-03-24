@@ -67,7 +67,8 @@ public class SecurityPhaseListener {
         List<? extends Annotation> allSecurityAnnotations = viewConfigStore.getAllQualifierData(viewId, SecurityBindingType.class);
         List<Annotation> applicableSecurityAnnotations = null;
         for (Annotation annotation : allSecurityAnnotations) {
-            if (isAnnotationApplicableToPhase(annotation, currentPhase)) {
+            PhaseIdType[] defaultPhases = getDefaultPhases(viewId);
+            if (isAnnotationApplicableToPhase(annotation, currentPhase, defaultPhases)) {
                 if (applicableSecurityAnnotations == null) { // avoid spawning arrays at all phases of the lifecycle
                     applicableSecurityAnnotations = new ArrayList<Annotation>();
                 }
@@ -77,7 +78,7 @@ public class SecurityPhaseListener {
         return applicableSecurityAnnotations;
     }
     
-    public boolean isAnnotationApplicableToPhase(Annotation annotation, PhaseIdType currentPhase) {
+    public boolean isAnnotationApplicableToPhase(Annotation annotation, PhaseIdType currentPhase, PhaseIdType[] defaultPhases) {
         Method restrictAtViewMethod = getRestrictAtViewMethod(annotation);
         PhaseIdType[] phasedIds = null;
         if (restrictAtViewMethod != null) {
@@ -85,12 +86,24 @@ public class SecurityPhaseListener {
         }
         if (phasedIds == null) {
             log.debug("Falling back on default phase ids");
-            phasedIds = RestrictAtPhaseDefault.DEFAULT_PHASES;
+            phasedIds = defaultPhases;
         }
         if (Arrays.binarySearch(phasedIds, currentPhase) >= 0) {
             return true;
         }
         return false;
+    }
+    
+    public PhaseIdType[] getDefaultPhases(String viewId) {
+        PhaseIdType[] defaultPhases = null;
+        RestrictAtPhase restrictAtPhase = viewConfigStore.getAnnotationData(viewId, RestrictAtPhase.class);
+        if (restrictAtPhase != null) {
+            defaultPhases = restrictAtPhase.value();
+        }
+        if (defaultPhases == null) {
+            defaultPhases = RestrictAtPhaseDefault.DEFAULT_PHASES;
+        }
+        return defaultPhases;
     }
 
     public Method getRestrictAtViewMethod(Annotation annotation) {
@@ -105,7 +118,7 @@ public class SecurityPhaseListener {
         return restrictAtViewMethod;
     }
     
-    private PhaseIdType[] getRestrictedPhaseIds(Method restrictAtViewMethod, Annotation annotation) {
+    public PhaseIdType[] getRestrictedPhaseIds(Method restrictAtViewMethod, Annotation annotation) {
         PhaseIdType[] phaseIds;
         try {
             phaseIds = (PhaseIdType[]) restrictAtViewMethod.invoke(annotation);

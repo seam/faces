@@ -13,7 +13,7 @@ import org.jboss.seam.faces.event.PhaseIdType;
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD, ElementType.TYPE })
+@Target({ ElementType.FIELD, ElementType.TYPE })
 @Documented
 public @interface RestrictAtPhase {
     public PhaseIdType[] value() default {PhaseIdType.INVOKE_APPLICATION, PhaseIdType.RENDER_RESPONSE};

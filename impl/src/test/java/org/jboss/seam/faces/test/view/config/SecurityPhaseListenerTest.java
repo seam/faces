@@ -2,8 +2,6 @@ package org.jboss.seam.faces.test.view.config;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
-import org.jboss.seam.faces.test.view.config.annotation.QualifiedIconLiteral;
-import org.jboss.seam.faces.test.view.config.annotation.IconLiteral;
 import javax.inject.Inject;
 import junit.framework.Assert;
 import org.jboss.arquillian.api.Deployment;
@@ -24,8 +22,6 @@ import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -55,24 +51,11 @@ public class SecurityPhaseListenerTest {
     @Inject
     private SecurityPhaseListener listener;
 
-    @Before
-    public void setup() {
-        store = new ViewConfigStoreImpl();
-        store.addAnnotationData("/*", new IconLiteral("default.gif"));
-        store.addAnnotationData("/sad/*", new IconLiteral("sad.gif"));
-        store.addAnnotationData("/happy/*", new IconLiteral("happy.gif"));
-        store.addAnnotationData("/happy/done.xhtml", new IconLiteral("finished.gif"));
-        store.addAnnotationData("/qualified/yes.xhtml", new RestrictedLiteral());
-        store.addAnnotationData("/qualified/yes.xhtml", new QualifiedIconLiteral("qualified.gif"));
-        System.out.println("** Finished adding annotation data *****************");
-    }
-
     @Test
-    @Ignore
     public void testIsAnnotationApplicableToPhase() {
-        Assert.assertEquals(true, listener.isAnnotationApplicableToPhase(new RestrictedLiteral(), PhaseIdType.RENDER_RESPONSE));
-        Assert.assertEquals(false, listener.isAnnotationApplicableToPhase(new RestrictedLiteral(PhaseIdType.RESTORE_VIEW), PhaseIdType.RENDER_RESPONSE));
-        Assert.assertEquals(true, listener.isAnnotationApplicableToPhase(new RestrictedLiteral(PhaseIdType.RESTORE_VIEW), PhaseIdType.RESTORE_VIEW));
+        Assert.assertEquals(true, listener.isAnnotationApplicableToPhase(new RestrictedLiteral(), PhaseIdType.RENDER_RESPONSE, RestrictAtPhaseDefault.DEFAULT_PHASES));
+        Assert.assertEquals(false, listener.isAnnotationApplicableToPhase(new RestrictedLiteral(PhaseIdType.RESTORE_VIEW), PhaseIdType.RENDER_RESPONSE, RestrictAtPhaseDefault.DEFAULT_PHASES));
+        Assert.assertEquals(true, listener.isAnnotationApplicableToPhase(new RestrictedLiteral(PhaseIdType.RESTORE_VIEW), PhaseIdType.RESTORE_VIEW, RestrictAtPhaseDefault.DEFAULT_PHASES));
     }
             
     
@@ -81,12 +64,29 @@ public class SecurityPhaseListenerTest {
         List<? extends Annotation> restrict;
         restrict = listener.getRestrictionsForPhase(PhaseIdType.RENDER_RESPONSE, "/qualified/yes.xhtml");
         Assert.assertEquals(1, restrict.size());
+        
+        restrict = listener.getRestrictionsForPhase(PhaseIdType.INVOKE_APPLICATION, "/qualified/yes.xhtml");
+        Assert.assertEquals(1, restrict.size());
 
         restrict = listener.getRestrictionsForPhase(PhaseIdType.RESTORE_VIEW, "/qualified/yes.xhtml");
         Assert.assertEquals(null, restrict);
+        
+        restrict = listener.getRestrictionsForPhase(PhaseIdType.RENDER_RESPONSE, "/qualified/no.xhtml");
+        Assert.assertEquals(null, restrict);
+        
+        restrict = listener.getRestrictionsForPhase(PhaseIdType.INVOKE_APPLICATION, "/qualified/no.xhtml");
+        Assert.assertEquals(1, restrict.size());
 
         restrict = listener.getRestrictionsForPhase(PhaseIdType.RENDER_RESPONSE, "/happy/cat.xhtml");
         Assert.assertEquals(null, restrict);
 
+    }
+    
+    @Test
+    public void testGetDefaultPhases() {
+        PhaseIdType[] defaults;
+        defaults = listener.getDefaultPhases("/qualified/no.xhtml");
+        Assert.assertEquals(1, defaults.length);
+        Assert.assertEquals(PhaseIdType.INVOKE_APPLICATION, defaults[0]);
     }
 }
