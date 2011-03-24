@@ -79,6 +79,7 @@ public class ViewConfigStoreImpl implements ViewConfigStore {
                 qualifiedAnnotations.addAll(exisitngQualifiedAnnotations);
             }
             qualifiedAnnotations.add(annotation);
+            log.debugf("Adding new annotation (type: %s) for viewId: %s and Qualifier %s", annotation.annotationType().getName(), viewId, qualifier.annotationType().getName());
             qualifierMap.put(viewId, qualifiedAnnotations);
         }
     }
@@ -144,15 +145,15 @@ public class ViewConfigStoreImpl implements ViewConfigStore {
 
     private <T extends Annotation> List<T> prepareQualifierCache(
             String viewId,
-            Class<T> annotationType,
+            Class<T> qualifierType,
             ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> cache,
             ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> viewPatternData) {
         // we need to synchronize to make sure that no threads see a half
         // completed list due to instruction re-ordering
-        ConcurrentHashMap<String, List<? extends Annotation>> map = cache.get(annotationType);
+        ConcurrentHashMap<String, List<? extends Annotation>> map = cache.get(qualifierType);
         if (map == null) {
             ConcurrentHashMap<String, List<? extends Annotation>> newMap = new ConcurrentHashMap<String, List<? extends Annotation>>();
-            map = cache.putIfAbsent(annotationType, newMap);
+            map = cache.putIfAbsent(qualifierType, newMap);
             if (map == null) {
                 map = newMap;
             }
@@ -160,7 +161,7 @@ public class ViewConfigStoreImpl implements ViewConfigStore {
         List<? extends Annotation> annotationData = map.get(viewId);
         if (annotationData == null) {
             List<Annotation> newList = new ArrayList<Annotation>();
-            Map<String, List<? extends Annotation>> viewPatterns = viewPatternData.get(annotationType);
+            Map<String, List<? extends Annotation>> viewPatterns = viewPatternData.get(qualifierType);
             if (viewPatterns != null) {
                 List<String> resultingViews = findViewsWithPatternsThatMatch(viewId, viewPatterns.keySet());
                 for (String i : resultingViews) {

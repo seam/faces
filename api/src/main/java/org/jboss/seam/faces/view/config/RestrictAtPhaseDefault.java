@@ -8,13 +8,11 @@ import org.jboss.seam.faces.event.PhaseIdType;
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 public class RestrictAtPhaseDefault {
-    public static final PhaseIdType RESTRICT_INITIAL_DEFAULT;
-    public static final PhaseIdType RESTRICT_POSTBACK_DEFAULT;
+    public static final PhaseIdType[] DEFAULT_PHASES;
 
     static {
         try {
-            RESTRICT_INITIAL_DEFAULT = (PhaseIdType) RestrictAtPhase.class.getMethod("initial").getDefaultValue();
-            RESTRICT_POSTBACK_DEFAULT = (PhaseIdType) RestrictAtPhase.class.getMethod("postback").getDefaultValue();
+            DEFAULT_PHASES = (PhaseIdType[]) RestrictAtPhase.class.getMethod("value").getDefaultValue();
         } catch (NoSuchMethodException ex) {
             throw new IllegalStateException("Error initialising values", ex);
         } catch (SecurityException ex) {

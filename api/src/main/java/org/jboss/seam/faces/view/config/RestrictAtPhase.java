@@ -16,8 +16,5 @@ import org.jboss.seam.faces.event.PhaseIdType;
 @Target({ ElementType.METHOD, ElementType.TYPE })
 @Documented
 public @interface RestrictAtPhase {
-    public PhaseIdType initial() default PhaseIdType.RENDER_RESPONSE; // also stored as a static in ViewConfigSecurityEnforcer
-                                                                      // (impl)
-
-    public PhaseIdType postback() default PhaseIdType.INVOKE_APPLICATION;
+    public PhaseIdType[] value() default {PhaseIdType.INVOKE_APPLICATION, PhaseIdType.RENDER_RESPONSE};
 }

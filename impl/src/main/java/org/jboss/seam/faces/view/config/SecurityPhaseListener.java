@@ -1,6 +1,10 @@
 package org.jboss.seam.faces.view.config;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
@@ -28,8 +32,8 @@ import org.jboss.seam.solder.core.Requires;
  */
 @Requires("org.jboss.seam.security.extension.SecurityExtension")
 public class SecurityPhaseListener {
-    private transient final Logger log = Logger.getLogger(SecurityPhaseListener.class);
 
+    private transient final Logger log = Logger.getLogger(SecurityPhaseListener.class);
     @Inject
     private ViewConfigStore viewConfigStore;
     @Inject
@@ -52,28 +56,68 @@ public class SecurityPhaseListener {
 
     private void performObservation(PhaseEvent event, PhaseIdType phaseIdType) {
         UIViewRoot viewRoot = (UIViewRoot) event.getFacesContext().getViewRoot();
-        if (isRestrictPhase(phaseIdType, viewRoot.getViewId(), event.getFacesContext().isPostback())) {
+        List<? extends Annotation> restrictionsForPhase = getRestrictionsForPhase(phaseIdType, viewRoot.getViewId());
+        if (restrictionsForPhase != null) {
             log.debugf("Enforcing on phase %s", phaseIdType);
-            enforce(event.getFacesContext(), viewRoot);
+            enforce(event.getFacesContext(), viewRoot, restrictionsForPhase);
         }
     }
 
-    public boolean isRestrictPhase(PhaseIdType currentPhase, String viewId, boolean isPostback) {
-        RestrictAtPhase restrictAtPhase = viewConfigStore.getAnnotationData(viewId, RestrictAtPhase.class);
-        PhaseIdType restrictAtPhaseType = null;
-        if (restrictAtPhase != null) {
-            restrictAtPhaseType = isPostback ? restrictAtPhase.postback() : restrictAtPhase.initial();
+    public List<? extends Annotation> getRestrictionsForPhase(PhaseIdType currentPhase, String viewId) {
+        List<? extends Annotation> allSecurityAnnotations = viewConfigStore.getAllQualifierData(viewId, SecurityBindingType.class);
+        List<Annotation> applicableSecurityAnnotations = null;
+        for (Annotation annotation : allSecurityAnnotations) {
+            if (isAnnotationApplicableToPhase(annotation, currentPhase)) {
+                if (applicableSecurityAnnotations == null) { // avoid spawning arrays at all phases of the lifecycle
+                    applicableSecurityAnnotations = new ArrayList<Annotation>();
+                }
+                applicableSecurityAnnotations.add(annotation);
+            }
         }
-        if (restrictAtPhaseType == null) {
-            restrictAtPhaseType = isPostback ? RestrictAtPhaseDefault.RESTRICT_POSTBACK_DEFAULT
-                    : RestrictAtPhaseDefault.RESTRICT_INITIAL_DEFAULT;
+        return applicableSecurityAnnotations;
+    }
+    
+    public boolean isAnnotationApplicableToPhase(Annotation annotation, PhaseIdType currentPhase) {
+        Method restrictAtViewMethod = getRestrictAtViewMethod(annotation);
+        PhaseIdType[] phasedIds = null;
+        if (restrictAtViewMethod != null) {
+            phasedIds = getRestrictedPhaseIds(restrictAtViewMethod, annotation);
         }
-        return restrictAtPhaseType.equals(currentPhase);
+        if (phasedIds == null) {
+            log.debug("Falling back on default phase ids");
+            phasedIds = RestrictAtPhaseDefault.DEFAULT_PHASES;
+        }
+        if (Arrays.binarySearch(phasedIds, currentPhase) >= 0) {
+            return true;
+        }
+        return false;
     }
 
-    private void enforce(FacesContext facesContext, UIViewRoot viewRoot) {
-        List<? extends Annotation> annotations = viewConfigStore.getAllQualifierData(viewRoot.getViewId(),
-                SecurityBindingType.class);
+    public Method getRestrictAtViewMethod(Annotation annotation) {
+        Method restrictAtViewMethod;
+        try {
+            restrictAtViewMethod = annotation.annotationType().getDeclaredMethod("restrictAtPhase");
+        } catch (NoSuchMethodException ex) {
+            restrictAtViewMethod = null;
+        } catch (SecurityException ex) {
+            throw new IllegalArgumentException("restrictAtView method must be accessible", ex);
+        }
+        return restrictAtViewMethod;
+    }
+    
+    private PhaseIdType[] getRestrictedPhaseIds(Method restrictAtViewMethod, Annotation annotation) {
+        PhaseIdType[] phaseIds;
+        try {
+            phaseIds = (PhaseIdType[]) restrictAtViewMethod.invoke(annotation);
+        } catch (IllegalAccessException ex) {
+            throw new IllegalArgumentException("restrictAtView method must be accessible", ex);
+        } catch (InvocationTargetException ex) {
+            throw new RuntimeException(ex);
+        }
+        return phaseIds;
+    }
+
+    private void enforce(FacesContext facesContext, UIViewRoot viewRoot, List<? extends Annotation> annotations) {
         if (annotations == null || annotations.isEmpty()) {
             log.debug("Annotations is null/empty");
             return;
