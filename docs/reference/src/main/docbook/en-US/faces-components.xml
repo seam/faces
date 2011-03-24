@@ -145,8 +145,8 @@ private String sectorTwo;]]></programlisting>
 		</tip>
 		
 		<para>
-			Another way to get those fields on the validator is to inject an InputElement. It works mostly like the 
-			@InputField, except that besides the field value, it keeps some more info: clientId and a JSF UIComponent.
+			An alternate way of accessing those fields on the validator by injecting an InputElement. It works similarly
+                        to @InputField, but stores the clientId and a JSF UIComponent, along with the field value.
 		</para>
 		<programlisting role="JAVA"><![CDATA[@FacesValidator("fooValidator")
 public class FooValidator implements Validator {
