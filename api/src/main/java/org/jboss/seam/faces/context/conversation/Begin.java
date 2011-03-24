@@ -14,46 +14,41 @@ import javax.interceptor.InterceptorBinding;
 /**
  * Begins a persistent {@link Conversation}.
  * 
- *<p>
- * <b>Note:</b> Unless the exception is of a permitted type, if this method
- * throws an exception, the conversation will not begin.
+ * <p>
+ * <b>Note:</b> Unless the exception is of a permitted type, if this method throws an exception, the conversation will not
+ * begin.
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
 @ConversationBoundary
 @InterceptorBinding
-@Target( { METHOD, TYPE })
+@Target({ METHOD, TYPE })
 @Retention(RUNTIME)
-public @interface Begin
-{
-   /**
-    * Sets the new {@link Conversation} ID. Seam will Generate a conversation ID
-    * if left blank.
-    * <p>
-    * If a conversation with the ID already exists... TODO what should we do?
-    * <p>
-    * TODO test default conversation ID functionality
-    */
-   @Nonbinding
-   String id() default "";
+public @interface Begin {
+    /**
+     * Sets the new {@link Conversation} ID. Seam will Generate a conversation ID if left blank.
+     * <p>
+     * If a conversation with the ID already exists... TODO what should we do?
+     * <p>
+     * TODO test default conversation ID functionality
+     */
+    @Nonbinding
+    String id() default "";
 
-   /**
-    * Sets the {@link Conversation} timeout period, in milliseconds (E.g.: 5000
-    * = 5 seconds.)
-    * <p>
-    */
-   @Nonbinding
-   long timeout() default -1;
+    /**
+     * Sets the {@link Conversation} timeout period, in milliseconds (E.g.: 5000 = 5 seconds.)
+     * <p>
+     */
+    @Nonbinding
+    long timeout() default -1;
 
-   /**
-    * Sets the exception types for which, when encountered during a method
-    * invocation, the {@link Conversation} will still begin. (In other words:
-    * Permitted exceptions do not abort @{@link Begin})
-    * <p>
-    * <b>By default:</b> { empty array } - all encountered exceptions will
-    * prevent the {@link Conversation} from beginning.
-    */
-   @Nonbinding
-   Class<? extends Exception>[] permit() default {};
+    /**
+     * Sets the exception types for which, when encountered during a method invocation, the {@link Conversation} will still
+     * begin. (In other words: Permitted exceptions do not abort @{@link Begin})
+     * <p>
+     * <b>By default:</b> { empty array } - all encountered exceptions will prevent the {@link Conversation} from beginning.
+     */
+    @Nonbinding
+    Class<? extends Exception>[] permit() default {};
 
 }

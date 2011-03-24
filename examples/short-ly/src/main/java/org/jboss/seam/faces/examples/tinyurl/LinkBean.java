@@ -23,69 +23,58 @@ import org.jboss.seam.faces.context.conversation.End;
 @Named
 @ConversationScoped
 @Stateful
-public class LinkBean implements Serializable
-{
-   private static final long serialVersionUID = -2209547152337410725L;
+public class LinkBean implements Serializable {
+    private static final long serialVersionUID = -2209547152337410725L;
 
-   @PersistenceContext
-   private EntityManager em;
+    @PersistenceContext
+    private EntityManager em;
 
-   private TinyLink link = new TinyLink();
+    private TinyLink link = new TinyLink();
 
-   @Begin
-   @End
-   public String createLink() throws SQLException
-   {
-      System.out.println("Created link: [ " + link.getName() + " => " + link.getTarget() + " ]");
-      em.persist(link);
-      return "pretty:create";
-   }
+    @Begin
+    @End
+    public String createLink() throws SQLException {
+        System.out.println("Created link: [ " + link.getName() + " => " + link.getTarget() + " ]");
+        em.persist(link);
+        return "pretty:create";
+    }
 
-   @SuppressWarnings("unchecked")
-   public TinyLink getByKey(final String key)
-   {
-      Query query = em.createQuery("from TinyLink t where t.name=:key", TinyLink.class);
-      query.setParameter("key", key);
-      List<TinyLink> resultList = query.getResultList();
-      if (resultList.isEmpty())
-      {
-         return new TinyLink();
-      }
-      return resultList.get(0);
-   }
+    @SuppressWarnings("unchecked")
+    public TinyLink getByKey(final String key) {
+        Query query = em.createQuery("from TinyLink t where t.name=:key", TinyLink.class);
+        query.setParameter("key", key);
+        List<TinyLink> resultList = query.getResultList();
+        if (resultList.isEmpty()) {
+            return new TinyLink();
+        }
+        return resultList.get(0);
+    }
 
-   public String format(final String link)
-   {
-      if (link != null)
-      {
-         String result = link.trim();
-         if (!result.matches("(http|ftp)://.*"))
-         {
-            result = "http://" + result;
-         }
-         return result;
-      }
-      return "";
-   }
+    public String format(final String link) {
+        if (link != null) {
+            String result = link.trim();
+            if (!result.matches("(http|ftp)://.*")) {
+                result = "http://" + result;
+            }
+            return result;
+        }
+        return "";
+    }
 
-   public String deleteAll()
-   {
-      em.createQuery("delete from TinyLink").executeUpdate();
-      return "pretty:";
-   }
+    public String deleteAll() {
+        em.createQuery("delete from TinyLink").executeUpdate();
+        return "pretty:";
+    }
 
-   public List<TinyLink> getLinks()
-   {
-      return em.createQuery("from TinyLink").getResultList();
-   }
+    public List<TinyLink> getLinks() {
+        return em.createQuery("from TinyLink").getResultList();
+    }
 
-   public TinyLink getLink()
-   {
-      return link;
-   }
+    public TinyLink getLink() {
+        return link;
+    }
 
-   public void setLink(final TinyLink link)
-   {
-      this.link = link;
-   }
+    public void setLink(final TinyLink link) {
+        this.link = link;
+    }
 }

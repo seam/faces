@@ -19,8 +19,7 @@ import javax.inject.Qualifier;
  * @author Nicklas Karlsson
  */
 @Qualifier
-@Target( { FIELD, PARAMETER })
+@Target({ FIELD, PARAMETER })
 @Retention(RUNTIME)
-public @interface UpdateModelValues
-{
+public @interface UpdateModelValues {
 }

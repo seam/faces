@@ -28,73 +28,54 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 @RunWith(Arquillian.class)
-public class SecurityPhaseListenerTest
-{
-   @Deployment
-   public static Archive<?> createTestArchive()
-   {
-      JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
-            .addClass(ViewConfigStoreImpl.class)
-            .addClass(SecurityPhaseListener.class)
-            .addClass(SecurityBindingType.class)
-            .addClass(SecurityExtension.class)
-            .addClass(PhaseIdType.class)
-            .addPackage(RenderResponse.class.getPackage())
-            .addPackage(ViewConfigEnum.class.getPackage())
-            .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
-      return archive;
-   }
+public class SecurityPhaseListenerTest {
+    @Deployment
+    public static Archive<?> createTestArchive() {
+        JavaArchive archive = ShrinkWrap.create(JavaArchive.class).addClass(ViewConfigStoreImpl.class)
+                .addClass(SecurityPhaseListener.class).addClass(SecurityBindingType.class).addClass(SecurityExtension.class)
+                .addClass(PhaseIdType.class).addPackage(RenderResponse.class.getPackage())
+                .addPackage(ViewConfigEnum.class.getPackage())
+                .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+        return archive;
+    }
 
-   @Inject
-   private ViewConfigStore store;
-    
-   @Inject
-   private SecurityPhaseListener listener;
+    @Inject
+    private ViewConfigStore store;
 
-   
-   @Before
-   public void setup()
-   {
-      store  = new ViewConfigStoreImpl();
-      store.addAnnotationData("/*", new IconLiteral("default.gif"));
-      store.addAnnotationData("/sad/*", new IconLiteral("sad.gif"));
-      store.addAnnotationData("/happy/*", new IconLiteral("happy.gif"));
-      store.addAnnotationData("/happy/done.xhtml", new IconLiteral("finished.gif"));
-      store.addAnnotationData("/qualified/yes.xhtml", new QualifiedUrlLiteral("http://example.com"));
-      store.addAnnotationData("/qualified/yes.xhtml", new QualifiedIconLiteral("qualified.gif"));
-   }
-   
-   @Test
-   public void testIsRestrictPhase()
-   {
-      setup();
-      boolean restrict;
-      restrict = listener.isRestrictPhase(PhaseIdType.RENDER_RESPONSE, "/happy/cat.xhtml",  true);
-      Assert.assertEquals(false, restrict);
-      
-      restrict = listener.isRestrictPhase(PhaseIdType.RENDER_RESPONSE, "/happy/cat.xhtml",  false);
-      Assert.assertEquals(true, restrict);
-      
-      restrict = listener.isRestrictPhase(PhaseIdType.INVOKE_APPLICATION, "/happy/cat.xhtml",  true);
-      Assert.assertEquals(true, restrict);
-      
-      restrict = listener.isRestrictPhase(PhaseIdType.INVOKE_APPLICATION, "/happy/cat.xhtml",  false);
-      Assert.assertEquals(false, restrict);
-      
-      restrict = listener.isRestrictPhase(PhaseIdType.RESTORE_VIEW, "/happy/cat.xhtml",  true);
-      Assert.assertEquals(false, restrict);
-      
-      restrict = listener.isRestrictPhase(PhaseIdType.RESTORE_VIEW, "/happy/cat.xhtml",  false);
-      Assert.assertEquals(false, restrict);
-   }
+    @Inject
+    private SecurityPhaseListener listener;
+
+    @Before
+    public void setup() {
+        store = new ViewConfigStoreImpl();
+        store.addAnnotationData("/*", new IconLiteral("default.gif"));
+        store.addAnnotationData("/sad/*", new IconLiteral("sad.gif"));
+        store.addAnnotationData("/happy/*", new IconLiteral("happy.gif"));
+        store.addAnnotationData("/happy/done.xhtml", new IconLiteral("finished.gif"));
+        store.addAnnotationData("/qualified/yes.xhtml", new QualifiedUrlLiteral("http://example.com"));
+        store.addAnnotationData("/qualified/yes.xhtml", new QualifiedIconLiteral("qualified.gif"));
+    }
+
+    @Test
+    public void testIsRestrictPhase() {
+        setup();
+        boolean restrict;
+        restrict = listener.isRestrictPhase(PhaseIdType.RENDER_RESPONSE, "/happy/cat.xhtml", true);
+        Assert.assertEquals(false, restrict);
+
+        restrict = listener.isRestrictPhase(PhaseIdType.RENDER_RESPONSE, "/happy/cat.xhtml", false);
+        Assert.assertEquals(true, restrict);
+
+        restrict = listener.isRestrictPhase(PhaseIdType.INVOKE_APPLICATION, "/happy/cat.xhtml", true);
+        Assert.assertEquals(true, restrict);
+
+        restrict = listener.isRestrictPhase(PhaseIdType.INVOKE_APPLICATION, "/happy/cat.xhtml", false);
+        Assert.assertEquals(false, restrict);
+
+        restrict = listener.isRestrictPhase(PhaseIdType.RESTORE_VIEW, "/happy/cat.xhtml", true);
+        Assert.assertEquals(false, restrict);
+
+        restrict = listener.isRestrictPhase(PhaseIdType.RESTORE_VIEW, "/happy/cat.xhtml", false);
+        Assert.assertEquals(false, restrict);
+    }
 }
-
-
-
-
-
-
-
-
-
-

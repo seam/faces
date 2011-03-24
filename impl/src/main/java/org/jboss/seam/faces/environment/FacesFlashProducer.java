@@ -23,24 +23,20 @@ import javax.faces.context.Flash;
  * 
  * @author Lincoln Baxter
  */
-public class FacesFlashProducer
-{
-   @Produces
-   @RequestScoped
-   public Flash getFlash()
-   {
-      FacesContext facesContext = FacesContext.getCurrentInstance();
-      if (facesContext == null)
-      {
-         throw new ContextNotActiveException("FacesContext is not active");
-      }
+public class FacesFlashProducer {
+    @Produces
+    @RequestScoped
+    public Flash getFlash() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (facesContext == null) {
+            throw new ContextNotActiveException("FacesContext is not active");
+        }
 
-      Flash ctx = facesContext.getExternalContext().getFlash();
-      if (ctx == null)
-      {
-         throw new ContextNotActiveException("Flash is not active");
-      }
+        Flash ctx = facesContext.getExternalContext().getFlash();
+        if (ctx == null) {
+            throw new ContextNotActiveException("Flash is not active");
+        }
 
-      return ctx;
-   }
+        return ctx;
+    }
 }

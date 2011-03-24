@@ -14,47 +14,39 @@ import org.jboss.seam.solder.el.Resolver;
  * 
  */
 @Resolver
-public class FacesContextELResolver extends ELResolver
-{
-   private ELResolver getWrapped()
-   {
-      return FacesContext.getCurrentInstance().getELContext().getELResolver();
-   }
+public class FacesContextELResolver extends ELResolver {
+    private ELResolver getWrapped() {
+        return FacesContext.getCurrentInstance().getELContext().getELResolver();
+    }
 
-   @Override
-   public Object getValue(ELContext context, Object base, Object property)
-   {
-      return getWrapped().getValue(context, base, property);
-   }
+    @Override
+    public Object getValue(ELContext context, Object base, Object property) {
+        return getWrapped().getValue(context, base, property);
+    }
 
-   @Override
-   public Class<?> getType(ELContext context, Object base, Object property)
-   {
-      return getWrapped().getType(context, base, property);
-   }
+    @Override
+    public Class<?> getType(ELContext context, Object base, Object property) {
+        return getWrapped().getType(context, base, property);
+    }
 
-   @Override
-   public void setValue(ELContext context, Object base, Object property, Object value)
-   {
-      getWrapped().setValue(context, base, property, value);
-   }
+    @Override
+    public void setValue(ELContext context, Object base, Object property, Object value) {
+        getWrapped().setValue(context, base, property, value);
+    }
 
-   @Override
-   public boolean isReadOnly(ELContext context, Object base, Object property)
-   {
-      return getWrapped().isReadOnly(context, base, property);
-   }
+    @Override
+    public boolean isReadOnly(ELContext context, Object base, Object property) {
+        return getWrapped().isReadOnly(context, base, property);
+    }
 
-   @Override
-   public Iterator<FeatureDescriptor> getFeatureDescriptors(ELContext context, Object base)
-   {
-      return getWrapped().getFeatureDescriptors(context, base);
-   }
+    @Override
+    public Iterator<FeatureDescriptor> getFeatureDescriptors(ELContext context, Object base) {
+        return getWrapped().getFeatureDescriptors(context, base);
+    }
 
-   @Override
-   public Class<?> getCommonPropertyType(ELContext context, Object base)
-   {
-      return getWrapped().getCommonPropertyType(context, base);
-   }
+    @Override
+    public Class<?> getCommonPropertyType(ELContext context, Object base) {
+        return getWrapped().getCommonPropertyType(context, base);
+    }
 
 }

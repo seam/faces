@@ -8,37 +8,32 @@ import javax.faces.context.ExternalContextFactory;
 import org.jboss.seam.faces.util.BeanManagerUtils;
 import org.jboss.seam.solder.beanManager.BeanManagerLocator;
 
-public class SeamExternalContextFactory extends ExternalContextFactory
-{
-   private final ExternalContextFactory parent;
+public class SeamExternalContextFactory extends ExternalContextFactory {
+    private final ExternalContextFactory parent;
 
-   public SeamExternalContextFactory(final ExternalContextFactory parent)
-   {
-      super();
-      this.parent = parent;
-   }
+    public SeamExternalContextFactory(final ExternalContextFactory parent) {
+        super();
+        this.parent = parent;
+    }
 
-   @Override
-   public ExternalContext getExternalContext(final Object context, final Object request, final Object response) throws FacesException
-   {
-      try
-      {
-         BeanManager manager = new BeanManagerLocator().getBeanManager();
+    @Override
+    public ExternalContext getExternalContext(final Object context, final Object request, final Object response)
+            throws FacesException {
+        try {
+            BeanManager manager = new BeanManagerLocator().getBeanManager();
 
-         SeamExternalContext seamExternalContext = BeanManagerUtils.getContextualInstance(manager, SeamExternalContext.class);
-         seamExternalContext.setWrapped(parent.getExternalContext(context, request, response));
+            SeamExternalContext seamExternalContext = BeanManagerUtils
+                    .getContextualInstance(manager, SeamExternalContext.class);
+            seamExternalContext.setWrapped(parent.getExternalContext(context, request, response));
 
-         return seamExternalContext;
-      }
-      catch (Exception e)
-      {
-         throw new IllegalStateException("Could not wrap ExternalContext", e);
-      }
-   }
+            return seamExternalContext;
+        } catch (Exception e) {
+            throw new IllegalStateException("Could not wrap ExternalContext", e);
+        }
+    }
 
-   @Override
-   public ExternalContextFactory getWrapped()
-   {
-      return parent;
-   }
+    @Override
+    public ExternalContextFactory getWrapped() {
+        return parent;
+    }
 }

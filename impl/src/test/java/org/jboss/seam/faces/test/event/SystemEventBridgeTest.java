@@ -43,225 +43,188 @@ import org.junit.runner.RunWith;
  * 
  */
 @RunWith(Arquillian.class)
-public class SystemEventBridgeTest
-{
+public class SystemEventBridgeTest {
 
-   @Deployment
-   public static JavaArchive createTestArchive()
-   {
-      return ShrinkWrap.create(JavaArchive.class).addClasses(SystemEventObserver.class, SystemEventBridge.class, BeanManagerAware.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
-   }
+    @Deployment
+    public static JavaArchive createTestArchive() {
+        return ShrinkWrap.create(JavaArchive.class)
+                .addClasses(SystemEventObserver.class, SystemEventBridge.class, BeanManagerAware.class)
+                .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+    }
 
-   @Inject
-   SystemEventBridge listener;
+    @Inject
+    SystemEventBridge listener;
 
-   @Inject
-   SystemEventObserver observer;
+    @Inject
+    SystemEventObserver observer;
 
-   private final MockFacesContext facesContext = new MockFacesContext();
-   private final MockApplication application = new MockApplication();
-   private final ScopeContext scopeContext = new ScopeContext("foo", new HashMap<String, Object>());
-   private final ExceptionQueuedEventContext eventContext = new ExceptionQueuedEventContext(facesContext, new NullPointerException());
-   private static final UIComponent component = new UIOutput();
-   private static final UIViewRoot uiViewRoot = new UIViewRoot();
+    private final MockFacesContext facesContext = new MockFacesContext();
+    private final MockApplication application = new MockApplication();
+    private final ScopeContext scopeContext = new ScopeContext("foo", new HashMap<String, Object>());
+    private final ExceptionQueuedEventContext eventContext = new ExceptionQueuedEventContext(facesContext,
+            new NullPointerException());
+    private static final UIComponent component = new UIOutput();
+    private static final UIViewRoot uiViewRoot = new UIViewRoot();
 
-   static
-   {
-      component.setId("foo");
-      uiViewRoot.setViewId("foo.xhtml");
-   }
+    static {
+        component.setId("foo");
+        uiViewRoot.setViewId("foo.xhtml");
+    }
 
-   @Test
-   public void testObservePostConstructApplication()
-   {
-      fireAndAssert("1", new PostConstructApplicationEvent(application));
-   }
+    @Test
+    public void testObservePostConstructApplication() {
+        fireAndAssert("1", new PostConstructApplicationEvent(application));
+    }
 
-   @Test
-   public void testObservePreDestroyApplication()
-   {
-      fireAndAssert("2", new PreDestroyApplicationEvent(application));
-   }
+    @Test
+    public void testObservePreDestroyApplication() {
+        fireAndAssert("2", new PreDestroyApplicationEvent(application));
+    }
 
-   @Test
-   public void testObservePostConstructCustomScope()
-   {
-      fireAndAssert("3", new PostConstructCustomScopeEvent(scopeContext));
-   }
+    @Test
+    public void testObservePostConstructCustomScope() {
+        fireAndAssert("3", new PostConstructCustomScopeEvent(scopeContext));
+    }
 
-   @Test
-   public void testObservePreDestroyCustomScope()
-   {
-      fireAndAssert("4", new PreDestroyCustomScopeEvent(scopeContext));
-   }
+    @Test
+    public void testObservePreDestroyCustomScope() {
+        fireAndAssert("4", new PreDestroyCustomScopeEvent(scopeContext));
+    }
 
-   @Test
-   public void testObserveExceptionQueued()
-   {
-      fireAndAssert("5", new ExceptionQueuedEvent(eventContext));
-   }
+    @Test
+    public void testObserveExceptionQueued() {
+        fireAndAssert("5", new ExceptionQueuedEvent(eventContext));
+    }
 
-   @Test
-   public void testObserveComponentSystemEvent()
-   {
-      fireAndAssert("6", new PreValidateEvent(component));
-   }
+    @Test
+    public void testObserveComponentSystemEvent() {
+        fireAndAssert("6", new PreValidateEvent(component));
+    }
 
-   @Test
-   public void testObservePreValidate()
-   {
-      fireAndAssert("7", new PreValidateEvent(component));
-   }
+    @Test
+    public void testObservePreValidate() {
+        fireAndAssert("7", new PreValidateEvent(component));
+    }
 
-   @Test
-   public void testObservePreValidateComponent()
-   {
-      fireAndAssert("8", new PreValidateEvent(component));
-   }
+    @Test
+    public void testObservePreValidateComponent() {
+        fireAndAssert("8", new PreValidateEvent(component));
+    }
 
-   @Test
-   public void testObserveComponent()
-   {
-      fireAndAssert("9", new PreValidateEvent(component));
-   }
+    @Test
+    public void testObserveComponent() {
+        fireAndAssert("9", new PreValidateEvent(component));
+    }
 
-   @Test
-   public void testObservePostValidate()
-   {
-      fireAndAssert("10", new PostValidateEvent(component));
-   }
+    @Test
+    public void testObservePostValidate() {
+        fireAndAssert("10", new PostValidateEvent(component));
+    }
 
-   @Test
-   public void testObservePostValidateComponent()
-   {
-      fireAndAssert("11", new PostValidateEvent(component));
-   }
+    @Test
+    public void testObservePostValidateComponent() {
+        fireAndAssert("11", new PostValidateEvent(component));
+    }
 
-   @Test
-   public void testObservePostAddToView()
-   {
-      fireAndAssert("12", new PostAddToViewEvent(component));
-   }
+    @Test
+    public void testObservePostAddToView() {
+        fireAndAssert("12", new PostAddToViewEvent(component));
+    }
 
-   @Test
-   public void testObservePostAddToViewComponent()
-   {
-      fireAndAssert("13", new PostAddToViewEvent(component));
-   }
+    @Test
+    public void testObservePostAddToViewComponent() {
+        fireAndAssert("13", new PostAddToViewEvent(component));
+    }
 
-   @Test
-   public void testObservePostConstructViewMap()
-   {
-      fireAndAssert("14", new PostConstructViewMapEvent(uiViewRoot));
-   }
+    @Test
+    public void testObservePostConstructViewMap() {
+        fireAndAssert("14", new PostConstructViewMapEvent(uiViewRoot));
+    }
 
-   @Test
-   public void testObservePostConstructSpecificViewMap()
-   {
-      fireAndAssert("14a", new PostConstructViewMapEvent(uiViewRoot));
-   }
+    @Test
+    public void testObservePostConstructSpecificViewMap() {
+        fireAndAssert("14a", new PostConstructViewMapEvent(uiViewRoot));
+    }
 
-   @Test
-   public void testObservePostRestoreState()
-   {
-      fireAndAssert("15", new PostRestoreStateEvent(component));
-   }
+    @Test
+    public void testObservePostRestoreState() {
+        fireAndAssert("15", new PostRestoreStateEvent(component));
+    }
 
-   @Test
-   public void testObservePostRestoreStateComponent()
-   {
-      fireAndAssert("16", new PostRestoreStateEvent(component));
-   }
+    @Test
+    public void testObservePostRestoreStateComponent() {
+        fireAndAssert("16", new PostRestoreStateEvent(component));
+    }
 
-   @Test
-   public void testObservePreDestroyViewMap()
-   {
-      fireAndAssert("17", new PreDestroyViewMapEvent(uiViewRoot));
-   }
+    @Test
+    public void testObservePreDestroyViewMap() {
+        fireAndAssert("17", new PreDestroyViewMapEvent(uiViewRoot));
+    }
 
-   @Test
-   public void testObservePreDestroySpecificViewMap()
-   {
-      fireAndAssert("17a", new PreDestroyViewMapEvent(uiViewRoot));
-   }
+    @Test
+    public void testObservePreDestroySpecificViewMap() {
+        fireAndAssert("17a", new PreDestroyViewMapEvent(uiViewRoot));
+    }
 
-   @Test
-   public void testObservePreRemoveFromView()
-   {
-      fireAndAssert("18", new PreRemoveFromViewEvent(component));
-   }
+    @Test
+    public void testObservePreRemoveFromView() {
+        fireAndAssert("18", new PreRemoveFromViewEvent(component));
+    }
 
-   @Test
-   public void testObservePreRemoveFromViewComponent()
-   {
-      fireAndAssert("19", new PreRemoveFromViewEvent(component));
-   }
+    @Test
+    public void testObservePreRemoveFromViewComponent() {
+        fireAndAssert("19", new PreRemoveFromViewEvent(component));
+    }
 
-   @Test
-   public void testObservePreRenderComponent()
-   {
-      fireAndAssert("20", new PreRenderComponentEvent(component));
-   }
+    @Test
+    public void testObservePreRenderComponent() {
+        fireAndAssert("20", new PreRenderComponentEvent(component));
+    }
 
-   @Test
-   public void testObservePreRenderComponentComponent()
-   {
-      fireAndAssert("21", new PreRenderComponentEvent(component));
-   }
+    @Test
+    public void testObservePreRenderComponentComponent() {
+        fireAndAssert("21", new PreRenderComponentEvent(component));
+    }
 
-   @Test
-   public void testObservePreRenderView()
-   {
-      fireAndAssert("22", new PreRenderViewEvent(uiViewRoot));
-   }
+    @Test
+    public void testObservePreRenderView() {
+        fireAndAssert("22", new PreRenderViewEvent(uiViewRoot));
+    }
 
-   @Test
-   public void testObservePreRenderSpecificView()
-   {
-      fireAndAssert("23", new PreRenderViewEvent(uiViewRoot));
-   }
+    @Test
+    public void testObservePreRenderSpecificView() {
+        fireAndAssert("23", new PreRenderViewEvent(uiViewRoot));
+    }
 
-   private void fireAndAssert(final String caseId, final SystemEvent... events)
-   {
-      observer.reset();
-      for (SystemEvent e : events)
-      {
-         listener.processEvent(e);
-      }
-      observer.assertObservations(caseId, events);
-   }
+    private void fireAndAssert(final String caseId, final SystemEvent... events) {
+        observer.reset();
+        for (SystemEvent e : events) {
+            listener.processEvent(e);
+        }
+        observer.assertObservations(caseId, events);
+    }
 
-   /*
-    * @Test public void testSpecificPostComponentValidation() { UIComponent c =
-    * new UIOutput(); c.setId("foo"); systemEventListener.processEvent(new
-    * PostValidateEvent(c)); assert
-    * SystemEventObserver.specificComponentValidationEvent; }
-    * 
-    * @Test public void testExceptionQueuedEventObserver() {
-    * ExceptionQueuedEventContext eqec = new
-    * ExceptionQueuedEventContext(facesContext, new NullPointerException());
-    * ExceptionQueuedEvent eqe = new ExceptionQueuedEvent(eqec);
-    * systemEventListener.processEvent(eqe); assert
-    * SystemEventObserver.excecptionQueuedEvent; }
-    * 
-    * @Test public void testPostConstructApplicationEventObserver() {
-    * systemEventListener.processEvent(new
-    * PostConstructApplicationEvent(application)); assert
-    * SystemEventObserver.postConstructApplicationEvent; }
-    * 
-    * @Test public void testPostConstructCustomScopeEvent() { ScopeContext sc =
-    * new ScopeContext("dummyscope", new HashMap<String, Object>());
-    * systemEventListener.processEvent(new PostConstructCustomScopeEvent(sc));
-    * assert SystemEventObserver.postConstructCustomScopeEvent; }
-    * 
-    * @Test public void testPreDestroyApplicationEventObserver() {
-    * systemEventListener.processEvent(new
-    * PreDestroyApplicationEvent(application)); assert
-    * SystemEventObserver.preDestroyApplicationEvent; }
-    * 
-    * @Test public void testPreDestroyCustomScopeEventObserver() { ScopeContext
-    * sc = new ScopeContext("dummyscope", new HashMap<String, Object>());
-    * systemEventListener.processEvent(new PreDestroyCustomScopeEvent(sc));
-    * assert SystemEventObserver.preDestroyCustomScopeEvent; }
-    */
+    /*
+     * @Test public void testSpecificPostComponentValidation() { UIComponent c = new UIOutput(); c.setId("foo");
+     * systemEventListener.processEvent(new PostValidateEvent(c)); assert SystemEventObserver.specificComponentValidationEvent;
+     * }
+     * 
+     * @Test public void testExceptionQueuedEventObserver() { ExceptionQueuedEventContext eqec = new
+     * ExceptionQueuedEventContext(facesContext, new NullPointerException()); ExceptionQueuedEvent eqe = new
+     * ExceptionQueuedEvent(eqec); systemEventListener.processEvent(eqe); assert SystemEventObserver.excecptionQueuedEvent; }
+     * 
+     * @Test public void testPostConstructApplicationEventObserver() { systemEventListener.processEvent(new
+     * PostConstructApplicationEvent(application)); assert SystemEventObserver.postConstructApplicationEvent; }
+     * 
+     * @Test public void testPostConstructCustomScopeEvent() { ScopeContext sc = new ScopeContext("dummyscope", new
+     * HashMap<String, Object>()); systemEventListener.processEvent(new PostConstructCustomScopeEvent(sc)); assert
+     * SystemEventObserver.postConstructCustomScopeEvent; }
+     * 
+     * @Test public void testPreDestroyApplicationEventObserver() { systemEventListener.processEvent(new
+     * PreDestroyApplicationEvent(application)); assert SystemEventObserver.preDestroyApplicationEvent; }
+     * 
+     * @Test public void testPreDestroyCustomScopeEventObserver() { ScopeContext sc = new ScopeContext("dummyscope", new
+     * HashMap<String, Object>()); systemEventListener.processEvent(new PreDestroyCustomScopeEvent(sc)); assert
+     * SystemEventObserver.preDestroyCustomScopeEvent; }
+     */
 }

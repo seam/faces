@@ -5,7 +5,6 @@ import java.lang.annotation.RetentionPolicy;
 
 @TestQualifier
 @Retention(RetentionPolicy.RUNTIME)
-public @interface QualifiedIcon
-{
+public @interface QualifiedIcon {
     public String value();
 }

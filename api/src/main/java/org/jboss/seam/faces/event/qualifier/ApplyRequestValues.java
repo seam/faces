@@ -20,8 +20,7 @@ import javax.inject.Qualifier;
  * @see javax.faces.event.PhaseEvent
  */
 @Qualifier
-@Target( { FIELD, PARAMETER })
+@Target({ FIELD, PARAMETER })
 @Retention(RUNTIME)
-public @interface ApplyRequestValues
-{
+public @interface ApplyRequestValues {
 }

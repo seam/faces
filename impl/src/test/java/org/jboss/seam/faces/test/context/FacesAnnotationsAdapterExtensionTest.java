@@ -16,18 +16,16 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  */
 @RunWith(Arquillian.class)
-public class FacesAnnotationsAdapterExtensionTest
-{
+public class FacesAnnotationsAdapterExtensionTest {
 
-   @Deployment
-   public static JavaArchive createTestArchive()
-   {
-      return ShrinkWrap.create(JavaArchive.class).addClasses(ImproperlyAnnotatedBean.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
-   }
+    @Deployment
+    public static JavaArchive createTestArchive() {
+        return ShrinkWrap.create(JavaArchive.class).addClasses(ImproperlyAnnotatedBean.class)
+                .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+    }
 
-   @Test
-   public void testImproperlyAnnotatedClassIsCaptured()
-   {
-      assertTrue(FacesAnnotationsAdapterExtension.getAliasedbeans().containsKey(ImproperlyAnnotatedBean.class));
-   }
+    @Test
+    public void testImproperlyAnnotatedClassIsCaptured() {
+        assertTrue(FacesAnnotationsAdapterExtension.getAliasedbeans().containsKey(ImproperlyAnnotatedBean.class));
+    }
 }

@@ -7,9 +7,8 @@ import javax.inject.Named;
 
 /**
  * <p>
- * A producer which retrieves the ProjectStage for the current request
- * of the JavaServer Faces application, storing the result as a
- * ApplicationScoped bean instance.
+ * A producer which retrieves the ProjectStage for the current request of the JavaServer Faces application, storing the result
+ * as a ApplicationScoped bean instance.
  * </p>
  * 
  * <p>
@@ -22,12 +21,10 @@ import javax.inject.Named;
  * 
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
-public class ProjectStageProducer
-{
-   @Named
-   @Produces
-   public ProjectStage getProjectStage(final FacesContext context)
-   {
-      return context.getApplication().getProjectStage();
-   }
+public class ProjectStageProducer {
+    @Named
+    @Produces
+    public ProjectStage getProjectStage(final FacesContext context) {
+        return context.getApplication().getProjectStage();
+    }
 }

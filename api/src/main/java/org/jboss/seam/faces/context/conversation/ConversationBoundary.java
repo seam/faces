@@ -15,15 +15,13 @@ import javax.interceptor.InterceptorBinding;
  * <p>
  * <b>Note:</b> This should never be used.
  * <p>
- * TODO: Should we warn at startup if @{@link Begin} and @{@link End} are used
- * together on the same method?
+ * TODO: Should we warn at startup if @{@link Begin} and @{@link End} are used together on the same method?
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
 @InterceptorBinding
 @Inherited
-@Target( { METHOD, TYPE })
+@Target({ METHOD, TYPE })
 @Retention(RUNTIME)
-@interface ConversationBoundary
-{
+@interface ConversationBoundary {
 }

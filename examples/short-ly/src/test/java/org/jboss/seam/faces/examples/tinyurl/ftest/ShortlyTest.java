@@ -15,61 +15,58 @@ import static org.jboss.test.selenium.guard.request.RequestTypeGuardFactory.*;
 
 /**
  * A functional test for the short-ly example
- *
+ * 
  * @author Marek Schmidt
- *
+ * 
  */
 public class ShortlyTest extends AbstractTestCase {
 
-   protected final XpathLocator URL_TEXT = xp("//input[contains(@name,':url')]");
-   protected final XpathLocator NAME_TEXT = xp("//input[contains(@name,':name')]");
-   protected final XpathLocator CREATE_BUTTON = xp("//input[contains(@value,'Create')]");
-   protected final XpathLocator DELETEALL_BUTTON = xp("//input[contains(@value,'deleteAll')]");
+    protected final XpathLocator URL_TEXT = xp("//input[contains(@name,':url')]");
+    protected final XpathLocator NAME_TEXT = xp("//input[contains(@name,':name')]");
+    protected final XpathLocator CREATE_BUTTON = xp("//input[contains(@value,'Create')]");
+    protected final XpathLocator DELETEALL_BUTTON = xp("//input[contains(@value,'deleteAll')]");
 
-   protected final XpathLocator ROOT_LINK = xp("//a[text()=\"root\"]");
-   protected final AttributeLocator ROOT_LINK_HREF = ROOT_LINK.getAttribute(HREF);
+    protected final XpathLocator ROOT_LINK = xp("//a[text()=\"root\"]");
+    protected final AttributeLocator ROOT_LINK_HREF = ROOT_LINK.getAttribute(HREF);
 
-   protected final XpathLocator BAR_LINK = xp("//a[text()=\"bar\"]");
+    protected final XpathLocator BAR_LINK = xp("//a[text()=\"bar\"]");
 
-   @BeforeMethod
-   public void openStartUrl() throws MalformedURLException
-   {
-      selenium.setSpeed(300);
-      selenium.open(new URL(contextPath.toString()));
-   }
- 
-   @Test
-   public void testCreate() throws MalformedURLException
-   {
-      // deleteAll button is not displayed if there are no links
-      assertEquals(selenium.isElementPresent(DELETEALL_BUTTON), false);
+    @BeforeMethod
+    public void openStartUrl() throws MalformedURLException {
+        selenium.setSpeed(300);
+        selenium.open(new URL(contextPath.toString()));
+    }
 
-      // We can only test pages on the same domain, the only interesting page we can be quite sure to exist on the same domain is the context root
-      selenium.type(URL_TEXT, contextRoot.toString());
-      selenium.type(NAME_TEXT, "root");
-      waitHttp(selenium).click(CREATE_BUTTON);
+    @Test
+    public void testCreate() throws MalformedURLException {
+        // deleteAll button is not displayed if there are no links
+        assertEquals(selenium.isElementPresent(DELETEALL_BUTTON), false);
 
-      assertEquals(selenium.getAttribute(ROOT_LINK_HREF), "/short.ly/root");
+        // We can only test pages on the same domain, the only interesting page we can be quite sure to exist on the same domain
+        // is the context root
+        selenium.type(URL_TEXT, contextRoot.toString());
+        selenium.type(NAME_TEXT, "root");
+        waitHttp(selenium).click(CREATE_BUTTON);
 
-      waitHttp(selenium).click(ROOT_LINK);
-      assertEquals(selenium.getLocation().toString(), contextRoot.toString());
-   }
+        assertEquals(selenium.getAttribute(ROOT_LINK_HREF), "/short.ly/root");
 
-   @Test(dependsOnMethods={"testCreate"})
-   public void testDeleteAll()
-   {
-      waitHttp(selenium).click(DELETEALL_BUTTON);
-      assertEquals(selenium.isElementPresent(DELETEALL_BUTTON), false);
-      assertEquals(selenium.isElementPresent(ROOT_LINK), false);
-   }
+        waitHttp(selenium).click(ROOT_LINK);
+        assertEquals(selenium.getLocation().toString(), contextRoot.toString());
+    }
 
-   @Test
-   public void testValidation()
-   {
-      selenium.type(URL_TEXT, "foo");
-      selenium.type(NAME_TEXT, "bar");
-      waitHttp(selenium).click(CREATE_BUTTON);
-      assertEquals(selenium.isTextPresent("Must be a valid web address"), true);
-      assertEquals(selenium.isElementPresent(BAR_LINK), false);
-   }
+    @Test(dependsOnMethods = { "testCreate" })
+    public void testDeleteAll() {
+        waitHttp(selenium).click(DELETEALL_BUTTON);
+        assertEquals(selenium.isElementPresent(DELETEALL_BUTTON), false);
+        assertEquals(selenium.isElementPresent(ROOT_LINK), false);
+    }
+
+    @Test
+    public void testValidation() {
+        selenium.type(URL_TEXT, "foo");
+        selenium.type(NAME_TEXT, "bar");
+        waitHttp(selenium).click(CREATE_BUTTON);
+        assertEquals(selenium.isTextPresent("Must be a valid web address"), true);
+        assertEquals(selenium.isElementPresent(BAR_LINK), false);
+    }
 }

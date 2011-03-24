@@ -10,17 +10,14 @@ import javax.enterprise.inject.spi.Extension;
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
-public class RenderScopedExtension implements Extension
-{
+public class RenderScopedExtension implements Extension {
 
-   public void addScope(@Observes final BeforeBeanDiscovery event)
-   {
-      event.addScope(RenderScoped.class, true, true);
-   }
+    public void addScope(@Observes final BeforeBeanDiscovery event) {
+        event.addScope(RenderScoped.class, true, true);
+    }
 
-   public void registerContext(@Observes final AfterBeanDiscovery event)
-   {
-      event.addContext(new RenderScopedContext());
-   }
+    public void registerContext(@Observes final AfterBeanDiscovery event) {
+        event.addContext(new RenderScopedContext());
+    }
 
 }

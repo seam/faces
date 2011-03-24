@@ -37,54 +37,49 @@ import org.junit.runner.RunWith;
  * 
  */
 @RunWith(Arquillian.class)
-public class MessagesAdapterTest extends PhaseTestBase
-{
-   @Deployment
-   public static JavaArchive createTestArchive()
-   {
-      return ShrinkWrap
-               .create(JavaArchive.class)
-               .addClasses(MessagesAdapter.class, MessagesImpl.class, MockFlashContext.class, MessageFactory.class,
-                        TemplateMessageImpl.class, BundleTemplateMessageImpl.class, Bundles.class,
-                        PhaseEventBridge.class, MockLogger.class, ApplicationBundles.class, UserLocaleProducer.class, DefaultLocaleProducer.class)
-               .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
-   }
+public class MessagesAdapterTest extends PhaseTestBase {
+    @Deployment
+    public static JavaArchive createTestArchive() {
+        return ShrinkWrap
+                .create(JavaArchive.class)
+                .addClasses(MessagesAdapter.class, MessagesImpl.class, MockFlashContext.class, MessageFactory.class,
+                        TemplateMessageImpl.class, BundleTemplateMessageImpl.class, Bundles.class, PhaseEventBridge.class,
+                        MockLogger.class, ApplicationBundles.class, UserLocaleProducer.class, DefaultLocaleProducer.class)
+                .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+    }
 
-   @Inject
-   Messages messages;
+    @Inject
+    Messages messages;
 
-   String text = "Hey! This is a message";
+    String text = "Hey! This is a message";
 
-   @Before
-   public void before()
-   {
-      facesContext = new StubFacesContext();
-   }
+    @Before
+    public void before() {
+        facesContext = new StubFacesContext();
+    }
 
-   @Test
-   public void testMessagesAreTransferredBeforeRenderResponse()
-   {
-      messages.add(messages.info(text));
-      assertEquals(1, messages.getAll().size());
+    @Test
+    public void testMessagesAreTransferredBeforeRenderResponse() {
+        messages.add(messages.info(text));
+        assertEquals(1, messages.getAll().size());
 
-      fireBeforePhase(PhaseId.RENDER_RESPONSE);
+        fireBeforePhase(PhaseId.RENDER_RESPONSE);
 
-      assertTrue(messages.getAll().isEmpty());
-      assertNotNull(facesContext.getMessages());
-      assertEquals(text, facesContext.getMessages().next().getSummary());
+        assertTrue(messages.getAll().isEmpty());
+        assertNotNull(facesContext.getMessages());
+        assertEquals(text, facesContext.getMessages().next().getSummary());
 
-   }
+    }
 
-   @Test
-   public void testMessageTargetsTransferredToFacesMessageComponentId()
-   {
-      messages.add(messages.info(text).targets("component"));
-      assertEquals(1, messages.getAll().size());
+    @Test
+    public void testMessageTargetsTransferredToFacesMessageComponentId() {
+        messages.add(messages.info(text).targets("component"));
+        assertEquals(1, messages.getAll().size());
 
-      fireBeforePhase(PhaseId.RENDER_RESPONSE);
+        fireBeforePhase(PhaseId.RENDER_RESPONSE);
 
-      assertTrue(messages.getAll().isEmpty());
-      assertNotNull(facesContext.getMessages("component"));
-      assertEquals(text, facesContext.getMessages("component").next().getSummary());
-   }
+        assertTrue(messages.getAll().isEmpty());
+        assertNotNull(facesContext.getMessages("component"));
+        assertEquals(text, facesContext.getMessages("component").next().getSummary());
+    }
 }

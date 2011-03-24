@@ -7,8 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation that is applied to an enum to signify that it contains
- * configuration for view specific data
+ * Annotation that is applied to an enum to signify that it contains configuration for view specific data
  * 
  * @author Stuart Douglas
  * 
@@ -16,7 +15,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
-public @interface ViewConfig
-{
+public @interface ViewConfig {
 
 }

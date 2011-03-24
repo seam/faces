@@ -8,10 +8,8 @@ import javax.inject.Named;
 
 /**
  * <p>
- * A producer which retrieves the {@link ExternalContext} for the current
- * request of the JavaServer Faces application by calling
- * {@link FacesContext#getExternalContext()} and stores the result as a
- * request-scoped bean instance.
+ * A producer which retrieves the {@link ExternalContext} for the current request of the JavaServer Faces application by calling
+ * {@link FacesContext#getExternalContext()} and stores the result as a request-scoped bean instance.
  * </p>
  * 
  * <p>
@@ -26,13 +24,11 @@ import javax.inject.Named;
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * @author Dan Allen
  */
-public class ExternalContextProducer
-{
-   @Named
-   @Produces
-   @RequestScoped
-   public ExternalContext getExternalContext(final FacesContext context)
-   {
-      return context.getExternalContext();
-   }
+public class ExternalContextProducer {
+    @Named
+    @Produces
+    @RequestScoped
+    public ExternalContext getExternalContext(final FacesContext context) {
+        return context.getExternalContext();
+    }
 }

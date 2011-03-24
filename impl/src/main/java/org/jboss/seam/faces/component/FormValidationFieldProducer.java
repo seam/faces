@@ -28,163 +28,130 @@ import org.jboss.seam.faces.validation.InputField;
  * @author <a href="http://community.jboss.org/people/spinner)">Jose Rodolfo freitas</a>
  */
 @RequestScoped
-public class FormValidationFieldProducer
-{
-   Logger log = Logger.getLogger(FormValidationFieldProducer.class);
+public class FormValidationFieldProducer {
+    Logger log = Logger.getLogger(FormValidationFieldProducer.class);
 
-   @Inject
-   FacesContext context;
+    @Inject
+    FacesContext context;
 
-   UIForm form = null;
-   UIValidateForm validator = null;
-   private Map<String, UIInput> components;
+    UIForm form = null;
+    UIValidateForm validator = null;
+    private Map<String, UIInput> components;
 
-   public void interceptComponentTree(@Observes @Before final UIValidateForm event)
-   {
-      validator = event;
-      form = validator.locateForm();
-      locateAliasedComponents(event);
-      event.setComponents(components);
-   }
+    public void interceptComponentTree(@Observes @Before final UIValidateForm event) {
+        validator = event;
+        form = validator.locateForm();
+        locateAliasedComponents(event);
+        event.setComponents(components);
+    }
 
-   public void cleanupComponentTree(@Observes @After final UIValidateForm event)
-   {
-      components = new HashMap<String, UIInput>();
-   }
+    public void cleanupComponentTree(@Observes @After final UIValidateForm event) {
+        components = new HashMap<String, UIInput>();
+    }
 
-   @Produces
-   @Dependent
-   @InputField
-   public Object getInputFieldValue(final InjectionPoint ip)
-   {
-      Object result = null;
+    @Produces
+    @Dependent
+    @InputField
+    public Object getInputFieldValue(final InjectionPoint ip) {
+        Object result = null;
 
-      if (isInitialized())
-      {
-         String id = getFieldId(ip);
-         UIInput component = findComponent(id, id);
-         components.put(id, component);
+        if (isInitialized()) {
+            String id = getFieldId(ip);
+            UIInput component = findComponent(id, id);
+            components.put(id, component);
 
-         if (component.isLocalValueSet())
-         {
-            result = component.getValue();
-         }
-         else
-         {
-            Converter converter = component.getConverter();
-            if (converter != null)
-            {
-               result = converter.getAsObject(context, component, (String) component.getSubmittedValue());
-            }
-            else
-            {
-               result = component.getSubmittedValue();
-            }
-         }
-
-      }
-
-      return result;
-   }
-   
-   @Produces
-   @Dependent
-   public InputElement produceInputElement(final InjectionPoint ip)
-   {
-      if (isInitialized())
-      {
-         String id = ip.getMember().getName();
-
-         UIInput component = findComponent(id, id);
-         components.put(id, component);
-
-         InputElement inputElementResult = new InputElement(id, component.getClientId(context), component);
-
-         if (component.isLocalValueSet())
-         {
-            inputElementResult.setValue(component.getValue());
-         }
-         else
-         {
-            Converter converter = component.getConverter();
-            if (converter != null)
-            {
-               Object value = converter.getAsObject(context, component, (String) component.getSubmittedValue());
-               inputElementResult.setValue(value);
-            }
-            else
-            {
-               inputElementResult.setValue(component.getSubmittedValue());
-            }
-         }
-         return inputElementResult;
-      }
-      return null;
-   }
- 
-   private boolean isInitialized()
-   {
-      return form != null;
-   }
-
-   private String getFieldId(final InjectionPoint ip)
-   {
-      String parameterName = ip.getAnnotated().getAnnotation(InputField.class).value();
-      if ("".equals(parameterName))
-      {
-         parameterName = ip.getMember().getName();
-      }
-      return parameterName;
-   }
-
-   public void locateAliasedComponents(final UIValidateForm validator)
-   {
-      components = new HashMap<String, UIInput>();
-      String fields = validator.getFields();
-      if ((fields != null) && !"".equals(fields.trim()))
-      {
-         List<String> clientFieldIds = Arrays.asList(fields.split("\\s+"));
-         for (String field : clientFieldIds)
-         {
-            List<String> mapping = Arrays.asList(field.split("\\s*=\\s*"));
-            String aliasFieldName = mapping.get(0);
-
-            String clientInputId = aliasFieldName;
-
-            if (mapping.size() > 1)
-            {
-               clientInputId = mapping.get(1);
+            if (component.isLocalValueSet()) {
+                result = component.getValue();
+            } else {
+                Converter converter = component.getConverter();
+                if (converter != null) {
+                    result = converter.getAsObject(context, component, (String) component.getSubmittedValue());
+                } else {
+                    result = component.getSubmittedValue();
+                }
             }
 
-            UIInput component = findComponent(aliasFieldName, clientInputId);
-            components.put(aliasFieldName, component);
-         }
-      }
-   }
+        }
 
-   private UIInput findComponent(final String alias, final String clientId)
-   {
-      UIComponent comp = null;
-      if (!components.containsKey(clientId))
-      {
-         comp = form.findComponent(clientId);
-         if (comp == null)
-         {
-            throw new IllegalArgumentException("org.jboss.seam.component.UIValidateForm-- Could not locate component ["
-                     + form.getClientId() + ":" + alias + "]");
-         }
-         else if (!(comp instanceof UIInput))
-         {
-            throw new IllegalArgumentException("org.jboss.seam.component.UIValidateForm-- Selected component ["
-                     + form.getClientId() + ":" + alias + "] must be a UIInput component, was ["
-                     + comp.getClass().getName() + "]");
-         }
-      }
-      else
-      {
-         comp = components.get(clientId);
-      }
-      return (UIInput) comp;
-   }
+        return result;
+    }
+
+    @Produces
+    @Dependent
+    public InputElement produceInputElement(final InjectionPoint ip) {
+        if (isInitialized()) {
+            String id = ip.getMember().getName();
+
+            UIInput component = findComponent(id, id);
+            components.put(id, component);
+
+            InputElement inputElementResult = new InputElement(id, component.getClientId(context), component);
+
+            if (component.isLocalValueSet()) {
+                inputElementResult.setValue(component.getValue());
+            } else {
+                Converter converter = component.getConverter();
+                if (converter != null) {
+                    Object value = converter.getAsObject(context, component, (String) component.getSubmittedValue());
+                    inputElementResult.setValue(value);
+                } else {
+                    inputElementResult.setValue(component.getSubmittedValue());
+                }
+            }
+            return inputElementResult;
+        }
+        return null;
+    }
+
+    private boolean isInitialized() {
+        return form != null;
+    }
+
+    private String getFieldId(final InjectionPoint ip) {
+        String parameterName = ip.getAnnotated().getAnnotation(InputField.class).value();
+        if ("".equals(parameterName)) {
+            parameterName = ip.getMember().getName();
+        }
+        return parameterName;
+    }
+
+    public void locateAliasedComponents(final UIValidateForm validator) {
+        components = new HashMap<String, UIInput>();
+        String fields = validator.getFields();
+        if ((fields != null) && !"".equals(fields.trim())) {
+            List<String> clientFieldIds = Arrays.asList(fields.split("\\s+"));
+            for (String field : clientFieldIds) {
+                List<String> mapping = Arrays.asList(field.split("\\s*=\\s*"));
+                String aliasFieldName = mapping.get(0);
+
+                String clientInputId = aliasFieldName;
+
+                if (mapping.size() > 1) {
+                    clientInputId = mapping.get(1);
+                }
+
+                UIInput component = findComponent(aliasFieldName, clientInputId);
+                components.put(aliasFieldName, component);
+            }
+        }
+    }
+
+    private UIInput findComponent(final String alias, final String clientId) {
+        UIComponent comp = null;
+        if (!components.containsKey(clientId)) {
+            comp = form.findComponent(clientId);
+            if (comp == null) {
+                throw new IllegalArgumentException("org.jboss.seam.component.UIValidateForm-- Could not locate component ["
+                        + form.getClientId() + ":" + alias + "]");
+            } else if (!(comp instanceof UIInput)) {
+                throw new IllegalArgumentException("org.jboss.seam.component.UIValidateForm-- Selected component ["
+                        + form.getClientId() + ":" + alias + "] must be a UIInput component, was [" + comp.getClass().getName()
+                        + "]");
+            }
+        } else {
+            comp = components.get(clientId);
+        }
+        return (UIInput) comp;
+    }
 
 }

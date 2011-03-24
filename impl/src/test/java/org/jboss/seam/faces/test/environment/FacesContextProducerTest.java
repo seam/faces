@@ -20,56 +20,52 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Verify that the FacesContextProducer produces the same FacesContext as
- * returned by FacesContext#getCurrentInstance() and by the CDI producer method.
+ * Verify that the FacesContextProducer produces the same FacesContext as returned by FacesContext#getCurrentInstance() and by
+ * the CDI producer method.
  * 
  * @author Dan Allen
  */
 @RunWith(Arquillian.class)
-public class FacesContextProducerTest
-{
-   @Deployment
-   public static Archive<?> createTestArchive()
-   {
-      return ShrinkWrap.create(JavaArchive.class).addClass(FacesContextProducer.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
-   }
+public class FacesContextProducerTest {
+    @Deployment
+    public static Archive<?> createTestArchive() {
+        return ShrinkWrap.create(JavaArchive.class).addClass(FacesContextProducer.class)
+                .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+    }
 
-   @Inject
-   Instance<FacesContext> facesContextInstance;
+    @Inject
+    Instance<FacesContext> facesContextInstance;
 
-   @Test
-   public void testReturnsCurrentFacesContext()
-   {
-      new MockFacesContext().set();
-      Assert.assertSame(new FacesContextProducer().getFacesContext(), FacesContext.getCurrentInstance());
-   }
+    @Test
+    public void testReturnsCurrentFacesContext() {
+        new MockFacesContext().set();
+        Assert.assertSame(new FacesContextProducer().getFacesContext(), FacesContext.getCurrentInstance());
+    }
 
-   @Test
-   public void testProducesContextualCurrentFacesContext()
-   {
-      new MockFacesContext().set().setCurrentPhaseId(PhaseId.RENDER_RESPONSE);
+    @Test
+    public void testProducesContextualCurrentFacesContext() {
+        new MockFacesContext().set().setCurrentPhaseId(PhaseId.RENDER_RESPONSE);
 
-      FacesContext actualFacesContext = FacesContext.getCurrentInstance();
-      FacesContext producedFacesContext = facesContextInstance.get();
+        FacesContext actualFacesContext = FacesContext.getCurrentInstance();
+        FacesContext producedFacesContext = facesContextInstance.get();
 
-      // not equal since the produced FacesContext is a proxy
-      Assert.assertFalse(actualFacesContext == producedFacesContext);
+        // not equal since the produced FacesContext is a proxy
+        Assert.assertFalse(actualFacesContext == producedFacesContext);
 
-      // verify we have same object through proxy by comparing hash codes
-      // Disabled as hashCode is not passed through the proxy in weld
-      // 1.1.0.Beta1
-      // Assert.assertEquals(actualFacesContext.hashCode(),
-      // producedFacesContext.hashCode());
+        // verify we have same object through proxy by comparing hash codes
+        // Disabled as hashCode is not passed through the proxy in weld
+        // 1.1.0.Beta1
+        // Assert.assertEquals(actualFacesContext.hashCode(),
+        // producedFacesContext.hashCode());
 
-      // Assert.assertEquals(actualFacesContext, producedFacesContext);
-      Assert.assertSame(PhaseId.RENDER_RESPONSE, producedFacesContext.getCurrentPhaseId());
-   }
+        // Assert.assertEquals(actualFacesContext, producedFacesContext);
+        Assert.assertSame(PhaseId.RENDER_RESPONSE, producedFacesContext.getCurrentPhaseId());
+    }
 
-   @Test(expected = ContextNotActiveException.class)
-   public void testProducerThrowsExceptionWhenFacesContextNotActive()
-   {
-      new MockFacesContext().release();
-      // NOTE the return value must be invoked to carry out the lookup
-      facesContextInstance.get().toString();
-   }
+    @Test(expected = ContextNotActiveException.class)
+    public void testProducerThrowsExceptionWhenFacesContextNotActive() {
+        new MockFacesContext().release();
+        // NOTE the return value must be invoked to carry out the lookup
+        facesContextInstance.get().toString();
+    }
 }

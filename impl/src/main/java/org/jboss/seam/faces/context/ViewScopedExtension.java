@@ -11,17 +11,14 @@ import javax.faces.bean.ViewScoped;
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
-public class ViewScopedExtension implements Extension
-{
+public class ViewScopedExtension implements Extension {
 
-   public void addScope(@Observes final BeforeBeanDiscovery event)
-   {
-      event.addScope(ViewScoped.class, true, true);
-   }
+    public void addScope(@Observes final BeforeBeanDiscovery event) {
+        event.addScope(ViewScoped.class, true, true);
+    }
 
-   public void registerContext(@Observes final AfterBeanDiscovery event)
-   {
-      event.addContext(new ViewScopedContext());
-   }
+    public void registerContext(@Observes final AfterBeanDiscovery event) {
+        event.addContext(new ViewScopedContext());
+    }
 
 }

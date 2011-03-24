@@ -11,21 +11,18 @@ import org.junit.Test;
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  * 
  */
-public class UIValidateFormTest
-{
+public class UIValidateFormTest {
 
-   private final MockFacesContext facesContext = new MockFacesContext();
-   private final MockApplication application = new MockApplication();
-   private static final UIViewRoot uiViewRoot = new UIViewRoot();
+    private final MockFacesContext facesContext = new MockFacesContext();
+    private final MockApplication application = new MockApplication();
+    private static final UIViewRoot uiViewRoot = new UIViewRoot();
 
-   static
-   {
-      uiViewRoot.setViewId("foo.xhtml");
-   }
+    static {
+        uiViewRoot.setViewId("foo.xhtml");
+    }
 
-   @Test
-   public void testCanLocateChildComponents() throws Exception
-   {
-      UIValidateForm vf = new UIValidateForm();
-   }
+    @Test
+    public void testCanLocateChildComponents() throws Exception {
+        UIValidateForm vf = new UIValidateForm();
+    }
 }

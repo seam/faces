@@ -20,16 +20,13 @@ import org.jboss.seam.faces.event.qualifier.Component;
 import org.jboss.seam.faces.event.qualifier.View;
 
 /**
- * A SystemEventListener used to bridge JSF system events to the CDI event
- * model.
+ * A SystemEventListener used to bridge JSF system events to the CDI event model.
  * <p>
  * 
- * For each JSF system event (e.g: {@link PostConstructApplicationEvent}, a
- * corresponding Seam CDI event will be fired.
+ * For each JSF system event (e.g: {@link PostConstructApplicationEvent}, a corresponding Seam CDI event will be fired.
  * <p>
  * 
- * Event listeners can be registered by observing the appropriate Seam CDI event
- * (see @{@link Observes}):
+ * Event listeners can be registered by observing the appropriate Seam CDI event (see @{@link Observes}):
  * <p>
  * <b>For example:</b>
  * <p>
@@ -42,83 +39,66 @@ import org.jboss.seam.faces.event.qualifier.View;
  * 
  * @author Nicklas Karlsson
  */
-public class SystemEventBridge implements SystemEventListener
-{
-   @Inject
-   BeanManager beanManager;
+public class SystemEventBridge implements SystemEventListener {
+    @Inject
+    BeanManager beanManager;
 
-   public boolean isListenerForSource(final Object source)
-   {
-      return true;
-   }
+    public boolean isListenerForSource(final Object source) {
+        return true;
+    }
 
-   public void processEvent(final SystemEvent e) throws AbortProcessingException
-   {
-      Object payload = e.getClass().cast(e);
-      Annotation[] qualifiers = getQualifiers(e);
-      beanManager.fireEvent(payload, qualifiers);
-   }
+    public void processEvent(final SystemEvent e) throws AbortProcessingException {
+        Object payload = e.getClass().cast(e);
+        Annotation[] qualifiers = getQualifiers(e);
+        beanManager.fireEvent(payload, qualifiers);
+    }
 
-   private Annotation[] getQualifiers(final SystemEvent e)
-   {
-      if (isViewEvent(e))
-      {
-         String id = ((UIViewRoot) e.getSource()).getViewId();
-         return new Annotation[] { new ViewLiteral(id) };
-      }
-      else if (e instanceof ComponentSystemEvent)
-      {
-         String id = ((ComponentSystemEvent) e).getComponent().getId();
-         return new Annotation[] { new ComponentLiteral(id) };
-      }
-      else
-      {
-         return new Annotation[] {};
-      }
-   }
+    private Annotation[] getQualifiers(final SystemEvent e) {
+        if (isViewEvent(e)) {
+            String id = ((UIViewRoot) e.getSource()).getViewId();
+            return new Annotation[] { new ViewLiteral(id) };
+        } else if (e instanceof ComponentSystemEvent) {
+            String id = ((ComponentSystemEvent) e).getComponent().getId();
+            return new Annotation[] { new ComponentLiteral(id) };
+        } else {
+            return new Annotation[] {};
+        }
+    }
 
-   private boolean isViewEvent(final SystemEvent e)
-   {
-      return (e instanceof PreRenderViewEvent) || (e instanceof PostConstructViewMapEvent) || (e instanceof PreDestroyViewMapEvent);
-   }
+    private boolean isViewEvent(final SystemEvent e) {
+        return (e instanceof PreRenderViewEvent) || (e instanceof PostConstructViewMapEvent)
+                || (e instanceof PreDestroyViewMapEvent);
+    }
 
-   private class ComponentLiteral extends AnnotationLiteral<Component> implements Component
-   {
-      private static final long serialVersionUID = -180390717920002323L;
+    private class ComponentLiteral extends AnnotationLiteral<Component> implements Component {
+        private static final long serialVersionUID = -180390717920002323L;
 
-      private String value = "";
+        private String value = "";
 
-      public String value()
-      {
-         return value;
-      }
+        public String value() {
+            return value;
+        }
 
-      public ComponentLiteral(final String value)
-      {
-         if (value != null)
-         {
-            this.value = value;
-         }
-      }
-   }
+        public ComponentLiteral(final String value) {
+            if (value != null) {
+                this.value = value;
+            }
+        }
+    }
 
-   private class ViewLiteral extends AnnotationLiteral<View> implements View
-   {
-      private static final long serialVersionUID = -9101103836360031181L;
-      private String value = "";
+    private class ViewLiteral extends AnnotationLiteral<View> implements View {
+        private static final long serialVersionUID = -9101103836360031181L;
+        private String value = "";
 
-      public String value()
-      {
-         return value;
-      }
+        public String value() {
+            return value;
+        }
 
-      public ViewLiteral(final String value)
-      {
-         if (value != null)
-         {
-            this.value = value;
-         }
-      }
-   }
+        public ViewLiteral(final String value) {
+            if (value != null) {
+                this.value = value;
+            }
+        }
+    }
 
 }

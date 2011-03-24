@@ -7,6 +7,5 @@ import javax.faces.bean.RequestScoped;
  * 
  */
 @RequestScoped
-public class ImproperlyAnnotatedBean
-{
+public class ImproperlyAnnotatedBean {
 }

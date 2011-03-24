@@ -14,32 +14,28 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Named
 @RequestScoped
-public class RedirectBean
-{
-   @Inject
-   FacesContext context;
+public class RedirectBean {
+    @Inject
+    FacesContext context;
 
-   @Inject
-   LinkBean linkBean;
+    @Inject
+    LinkBean linkBean;
 
-   private String name;
+    private String name;
 
-   public void send() throws IOException
-   {
-      String url = linkBean.getByKey(name).getTarget();
-      System.out.println("Sent redirect for key: " + name + " => " + url);
-      HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
-      response.sendRedirect(linkBean.format(url));
-      context.responseComplete();
-   }
+    public void send() throws IOException {
+        String url = linkBean.getByKey(name).getTarget();
+        System.out.println("Sent redirect for key: " + name + " => " + url);
+        HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+        response.sendRedirect(linkBean.format(url));
+        context.responseComplete();
+    }
 
-   public String getName()
-   {
-      return name;
-   }
+    public String getName() {
+        return name;
+    }
 
-   public void setName(final String key)
-   {
-      this.name = key;
-   }
+    public void setName(final String key) {
+        this.name = key;
+    }
 }

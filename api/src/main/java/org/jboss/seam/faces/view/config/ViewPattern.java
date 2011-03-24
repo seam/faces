@@ -7,8 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation that is applied to an enum constant to configure view specific
- * information
+ * Annotation that is applied to an enum constant to configure view specific information
  * 
  * @author Stuart Douglas
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
@@ -17,7 +16,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 @Documented
-public @interface ViewPattern
-{
-   String value();
+public @interface ViewPattern {
+    String value();
 }

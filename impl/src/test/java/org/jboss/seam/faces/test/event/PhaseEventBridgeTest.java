@@ -22,184 +22,168 @@ import org.junit.runner.RunWith;
  * 
  */
 @RunWith(Arquillian.class)
-public class PhaseEventBridgeTest extends PhaseTestBase
-{
+public class PhaseEventBridgeTest extends PhaseTestBase {
 
-   @Deployment
-   public static JavaArchive createTestArchive()
-   {
-      return ShrinkWrap.create(JavaArchive.class).addClasses(MockPhaseEventObserver.class, PhaseEventBridge.class, BeanManagerAware.class, MockLogger.class).addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
-   }
+    @Deployment
+    public static JavaArchive createTestArchive() {
+        return ShrinkWrap.create(JavaArchive.class)
+                .addClasses(MockPhaseEventObserver.class, PhaseEventBridge.class, BeanManagerAware.class, MockLogger.class)
+                .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+    }
 
-   @Inject
-   MockPhaseEventObserver observer;
+    @Inject
+    MockPhaseEventObserver observer;
 
-   @Test
-   public void testBeforeRenderResponseObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("1", PhaseId.RENDER_RESPONSE);
-   }
+    @Test
+    public void testBeforeRenderResponseObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("1", PhaseId.RENDER_RESPONSE);
+    }
 
-   @Test
-   public void testAfterRenderResponseObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("2", PhaseId.RENDER_RESPONSE);
-   }
+    @Test
+    public void testAfterRenderResponseObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("2", PhaseId.RENDER_RESPONSE);
+    }
 
-   @Test
-   public void testBeforeApplyRequestValuesObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("3", PhaseId.APPLY_REQUEST_VALUES);
-   }
+    @Test
+    public void testBeforeApplyRequestValuesObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("3", PhaseId.APPLY_REQUEST_VALUES);
+    }
 
-   @Test
-   public void testAfterApplyRequestValuesObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("4", PhaseId.APPLY_REQUEST_VALUES);
-   }
+    @Test
+    public void testAfterApplyRequestValuesObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("4", PhaseId.APPLY_REQUEST_VALUES);
+    }
 
-   @Test
-   public void testBeforeInvokeApplicationObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("5", PhaseId.INVOKE_APPLICATION);
-   }
+    @Test
+    public void testBeforeInvokeApplicationObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("5", PhaseId.INVOKE_APPLICATION);
+    }
 
-   @Test
-   public void testAfterInvokeApplicationObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("6", PhaseId.INVOKE_APPLICATION);
-   }
+    @Test
+    public void testAfterInvokeApplicationObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("6", PhaseId.INVOKE_APPLICATION);
+    }
 
-   @Test
-   public void testBeforeProcessValidationsObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("7", PhaseId.PROCESS_VALIDATIONS);
-   }
+    @Test
+    public void testBeforeProcessValidationsObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("7", PhaseId.PROCESS_VALIDATIONS);
+    }
 
-   @Test
-   public void testAfterProcessValidationsObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("8", PhaseId.PROCESS_VALIDATIONS);
-   }
+    @Test
+    public void testAfterProcessValidationsObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("8", PhaseId.PROCESS_VALIDATIONS);
+    }
 
-   @Test
-   public void testBeforeRestoreViewObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("9", PhaseId.RESTORE_VIEW);
-   }
+    @Test
+    public void testBeforeRestoreViewObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("9", PhaseId.RESTORE_VIEW);
+    }
 
-   @Test
-   public void testAfterRestoreViewObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("10", PhaseId.RESTORE_VIEW);
-   }
+    @Test
+    public void testAfterRestoreViewObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("10", PhaseId.RESTORE_VIEW);
+    }
 
-   @Test
-   public void testBeforeUpdateModelValuesObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("11", PhaseId.UPDATE_MODEL_VALUES);
-   }
+    @Test
+    public void testBeforeUpdateModelValuesObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("11", PhaseId.UPDATE_MODEL_VALUES);
+    }
 
-   @Test
-   public void testAfterUpdateModelValuesObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("11", PhaseId.UPDATE_MODEL_VALUES);
-   }
+    @Test
+    public void testAfterUpdateModelValuesObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("11", PhaseId.UPDATE_MODEL_VALUES);
+    }
 
-   @Test
-   public void testAllRenderResponseObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("13", PhaseId.RENDER_RESPONSE, PhaseId.RENDER_RESPONSE);
-   }
+    @Test
+    public void testAllRenderResponseObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("13", PhaseId.RENDER_RESPONSE, PhaseId.RENDER_RESPONSE);
+    }
 
-   @Test
-   public void testAllApplyRequestValuesObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("14", PhaseId.APPLY_REQUEST_VALUES, PhaseId.APPLY_REQUEST_VALUES);
-   }
+    @Test
+    public void testAllApplyRequestValuesObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("14", PhaseId.APPLY_REQUEST_VALUES, PhaseId.APPLY_REQUEST_VALUES);
+    }
 
-   @Test
-   public void testAllInvokeApplicationObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("15", PhaseId.INVOKE_APPLICATION, PhaseId.INVOKE_APPLICATION);
-   }
+    @Test
+    public void testAllInvokeApplicationObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("15", PhaseId.INVOKE_APPLICATION, PhaseId.INVOKE_APPLICATION);
+    }
 
-   @Test
-   public void testAllProcessValidationsObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("16", PhaseId.PROCESS_VALIDATIONS, PhaseId.PROCESS_VALIDATIONS);
-   }
+    @Test
+    public void testAllProcessValidationsObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("16", PhaseId.PROCESS_VALIDATIONS, PhaseId.PROCESS_VALIDATIONS);
+    }
 
-   @Test
-   public void testAllRestoreViewObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("17", PhaseId.RESTORE_VIEW, PhaseId.RESTORE_VIEW);
-   }
+    @Test
+    public void testAllRestoreViewObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("17", PhaseId.RESTORE_VIEW, PhaseId.RESTORE_VIEW);
+    }
 
-   @Test
-   public void testAllUpdateModelValuesObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("18", PhaseId.UPDATE_MODEL_VALUES, PhaseId.UPDATE_MODEL_VALUES);
-   }
+    @Test
+    public void testAllUpdateModelValuesObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("18", PhaseId.UPDATE_MODEL_VALUES, PhaseId.UPDATE_MODEL_VALUES);
+    }
 
-   @Test
-   public void testAllBeforeEventsObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("19", PhaseId.APPLY_REQUEST_VALUES, PhaseId.INVOKE_APPLICATION, PhaseId.PROCESS_VALIDATIONS, PhaseId.RENDER_RESPONSE, PhaseId.RESTORE_VIEW, PhaseId.UPDATE_MODEL_VALUES);
-   }
+    @Test
+    public void testAllBeforeEventsObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("19", PhaseId.APPLY_REQUEST_VALUES, PhaseId.INVOKE_APPLICATION,
+                PhaseId.PROCESS_VALIDATIONS, PhaseId.RENDER_RESPONSE, PhaseId.RESTORE_VIEW, PhaseId.UPDATE_MODEL_VALUES);
+    }
 
-   @Test
-   public void testAllAfterEventsObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("20", PhaseId.APPLY_REQUEST_VALUES, PhaseId.INVOKE_APPLICATION, PhaseId.PROCESS_VALIDATIONS, PhaseId.RENDER_RESPONSE, PhaseId.RESTORE_VIEW, PhaseId.UPDATE_MODEL_VALUES);
-   }
+    @Test
+    public void testAllAfterEventsObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("20", PhaseId.APPLY_REQUEST_VALUES, PhaseId.INVOKE_APPLICATION,
+                PhaseId.PROCESS_VALIDATIONS, PhaseId.RENDER_RESPONSE, PhaseId.RESTORE_VIEW, PhaseId.UPDATE_MODEL_VALUES);
+    }
 
-   @Test
-   public void testAllEventsObserver()
-   {
-      observer.reset();
-      fireAllPhases();
-      observer.assertObservations("21", PhaseId.APPLY_REQUEST_VALUES, PhaseId.INVOKE_APPLICATION, PhaseId.PROCESS_VALIDATIONS, PhaseId.RENDER_RESPONSE, PhaseId.RESTORE_VIEW, PhaseId.UPDATE_MODEL_VALUES, PhaseId.APPLY_REQUEST_VALUES, PhaseId.INVOKE_APPLICATION, PhaseId.PROCESS_VALIDATIONS, PhaseId.RENDER_RESPONSE, PhaseId.RESTORE_VIEW, PhaseId.UPDATE_MODEL_VALUES);
-   }
+    @Test
+    public void testAllEventsObserver() {
+        observer.reset();
+        fireAllPhases();
+        observer.assertObservations("21", PhaseId.APPLY_REQUEST_VALUES, PhaseId.INVOKE_APPLICATION,
+                PhaseId.PROCESS_VALIDATIONS, PhaseId.RENDER_RESPONSE, PhaseId.RESTORE_VIEW, PhaseId.UPDATE_MODEL_VALUES,
+                PhaseId.APPLY_REQUEST_VALUES, PhaseId.INVOKE_APPLICATION, PhaseId.PROCESS_VALIDATIONS, PhaseId.RENDER_RESPONSE,
+                PhaseId.RESTORE_VIEW, PhaseId.UPDATE_MODEL_VALUES);
+    }
 
 }

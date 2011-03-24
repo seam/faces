@@ -15,93 +15,80 @@ import org.jboss.logging.Logger;
 import org.jboss.seam.faces.util.BeanManagerUtils;
 
 /**
- * Provides contextual lifecycle and @{link Inject} support for JSF artifacts
- * such as {@link Converter}, {@link Validator}.
+ * Provides contextual lifecycle and @{link Inject} support for JSF artifacts such as {@link Converter}, {@link Validator}.
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  * 
  */
 @ApplicationScoped
-public class SeamApplicationWrapper extends ApplicationWrapper
-{
-   private transient final Logger log = Logger.getLogger(SeamApplicationWrapper.class);
-    
-   private Application parent;
+public class SeamApplicationWrapper extends ApplicationWrapper {
+    private transient final Logger log = Logger.getLogger(SeamApplicationWrapper.class);
 
-   @Inject
-   BeanManagerUtils managerUtils;
+    private Application parent;
 
-   @Override
-   public Application getWrapped()
-   {
-      return parent;
-   }
+    @Inject
+    BeanManagerUtils managerUtils;
 
-   public void installWrapper(@Observes final PostConstructApplicationEvent event)
-   {
-      log.debug("PostConstructApplicationEvent observed, installing wrapper");
-      ApplicationFactory factory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
-      parent = event.getApplication();
-      factory.setApplication(this);
-   }
+    @Override
+    public Application getWrapped() {
+        return parent;
+    }
 
-   @Override
-   public Converter createConverter(final Class<?> targetClass)
-   {
-      log.debugf("Creating converter for targetClass %s", targetClass.getName());
-      Converter result = parent.createConverter(targetClass);
-      result = attemptExtension(result);
-      return result;
-   }
+    public void installWrapper(@Observes final PostConstructApplicationEvent event) {
+        log.debug("PostConstructApplicationEvent observed, installing wrapper");
+        ApplicationFactory factory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
+        parent = event.getApplication();
+        factory.setApplication(this);
+    }
 
-   @Override
-   public Converter createConverter(final String converterId)
-   {
-      log.debugf("Creating converter for converterId %s", converterId);
-      Converter result = parent.createConverter(converterId);
-      result = attemptExtension(result);
-      return result;
-   }
+    @Override
+    public Converter createConverter(final Class<?> targetClass) {
+        log.debugf("Creating converter for targetClass %s", targetClass.getName());
+        Converter result = parent.createConverter(targetClass);
+        result = attemptExtension(result);
+        return result;
+    }
 
-   @Override
-   public Validator createValidator(final String validatorId)
-   {
-      log.debugf("Creating validator for validatorId %s", validatorId);
-      Validator result = parent.createValidator(validatorId);
-      result = attemptExtension(result);
-      return result;
-   }
+    @Override
+    public Converter createConverter(final String converterId) {
+        log.debugf("Creating converter for converterId %s", converterId);
+        Converter result = parent.createConverter(converterId);
+        result = attemptExtension(result);
+        return result;
+    }
 
-   @SuppressWarnings("unchecked")
-   private <T> T attemptExtension(final T base)
-   {
-      T result = base;
+    @Override
+    public Validator createValidator(final String validatorId) {
+        log.debugf("Creating validator for validatorId %s", validatorId);
+        Validator result = parent.createValidator(validatorId);
+        result = attemptExtension(result);
+        return result;
+    }
 
-      if (base == null)
-      {
-         log.warnf("Cannot attempt extension on null");
-         return null;
-      }
+    @SuppressWarnings("unchecked")
+    private <T> T attemptExtension(final T base) {
+        T result = base;
 
-      log.debugf("Extending class: %s", base.getClass().getName());
-      if (managerUtils.isDependentScoped(base.getClass()))
-      {
-         managerUtils.injectNonContextualInstance(result);
-      }
-      else
-      {
-         result = (T) managerUtils.getContextualInstance(base.getClass());
-      }
+        if (base == null) {
+            log.warnf("Cannot attempt extension on null");
+            return null;
+        }
 
-      if (result == null)
-      {
-         if (! base.getClass().getName().startsWith("javax."))
-         {
-            log.warnf("Using JSF provided instance, unable to find a BeanManaged instance for class %s", base.getClass().getName());
-         }
-         result = base;
-      }
+        log.debugf("Extending class: %s", base.getClass().getName());
+        if (managerUtils.isDependentScoped(base.getClass())) {
+            managerUtils.injectNonContextualInstance(result);
+        } else {
+            result = (T) managerUtils.getContextualInstance(base.getClass());
+        }
 
-      return result;
-   }
+        if (result == null) {
+            if (!base.getClass().getName().startsWith("javax.")) {
+                log.warnf("Using JSF provided instance, unable to find a BeanManaged instance for class %s", base.getClass()
+                        .getName());
+            }
+            result = base;
+        }
+
+        return result;
+    }
 }
