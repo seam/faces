@@ -115,11 +115,13 @@ public class SecurityPhaseListener
       LoginView loginView = viewConfigStore.getAnnotationData(viewRoot.getViewId(), LoginView.class);
       if (loginView == null || loginView.value() == null || loginView.value().isEmpty())
       {
+         log.debug("Returning 401 response (login required)");
          facesContext.getExternalContext().setResponseStatus(401);
          facesContext.responseComplete();
          return;
       }
       String loginViewId = loginView.value();
+      log.debugf("Redirecting to configured LoginView %s", loginViewId);
       NavigationHandler navHandler = facesContext.getApplication().getNavigationHandler();
       navHandler.handleNavigation(facesContext, "", loginViewId);
       facesContext.renderResponse();
@@ -130,11 +132,13 @@ public class SecurityPhaseListener
       AccessDeniedView accessDeniedView = viewConfigStore.getAnnotationData(viewRoot.getViewId(), AccessDeniedView.class);
       if (accessDeniedView == null || accessDeniedView.value() == null || accessDeniedView.value().isEmpty())
       {
+         log.debug("Returning 401 response (access denied)");
          facesContext.getExternalContext().setResponseStatus(401);
          facesContext.responseComplete();
          return;
       }
       String accessDeniedViewId = accessDeniedView.value();
+      log.debugf("Redirecting to configured AccessDenied %s", accessDeniedViewId);          
       NavigationHandler navHandler = facesContext.getApplication().getNavigationHandler();
       navHandler.handleNavigation(facesContext, "", accessDeniedViewId);
       facesContext.renderResponse();
