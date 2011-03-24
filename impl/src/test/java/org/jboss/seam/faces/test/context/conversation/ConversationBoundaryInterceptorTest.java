@@ -11,6 +11,7 @@ import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.faces.context.conversation.ConversationBoundaryInterceptor;
 import org.jboss.seam.faces.test.MockLogger;
+import org.jboss.seam.faces.test.MockLoggerProducer;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -27,7 +28,7 @@ public class ConversationBoundaryInterceptorTest {
     public static JavaArchive createTestArchive() {
         return ShrinkWrap
                 .create(JavaArchive.class)
-                .addClasses(ConversationBoundaryInterceptor.class, ConversationalBean.class, MockLogger.class)
+                .addClasses(ConversationBoundaryInterceptor.class, ConversationalBean.class, MockLogger.class, MockLoggerProducer.class)
                 .addManifestResource(
                         ConversationBoundaryInterceptorTest.class.getPackage().getName().replaceAll("\\.", "/")
                                 + "/ConversationBoundaryInterceptorTest-beans.xml", ArchivePaths.create("beans.xml"));

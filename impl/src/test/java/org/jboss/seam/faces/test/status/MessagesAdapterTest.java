@@ -12,6 +12,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.faces.event.PhaseEventBridge;
 import org.jboss.seam.faces.status.MessagesAdapter;
 import org.jboss.seam.faces.test.MockLogger;
+import org.jboss.seam.faces.test.MockLoggerProducer;
 import org.jboss.seam.faces.test.PhaseTestBase;
 import org.jboss.seam.faces.test.context.MockFlashContext;
 import org.jboss.seam.international.locale.DefaultLocaleProducer;
@@ -44,7 +45,7 @@ public class MessagesAdapterTest extends PhaseTestBase {
                 .create(JavaArchive.class)
                 .addClasses(MessagesAdapter.class, MessagesImpl.class, MockFlashContext.class, MessageFactory.class,
                         TemplateMessageImpl.class, BundleTemplateMessageImpl.class, Bundles.class, PhaseEventBridge.class,
-                        MockLogger.class, ApplicationBundles.class, UserLocaleProducer.class, DefaultLocaleProducer.class)
+                        MockLogger.class, MockLoggerProducer.class, ApplicationBundles.class, UserLocaleProducer.class, DefaultLocaleProducer.class)
                 .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
     }
 

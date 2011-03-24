@@ -7,6 +7,7 @@ import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.faces.event.PhaseEventBridge;
 import org.jboss.seam.faces.test.MockLogger;
+import org.jboss.seam.faces.test.MockLoggerProducer;
 import org.jboss.seam.faces.test.PhaseTestBase;
 import org.jboss.seam.solder.beanManager.BeanManagerAware;
 import org.jboss.shrinkwrap.api.ArchivePaths;
@@ -27,7 +28,7 @@ public class PhaseEventBridgeTest extends PhaseTestBase {
     @Deployment
     public static JavaArchive createTestArchive() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(MockPhaseEventObserver.class, PhaseEventBridge.class, BeanManagerAware.class, MockLogger.class)
+                .addClasses(MockPhaseEventObserver.class, PhaseEventBridge.class, BeanManagerAware.class, MockLogger.class, MockLoggerProducer.class)
                 .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
     }
 

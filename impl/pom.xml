@@ -123,6 +123,7 @@
          <artifactId>weld-core</artifactId>
          <scope>test</scope>
       </dependency>
+      <!-- required by seam security -->
       <dependency>
          <groupId>org.slf4j</groupId>
          <artifactId>slf4j-simple</artifactId>
