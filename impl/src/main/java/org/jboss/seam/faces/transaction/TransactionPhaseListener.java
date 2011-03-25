@@ -28,7 +28,7 @@ import org.jboss.seam.solder.core.Requires;
 public class TransactionPhaseListener implements PhaseListener {
     private static final long serialVersionUID = -9127555729455066493L;
 
-    private static final Logger log = Logger.getLogger(TransactionPhaseListener.class);
+    private transient final Logger log = Logger.getLogger(TransactionPhaseListener.class);
 
     @Inject
     private ViewConfigStore dataStore;

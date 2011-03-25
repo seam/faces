@@ -35,7 +35,7 @@ import org.jboss.seam.international.status.Messages;
  */
 public class MessagesAdapter implements Serializable {
     private static final long serialVersionUID = -2908193057765795662L;
-    private static final Logger log = Logger.getLogger(MessagesAdapter.class);
+    private transient final Logger log = Logger.getLogger(MessagesAdapter.class);
 
     private static final String FLASH_MESSAGES_KEY = MessagesAdapter.class.getName() + ".FLASH_KEY";
 

@@ -15,6 +15,7 @@ import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessBean;
+import org.jboss.logging.Logger;
 
 /**
  * Alias the JSF scope annotations to the CDI scope annotations. If a JSF scope annotation is detected, advise the developer to
@@ -23,6 +24,7 @@ import javax.enterprise.inject.spi.ProcessBean;
  * @author Dan Allen
  */
 public class FacesAnnotationsAdapterExtension implements Extension {
+    private transient final Logger logger = Logger.getLogger(FacesAnnotationsAdapterExtension.class.getName());
     private final Map<Class<? extends Annotation>, Class<? extends Annotation>> scopeAliasMapping;
 
     /*
@@ -44,8 +46,7 @@ public class FacesAnnotationsAdapterExtension implements Extension {
     public void aliasJsfScopeIfDetected(@Observes final ProcessAnnotatedType<Object> annotatedType) {
         for (Class<? extends Annotation> scope : scopeAliasMapping.keySet()) {
             if (annotatedType.getAnnotatedType().isAnnotationPresent(scope)) {
-                System.out.println("WARNING: Please annotate class " + annotatedType.getAnnotatedType().getJavaClass()
-                        + " with @" + scopeAliasMapping.get(scope).getName() + " instead of @" + scope.getName());
+                logger.warnf("WARNING: Please annotate class %s with @%s instead of @%s", annotatedType.getAnnotatedType().getJavaClass(), scopeAliasMapping.get(scope).getName(), scope.getName());
                 aliasedBeans.put(annotatedType.getAnnotatedType().getJavaClass(), scope);
                 annotatedType.setAnnotatedType(decorateType(annotatedType.getAnnotatedType(), scope));
                 break;

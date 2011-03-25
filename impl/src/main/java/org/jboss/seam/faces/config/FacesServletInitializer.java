@@ -20,7 +20,7 @@ import org.jboss.logging.Logger;
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
 public class FacesServletInitializer implements ServletContainerInitializer {
-    private static final Logger log = Logger.getLogger(FacesServletInitializer.class.getName());
+    private transient final Logger log = Logger.getLogger(FacesServletInitializer.class.getName());
 
     private static final String FACES_SERVLET_CLASS_NAME = "javax.faces.webapp.FacesServlet";
 

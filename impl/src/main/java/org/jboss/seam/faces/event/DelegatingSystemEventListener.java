@@ -16,12 +16,14 @@ import org.jboss.logging.Logger;
  * 
  */
 public class DelegatingSystemEventListener extends AbstractListener<SystemEventListener> implements SystemEventListener {
-    private static final Logger log = Logger.getLogger(DelegatingSystemEventListener.class);
+    private transient final Logger log = Logger.getLogger(DelegatingSystemEventListener.class);
 
+    @Override
     public boolean isListenerForSource(final Object source) {
         return true;
     }
 
+    @Override
     public void processEvent(final SystemEvent event) throws AbortProcessingException {
         if (event instanceof PreDestroyApplicationEvent && !isBeanManagerAvailable()) {
             log.info("BeanManager no longer available; Cannot notify CDI-managed listeners of "

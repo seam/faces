@@ -24,7 +24,7 @@ import org.jboss.logging.Logger;
  */
 public class ViewConfigExtension implements Extension {
 
-    private static final Logger log = Logger.getLogger(ViewConfigExtension.class);
+    private transient final Logger log = Logger.getLogger(ViewConfigExtension.class);
 
     private final Map<String, Set<Annotation>> data = new HashMap<String, Set<Annotation>>();
 

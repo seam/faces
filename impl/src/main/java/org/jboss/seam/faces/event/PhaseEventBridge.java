@@ -43,7 +43,7 @@ import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
 public class PhaseEventBridge implements PhaseListener {
     private static final long serialVersionUID = -6181019551463318453L;
 
-    private static final Logger log = Logger.getLogger(PhaseEventBridge.class);
+    private transient final Logger log = Logger.getLogger(PhaseEventBridge.class);
 
     @Inject
     private BeanManager beanManager;
