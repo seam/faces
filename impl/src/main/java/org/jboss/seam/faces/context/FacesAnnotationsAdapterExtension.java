@@ -1,27 +1,23 @@
 package org.jboss.seam.faces.context;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.AnnotatedConstructor;
-import javax.enterprise.inject.spi.AnnotatedField;
-import javax.enterprise.inject.spi.AnnotatedMethod;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessBean;
 import org.jboss.logging.Logger;
+import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
 
 /**
  * Alias the JSF scope annotations to the CDI scope annotations. If a JSF scope annotation is detected, advise the developer to
  * update the code to use the equivalent CDI scope annotation. Forbid the developer from using the JSF managed bean annotation.
  * 
  * @author Dan Allen
+ * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 public class FacesAnnotationsAdapterExtension implements Extension {
     private transient final Logger logger = Logger.getLogger(FacesAnnotationsAdapterExtension.class.getName());
@@ -67,64 +63,14 @@ public class FacesAnnotationsAdapterExtension implements Extension {
 
     private AnnotatedType<Object> decorateType(final AnnotatedType<Object> type, final Class<? extends Annotation> jsfScope) {
         final Class<? extends Annotation> cdiScope = getCdiScopeFor(jsfScope);
-        final Annotation cdiScopeAnnotation = new Annotation() {
-            public Class<? extends Annotation> annotationType() {
-                return cdiScope;
-            }
-        };
-
-        final Set<Annotation> maskedAnnotations = new HashSet<Annotation>(type.getAnnotations());
-        maskedAnnotations.remove(type.getAnnotation(jsfScope));
-        maskedAnnotations.add(cdiScopeAnnotation);
-
-        return new AnnotatedType<Object>() {
-            public Class<Object> getJavaClass() {
-                return type.getJavaClass();
-            }
-
-            public Set<AnnotatedConstructor<Object>> getConstructors() {
-                return type.getConstructors();
-            }
-
-            public Set<AnnotatedMethod<? super Object>> getMethods() {
-                return type.getMethods();
-            }
-
-            public Set<AnnotatedField<? super Object>> getFields() {
-                return type.getFields();
-            }
-
-            public Type getBaseType() {
-                return type.getBaseType();
-            }
-
-            public Set<Type> getTypeClosure() {
-                return type.getTypeClosure();
-            }
-
-            @SuppressWarnings("unchecked")
-            public <T extends Annotation> T getAnnotation(final Class<T> annotationType) {
-                if (annotationType == jsfScope) {
-                    return null;
-                } else if (annotationType == cdiScope) {
-                    return (T) cdiScopeAnnotation;
-                }
-
-                return type.getAnnotation(annotationType);
-            }
-
-            public Set<Annotation> getAnnotations() {
-                return maskedAnnotations;
-            }
-
-            public boolean isAnnotationPresent(final Class<? extends Annotation> annotationType) {
-                if (annotationType == jsfScope) {
-                    return false;
-                } else if (annotationType == cdiScope) {
-                    return true;
-                }
-                return type.isAnnotationPresent(annotationType);
-            }
-        };
+        AnnotatedTypeBuilder builder;
+        try {
+            builder = new AnnotatedTypeBuilder().readFromType(type).removeFromClass(jsfScope).addToClass(cdiScope.newInstance());
+            return builder.create();
+        } catch (InstantiationException ex) {
+            throw new IllegalArgumentException("Cannot replace jsfScope with CDI Scope", ex);
+        } catch (IllegalAccessException ex) {
+            throw new IllegalArgumentException("Cannot replace jsfScope with CDI Scope", ex);
+        }
     }
 }
