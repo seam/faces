@@ -1,6 +1,7 @@
 package org.jboss.seam.faces.context;
 
 import java.lang.annotation.Annotation;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessBean;
 import org.jboss.logging.Logger;
+import org.jboss.seam.solder.reflection.AnnotationInstanceProvider;
 import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
 
 /**
@@ -63,14 +65,15 @@ public class FacesAnnotationsAdapterExtension implements Extension {
 
     private AnnotatedType<Object> decorateType(final AnnotatedType<Object> type, final Class<? extends Annotation> jsfScope) {
         final Class<? extends Annotation> cdiScope = getCdiScopeFor(jsfScope);
+
+        AnnotationInstanceProvider provider = new AnnotationInstanceProvider();
+        final Annotation cdiScopeAnnotation = provider.get(cdiScope, Collections.EMPTY_MAP);
+        
         AnnotatedTypeBuilder builder;
-        try {
-            builder = new AnnotatedTypeBuilder().readFromType(type).removeFromClass(jsfScope).addToClass(cdiScope.newInstance());
-            return builder.create();
-        } catch (InstantiationException ex) {
-            throw new IllegalArgumentException("Cannot replace jsfScope with CDI Scope", ex);
-        } catch (IllegalAccessException ex) {
-            throw new IllegalArgumentException("Cannot replace jsfScope with CDI Scope", ex);
-        }
+        builder = new AnnotatedTypeBuilder()
+                    .readFromType(type)
+                    .removeFromClass(jsfScope)
+                    .addToClass(cdiScopeAnnotation);
+        return builder.create();
     }
 }
