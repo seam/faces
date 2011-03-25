@@ -16,11 +16,13 @@ import javax.inject.Inject;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.faces.event.PhaseIdType;
+import org.jboss.seam.faces.event.PreNavigateEvent;
 import org.jboss.seam.faces.event.qualifier.After;
 import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.faces.event.qualifier.InvokeApplication;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.faces.event.qualifier.RestoreView;
+import org.jboss.seam.security.Identity;
 import org.jboss.seam.security.annotations.SecurityBindingType;
 import org.jboss.seam.security.events.AuthorizationCheckEvent;
 import org.jboss.seam.solder.core.Requires;
@@ -34,6 +36,9 @@ import org.jboss.seam.solder.core.Requires;
 public class SecurityPhaseListener {
 
     private transient final Logger log = Logger.getLogger(SecurityPhaseListener.class);
+    
+    private static final String PRE_LOGIN_VIEW = SecurityPhaseListener.class.getName() + "_PRE_LOGIN_VIEW";
+   
     @Inject
     private ViewConfigStore viewConfigStore;
     @Inject
@@ -130,7 +135,7 @@ public class SecurityPhaseListener {
         return phaseIds;
     }
 
-    private void enforce(FacesContext facesContext, UIViewRoot viewRoot, List<? extends Annotation> annotations) {
+    private void enforce(FacesContext context, UIViewRoot viewRoot, List<? extends Annotation> annotations) {
         if (annotations == null || annotations.isEmpty()) {
             log.debug("Annotations is null/empty");
             return;
@@ -138,13 +143,13 @@ public class SecurityPhaseListener {
         AuthorizationCheckEvent event = new AuthorizationCheckEvent(annotations);
         authorizationCheckEvent.fire(event);
         if (!event.isPassed()) {
-            if (facesContext.getExternalContext().getUserPrincipal() == null) {
+            if (context.getExternalContext().getUserPrincipal() == null) {
                 log.debug("Access denied - not logged in");
-                redirectToLoginPage(facesContext, viewRoot);
+                redirectToLoginPage(context, viewRoot);
                 return;
             } else {
                 log.debug("Access denied - not authorized");
-                redirectToAccessDeniedView(facesContext, viewRoot);
+                redirectToAccessDeniedView(context, viewRoot);
                 return;
             }
         } else {
@@ -152,33 +157,49 @@ public class SecurityPhaseListener {
         }
     }
 
-    private void redirectToLoginPage(FacesContext facesContext, UIViewRoot viewRoot) {
+    private void redirectToLoginPage(FacesContext context, UIViewRoot viewRoot) {
+        context.getExternalContext().getSessionMap().put(PRE_LOGIN_VIEW, viewRoot.getViewId());
         LoginView loginView = viewConfigStore.getAnnotationData(viewRoot.getViewId(), LoginView.class);
         if (loginView == null || loginView.value() == null || loginView.value().isEmpty()) {
             log.debug("Returning 401 response (login required)");
-            facesContext.getExternalContext().setResponseStatus(401);
-            facesContext.responseComplete();
+            context.getExternalContext().setResponseStatus(401);
+            context.responseComplete();
             return;
         }
         String loginViewId = loginView.value();
         log.debugf("Redirecting to configured LoginView %s", loginViewId);
-        NavigationHandler navHandler = facesContext.getApplication().getNavigationHandler();
-        navHandler.handleNavigation(facesContext, "", loginViewId);
-        facesContext.renderResponse();
+        NavigationHandler navHandler = context.getApplication().getNavigationHandler();
+        navHandler.handleNavigation(context, "", loginViewId);
+        context.renderResponse();
     }
 
-    private void redirectToAccessDeniedView(FacesContext facesContext, UIViewRoot viewRoot) {
+    private void redirectToAccessDeniedView(FacesContext context, UIViewRoot viewRoot) {
         AccessDeniedView accessDeniedView = viewConfigStore.getAnnotationData(viewRoot.getViewId(), AccessDeniedView.class);
         if (accessDeniedView == null || accessDeniedView.value() == null || accessDeniedView.value().isEmpty()) {
             log.debug("Returning 401 response (access denied)");
-            facesContext.getExternalContext().setResponseStatus(401);
-            facesContext.responseComplete();
+            context.getExternalContext().setResponseStatus(401);
+            context.responseComplete();
             return;
         }
         String accessDeniedViewId = accessDeniedView.value();
         log.debugf("Redirecting to configured AccessDenied %s", accessDeniedViewId);
-        NavigationHandler navHandler = facesContext.getApplication().getNavigationHandler();
-        navHandler.handleNavigation(facesContext, "", accessDeniedViewId);
-        facesContext.renderResponse();
+        NavigationHandler navHandler = context.getApplication().getNavigationHandler();
+        navHandler.handleNavigation(context, "", accessDeniedViewId);
+        context.renderResponse();
+    }
+    
+    public void observePreNavigateEvent(@Observes PreNavigateEvent event) {
+        log.debugf("PreNavigateEvent observed %s, %s", event.getOutcome(), event.getFromAction());
+        if (Identity.RESPONSE_LOGIN_SUCCESS.equals(event.getOutcome())
+                && "#{identity.login}".equals(event.getFromAction())) {
+            FacesContext context = event.getContext();
+            if (context.getExternalContext().getSessionMap().get(PRE_LOGIN_VIEW) != null) {
+                String oldViewId = (String) context.getExternalContext().getSessionMap().get(PRE_LOGIN_VIEW);
+                NavigationHandler navHandler = context.getApplication().getNavigationHandler();
+                navHandler.handleNavigation(context, "", oldViewId);
+                context.renderResponse();
+                context.getExternalContext().getSessionMap().remove(PRE_LOGIN_VIEW);
+            }
+        }
     }
 }
