@@ -1,13 +1,12 @@
 package org.jboss.seam.faces.view;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewParameter;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewMetadata;
+import org.jboss.logging.Logger;
+import org.jboss.logging.Logger.Level;
 
 /**
  * Wrap the built-in {@link ViewMetadata} implementation for the purpose of adding a UIViewParameter placeholder component if
@@ -28,6 +27,7 @@ import javax.faces.view.ViewMetadata;
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
 public class SeamViewMetadata extends ViewMetadata {
+    private transient final Logger logger = Logger.getLogger(SeamViewMetadata.class.getName());
     private ViewMetadata delegate;
 
     public SeamViewMetadata(ViewMetadata delegate) {
@@ -47,7 +47,7 @@ public class SeamViewMetadata extends ViewMetadata {
             viewRoot = delegate.createMetadataView(context);
         } catch (RuntimeException e) {
             // deal with swallowed exception in Mojarra
-            Logger.getLogger(ViewMetadata.class.getName()).log(Level.SEVERE, e.getMessage());
+            logger.fatal(e.getMessage());
             throw e;
         }
 
