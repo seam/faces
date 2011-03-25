@@ -8,7 +8,7 @@
       <relativePath>../../pom.xml</relativePath>
    </parent>
 
-   <groupId>org.jboss.seam.faces.examples</groupId>
+   <groupId>org.jboss.seam.faces</groupId>
    <artifactId>seam-faces-example-short-ly</artifactId>
    <packaging>war</packaging>
    <name>Seam Faces Example: bit.ly clone with PrettyFaces</name>
