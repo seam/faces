@@ -1,8 +1,7 @@
-package org.jboss.seam.faces.literal;
+package org.jboss.seam.faces.qualifier;
 
 import javax.enterprise.util.AnnotationLiteral;
 
-import org.jboss.seam.faces.qualifier.Faces;
 
 /**
  * This class provides the AnnotationLiteral for the <code>Faces</code> qualifier
