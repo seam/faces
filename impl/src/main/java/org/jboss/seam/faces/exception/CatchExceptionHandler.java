@@ -7,14 +7,12 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.faces.FacesException;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
-import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ExceptionQueuedEvent;
-import javax.faces.event.ExceptionQueuedEventContext;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.exception.control.ExceptionToCatch;
-import org.jboss.seam.faces.literal.FacesLiteral;
+import org.jboss.seam.faces.qualifier.FacesLiteral;
 import org.jboss.seam.solder.core.Requires;
 
 /**
