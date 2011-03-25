@@ -1,17 +1,25 @@
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.jboss.seam.faces</groupId>
+        <artifactId>seam-faces-parent</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
     <groupId>org.jboss.seam.faces.examples</groupId>
     <artifactId>seam-faces-security-example</artifactId>
     <packaging>war</packaging>
-    <version>1.0-SNAPSHOT</version>
-    <name>Faces Security Example</name>
+    <name>Seam Faces Example: view security</name>
+   <!-- url required for JAR Manifest -->
+    <url>${project.parent.url}</url>
+
     <dependencies>
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>1.6.2</version>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
@@ -21,13 +29,7 @@
         </dependency>
         <dependency>
             <groupId>org.jboss.seam.faces</groupId>
-            <artifactId>seam-faces-api</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.seam.faces</groupId>
-            <artifactId>seam-faces-impl</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <artifactId>seam-faces</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jboss.seam.security</groupId>
@@ -37,7 +39,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-jdk14</artifactId>
-            <version>1.6.1</version>
         </dependency>
     </dependencies>
     <build>
@@ -60,7 +61,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>FacesSecurity</finalName>
+        <finalName>faces-security</finalName>
     </build>
     <profiles>
         <profile>
