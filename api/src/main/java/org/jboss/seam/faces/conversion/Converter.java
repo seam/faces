@@ -2,8 +2,6 @@ package org.jboss.seam.faces.conversion;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import org.jboss.seam.international.status.MessageFactory;
 
 /**
  * <p>
@@ -15,8 +13,6 @@ import org.jboss.seam.international.status.MessageFactory;
 public abstract class Converter<T> implements javax.faces.convert.Converter {
 
     private FacesContext context;
-    @Inject
-    private MessageFactory factory;
 
     public abstract T toObject(UIComponent comp, String value);
 
