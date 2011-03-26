@@ -28,7 +28,8 @@ import org.jboss.seam.security.events.AuthorizationCheckEvent;
 import org.jboss.seam.solder.core.Requires;
 
 /**
- * Use the annotations stored in the ViewConfigStore to restrict view access
+ * Use the annotations stored in the ViewConfigStore to restrict view access.
+ * Authorization is delegated to Seam Security through by firing a AuthorizationCheckEvent.
  * 
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
@@ -44,21 +45,42 @@ public class SecurityPhaseListener {
     @Inject
     private Event<AuthorizationCheckEvent> authorizationCheckEvent;
 
+    /**
+     * Enforce any security annotations applicable to the RenderResponse phase
+     * 
+     * @param event 
+     */
     public void observeRenderResponse(@Observes @Before @RenderResponse PhaseEvent event) {
         log.debug("Before Render Response event");
         performObservation(event, PhaseIdType.RENDER_RESPONSE);
     }
 
+    /**
+     * Enforce any security annotations applicable to the InvokeApplication phase
+     * 
+     * @param event 
+     */
     public void observeInvokeApplication(@Observes @Before @InvokeApplication PhaseEvent event) {
         log.debug("Before Render Response event");
         performObservation(event, PhaseIdType.INVOKE_APPLICATION);
     }
 
+    /**
+     * Enforce any security annotations applicable to the RestoreView phase
+     * 
+     * @param event 
+     */
     public void observeRestoreView(@Observes @After @RestoreView PhaseEvent event) {
         log.debug("After Restore View event");
         performObservation(event, PhaseIdType.RESTORE_VIEW);
     }
 
+    /**
+     * Inspect the annotations in the ViewConfigStore, enforcing any restrictions applicable to this phase
+     * 
+     * @param event
+     * @param phaseIdType 
+     */
     private void performObservation(PhaseEvent event, PhaseIdType phaseIdType) {
         UIViewRoot viewRoot = (UIViewRoot) event.getFacesContext().getViewRoot();
         List<? extends Annotation> restrictionsForPhase = getRestrictionsForPhase(phaseIdType, viewRoot.getViewId());
@@ -68,6 +90,14 @@ public class SecurityPhaseListener {
         }
     }
 
+    /**
+     * Retrieve all annotations from the ViewConfigStore for a given a JSF phase, and a view id,
+     * and where the annotation is qualified by @SecurityBindingType
+     * 
+     * @param currentPhase
+     * @param viewId
+     * @return list of restrictions applicable to this viewId and PhaseTypeId
+     */
     public List<? extends Annotation> getRestrictionsForPhase(PhaseIdType currentPhase, String viewId) {
         List<? extends Annotation> allSecurityAnnotations = viewConfigStore.getAllQualifierData(viewId, SecurityBindingType.class);
         List<Annotation> applicableSecurityAnnotations = null;
@@ -83,6 +113,14 @@ public class SecurityPhaseListener {
         return applicableSecurityAnnotations;
     }
     
+    /**
+     * Inspect an annotation to see if it specifies a view in which it should be.  Fall back on default view otherwise.
+     * 
+     * @param annotation
+     * @param currentPhase
+     * @param defaultPhases
+     * @return true if the annotation is applicable to this view and phase, false otherwise
+     */
     public boolean isAnnotationApplicableToPhase(Annotation annotation, PhaseIdType currentPhase, PhaseIdType[] defaultPhases) {
         Method restrictAtViewMethod = getRestrictAtViewMethod(annotation);
         PhaseIdType[] phasedIds = null;
@@ -99,6 +137,13 @@ public class SecurityPhaseListener {
         return false;
     }
     
+    /**
+     * Get the default phases at which restrictions should be applied, by looking for a @RestrictAtPhase on a matching
+     * @ViewPattern, falling back on global defaults if none are found
+     * 
+     * @param viewId
+     * @return default phases for a view
+     */
     public PhaseIdType[] getDefaultPhases(String viewId) {
         PhaseIdType[] defaultPhases = null;
         RestrictAtPhase restrictAtPhase = viewConfigStore.getAnnotationData(viewId, RestrictAtPhase.class);
@@ -111,6 +156,12 @@ public class SecurityPhaseListener {
         return defaultPhases;
     }
 
+    /**
+     * Utility method to extract the "restrictAtPhase" method from an annotation
+     * 
+     * @param annotation
+     * @return restrictAtViewMethod if found, null otherwise
+     */
     public Method getRestrictAtViewMethod(Annotation annotation) {
         Method restrictAtViewMethod;
         try {
@@ -123,6 +174,13 @@ public class SecurityPhaseListener {
         return restrictAtViewMethod;
     }
     
+    /**
+     * Retrieve the default PhaseIdTypes defined by the restrictAtViewMethod in the annotation
+     * 
+     * @param restrictAtViewMethod
+     * @param annotation
+     * @return PhaseIdTypes from the restrictAtViewMethod, null if empty
+     */
     public PhaseIdType[] getRestrictedPhaseIds(Method restrictAtViewMethod, Annotation annotation) {
         PhaseIdType[] phaseIds;
         try {
@@ -135,6 +193,15 @@ public class SecurityPhaseListener {
         return phaseIds;
     }
 
+    /**
+     * Enforce the list of applicable annotations, by firing an AuthorizationCheckEvent.  The event is then inspected to 
+     * determine if access is allowed.  Faces navigation is then re-routed to the @LoginView if the user is not logged in,
+     * otherwise to the @AccessDenied view.
+     * 
+     * @param context
+     * @param viewRoot
+     * @param annotations 
+     */
     private void enforce(FacesContext context, UIViewRoot viewRoot, List<? extends Annotation> annotations) {
         if (annotations == null || annotations.isEmpty()) {
             log.debug("Annotations is null/empty");
@@ -157,6 +224,13 @@ public class SecurityPhaseListener {
         }
     }
 
+    /**
+     * Perform the navigation to the @LoginView.  If not @LoginView is defined, return a 401 response.
+     * The original view id requested by the user is stored in the session map, for use after a successful login.
+     * 
+     * @param context
+     * @param viewRoot 
+     */
     private void redirectToLoginPage(FacesContext context, UIViewRoot viewRoot) {
         context.getExternalContext().getSessionMap().put(PRE_LOGIN_VIEW, viewRoot.getViewId());
         LoginView loginView = viewConfigStore.getAnnotationData(viewRoot.getViewId(), LoginView.class);
@@ -173,6 +247,12 @@ public class SecurityPhaseListener {
         context.renderResponse();
     }
 
+    /**
+     * Perform the navigation to the @AccessDeniedView.  If not @AccessDeniedView is defined, return a 401 response
+     * 
+     * @param context
+     * @param viewRoot 
+     */
     private void redirectToAccessDeniedView(FacesContext context, UIViewRoot viewRoot) {
         AccessDeniedView accessDeniedView = viewConfigStore.getAnnotationData(viewRoot.getViewId(), AccessDeniedView.class);
         if (accessDeniedView == null || accessDeniedView.value() == null || accessDeniedView.value().isEmpty()) {
@@ -188,6 +268,12 @@ public class SecurityPhaseListener {
         context.renderResponse();
     }
     
+    /**
+     * Monitor PreNavigationEvents, looking for a successful navigation from the Seam Security login button.  When such a 
+     * navigation is encountered, redirect to the the viewId captured before the login redirect was triggered.
+     * 
+     * @param event 
+     */
     public void observePreNavigateEvent(@Observes PreNavigateEvent event) {
         log.debugf("PreNavigateEvent observed %s, %s", event.getOutcome(), event.getFromAction());
         if (Identity.RESPONSE_LOGIN_SUCCESS.equals(event.getOutcome())
