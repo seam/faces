@@ -71,7 +71,7 @@
          </activation>
          <modules>
             <module>docs/reference</module>
-            <module>examples/short-ly</module>
+            <module>examples/faces-short-ly</module>
             <module>dist</module>
          </modules>
       </profile>
