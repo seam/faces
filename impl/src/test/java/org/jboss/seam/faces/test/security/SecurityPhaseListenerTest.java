@@ -1,4 +1,4 @@
-package org.jboss.seam.faces.test.view.config;
+package org.jboss.seam.faces.test.security;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
