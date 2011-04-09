@@ -54,7 +54,7 @@ import javax.faces.webapp.FacesServlet;
  * <p>
  * If the value of the component's <literal>immediate</literal> attribute is <literal>true</literal>, the action will be invoked
  * during the Apply Request Values JSF lifecycle phase. Otherwise, the action will be invoked during the Invoke Application
- * phase, the default behavior. The phase cannot be set explicitly in the <literal>phase</literal> attribute, which takes
+ * phase, the default behavior. The phase can be set explicitly in the <literal>phase</literal> attribute, which takes
  * precedence over the <literal>immediate</literal> attribute.
  * </p>
  * 
