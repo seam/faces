@@ -189,7 +189,7 @@ public class FooValidator implements Validator {
 		<para>
 			The view action component (<literal>UIViewAction</literal>) is an <literal>ActionSource2</literal>
 			<literal>UIComponent</literal> that specifies an application-specific command (or action), using
-			using an EL method expression, to be invoked during one of the JSF lifecycle phases proceeding Render
+			an EL method expression, to be invoked during one of the JSF lifecycle phases proceeding Render
 			Response (i.e., view rendering).
 		</para>
 		
@@ -278,7 +278,7 @@ public class FooValidator implements Validator {
                The JSF 2 specification specifies that there must be at least one view parameter for the view metadata
                facet to be processed on an initial request. This requirement was introduced into the JSF specification
                inadvertently. But not to worry. Seam Faces inserts a placeholder view parameter into the view metadata
-               if contains other components but no view parameters. That means you can use a view action without a view
+               if it contains other components but no view parameters. That means you can use a view action without a view
                parameter, contrary to the JSF specification.
 				</para>
 			</warning>

@@ -54,7 +54,7 @@ public class Bean {
 			</caution>
 	</section>
     <section id="flashproducer">
-      <title>@Inject javax.faces.contet.Flash flash</title>
+      <title>@Inject javax.faces.context.Flash flash</title>
       <para>
          JSF 2 does not provide proper system events to create a functional <literal>@FlashScoped</literal> context annotation integrated with CDI, so until
          a workaround can be found, or JSF 2 is enhanced, you can access the Flash via the @Inject annotation. For more information on the 
