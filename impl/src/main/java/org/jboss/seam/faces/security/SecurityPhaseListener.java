@@ -1,5 +1,9 @@
-package org.jboss.seam.faces.view.config;
+package org.jboss.seam.faces.security;
 
+import org.jboss.seam.faces.security.RestrictAtPhase;
+import org.jboss.seam.faces.security.LoginView;
+import org.jboss.seam.faces.security.RestrictAtPhaseDefault;
+import org.jboss.seam.faces.security.AccessDeniedView;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -22,6 +26,7 @@ import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.faces.event.qualifier.InvokeApplication;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.faces.event.qualifier.RestoreView;
+import org.jboss.seam.faces.view.config.ViewConfigStore;
 import org.jboss.seam.security.Identity;
 import org.jboss.seam.security.annotations.SecurityBindingType;
 import org.jboss.seam.security.events.AuthorizationCheckEvent;

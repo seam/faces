@@ -1,5 +1,6 @@
 package org.jboss.seam.faces.view.config;
 
+import org.jboss.seam.faces.security.SecurityPhaseListener;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;

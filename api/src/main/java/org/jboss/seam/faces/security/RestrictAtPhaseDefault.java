@@ -1,4 +1,4 @@
-package org.jboss.seam.faces.view.config;
+package org.jboss.seam.faces.security;
 
 import org.jboss.seam.faces.event.PhaseIdType;
 
