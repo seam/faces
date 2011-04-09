@@ -430,7 +430,19 @@ public class FooValidator implements Validator {
       </para>
          
       <para>
-         Composite component definition example (minus layout):
+         There's a  composite componente that ships with seam-faces under the url:
+      </para>
+      <para>
+      	 http://java.sun.com/jsf/composite/components/seamfaces.
+      </para>
+      
+       <programlisting role="XML"><![CDATA[xmlns:sc="http://java.sun.com/jsf/composite/components/seamfaces"
+	<sc:inputContainer label="name" id="name">
+		<h:inputText id="input" value="#{person.name}"/>
+	</sc:inputContainer>]]></programlisting>
+ 
+      <para>
+         If you want to define your own composite component, follow this definition example (minus layout):
       </para>
       <programlisting role="XML"><![CDATA[<cc:interface componentType="org.jboss.seam.faces.InputContainer"/>
  <cc:implementation>
@@ -440,12 +452,7 @@ public class FooValidator implements Validator {
    <cc:insertChildren/>
    <h:message id="message" errorClass="invalid message" rendered="#{cc.attrs.invalid}"/>
  </cc:implementation>]]></programlisting>
-      <para>
-         Composite component usage example:
-      </para>
-      <programlisting role="XML"><![CDATA[<example:inputContainer id="name">
-   <h:inputText id="input" value="#{person.name}"/>
- </example:inputContainer>]]></programlisting>
+      
       <tip>
          <para>
             NOTE: Firefox does not properly associate a label with the target input if the input id
