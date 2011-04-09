@@ -31,7 +31,7 @@ public interface ViewConfigEnum {
         QUALIFIED,
         
         @ViewPattern("/qualified/yes.xhtml")
-        @Restricted(restrictAtPhase=PhaseIdType.RENDER_RESPONSE)
+        @RestrictedAtRestoreView
         QUALIFIED_YES;
         
     }

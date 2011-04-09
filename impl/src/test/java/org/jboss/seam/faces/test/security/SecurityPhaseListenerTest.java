@@ -8,10 +8,11 @@ import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.faces.event.PhaseIdType;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
-import org.jboss.seam.faces.test.view.config.annotation.RestrictedLiteral;
+import org.jboss.seam.faces.test.view.config.annotation.RestrictedAtRestoreViewLiteral;
 import org.jboss.seam.faces.test.view.config.annotation.ViewConfigEnum;
 import org.jboss.seam.faces.security.RestrictAtPhaseDefault;
 import org.jboss.seam.faces.security.SecurityPhaseListener;
+import org.jboss.seam.faces.test.view.config.annotation.RestrictedDefaultLiteral;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
 import org.jboss.seam.faces.view.config.ViewConfigStoreImpl;
 import org.jboss.seam.security.annotations.SecurityBindingType;
@@ -53,23 +54,26 @@ public class SecurityPhaseListenerTest {
 
     @Test
     public void testIsAnnotationApplicableToPhase() {
-        Assert.assertEquals(true, listener.isAnnotationApplicableToPhase(new RestrictedLiteral(), PhaseIdType.RENDER_RESPONSE, RestrictAtPhaseDefault.DEFAULT_PHASES));
-        Assert.assertEquals(false, listener.isAnnotationApplicableToPhase(new RestrictedLiteral(PhaseIdType.RESTORE_VIEW), PhaseIdType.RENDER_RESPONSE, RestrictAtPhaseDefault.DEFAULT_PHASES));
-        Assert.assertEquals(true, listener.isAnnotationApplicableToPhase(new RestrictedLiteral(PhaseIdType.RESTORE_VIEW), PhaseIdType.RESTORE_VIEW, RestrictAtPhaseDefault.DEFAULT_PHASES));
+        Assert.assertEquals(true, listener.isAnnotationApplicableToPhase(new RestrictedAtRestoreViewLiteral(), PhaseIdType.RESTORE_VIEW, RestrictAtPhaseDefault.DEFAULT_PHASES));
+        Assert.assertEquals(false, listener.isAnnotationApplicableToPhase(new RestrictedAtRestoreViewLiteral(), PhaseIdType.INVOKE_APPLICATION, RestrictAtPhaseDefault.DEFAULT_PHASES));
+        Assert.assertEquals(false, listener.isAnnotationApplicableToPhase(new RestrictedAtRestoreViewLiteral(), PhaseIdType.RENDER_RESPONSE, RestrictAtPhaseDefault.DEFAULT_PHASES));
+        Assert.assertEquals(false, listener.isAnnotationApplicableToPhase(new RestrictedDefaultLiteral(), PhaseIdType.RESTORE_VIEW, RestrictAtPhaseDefault.DEFAULT_PHASES));
+        Assert.assertEquals(true, listener.isAnnotationApplicableToPhase(new RestrictedDefaultLiteral(), PhaseIdType.INVOKE_APPLICATION, RestrictAtPhaseDefault.DEFAULT_PHASES));
+        Assert.assertEquals(true, listener.isAnnotationApplicableToPhase(new RestrictedDefaultLiteral(), PhaseIdType.RENDER_RESPONSE, RestrictAtPhaseDefault.DEFAULT_PHASES));
     }
             
     
     @Test
     public void testIsRestrictPhase() {
         List<? extends Annotation> restrict;
-        restrict = listener.getRestrictionsForPhase(PhaseIdType.RENDER_RESPONSE, "/qualified/yes.xhtml");
+        restrict = listener.getRestrictionsForPhase(PhaseIdType.RESTORE_VIEW, "/qualified/yes.xhtml");
         Assert.assertEquals(1, restrict.size());
         
         restrict = listener.getRestrictionsForPhase(PhaseIdType.INVOKE_APPLICATION, "/qualified/yes.xhtml");
         Assert.assertEquals(1, restrict.size());
 
         restrict = listener.getRestrictionsForPhase(PhaseIdType.RESTORE_VIEW, "/qualified/yes.xhtml");
-        Assert.assertEquals(null, restrict);
+        Assert.assertEquals(1, restrict.size());
         
         restrict = listener.getRestrictionsForPhase(PhaseIdType.RENDER_RESPONSE, "/qualified/no.xhtml");
         Assert.assertEquals(null, restrict);

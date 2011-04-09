@@ -13,6 +13,7 @@ import javax.enterprise.inject.Stereotype;
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  * 
  */
+@Deprecated
 public class Annotations {
     /**
      * Discover if a Method <b>m</b> has been annotated with <b>type</b>. This also discovers annotations defined through a @

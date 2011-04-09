@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.spi.Annotated;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.faces.application.NavigationHandler;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
@@ -26,11 +28,13 @@ import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.faces.event.qualifier.InvokeApplication;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.faces.event.qualifier.RestoreView;
+import org.jboss.seam.faces.util.Annotations;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
 import org.jboss.seam.security.Identity;
 import org.jboss.seam.security.annotations.SecurityBindingType;
 import org.jboss.seam.security.events.AuthorizationCheckEvent;
 import org.jboss.seam.solder.core.Requires;
+import org.jboss.seam.solder.reflection.AnnotationInspector;
 
 /**
  * Use the annotations stored in the ViewConfigStore to restrict view access.
@@ -49,6 +53,8 @@ public class SecurityPhaseListener {
     private ViewConfigStore viewConfigStore;
     @Inject
     private Event<AuthorizationCheckEvent> authorizationCheckEvent;
+    @Inject
+    private BeanManager beanManager;
 
     /**
      * Enforce any security annotations applicable to the RenderResponse phase
@@ -130,7 +136,13 @@ public class SecurityPhaseListener {
         Method restrictAtViewMethod = getRestrictAtViewMethod(annotation);
         PhaseIdType[] phasedIds = null;
         if (restrictAtViewMethod != null) {
+            log.warnf("Annotation %s is using the restrictAtViewMethod. Use a @RestrictAtPhase qualifier on the annotation instead.");
             phasedIds = getRestrictedPhaseIds(restrictAtViewMethod, annotation);
+        }
+        RestrictAtPhase restrictAtPhaseQualifier = AnnotationInspector.getAnnotation(annotation.annotationType(), RestrictAtPhase.class, beanManager);
+        if (restrictAtPhaseQualifier != null) {
+            log.debug("Using Phases found in @RestrictAtView qualifier on the annotation.");
+            phasedIds = restrictAtPhaseQualifier.value();
         }
         if (phasedIds == null) {
             log.debug("Falling back on default phase ids");
