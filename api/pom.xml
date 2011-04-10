@@ -61,6 +61,12 @@
          <artifactId>validation-api</artifactId>
          <scope>provided</scope>
       </dependency>
+      <dependency>
+         <groupId>com.ocpsoft</groupId>
+         <artifactId>prettyfaces-jsf2</artifactId>
+         <scope>provided</scope>
+         <optional>true</optional>
+      </dependency>
    </dependencies>
 
    <build>

@@ -4,6 +4,7 @@
  */
 package org.jboss.seam.faces.examples.security;
 
+import org.jboss.seam.faces.rewrite.UrlMapping;
 import org.jboss.seam.faces.security.AccessDeniedView;
 import org.jboss.seam.faces.security.LoginView;
 import org.jboss.seam.faces.view.config.ViewConfig;
@@ -23,6 +24,7 @@ public interface Pages {
         @LoginView("/login.xhtml")
         ALL,
         
+        @UrlMapping(pattern="/index.asd")
         @ViewPattern("/index.xhtml")
         INDEX,
         

@@ -50,14 +50,21 @@
          <groupId>org.jboss.seam.catch</groupId>
          <artifactId>seam-catch-impl</artifactId>
          <scope>provided</scope>
-         <optional>true</optional> 
+         <optional>true</optional>
       </dependency>
-      
+
       <dependency>
          <groupId>org.jboss.seam.security</groupId>
          <artifactId>seam-security-api</artifactId>
          <scope>provided</scope>
-         <optional>true</optional> 
+         <optional>true</optional>
+      </dependency>
+
+       <dependency>
+         <groupId>com.ocpsoft</groupId>
+         <artifactId>prettyfaces-jsf2</artifactId>
+         <scope>provided</scope>
+         <optional>true</optional>
       </dependency>
 
       <dependency>

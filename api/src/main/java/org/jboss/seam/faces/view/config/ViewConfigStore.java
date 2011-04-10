@@ -2,6 +2,7 @@ package org.jboss.seam.faces.view.config;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
+import java.util.Map;
 
 /**
  * stores data specific to a given view is a hierarchical fashion
@@ -34,5 +35,10 @@ public interface ViewConfigStore {
      * returns all qualified data for a given viewId, with the most specific data at the start of the list
      */
     public abstract List<? extends Annotation> getAllQualifierData(String viewId, Class<? extends Annotation> qualifier);
+    
+    /**
+     * return a map of views to annotations for a given annotation type
+     */
+    public <T extends Annotation> Map<String, Annotation> getAllAnnotationViewMap(Class<T> type);
 
 }

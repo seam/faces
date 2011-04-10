@@ -102,6 +102,11 @@ public class ViewConfigStoreImpl implements ViewConfigStore {
         }
         return null;
     }
+    
+    @Override
+    public <T extends Annotation> Map<String, Annotation> getAllAnnotationViewMap(Class<T> type) {
+        return viewPatternDataByAnnotation.get(type);
+    }
 
     @Override
     public List<? extends Annotation> getAllQualifierData(String viewId, Class<? extends Annotation> qualifier) {
