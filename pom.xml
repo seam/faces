@@ -133,6 +133,17 @@
    </ciManagement>
 
    <developers>
+       <developer>
+         <name>Brian Leathem</name>
+         <email>bleathem@gmail.com</email>
+         <url>http://blog.bleathem.ca</url>
+         <organization>TRIUMF</organization>
+         <organizationUrl>http://www.triumf.ca</organizationUrl>
+         <timezone>PST</timezone>
+         <roles>
+            <role>Project Lead</role>
+         </roles>
+      </developer>
       <developer>
          <name>Lincoln Baxter, III</name>
          <email>lincolnbaxter@gmail.com</email>
@@ -141,7 +152,7 @@
          <organizationUrl>http://jboss.org</organizationUrl>
          <timezone>EST</timezone>
          <roles>
-            <role>Project Lead</role>
+            <role>Committer</role>
          </roles>
       </developer>
       <developer>
@@ -150,7 +161,7 @@
          <organizationUrl>http://jboss.org</organizationUrl>
          <timezone>EST</timezone>
          <roles>
-            <role>Project Lead</role>
+            <role>Committer</role>
          </roles>
       </developer>
       <developer>
