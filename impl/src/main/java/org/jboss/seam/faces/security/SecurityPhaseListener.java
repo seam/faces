@@ -24,10 +24,13 @@ import org.jboss.logging.Logger;
 import org.jboss.seam.faces.event.PhaseIdType;
 import org.jboss.seam.faces.event.PreNavigateEvent;
 import org.jboss.seam.faces.event.qualifier.After;
+import org.jboss.seam.faces.event.qualifier.ApplyRequestValues;
 import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.faces.event.qualifier.InvokeApplication;
+import org.jboss.seam.faces.event.qualifier.ProcessValidations;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.faces.event.qualifier.RestoreView;
+import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
 import org.jboss.seam.faces.util.Annotations;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
 import org.jboss.seam.security.Identity;
@@ -39,16 +42,16 @@ import org.jboss.seam.solder.reflection.AnnotationInspector;
 /**
  * Use the annotations stored in the ViewConfigStore to restrict view access.
  * Authorization is delegated to Seam Security through by firing a AuthorizationCheckEvent.
- * 
+ *
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 @Requires("org.jboss.seam.security.extension.SecurityExtension")
 public class SecurityPhaseListener {
 
     private transient final Logger log = Logger.getLogger(SecurityPhaseListener.class);
-    
+
     private static final String PRE_LOGIN_VIEW = SecurityPhaseListener.class.getName() + "_PRE_LOGIN_VIEW";
-   
+
     @Inject
     private ViewConfigStore viewConfigStore;
     @Inject
@@ -57,29 +60,9 @@ public class SecurityPhaseListener {
     private BeanManager beanManager;
 
     /**
-     * Enforce any security annotations applicable to the RenderResponse phase
-     * 
-     * @param event 
-     */
-    public void observeRenderResponse(@Observes @Before @RenderResponse PhaseEvent event) {
-        log.debug("Before Render Response event");
-        performObservation(event, PhaseIdType.RENDER_RESPONSE);
-    }
-
-    /**
-     * Enforce any security annotations applicable to the InvokeApplication phase
-     * 
-     * @param event 
-     */
-    public void observeInvokeApplication(@Observes @Before @InvokeApplication PhaseEvent event) {
-        log.debug("Before Render Response event");
-        performObservation(event, PhaseIdType.INVOKE_APPLICATION);
-    }
-
-    /**
      * Enforce any security annotations applicable to the RestoreView phase
-     * 
-     * @param event 
+     *
+     * @param event
      */
     public void observeRestoreView(@Observes @After @RestoreView PhaseEvent event) {
         log.debug("After Restore View event");
@@ -87,10 +70,60 @@ public class SecurityPhaseListener {
     }
 
     /**
-     * Inspect the annotations in the ViewConfigStore, enforcing any restrictions applicable to this phase
-     * 
+     * Enforce any security annotations applicable to the ApplyRequestValues phase
+     *
      * @param event
-     * @param phaseIdType 
+     */
+    public void observeApplyRequestValues(@Observes @Before @ApplyRequestValues PhaseEvent event) {
+        log.debug("After Apply Request Values event");
+        performObservation(event, PhaseIdType.APPLY_REQUEST_VALUES);
+    }
+
+    /**
+     * Enforce any security annotations applicable to the ProcessValidations phase
+     *
+     * @param event
+     */
+    public void observeProcessValidations(@Observes @Before @ProcessValidations PhaseEvent event) {
+        log.debug("After Process Validations event");
+        performObservation(event, PhaseIdType.PROCESS_VALIDATIONS);
+    }
+
+    /**
+     * Enforce any security annotations applicable to the UpdateModelValues phase
+     *
+     * @param event
+     */
+    public void observeUpdateModelValues(@Observes @Before @UpdateModelValues PhaseEvent event) {
+        log.debug("After Update Model Values event");
+        performObservation(event, PhaseIdType.UPDATE_MODEL_VALUES);
+    }
+
+    /**
+     * Enforce any security annotations applicable to the InvokeApplication phase
+     *
+     * @param event
+     */
+    public void observeInvokeApplication(@Observes @Before @InvokeApplication PhaseEvent event) {
+        log.debug("Before Render Response event");
+        performObservation(event, PhaseIdType.INVOKE_APPLICATION);
+    }
+
+    /**
+     * Enforce any security annotations applicable to the RenderResponse phase
+     *
+     * @param event
+     */
+    public void observeRenderResponse(@Observes @Before @RenderResponse PhaseEvent event) {
+        log.debug("Before Render Response event");
+        performObservation(event, PhaseIdType.RENDER_RESPONSE);
+    }
+
+    /**
+     * Inspect the annotations in the ViewConfigStore, enforcing any restrictions applicable to this phase
+     *
+     * @param event
+     * @param phaseIdType
      */
     private void performObservation(PhaseEvent event, PhaseIdType phaseIdType) {
         UIViewRoot viewRoot = (UIViewRoot) event.getFacesContext().getViewRoot();
@@ -104,7 +137,7 @@ public class SecurityPhaseListener {
     /**
      * Retrieve all annotations from the ViewConfigStore for a given a JSF phase, and a view id,
      * and where the annotation is qualified by @SecurityBindingType
-     * 
+     *
      * @param currentPhase
      * @param viewId
      * @return list of restrictions applicable to this viewId and PhaseTypeId
@@ -123,10 +156,10 @@ public class SecurityPhaseListener {
         }
         return applicableSecurityAnnotations;
     }
-    
+
     /**
      * Inspect an annotation to see if it specifies a view in which it should be.  Fall back on default view otherwise.
-     * 
+     *
      * @param annotation
      * @param currentPhase
      * @param defaultPhases
@@ -153,11 +186,11 @@ public class SecurityPhaseListener {
         }
         return false;
     }
-    
+
     /**
      * Get the default phases at which restrictions should be applied, by looking for a @RestrictAtPhase on a matching
      * @ViewPattern, falling back on global defaults if none are found
-     * 
+     *
      * @param viewId
      * @return default phases for a view
      */
@@ -175,7 +208,7 @@ public class SecurityPhaseListener {
 
     /**
      * Utility method to extract the "restrictAtPhase" method from an annotation
-     * 
+     *
      * @param annotation
      * @return restrictAtViewMethod if found, null otherwise
      */
@@ -190,10 +223,10 @@ public class SecurityPhaseListener {
         }
         return restrictAtViewMethod;
     }
-    
+
     /**
      * Retrieve the default PhaseIdTypes defined by the restrictAtViewMethod in the annotation
-     * 
+     *
      * @param restrictAtViewMethod
      * @param annotation
      * @return PhaseIdTypes from the restrictAtViewMethod, null if empty
@@ -211,13 +244,13 @@ public class SecurityPhaseListener {
     }
 
     /**
-     * Enforce the list of applicable annotations, by firing an AuthorizationCheckEvent.  The event is then inspected to 
+     * Enforce the list of applicable annotations, by firing an AuthorizationCheckEvent.  The event is then inspected to
      * determine if access is allowed.  Faces navigation is then re-routed to the @LoginView if the user is not logged in,
      * otherwise to the @AccessDenied view.
-     * 
+     *
      * @param context
      * @param viewRoot
-     * @param annotations 
+     * @param annotations
      */
     private void enforce(FacesContext context, UIViewRoot viewRoot, List<? extends Annotation> annotations) {
         if (annotations == null || annotations.isEmpty()) {
@@ -244,9 +277,9 @@ public class SecurityPhaseListener {
     /**
      * Perform the navigation to the @LoginView.  If not @LoginView is defined, return a 401 response.
      * The original view id requested by the user is stored in the session map, for use after a successful login.
-     * 
+     *
      * @param context
-     * @param viewRoot 
+     * @param viewRoot
      */
     private void redirectToLoginPage(FacesContext context, UIViewRoot viewRoot) {
         context.getExternalContext().getSessionMap().put(PRE_LOGIN_VIEW, viewRoot.getViewId());
@@ -266,9 +299,9 @@ public class SecurityPhaseListener {
 
     /**
      * Perform the navigation to the @AccessDeniedView.  If not @AccessDeniedView is defined, return a 401 response
-     * 
+     *
      * @param context
-     * @param viewRoot 
+     * @param viewRoot
      */
     private void redirectToAccessDeniedView(FacesContext context, UIViewRoot viewRoot) {
         AccessDeniedView accessDeniedView = viewConfigStore.getAnnotationData(viewRoot.getViewId(), AccessDeniedView.class);
@@ -284,12 +317,12 @@ public class SecurityPhaseListener {
         navHandler.handleNavigation(context, "", accessDeniedViewId);
         context.renderResponse();
     }
-    
+
     /**
-     * Monitor PreNavigationEvents, looking for a successful navigation from the Seam Security login button.  When such a 
+     * Monitor PreNavigationEvents, looking for a successful navigation from the Seam Security login button.  When such a
      * navigation is encountered, redirect to the the viewId captured before the login redirect was triggered.
-     * 
-     * @param event 
+     *
+     * @param event
      */
     public void observePreNavigateEvent(@Observes PreNavigateEvent event) {
         log.debugf("PreNavigateEvent observed %s, %s", event.getOutcome(), event.getFromAction());
