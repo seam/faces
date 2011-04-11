@@ -1,9 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.jboss.seam.faces.examples.security;
 
+import org.jboss.seam.faces.rewrite.FacesRedirect;
 import org.jboss.seam.faces.rewrite.UrlMapping;
 import org.jboss.seam.faces.security.AccessDeniedView;
 import org.jboss.seam.faces.security.LoginView;
@@ -19,6 +16,7 @@ public interface Pages {
 
     static enum Pages1 {
 
+        @FacesRedirect
         @ViewPattern("/*")
         @AccessDeniedView("/item/list.xhtml")
         @LoginView("/login.xhtml")
