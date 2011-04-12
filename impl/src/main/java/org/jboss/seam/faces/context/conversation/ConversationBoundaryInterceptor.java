@@ -6,13 +6,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.enterprise.context.Conversation;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
 import org.jboss.logging.Logger;
-import org.jboss.seam.faces.util.Annotations;
+import org.jboss.seam.solder.reflection.AnnotationInspector;
 
 /**
  * Intercepts methods annotated as Conversational entry points: @{@link Begin} and @{@link End}
@@ -28,19 +29,21 @@ public class ConversationBoundaryInterceptor implements Serializable {
 
     @Inject
     Conversation conversation;
+    @Inject
+    private BeanManager beanManager;
 
     @AroundInvoke
     public Object around(final InvocationContext ctx) throws Exception {
         Object result = null;
 
         try {
-            if (Annotations.isAnnotationPresent(ctx.getMethod(), Begin.class)) {
+            if (AnnotationInspector.isAnnotationPresent(ctx.getMethod(), Begin.class, beanManager)) {
                 beginConversation(ctx);
             }
 
             result = ctx.proceed();
 
-            if (Annotations.isAnnotationPresent(ctx.getMethod(), End.class)) {
+            if (AnnotationInspector.isAnnotationPresent(ctx.getMethod(), End.class, beanManager)) {
                 endConversation(ctx);
             }
         } catch (Exception e) {
@@ -53,7 +56,7 @@ public class ConversationBoundaryInterceptor implements Serializable {
     }
 
     private void handleExceptionBegin(final InvocationContext ctx, final Exception e) {
-        if (Annotations.isAnnotationPresent(ctx.getMethod(), Begin.class)) {
+        if (AnnotationInspector.isAnnotationPresent(ctx.getMethod(), Begin.class, beanManager)) {
             List<? extends Class<? extends Exception>> typesPermittedByBegin = getPermittedExceptionTypesBegin(ctx.getMethod());
             for (Class<? extends Exception> type : typesPermittedByBegin) {
                 if (type.isInstance(e) == false) {
@@ -69,7 +72,7 @@ public class ConversationBoundaryInterceptor implements Serializable {
     }
 
     private void handleExceptionEnd(final InvocationContext ctx, final Exception e) {
-        if (Annotations.isAnnotationPresent(ctx.getMethod(), End.class)) {
+        if (AnnotationInspector.isAnnotationPresent(ctx.getMethod(), End.class, beanManager)) {
             List<? extends Class<? extends Exception>> typesPermittedByEnd = getPermittedExceptionTypesEnd(ctx.getMethod());
             boolean permitted = false;
             for (Class<? extends Exception> type : typesPermittedByEnd) {
@@ -88,14 +91,15 @@ public class ConversationBoundaryInterceptor implements Serializable {
     }
 
     private void beginConversation(final InvocationContext ctx) throws Exception {
-        String cid = Annotations.getAnnotation(ctx.getMethod(), Begin.class).id();
+        Begin beginAnnotation = AnnotationInspector.getAnnotation(ctx.getMethod(), Begin.class, beanManager);
+        String cid = beginAnnotation.id();
         if ((cid != null) && !"".equals(cid)) {
             conversation.begin(cid);
         } else {
             conversation.begin();
         }
 
-        long timeout = Annotations.getAnnotation(ctx.getMethod(), Begin.class).timeout();
+        long timeout = beginAnnotation.timeout();
         if (timeout != -1) {
             conversation.setTimeout(timeout);
         }
@@ -111,10 +115,10 @@ public class ConversationBoundaryInterceptor implements Serializable {
     }
 
     private List<? extends Class<? extends Exception>> getPermittedExceptionTypesBegin(final Method m) {
-        return Arrays.asList(Annotations.getAnnotation(m, Begin.class).permit());
+        return Arrays.asList(AnnotationInspector.getAnnotation(m, Begin.class, beanManager).permit());
     }
 
     private List<? extends Class<? extends Exception>> getPermittedExceptionTypesEnd(final Method m) {
-        return Arrays.asList(Annotations.getAnnotation(m, End.class).permit());
+        return Arrays.asList(AnnotationInspector.getAnnotation(m, End.class, beanManager).permit());
     }
 }
