@@ -1,18 +1,14 @@
 package org.jboss.seam.faces.security;
 
-import org.jboss.seam.faces.security.RestrictAtPhase;
-import org.jboss.seam.faces.security.LoginView;
-import org.jboss.seam.faces.security.RestrictAtPhaseDefault;
-import org.jboss.seam.faces.security.AccessDeniedView;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.faces.application.NavigationHandler;
 import javax.faces.component.UIViewRoot;
@@ -22,6 +18,8 @@ import javax.inject.Inject;
 
 import org.jboss.logging.Logger;
 import org.jboss.seam.faces.event.PhaseIdType;
+import org.jboss.seam.faces.event.PostLoginEvent;
+import org.jboss.seam.faces.event.PreLoginEvent;
 import org.jboss.seam.faces.event.PreNavigateEvent;
 import org.jboss.seam.faces.event.qualifier.After;
 import org.jboss.seam.faces.event.qualifier.ApplyRequestValues;
@@ -31,7 +29,6 @@ import org.jboss.seam.faces.event.qualifier.ProcessValidations;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.faces.event.qualifier.RestoreView;
 import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
-import org.jboss.seam.faces.util.Annotations;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
 import org.jboss.seam.security.Identity;
 import org.jboss.seam.security.annotations.SecurityBindingType;
@@ -50,12 +47,14 @@ public class SecurityPhaseListener {
 
     private transient final Logger log = Logger.getLogger(SecurityPhaseListener.class);
 
-    private static final String PRE_LOGIN_VIEW = SecurityPhaseListener.class.getName() + "_PRE_LOGIN_VIEW";
-
     @Inject
     private ViewConfigStore viewConfigStore;
     @Inject
     private Event<AuthorizationCheckEvent> authorizationCheckEvent;
+    @Inject
+    private Event<PreLoginEvent> preLoginEvent;
+    @Inject
+    private Event<PostLoginEvent> postLoginEvent;
     @Inject
     private BeanManager beanManager;
 
@@ -282,7 +281,8 @@ public class SecurityPhaseListener {
      * @param viewRoot
      */
     private void redirectToLoginPage(FacesContext context, UIViewRoot viewRoot) {
-        context.getExternalContext().getSessionMap().put(PRE_LOGIN_VIEW, viewRoot.getViewId());
+        Map<String,Object> sessionMap = context.getExternalContext().getSessionMap();
+        preLoginEvent.fire(new PreLoginEvent(context, sessionMap));
         LoginView loginView = viewConfigStore.getAnnotationData(viewRoot.getViewId(), LoginView.class);
         if (loginView == null || loginView.value() == null || loginView.value().isEmpty()) {
             log.debug("Returning 401 response (login required)");
@@ -329,13 +329,8 @@ public class SecurityPhaseListener {
         if (Identity.RESPONSE_LOGIN_SUCCESS.equals(event.getOutcome())
                 && "#{identity.login}".equals(event.getFromAction())) {
             FacesContext context = event.getContext();
-            if (context.getExternalContext().getSessionMap().get(PRE_LOGIN_VIEW) != null) {
-                String oldViewId = (String) context.getExternalContext().getSessionMap().get(PRE_LOGIN_VIEW);
-                NavigationHandler navHandler = context.getApplication().getNavigationHandler();
-                navHandler.handleNavigation(context, "", oldViewId);
-                context.renderResponse();
-                context.getExternalContext().getSessionMap().remove(PRE_LOGIN_VIEW);
-            }
+            Map<String,Object> sessionMap = context.getExternalContext().getSessionMap();
+            postLoginEvent.fire(new PostLoginEvent(context, sessionMap));
         }
     }
 }
