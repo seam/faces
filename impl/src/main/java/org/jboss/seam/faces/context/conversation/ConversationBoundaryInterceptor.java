@@ -19,6 +19,7 @@ import org.jboss.seam.solder.reflection.AnnotationInspector;
  * Intercepts methods annotated as Conversational entry points: @{@link Begin} and @{@link End}
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
+ * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 @ConversationBoundary
 @Interceptor
