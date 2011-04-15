@@ -20,7 +20,7 @@ public interface Pages {
 
         @FacesRedirect
         @ViewPattern("/*")
-        @AccessDeniedView("/list.xhtml")
+        @AccessDeniedView("/denied.xhtml")
         @LoginView("/login.xhtml")
         ALL,
         

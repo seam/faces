@@ -12,6 +12,13 @@
         </h:head>
         <h:body>
             <div class="content">
+                <h:form>
+                    <div style="float:right">
+                        <h:commandLink value="Home" action="/index"/>
+                        <h:outputText value=" | " rendered="#{identity.loggedIn}" />
+                        <h:commandLink value="Logout" action="#{identity.logout}" rendered="#{identity.loggedIn}"/>
+                    </div>
+                </h:form>
                 <ui:insert name="content" />
             </div>
         </h:body>

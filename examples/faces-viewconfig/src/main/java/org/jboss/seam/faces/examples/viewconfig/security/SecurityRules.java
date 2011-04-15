@@ -15,20 +15,30 @@ public class SecurityRules {
     private transient final Logger logger = Logger.getLogger(SecurityRules.class.getName());
 
     public @Secures @Owner boolean ownerChecker(Identity identity, @Current Item item) {
-        if (identity == null || identity.getUser() == null) {
-            logger.info("Identity/User is null");
-            return false;
-        } else if (item == null) {
+        if (item == null) {
             logger.info("Item is null");
             return false;
         } else {
-            String username = identity.getUser().getId();
-            logger.infof("Username is: %s", username);
-            return username.equals(item.getOwner());
+            return doesUsernameMatch(identity, item.getOwner());
         }
     }
 
     public @Secures @Public boolean publicChecker() {
         return true;
+    }
+    
+    public @Secures @Admin boolean adminChecker(Identity identity) {
+        return doesUsernameMatch(identity, "admin");
+    }
+    
+    private boolean doesUsernameMatch(Identity identity, String expectedUserName) {
+        if (identity == null || identity.getUser() == null) {
+            logger.info("Identity/User is null");
+            return false;
+        } else {
+            String username = identity.getUser().getId();
+            logger.infof("Username is: %s", username);
+            return username.equals(expectedUserName);
+        }
     }
 }
