@@ -57,6 +57,8 @@ public class SecurityPhaseListener {
     private Event<PostLoginEvent> postLoginEvent;
     @Inject
     private BeanManager beanManager;
+    @Inject
+    private Identity identity;
 
     /**
      * Enforce any security annotations applicable to the RestoreView phase
@@ -259,7 +261,7 @@ public class SecurityPhaseListener {
         AuthorizationCheckEvent event = new AuthorizationCheckEvent(annotations);
         authorizationCheckEvent.fire(event);
         if (!event.isPassed()) {
-            if (context.getExternalContext().getUserPrincipal() == null) {
+            if (! identity.isLoggedIn()) {
                 log.debug("Access denied - not logged in");
                 redirectToLoginPage(context, viewRoot);
                 return;
