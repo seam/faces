@@ -51,8 +51,10 @@ public class RewriteConfiguration implements ConfigurationProvider {
     private List<UrlMapping> loadUrlMappings(ViewConfigStore store, String facesMapping) {
         List<UrlMapping> mappings = new ArrayList<UrlMapping>();
         Map<String, Annotation> map = store.getAllAnnotationViewMap(org.jboss.seam.faces.rewrite.UrlMapping.class);
-        for (Map.Entry<String, Annotation> entry : map.entrySet()) {
-            mappings.add(buildPrettyFacesUrlMapping(entry.getKey(), entry.getValue(), facesMapping));
+        if (map != null) {
+            for (Map.Entry<String, Annotation> entry : map.entrySet()) {
+                mappings.add(buildPrettyFacesUrlMapping(entry.getKey(), entry.getValue(), facesMapping));
+            }
         }
         return mappings;
     }
