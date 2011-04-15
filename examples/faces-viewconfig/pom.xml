@@ -10,9 +10,9 @@
     </parent>
 
     <groupId>org.jboss.seam.faces</groupId>
-    <artifactId>seam-faces-security-example</artifactId>
+    <artifactId>seam-faces-viewconfig-example</artifactId>
     <packaging>war</packaging>
-    <name>Seam Faces Example: view security</name>
+    <name>Seam Faces Example: view configuration</name>
    <!-- url required for JAR Manifest -->
     <url>${project.parent.url}</url>
 
@@ -64,7 +64,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>faces-security</finalName>
+        <finalName>faces-viewconfig</finalName>
     </build>
     <profiles>
         <profile>
