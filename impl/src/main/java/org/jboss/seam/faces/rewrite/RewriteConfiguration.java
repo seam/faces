@@ -75,7 +75,6 @@ public class RewriteConfiguration implements ConfigurationProvider {
         if (facesMapping.endsWith("*")) {
             viewUrl = facesMapping.replaceFirst("\\*", viewId);
         } else if (facesMapping.startsWith("*")) {
-            System.out.println(viewId);
             String[] splits = viewId.split("\\.");
             String viewName;
             if (splits.length == 1) {
