@@ -40,6 +40,7 @@ public class SecurityPhaseListenerTest {
                 .addClass(SecurityExtension.class)
                 .addClass(PhaseIdType.class)
                 .addClass(RestrictAtPhaseDefault.class)
+                .addClass(IdentityMock.class)
                 .addPackage(RenderResponse.class.getPackage())
                 .addPackage(ViewConfigEnum.class.getPackage())
                 .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
