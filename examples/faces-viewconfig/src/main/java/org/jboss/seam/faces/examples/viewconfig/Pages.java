@@ -1,5 +1,7 @@
 package org.jboss.seam.faces.examples.viewconfig;
 
+import org.jboss.seam.faces.examples.viewconfig.security.Admin;
+import org.jboss.seam.faces.examples.viewconfig.security.Owner;
 import org.jboss.seam.faces.rewrite.FacesRedirect;
 import org.jboss.seam.faces.rewrite.UrlMapping;
 import org.jboss.seam.faces.security.AccessDeniedView;
@@ -9,7 +11,7 @@ import org.jboss.seam.faces.view.config.ViewPattern;
 
 /**
  *
- * @author bleathem
+ * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 @ViewConfig
 public interface Pages {
@@ -18,18 +20,22 @@ public interface Pages {
 
         @FacesRedirect
         @ViewPattern("/*")
-        @AccessDeniedView("/item/list.xhtml")
+        @AccessDeniedView("/list.xhtml")
         @LoginView("/login.xhtml")
         ALL,
         
-        @UrlMapping(pattern="/index.asd")
+        
         @ViewPattern("/index.xhtml")
         INDEX,
         
-        @ViewPattern("/status.xhtml")
-        @Public
-        STATUS,
+        @ViewPattern("/list.xhtml")
+        LIST,
         
+        @ViewPattern("/admin.xhtml")
+        @Admin
+        ADMIN,
+        
+        @UrlMapping(pattern="/item/#{item}/")
         @ViewPattern("/item.xhtml")
         @Owner
         ITEM;

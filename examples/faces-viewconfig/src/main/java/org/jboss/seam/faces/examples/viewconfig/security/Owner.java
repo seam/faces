@@ -1,4 +1,4 @@
-package org.jboss.seam.faces.examples.viewconfig;
+package org.jboss.seam.faces.examples.viewconfig.security;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,10 +8,10 @@ import org.jboss.seam.security.annotations.SecurityBindingType;
 
 /**
  *
- * @author bleathem
+ * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 @SecurityBindingType
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.TYPE})
-public @interface Public {
+public @interface Owner {
 }

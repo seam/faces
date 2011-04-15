@@ -13,14 +13,22 @@
         <ui:define name="content">
         <p>This example demonstrates how to secure pages using the @ViewConfig annotation</p>
         <h:form>
-            <ul>
-                <li>
-            <h:commandLink action="list" value="Items List"></h:commandLink>
-                </li>
-                <li>
-            <h:commandLink action="admin" value="Admin (Protected)"></h:commandLink>
-                </li>
-            </ul>
+            <h:dataTable value="#{pageController.items}" var="item">
+                <h:column>
+                    <f:facet name="title">id</f:facet>
+                    <h:link outcome="item" value="#{item.id}">
+                        <f:param name="item" value="#{item.id}"/>
+                    </h:link>
+                </h:column>
+                <h:column>
+                    <f:facet name="title">title</f:facet>
+                    #{item.title}
+                </h:column>
+                <h:column>
+                    <f:facet name="title">owner</f:facet>
+                    #{item.owner}
+                </h:column>
+            </h:dataTable>
         </h:form>
         </ui:define>
     </ui:composition>
