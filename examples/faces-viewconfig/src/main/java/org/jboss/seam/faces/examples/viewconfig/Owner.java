@@ -1,4 +1,4 @@
-package org.jboss.seam.faces.examples.security;
+package org.jboss.seam.faces.examples.viewconfig;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

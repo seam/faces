@@ -1,4 +1,4 @@
-package org.jboss.seam.faces.examples.security;
+package org.jboss.seam.faces.examples.viewconfig;
 
 import javax.inject.Inject;
 import org.jboss.logging.Logger;

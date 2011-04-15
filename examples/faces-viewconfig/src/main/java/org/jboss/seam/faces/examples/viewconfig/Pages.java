@@ -1,4 +1,4 @@
-package org.jboss.seam.faces.examples.security;
+package org.jboss.seam.faces.examples.viewconfig;
 
 import org.jboss.seam.faces.rewrite.FacesRedirect;
 import org.jboss.seam.faces.rewrite.UrlMapping;
