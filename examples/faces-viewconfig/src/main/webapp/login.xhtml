@@ -1,11 +1,16 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title>Login Page</title>
-    </h:head>
-    <h:body>
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.org/seam/faces"
+      xml:lang="en" lang="en">
+
+    <ui:composition template="/resources/layout.xhtml">
+        <ui:define name="title">Login</ui:define>
+        <ui:define name="content">
         <p>This example demonstrates how to implement a simple Authenticator</p>
         <h:panelGroup rendered="#{identity.loggedIn}">
             <div>Currently logged in as: <b>#{identity.user.id}</b></div>
@@ -33,5 +38,6 @@
             Tip: you can login with a username/password of demo/demo.
         </h:form>    
         <br style="clear:both"/>
-    </h:body>
+     </ui:define>
+    </ui:composition>
 </html>
