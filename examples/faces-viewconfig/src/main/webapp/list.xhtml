@@ -15,17 +15,17 @@
         <h:form>
             <h:dataTable value="#{pageController.items}" var="item">
                 <h:column>
-                    <f:facet name="title">id</f:facet>
+                    <f:facet name="header">id</f:facet>
                     <h:link outcome="item" value="#{item.id}">
                         <f:param name="item" value="#{item.id}"/>
                     </h:link>
                 </h:column>
                 <h:column>
-                    <f:facet name="title">title</f:facet>
+                    <f:facet name="header">title</f:facet>
                     #{item.title}
                 </h:column>
                 <h:column>
-                    <f:facet name="title">owner</f:facet>
+                    <f:facet name="header">owner</f:facet>
                     #{item.owner}
                 </h:column>
             </h:dataTable>
