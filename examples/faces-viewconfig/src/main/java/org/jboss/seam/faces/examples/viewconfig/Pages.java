@@ -18,19 +18,6 @@ public interface Pages {
 
     static enum Pages1 {
 
-        @FacesRedirect
-        @ViewPattern("/*")
-        @AccessDeniedView("/denied.xhtml")
-        @LoginView("/login.xhtml")
-        ALL,
-        
-        
-        @ViewPattern("/index.xhtml")
-        INDEX,
-        
-        @ViewPattern("/list.xhtml")
-        LIST,
-        
         @ViewPattern("/admin.xhtml")
         @Admin
         ADMIN,
@@ -38,6 +25,13 @@ public interface Pages {
         @UrlMapping(pattern="/item/#{item}/")
         @ViewPattern("/item.xhtml")
         @Owner
-        ITEM;
+        ITEM,
+        
+        @FacesRedirect
+        @ViewPattern("/*")
+        @AccessDeniedView("/denied.xhtml")
+        @LoginView("/login.xhtml")
+        ALL;
+        
     }
 }
