@@ -2,37 +2,41 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="faces.installation">
-	<title>Installation</title>
-	<para>
+    <title>Installation</title>
+    <para>
      To use the Seam Faces module, you need to put the API and implementation JARs on the classpath of your web
      application. Most of the features of Seam Faces are enabled automatically when it's added to the classpath. Some
      extra configuration, covered below, is required if you are not using a Servlet 3-compliant container.
-   </para>
+    </para>
 
-   <section id="maven-dependencies">
-      <title>Maven dependency configuration</title>
-      <para>
-	   	If you are using <ulink url="http://maven.apache.org/">Maven</ulink> as your build tool, you can add the
-	   	following single dependency to your pom.xml file to include Seam Faces:
-	   </para>
-	   <programlisting role="XML"><![CDATA[<dependency>
+    <section id="maven-dependencies">
+        <title>Maven dependency configuration</title>
+        <para>
+           If you are using 
+            <ulink url="http://maven.apache.org/">Maven</ulink> as your build tool, you can add the
+           following single dependency to your pom.xml file to include Seam Faces:
+        </para>
+        <programlisting role="XML"><![CDATA[<dependency>
    <groupId>org.jboss.seam.faces</groupId>
    <artifactId>seam-faces</artifactId>
    <version>${seam.faces.version}</version>
-</dependency>]]></programlisting>
-	   <tip>
-	   	<para>
+</dependency>]]>
+        </programlisting>
+        <tip>
+            <para>
             Substitute the expression ${seam.faces.version} with the most recent or appropriate version of Seam Faces.
-            Alternatively, you can create a <ulink
+            Alternatively, you can create a 
+                <ulink
             href="http://www.sonatype.com/books/mvnref-book/reference/resource-filtering-sect-properties.html#resource-filtering-sect-user-defined">Maven
-            user-defined property</ulink> to satisfy this substitution so you can centrally manage the version.
-         </para>
-	   </tip>
-      <para>
+            user-defined property
+                </ulink> to satisfy this substitution so you can centrally manage the version.
+            </para>
+        </tip>
+        <para>
          Alternatively, you can use the API at compile time and only include the implementation at runtime. This protects
          you from inadvertantly depending on an implementation class.
-      </para>
-	   <programlisting role="XML"><![CDATA[<dependency>
+        </para>
+        <programlisting role="XML"><![CDATA[<dependency>
    <groupId>org.jboss.seam.faces</groupId>
    <artifactId>seam-faces-api</artifactId>
    <version>${seam.faces.version}</version>
@@ -44,70 +48,111 @@
    <artifactId>seam-faces-impl</artifactId>
    <version>${seam.faces.version}</version>
    <scope>runtime</scope>
-</dependency>]]></programlisting>
-	   <para>
-         In a Servlet 3.0 or Java EE 6 environment, <emphasis>your configuration is now complete!</emphasis>
-      </para>
-   </section>
+</dependency>]]>
+        </programlisting>
+        <para>
+         In a Servlet 3.0 or Java EE 6 environment, 
+            <emphasis>your configuration is now complete!</emphasis>
+        </para>
+    </section>
    
-   <section id="pre-servlet-3">
-      <title>Pre-Servlet 3.0 configuration</title>
-      <para>
-         <emphasis>If you are using Java EE 5 or some other Servlet 2.5 container</emphasis>, then you need to manually
+    <section id="pre-servlet-3">
+        <title>Pre-Servlet 3.0 configuration</title>
+        <para>
+            <emphasis>If you are using Java EE 5 or some other Servlet 2.5 container</emphasis>, then you need to manually
          register several Servlet components in your application's web.xml to activate the features provided by this
          module:
-	   </para>
-	   <programlisting role="XML"><![CDATA[<listener>
+        </para>
+        <programlisting role="XML">
+<![CDATA[<list>
    <listener-class>org.jboss.seam.faces.beanManager.BeanManagerServletContextListener</listener-class>
-</listener>]]></programlisting>
-   </section>
+</listener>]]>
+        </programlisting>
+    </section>
 
-   <para>
+    <para>
       You're now ready to dive into the JSF enhancements provided for you by the Seam Faces module!
-   </para>
+    </para>
 
 <!-- 
-	<section id="configuration">
-		<title>Configuration</title>
-		<para>
-			Some features of Seam Faces are not automatically configured, such as enhanced conversation support through annotations.
-			These features must be enabled in your web-application's WEB-INF/beans.xml file. There are two types of features: 
-			Interceptors and Decorators. The process described here will be similar for other Seam Modules as well.
-		</para>
-		<programlisting role="XML"><![CDATA[<beans>
-	<interceptors>
-	  <class>org.jboss.seam.faces.{package}.{Interceptor}</class>
-	</interceptors>
-	<decorators>
-	  <class>org.jboss.seam.faces.{package}.{Decorator}</class>
-	</decorators>
-</beans>]]></programlisting>	
-		<para>
-			Use the table below to configure 
-		</para>
-		<para>
-			<informaltable>
-				<tgroup cols="3">
-					<colspec colnum="1" colwidth="1*" />
-					<colspec colnum="2" colwidth="1*" />
-					<colspec colnum="3" colwidth="3*" />
-					<thead>
-						<row>
-							<entry>Feature</entry>
-							<entry>Type</entry>
-							<entry>Class</entry>
-						</row>
-					</thead>
-					<tbody>
-						<row>
-							<entry>Conversation Support</entry>
-							<entry>interceptor</entry>
-							<entry>org.jboss.seam.faces.context.conversation.ConversationBoundaryInterceptor</entry>
-						</row> 
-					</tbody>
-				</tgroup>
-			</informaltable>
-		</para>
-	</section>
+    <section id="configuration">
+        <title>Configuration</title>
+        <para>
+            Some features of Seam Faces are not automatically configured, such as enhanced conversation support through annotations.
+            These features must be enabled in your web-application's WEB-INF/beans.xml file. There are two types of features: 
+            Interceptors and Decorators. The process described here will be similar for other Seam Modules as well.
+        </para>
+        <programlisting role="XML">
+<![CDATA[<beans>
+    <interceptors>
+      <class>org.jboss.seam.faces.{package}.{Interceptor}</class>
+    </interceptors>
+    <decorators>
+      <class>org.jboss.seam.faces.{package}.{Decorator}</class>
+    </decorators>
+</beans>]]>
+</programlisting>    
+        <para>
+            Use the table below to configure 
+        </para>
+        <para>
+            <informaltable>
+                <tgroup cols="3">
+                    <colspec colnum="1" colwidth="1*" />
+                    <colspec colnum="2" colwidth="1*" />
+                    <colspec colnum="3" colwidth="3*" />
+                    <thead>
+                        <row>
+                            <entry>Feature</entry>
+                            <entry>Type</entry>
+                            <entry>Class</entry>
+                        </row>
+                    </thead>
+                    <tbody>
+                        <row>
+                            <entry>Conversation Support</entry>
+                            <entry>interceptor</entry>
+                            <entry>org.jboss.seam.faces.context.conversation.ConversationBoundaryInterceptor</entry>
+                        </row> 
+                    </tbody>
+                </tgroup>
+            </informaltable>
+        </para>
+    </section>
  -->
+ 
+    <section id="javaee6-webapp">
+        <title>How to setup JSF in a Java EE 6 webapp</title>
+        
+        <para>
+            Seam Faces requires a working JSF 2.0 configuration.  To get a working JSF 2.0 environment in a Java EE 6
+            environment, you need one of the following:
+        </para>
+        
+        <orderedlist>
+            <listitem>
+                <para>
+                    Bundle the seam-faces jar in your web-app (this sets up jsf for you)
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    if not #1, you need empty faces-config.xml, where the root element must be present.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    if not #1 or #2, you need a web.xml with the Faces Servlet defined.
+                </para>
+            </listitem>
+        </orderedlist>
+        
+        <para>
+            The <ulink url="http://docs.jboss.org/jbossas/6/JSF_Guide/en-US/html/jsf.deployer.config.html">JBoss JSF 
+            documentation</ulink> provides further details on #2 and #3 above, but these steps are unnecessary when you
+            use Seam Faces (#1).  this is beacuse Seam Faces scans for the presence of the Seam Servlet, and 
+            programatically registers it for you if it's not present.
+        </para>
+    </section>
+    
 </chapter>
