@@ -46,7 +46,7 @@
         
         <para>
             Faces pages are configured by placing annotations on the properties of an Java <literal>enum</literal>.
-            The annotation <literal>@Viewconfig</literal> is placed on a Java <literal>interface</literal>, which
+            The annotation <literal>@ViewConfig</literal> is placed on a Java <literal>interface</literal>, which
             contains a static enum.  It is the properties of this static enum that hold the individual annotations used
             to configure the view.
         </para>
@@ -148,7 +148,7 @@ public @Secures @Owner boolean ownerChecker(Identity identity, @Current Item ite
             <para>
                 When a JSF view is visited, matching <literal>@ViewPattern</literal> patterns are found, and their 
                 associated <literal>@SecurityBindingType</literal> qualified annoations are looked up.  The 
-                corresponding method is invoked, and access is either granted or denied.  Is access is denied, and the 
+                corresponding method is invoked, and access is either granted or denied.  If access is denied, and the 
                 user is not yet logged in, the user will be redirected to a view specified in a 
                 <literal>@LoginView</literal> annotation for that view.  However if access is denied, and the user is 
                 logged in, navigation will be redirected to a view specified in the <literal>@AccessDeined</literal> 
@@ -169,8 +169,8 @@ public @Secures @Owner boolean ownerChecker(Identity identity, @Current Item ite
                 By default, Security restrictions are enforced before the <literal>Invoke Application</literal> phase,
                 and before the <literal>Render Response</literal> phase.  Restrictions are enforced twice per lifecylce,
                 as the view id normally changes at the end of the <literal>Invoke Application</literal> phase.  However,
-                there is a requirement to enforce a Security restriction at a different phase.  For instance it is
-                desirable to enforce a role-based restriction as early as possible in the lifecycle, to prevent any
+                use cases exist requiring enforcement of a Security restriction at a different phase.  For instance it is
+                desirable to enforce a role-based restriction as early in the lifecycle as possible, to prevent any
                 unnecessary computations from occurring.  This is achieved using the <literal>@RestrictAtView</literal>
                 annotation.
             </para>
