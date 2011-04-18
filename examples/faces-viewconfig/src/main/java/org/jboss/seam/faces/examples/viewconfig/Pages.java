@@ -22,7 +22,7 @@ public interface Pages {
         @Admin
         ADMIN,
         
-        @UrlMapping(pattern="/item/#{item}/")
+        @UrlMapping(pattern="/item/#{id}/")
         @ViewPattern("/item.xhtml")
         @Owner
         ITEM,
