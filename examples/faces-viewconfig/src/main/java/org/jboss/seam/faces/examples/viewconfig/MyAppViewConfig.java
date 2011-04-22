@@ -14,9 +14,9 @@ import org.jboss.seam.faces.view.config.ViewPattern;
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 @ViewConfig
-public interface Pages {
+public interface MyAppViewConfig {
 
-    static enum Pages1 {
+    static enum Pages {
 
         @ViewPattern("/admin.xhtml")
         @Admin
