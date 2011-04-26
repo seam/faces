@@ -22,6 +22,7 @@ import org.jboss.seam.solder.core.Veto;
  */
 @Veto
 public class InputElement<T> implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final String id;
     private final String clientId;
     private final UIInput component;
