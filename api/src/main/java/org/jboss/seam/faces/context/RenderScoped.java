@@ -10,13 +10,11 @@ import java.lang.annotation.Target;
 import javax.enterprise.context.NormalScope;
 import javax.faces.event.PhaseId;
 
-import org.jboss.seam.faces.context.RenderContext;
-
 /**
  * Defines a CDI bean as Render-scoped. Data put in the render scope will survive until the next JSF
  * {@link PhaseId#RENDER_RESPONSE} is completed, at which point the {@link RenderContext} will be destroyed along with all
  * references to its contents.
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
 @NormalScope

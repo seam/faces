@@ -5,25 +5,25 @@ import javax.faces.component.UIViewParameter;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewMetadata;
+
 import org.jboss.logging.Logger;
-import org.jboss.logging.Logger.Level;
 
 /**
  * Wrap the built-in {@link ViewMetadata} implementation for the purpose of adding a UIViewParameter placeholder component if
  * necessary.
- * 
+ * <p/>
  * <p>
  * In JSF 2.0, the view metadata facet was introduced for the purpose of providing front-controller behavior in JSF. On an
  * initial request, the full JSF lifecycle is executed on a partial view consisting of the components in the view metadata
  * facet. However, there is one big caveat! The lifecycle is only executed if the view metadata contains at least one
  * UIViewParameter.
  * </p>
- * 
+ * <p/>
  * <p>
  * This wrapper intercepts the call to {@link ViewMetadata#createMetadataView(FacesContext)} and adds a placeholder
  * UIViewParameter if the view metadata is non-empty and there are no other UIViewParameter components.
  * </p>
- * 
+ *
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
 public class SeamViewMetadata extends ViewMetadata {

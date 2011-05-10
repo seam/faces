@@ -1,23 +1,23 @@
 <pretty-config xmlns="http://ocpsoft.com/prettyfaces/2.0.4"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://ocpsoft.com/prettyfaces/2.0.4
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://ocpsoft.com/prettyfaces/2.0.4
 http://ocpsoft.com/xml/ns/prettyfaces/ocpsoft-pretty-faces-2.0.4.xsd">
 
-	<rewrite match="^/.+$" trailingSlash="remove" toCase="lowercase" />
+    <rewrite match="^/.+$" trailingSlash="remove" toCase="lowercase"/>
 
     <url-mapping id="create">
-        <pattern value="/" />
+        <pattern value="/"/>
         <view-id>/faces/index.xhtml</view-id>
     </url-mapping>
 
     <url-mapping id="redirect">
-        <pattern value="/#{name}" />
+        <pattern value="/#{name}"/>
         <view-id>/faces/index.xhtml</view-id>
         <action phaseId="RENDER_RESPONSE">#{redirectBean.send}</action>
     </url-mapping>
-    
+
     <url-mapping id="edit">
-        <pattern value="/#{name}/edit" />
+        <pattern value="/#{name}/edit"/>
         <view-id>/faces/editLink.xhtml</view-id>
         <action phaseId="INVOKE_APPLICATION">#{linkBean.send}</action>
     </url-mapping>

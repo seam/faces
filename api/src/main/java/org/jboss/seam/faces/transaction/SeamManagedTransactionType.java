@@ -1,9 +1,7 @@
 package org.jboss.seam.faces.transaction;
 
 /**
- * 
  * @author Stuart Douglas
- * 
  */
 public enum SeamManagedTransactionType {
 

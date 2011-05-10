@@ -1,44 +1,50 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <f:metadata>
-	<f:viewParam name="name" value="#{redirectBean.name}" />
+    <f:viewParam name="name" value="#{redirectBean.name}"/>
 </f:metadata>
 
 <h:head>
 </h:head>
 
 <h:body>
-	<h:form>
-		<fieldset><f:validateBean>
-			<h3>Create a new link:</h3>
-			<label for="url">Link URL: <h:messages for="url" /><br />
-			</label>
-			<h:inputText id="url" value="#{linkBean.link.target}" />
-			<br />
-			<label for="name">Name (optional): <h:messages for="name" /><br />
-			</label>
-			<h:inputText id="name" value="#{linkBean.link.name}" />
-			<br />
-		</f:validateBean></fieldset>
-		<h:commandButton action="#{linkBean.createLink}" value="Create" />
-		<br />
+    <h:form>
+        <fieldset>
+            <f:validateBean>
+                <h3>Create a new link:</h3>
+                <label for="url">Link URL:
+                    <h:messages for="url"/>
+                    <br/>
+                </label>
+                <h:inputText id="url" value="#{linkBean.link.target}"/>
+                <br/>
+                <label for="name">Name (optional):
+                    <h:messages for="name"/>
+                    <br/>
+                </label>
+                <h:inputText id="name" value="#{linkBean.link.name}"/>
+                <br/>
+            </f:validateBean>
+        </fieldset>
+        <h:commandButton action="#{linkBean.createLink}" value="Create"/>
+        <br/>
 
-		<ui:repeat value="#{linkBean.links}" var="link">
-			#{link.id} -
-			<h:link outcome="/index" value="#{link.name}">
-				<f:param name="name" value="#{link.name}" />
-			</h:link>
-			<br />
-		</ui:repeat>
+        <ui:repeat value="#{linkBean.links}" var="link">
+            #{link.id} -
+            <h:link outcome="/index" value="#{link.name}">
+                <f:param name="name" value="#{link.name}"/>
+            </h:link>
+            <br/>
+        </ui:repeat>
 
-		<h:commandButton action="#{linkBean.deleteAll}" value="deleteAll"
-			immediate="true" rendered="#{!empty linkBean.links}" />
-	</h:form>
+        <h:commandButton action="#{linkBean.deleteAll}" value="deleteAll"
+                         immediate="true" rendered="#{!empty linkBean.links}"/>
+    </h:form>
 </h:body>
 
 </html>

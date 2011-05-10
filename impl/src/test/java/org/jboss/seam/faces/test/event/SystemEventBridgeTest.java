@@ -38,9 +38,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * 
  * @author Nicklas Karlsson
- * 
  */
 @RunWith(Arquillian.class)
 public class SystemEventBridgeTest {
@@ -208,21 +206,21 @@ public class SystemEventBridgeTest {
      * @Test public void testSpecificPostComponentValidation() { UIComponent c = new UIOutput(); c.setId("foo");
      * systemEventListener.processEvent(new PostValidateEvent(c)); assert SystemEventObserver.specificComponentValidationEvent;
      * }
-     * 
+     *
      * @Test public void testExceptionQueuedEventObserver() { ExceptionQueuedEventContext eqec = new
      * ExceptionQueuedEventContext(facesContext, new NullPointerException()); ExceptionQueuedEvent eqe = new
      * ExceptionQueuedEvent(eqec); systemEventListener.processEvent(eqe); assert SystemEventObserver.excecptionQueuedEvent; }
-     * 
+     *
      * @Test public void testPostConstructApplicationEventObserver() { systemEventListener.processEvent(new
      * PostConstructApplicationEvent(application)); assert SystemEventObserver.postConstructApplicationEvent; }
-     * 
+     *
      * @Test public void testPostConstructCustomScopeEvent() { ScopeContext sc = new ScopeContext("dummyscope", new
      * HashMap<String, Object>()); systemEventListener.processEvent(new PostConstructCustomScopeEvent(sc)); assert
      * SystemEventObserver.postConstructCustomScopeEvent; }
-     * 
+     *
      * @Test public void testPreDestroyApplicationEventObserver() { systemEventListener.processEvent(new
      * PreDestroyApplicationEvent(application)); assert SystemEventObserver.preDestroyApplicationEvent; }
-     * 
+     *
      * @Test public void testPreDestroyCustomScopeEventObserver() { ScopeContext sc = new ScopeContext("dummyscope", new
      * HashMap<String, Object>()); systemEventListener.processEvent(new PreDestroyCustomScopeEvent(sc)); assert
      * SystemEventObserver.preDestroyCustomScopeEvent; }

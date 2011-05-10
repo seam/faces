@@ -1,23 +1,23 @@
 package org.jboss.seam.faces.examples.tinyurl.ftest;
 
-import static org.testng.Assert.assertEquals;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.jboss.test.selenium.AbstractTestCase;
+import org.jboss.test.selenium.locator.AttributeLocator;
+import org.jboss.test.selenium.locator.XpathLocator;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import java.net.MalformedURLException;
-import com.thoughtworks.selenium.SeleniumException;
-import java.net.URL;
-import org.jboss.test.selenium.AbstractTestCase;
-import org.jboss.test.selenium.locator.XpathLocator;
-import static org.jboss.test.selenium.locator.LocatorFactory.*;
-import static org.jboss.test.selenium.locator.Attribute.HREF;
-import org.jboss.test.selenium.locator.AttributeLocator;
+
 import static org.jboss.test.selenium.guard.request.RequestTypeGuardFactory.*;
+import static org.jboss.test.selenium.locator.Attribute.HREF;
+import static org.jboss.test.selenium.locator.LocatorFactory.*;
+import static org.testng.Assert.assertEquals;
 
 /**
  * A functional test for the short-ly example
- * 
+ *
  * @author Marek Schmidt
- * 
  */
 public class ShortlyTest extends AbstractTestCase {
 
@@ -54,7 +54,7 @@ public class ShortlyTest extends AbstractTestCase {
         assertEquals(selenium.getLocation().toString(), contextRoot.toString());
     }
 
-    @Test(dependsOnMethods = { "testCreate" })
+    @Test(dependsOnMethods = {"testCreate"})
     public void testDeleteAll() {
         waitHttp(selenium).click(DELETEALL_BUTTON);
         assertEquals(selenium.isElementPresent(DELETEALL_BUTTON), false);

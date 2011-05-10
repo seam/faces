@@ -4,19 +4,20 @@ import javax.enterprise.event.Observes;
 import javax.faces.application.NavigationCase;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+
 import org.jboss.seam.faces.event.PreNavigateEvent;
 import org.jboss.seam.faces.rewrite.FacesRedirect;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
 
 /**
  * Intercept JSF navigations, and check for @FacesRedirect in the @ViewConfig.
- * 
+ *
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 public class FacesRedirectConfiguration {
     @Inject
     private ViewConfigStore store;
-    
+
     public void observePreNavigateEvent(@Observes PreNavigateEvent event) {
         FacesContext facesContext = event.getContext();
         NavigationCase navCase = event.getNavigationCase();

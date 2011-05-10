@@ -18,25 +18,25 @@ You should have received a copy of the GNU Lesser General Public
 License along with this software; if not, write to the Free
 Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 02110-1301 USA, or see the FSF site: http://www.fsf.org.
---> 
+-->
 <facelet-taglib xmlns="http://java.sun.com/xml/ns/javaee"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd"
-   version="2.0">
-   <namespace>http://jboss.org/seam/faces</namespace>
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd"
+                version="2.0">
+    <namespace>http://jboss.org/seam/faces</namespace>
 
-   <tag>
-      <tag-name>viewAction</tag-name>
-      <component>
-         <component-type>org.jboss.seam.faces.ViewAction</component-type>
-      </component>
-   </tag>
-   <tag>
-      <tag-name>validateForm</tag-name>
-      <component>
-         <component-type>org.jboss.seam.faces.ValidateForm</component-type>
-      </component>
-   </tag>
-   <!-- org.jboss.seam.faces.InputContainer is a composite component, does not need taglib -->
+    <tag>
+        <tag-name>viewAction</tag-name>
+        <component>
+            <component-type>org.jboss.seam.faces.ViewAction</component-type>
+        </component>
+    </tag>
+    <tag>
+        <tag-name>validateForm</tag-name>
+        <component>
+            <component-type>org.jboss.seam.faces.ValidateForm</component-type>
+        </component>
+    </tag>
+    <!-- org.jboss.seam.faces.InputContainer is a composite component, does not need taglib -->
 
 </facelet-taglib>

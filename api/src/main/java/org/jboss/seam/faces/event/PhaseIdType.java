@@ -2,7 +2,7 @@ package org.jboss.seam.faces.event;
 
 /**
  * Enum values corresponding to the phases of the JSF life-cycle.
- * 
+ *
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 public enum PhaseIdType {

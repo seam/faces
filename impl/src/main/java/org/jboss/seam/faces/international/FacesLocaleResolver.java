@@ -11,7 +11,7 @@ import org.jboss.seam.faces.qualifier.Faces;
 /**
  * A specialized version of the LocaleProducer that returns the Locale associated with the current UIViewRoot or, if the
  * UIViewRoot has not been established, uses the ViewHandler to calculate the Locale.
- * 
+ *
  * @author Dan Allen
  */
 public class FacesLocaleResolver // extends LocaleResolver

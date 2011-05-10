@@ -4,21 +4,15 @@
  */
 package org.jboss.seam.faces.rewrite;
 
-import com.ocpsoft.pretty.faces.config.PrettyConfig;
-import com.ocpsoft.pretty.faces.config.mapping.UrlMapping;
-import java.lang.annotation.Annotation;
-import javax.servlet.ServletContext;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
- *
  * @author bleathem
  */
 public class RewriteConfigurationTest {
-    
+
     public RewriteConfigurationTest() {
     }
 

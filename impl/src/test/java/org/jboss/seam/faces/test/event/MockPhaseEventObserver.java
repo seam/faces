@@ -21,9 +21,7 @@ import org.jboss.seam.faces.event.qualifier.RestoreView;
 import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
 
 /**
- * 
  * @author Nicklas Karlsson
- * 
  */
 @ApplicationScoped
 public class MockPhaseEventObserver {

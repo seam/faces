@@ -10,10 +10,9 @@ import org.picketlink.idm.impl.api.model.SimpleUser;
 
 /**
  * This is the simplest possible example of a custom authenticator.
- * 
+ *
  * @author Shane Bryzak
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
- *
  */
 public class SimpleAuthenticator extends BaseAuthenticator implements Authenticator {
 

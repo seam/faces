@@ -36,11 +36,11 @@ import javax.validation.metadata.PropertyDescriptor;
  * required, both the required attribute is consulted and whether the property has Bean Validation constraints. Finally, if the
  * "label" attribute is not provided on the composite component, the label value will be derived from the id of the composite
  * component, for convenience.
- * 
+ * <p/>
  * <p>
  * Composite component definition example (minus layout):
  * </p>
- * 
+ * <p/>
  * <pre>
  * &lt;cc:interface componentType="org.jboss.seam.faces.InputContainer"/>
  * &lt;cc:implementation>
@@ -51,31 +51,31 @@ import javax.validation.metadata.PropertyDescriptor;
  *   &lt;h:message id="message" errorClass="invalid message" rendered="#{cc.attrs.invalid}"/>
  * &lt;/cc:implementation>
  * </pre>
- * 
+ * <p/>
  * <p>
  * Composite component usage example:
  * </p>
- * 
+ * <p/>
  * <pre>
  * &lt;example:inputContainer id="name">
  *   &lt;h:inputText id="input" value="#{person.name}"/>
  * &lt;/example:inputContainer>
  * </pre>
- * 
+ * <p/>
  * <p>
  * Possible enhancements:
  * </p>
  * <ul>
  * <li>append styleClass "invalid" to label, inputs and messages when invalid</li>
  * </ul>
- * 
+ * <p/>
  * <p>
  * NOTE: Firefox does not properly associate a label with the target input if the input id contains a colon (:), the default
  * separator character in JSF. JSF 2 allows developers to set the value via an initialization parameter (context-param in
  * web.xml) keyed to javax.faces.SEPARATOR_CHAR. We recommend that you override this setting to make the separator an underscore
  * (_).
  * </p>
- * 
+ *
  * @author Dan Allen
  */
 @FacesComponent(UIInputContainer.COMPONENT_TYPE)
@@ -227,11 +227,11 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
 
     /**
      * Walk the component tree branch built by the composite component and locate the input container elements.
-     * 
+     *
      * @return a composite object of the input container elements
      */
     protected InputContainerElements scan(final UIComponent component, InputContainerElements elements,
-            final FacesContext context) {
+                                          final FacesContext context) {
         if (elements == null) {
             elements = new InputContainerElements();
         }
@@ -387,7 +387,7 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
         }
 
         private boolean isRequiredByConstraint(final EditableValueHolder input, final Validator validator,
-                final FacesContext context) {
+                                               final FacesContext context) {
             if (validator == null) {
                 return false;
             }

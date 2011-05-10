@@ -13,7 +13,6 @@ import org.jboss.seam.solder.beanManager.BeanManagerLocator;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
- * 
  */
 public class SeamPreNavigationHandler extends ConfigurableNavigationHandler {
     private final ConfigurableNavigationHandler parent;

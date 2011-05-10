@@ -7,7 +7,7 @@ import javax.faces.context.FacesContext;
  * <p>
  * A generic abstract class implementing Converter, for convenient removal of type casting.
  * </p>
- * 
+ *
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 public abstract class Converter<T> implements javax.faces.convert.Converter {

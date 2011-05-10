@@ -14,7 +14,6 @@ import org.jboss.test.faces.stub.faces.StubFacesContext;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
- * 
  */
 public class PhaseTestBase {
     @Inject

@@ -1,15 +1,14 @@
 package org.jboss.seam.faces.test.view.config;
 
-import org.jboss.seam.faces.test.view.config.annotation.Icon;
-import org.jboss.seam.faces.test.view.config.annotation.IconLiteral;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import junit.framework.Assert;
-
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.seam.faces.test.view.config.annotation.Icon;
+import org.jboss.seam.faces.test.view.config.annotation.IconLiteral;
 import org.jboss.seam.faces.test.view.config.annotation.ViewConfigEnum;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
 import org.jboss.seam.faces.view.config.ViewConfigStoreImpl;

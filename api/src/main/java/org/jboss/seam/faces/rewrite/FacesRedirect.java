@@ -8,11 +8,11 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation for mapping triggering a faces-redirect on a view.
- * 
+ *
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.FIELD, ElementType.TYPE })
+@Target({ElementType.FIELD, ElementType.TYPE})
 @Documented
 public @interface FacesRedirect {
     boolean value() default true;

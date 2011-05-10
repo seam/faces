@@ -1,7 +1,6 @@
 package org.jboss.seam.faces.examples.viewconfig.model;
 
 /**
- *
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 public class Item {
@@ -38,5 +37,5 @@ public class Item {
     public void setTitle(String title) {
         this.title = title;
     }
-    
+
 }

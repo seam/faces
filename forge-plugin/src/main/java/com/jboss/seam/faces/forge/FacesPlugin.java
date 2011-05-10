@@ -1,6 +1,7 @@
 package com.jboss.seam.faces.forge;
 
 import javax.inject.Inject;
+
 import org.jboss.seam.forge.project.Project;
 import org.jboss.seam.forge.project.dependencies.DependencyBuilder;
 import org.jboss.seam.forge.project.facets.DependencyFacet;
@@ -21,15 +22,16 @@ public class FacesPlugin implements Plugin {
     private static final String FACES_ARTIFACT_ID = "seam-faces";
     private static final String FACES_GROUP_ID = "org.jboss.seam.faces";
     private static final String FACES_VERSION = "3.0.0.Final";
-    
+
     @Inject
-    @ProjectScoped Project project;
-    
+    @ProjectScoped
+    Project project;
+
     @DefaultCommand
     public void exampleDefaultCommand(@Option String opt, PipeOut pipeOut) {
         pipeOut.println(ShellColor.BLUE, "Use the install command to add a Seam Faces dependency.");
     }
-    
+
     @Command("install")
     public void installCommand(PipeOut pipeOut) {
         DependencyBuilder seamDependency = DependencyBuilder.create();

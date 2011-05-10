@@ -11,16 +11,16 @@ import javax.inject.Named;
  * A producer which retrieves the {@link ExternalContext} for the current request of the JavaServer Faces application by calling
  * {@link FacesContext#getExternalContext()} and stores the result as a request-scoped bean instance.
  * </p>
- * 
+ * <p/>
  * <p>
  * This producer allows the {@link ExternalContext} to be injected:
  * </p>
- * 
+ * <p/>
  * <pre>
  * &#064;Inject
  * ExternalContext ctx;
  * </pre>
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * @author Dan Allen
  */

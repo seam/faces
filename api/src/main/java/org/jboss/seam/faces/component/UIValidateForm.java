@@ -24,7 +24,6 @@ import org.jboss.seam.solder.beanManager.BeanManagerLocator;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
- * 
  */
 @FacesComponent(UIValidateForm.COMPONENT_TYPE)
 public class UIValidateForm extends UIInput {

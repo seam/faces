@@ -8,7 +8,7 @@ import javax.faces.validator.ValidatorException;
  * <p>
  * A generic abstract class implementing Validator, for convenient removal of type casting.
  * </p>
- * 
+ *
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 public abstract class Validator<T> implements javax.faces.validator.Validator {

@@ -7,7 +7,7 @@ import javax.enterprise.inject.spi.Extension;
 
 /**
  * An extension to provide {@link RenderScoped} CDI / JSF 2 integration.
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
 public class RenderScopedExtension implements Extension {

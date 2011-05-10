@@ -10,6 +10,7 @@ import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessBean;
+
 import org.jboss.logging.Logger;
 import org.jboss.seam.solder.reflection.AnnotationInstanceProvider;
 import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
@@ -17,7 +18,7 @@ import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
 /**
  * Alias the JSF scope annotations to the CDI scope annotations. If a JSF scope annotation is detected, advise the developer to
  * update the code to use the equivalent CDI scope annotation. Forbid the developer from using the JSF managed bean annotation.
- * 
+ *
  * @author Dan Allen
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
@@ -68,12 +69,12 @@ public class FacesAnnotationsAdapterExtension implements Extension {
 
         AnnotationInstanceProvider provider = new AnnotationInstanceProvider();
         final Annotation cdiScopeAnnotation = provider.get(cdiScope, Collections.EMPTY_MAP);
-        
+
         AnnotatedTypeBuilder builder;
         builder = new AnnotatedTypeBuilder()
-                    .readFromType(type)
-                    .removeFromClass(jsfScope)
-                    .addToClass(cdiScopeAnnotation);
+                .readFromType(type)
+                .removeFromClass(jsfScope)
+                .addToClass(cdiScopeAnnotation);
         return builder.create();
     }
 }

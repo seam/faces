@@ -7,7 +7,7 @@ import javax.faces.application.FacesMessage;
  * An extension of ValidatorException removing the need for creating new FacesMessage objects when throwing ValidatorExceptions
  * from Validators.
  * </p>
- * 
+ *
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 public class ValidatorException extends javax.faces.validator.ValidatorException {

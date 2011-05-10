@@ -32,32 +32,32 @@ import javax.faces.webapp.FacesServlet;
  * rendering. This component must be declared as a child of the {@link ViewMetadata} facet of the {@link UIViewRoot} so that it
  * gets incorporated into the JSF lifecycle on both non-faces (initial) requests and faces (postback) requests.
  * </p>
- * 
+ * <p/>
  * <p>
  * The purpose of this component is to provide a light-weight front-controller solution for executing code upon the loading of a
  * JSF view to support the integration of system services, content retrieval, view management, and navigation. This
  * functionality is especially useful for non-faces (initial) requests.
  * </p>
- * 
+ * <p/>
  * <p>
  * The {@link UIViewAction} component is closely tied to the {@link UIViewParameter} component. The {@link UIViewParameter}
  * component binds a request parameter to a model property. Most of the time, this binding is used to populate the model with
  * data that supports the method being invoked by a {@link UIViewAction} component, much like form inputs populate the model
  * with data to support the method being invoked by a {@link UICommand} component.
  * </p>
- * 
+ * <p/>
  * <p>
  * When the <literal>decode()</literal> method of the {@link UIViewAction} is invoked, it will queue an {@link ActionEvent} to
  * be broadcast to all interested listeners when the <literal>broadcast()</literal> method is invoked.
  * </p>
- * 
+ * <p/>
  * <p>
  * If the value of the component's <literal>immediate</literal> attribute is <literal>true</literal>, the action will be invoked
  * during the Apply Request Values JSF lifecycle phase. Otherwise, the action will be invoked during the Invoke Application
  * phase, the default behavior. The phase can be set explicitly in the <literal>phase</literal> attribute, which takes
  * precedence over the <literal>immediate</literal> attribute.
  * </p>
- * 
+ * <p/>
  * <p>
  * The invocation of the action is normally suppressed (meaning the {@link ActionEvent} is not queued) on a faces request. It
  * can be enabled by setting the component's <literal>onPostback</literal> attribute to <literal>true</literal>. Execution of
@@ -65,23 +65,22 @@ import javax.faces.webapp.FacesServlet;
  * boolean to the component's <literal>if</literal> attribute, which must evaluate to <literal>true</literal> for the action to
  * be invoked.
  * </p>
- * 
+ * <p/>
  * <p>
  * The {@link NavigationHandler} is consulted after the action is invoked to carry out the navigation case that matches the
  * action signature and outcome. If a navigation case is matched, or the response is marked complete by the action, subsequent
  * {@link UIViewAction} components associated with the current view are short-circuited. The lifecycle then advances
  * appropriately.
  * </p>
- * 
+ * <p/>
  * <p>
  * It's important to note that the full component tree is not built before the UIViewAction components are processed on an
  * non-faces (initial) request. Rather, the component tree only contains the {@link ViewMetadata}, an important part of the
  * optimization of this component and what sets it apart from a {@link PreRenderViewEvent} listener.
  * </p>
- * 
+ *
  * @author Dan Allen
  * @author Andy Schwartz
- * 
  * @see UIViewParameter
  */
 @FacesComponent(
@@ -89,7 +88,7 @@ import javax.faces.webapp.FacesServlet;
 // namespace = "http://jboss.org/seam/faces",
 // (see
 // https://javaserverfaces-spec-public.dev.java.net/issues/show_bug.cgi?id=594)
-value = UIViewAction.COMPONENT_TYPE)
+        value = UIViewAction.COMPONENT_TYPE)
 public class UIViewAction extends UIComponentBase implements ActionSource2 {
 
     // ------------------------------------------------------ Manifest Constants
@@ -130,6 +129,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2 {
     }
 
     // ------------------------------------------------------------ Constructors
+
     /**
      * <p>
      * Create a new {@link UIViewAction} instance with default property values.
@@ -148,7 +148,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2 {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @deprecated This has been replaced by {@link #getActionExpression}.
      */
     @Deprecated
@@ -164,9 +164,9 @@ public class UIViewAction extends UIComponentBase implements ActionSource2 {
 
     /**
      * {@inheritDoc}
-     * 
-     * @deprecated This has been replaced by {@link #setActionExpression(javax.el.MethodExpression)}.
+     *
      * @throws UnsupportedOperationException if called
+     * @deprecated This has been replaced by {@link #setActionExpression(javax.el.MethodExpression)}.
      */
     @Deprecated
     public void setAction(final MethodBinding action) {
@@ -175,7 +175,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2 {
 
     /**
      * Action listeners are not supported by the {@link UIViewAction} component.
-     * 
+     *
      * @throws UnsupportedOperationException if called
      */
     @SuppressWarnings("deprecation")
@@ -185,7 +185,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2 {
 
     /**
      * Action listeners are not supported by the {@link UIViewAction} component.
-     * 
+     *
      * @throws UnsupportedOperationException if called
      */
     @SuppressWarnings("deprecation")
@@ -261,7 +261,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2 {
 
     /**
      * Action listeners are not supported by the {@link UIViewAction} component.
-     * 
+     *
      * @throws UnsupportedOperationException if called
      */
     public void addActionListener(final ActionListener listener) {
@@ -277,7 +277,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2 {
 
     /**
      * Action listeners are not supported by the {@link UIViewAction} component.
-     * 
+     *
      * @throws UnsupportedOperationException if called
      */
     public void removeActionListener(final ActionListener listener) {
@@ -328,19 +328,19 @@ public class UIViewAction extends UIComponentBase implements ActionSource2 {
     }
 
     // ----------------------------------------------------- UIComponent Methods
+
     /**
      * <p>
      * In addition to to the default {@link UIComponent#broadcast} processing, pass the {@link ActionEvent} being broadcast to
      * the default {@link ActionListener} registered on the {@link javax.faces.application.Application}.
      * </p>
-     * 
+     *
      * @param event {@link FacesEvent} to be broadcast
-     * 
      * @throws AbortProcessingException Signal the JavaServer Faces implementation that no further processing on the current
-     *         event should be performed
+     *                                  event should be performed
      * @throws IllegalArgumentException if the implementation class of this {@link FacesEvent} is not supported by this
-     *         component
-     * @throws NullPointerException if <code>event</code> is <code>null</code>
+     *                                  component
+     * @throws NullPointerException     if <code>event</code> is <code>null</code>
      */
     @Override
     public void broadcast(final FacesEvent event) throws AbortProcessingException {
@@ -407,12 +407,12 @@ public class UIViewAction extends UIComponentBase implements ActionSource2 {
      * First, determine if the action should be invoked by evaluating this components pre-conditions. If this is a faces
      * (postback) request and the evaluated value of the postback attribute is false, take no action. If the evaluated value of
      * the if attribute is false, take no action. If both conditions pass, proceed with creating an {@link ActionEvent}.
-     * 
+     * <p/>
      * Set the phaseId in which the queued {@link ActionEvent} should be broadcast by assigning the appropriate value to the
      * phaseId property of the {@link ActionEvent} according to the evaluated value of the immediate attribute. If the value is
      * <literal>true</literal>, set the phaseId to {@link PhaseId#APPLY_REQUEST_VALUES}. Otherwise, set the phaseId to to
      * {@link PhaseId#INVOKE_APPLICATION}.
-     * 
+     * <p/>
      * Finally, queue the event by calling <literal>queueEvent()</literal> and passing the {@link ActionEvent} just created.
      */
     @Override

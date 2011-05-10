@@ -12,10 +12,9 @@ import org.jboss.seam.solder.beanManager.BeanManagerAware;
 
 /**
  * Superclass for event listeners
- * 
- * @author Nicklas Karlsson
- * 
+ *
  * @param <T> Listener class
+ * @author Nicklas Karlsson
  */
 public class AbstractListener<T extends EventListener> extends BeanManagerAware {
     @SuppressWarnings("unchecked")

@@ -17,7 +17,7 @@ import org.jboss.seam.solder.reflection.AnnotationInspector;
 
 /**
  * Intercepts methods annotated as Conversational entry points: @{@link Begin} and @{@link End}
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
@@ -63,8 +63,8 @@ public class ConversationBoundaryInterceptor implements Serializable {
                 if (type.isInstance(e) == false) {
                     log.debug(
                             "Aborting conversation: (#0) for method: (#1.#2(...)) - Encountered Exception of type (#4), which is not in the list of exceptions permitted by @Begin.",
-                            new Object[] { conversation.getId(), ctx.getMethod().getDeclaringClass().getName(),
-                                    ctx.getMethod().getName(), e.getClass().getName() });
+                            new Object[]{conversation.getId(), ctx.getMethod().getDeclaringClass().getName(),
+                                    ctx.getMethod().getName(), e.getClass().getName()});
                     conversation.end();
                 }
             }
@@ -85,8 +85,8 @@ public class ConversationBoundaryInterceptor implements Serializable {
             if (!permitted) {
                 log.debug(
                         "Conversation will remain open: (#0) for method: (#1.#2(...)) - Encountered Exception of type (#4), which is not in the list of exceptions permitted by @End.",
-                        new Object[] { conversation.getId(), ctx.getMethod().getDeclaringClass().getName(),
-                                ctx.getMethod().getName(), e.getClass().getName() });
+                        new Object[]{conversation.getId(), ctx.getMethod().getDeclaringClass().getName(),
+                                ctx.getMethod().getName(), e.getClass().getName()});
             }
         }
     }
@@ -105,13 +105,13 @@ public class ConversationBoundaryInterceptor implements Serializable {
             conversation.setTimeout(timeout);
         }
 
-        log.debug("Began conversation: (#0) before method: (#1.#2(...))", new Object[] { conversation.getId(),
-                ctx.getMethod().getDeclaringClass().getName(), ctx.getMethod().getName() });
+        log.debug("Began conversation: (#0) before method: (#1.#2(...))", new Object[]{conversation.getId(),
+                ctx.getMethod().getDeclaringClass().getName(), ctx.getMethod().getName()});
     }
 
     private void endConversation(final InvocationContext ctx) {
-        log.debug("Ending conversation: (#0) after method: (#1.#2(...))", new Object[] { conversation.getId(),
-                ctx.getMethod().getDeclaringClass().getName(), ctx.getMethod().getName() });
+        log.debug("Ending conversation: (#0) after method: (#1.#2(...))", new Object[]{conversation.getId(),
+                ctx.getMethod().getDeclaringClass().getName(), ctx.getMethod().getName()});
         conversation.end();
     }
 

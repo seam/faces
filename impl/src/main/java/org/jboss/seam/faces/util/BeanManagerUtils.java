@@ -15,9 +15,8 @@ import org.jboss.seam.faces.component.FormValidationTypeOverrideExtension;
 
 /**
  * A utility providing common functions to simply use of {@link BeanManager}
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
- * 
  */
 public class BeanManagerUtils {
     @Inject
@@ -28,7 +27,7 @@ public class BeanManagerUtils {
 
     /**
      * Perform @{@link Inject} on an object as if it were a bean managed by CDI.
-     * 
+     *
      * @param instance
      */
     @SuppressWarnings("unchecked")
@@ -65,7 +64,7 @@ public class BeanManagerUtils {
 
     /**
      * Get a single CDI managed instance of a specific class. Return only the first result if multiple beans are available.
-     * 
+     *
      * @param type The class for which to return an instance.
      * @return The managed instance, or null if none could be provided.
      */
@@ -75,11 +74,11 @@ public class BeanManagerUtils {
 
     /**
      * Get a single CDI managed instance of a specific class. Return only the first result if multiple beans are available.
-     * <p>
+     * <p/>
      * <b>NOTE:</b> Using this method should be avoided at all costs.
-     * 
+     *
      * @param manager The bean manager with which to perform the lookup.
-     * @param type The class for which to return an instance.
+     * @param type    The class for which to return an instance.
      * @return The managed instance, or null if none could be provided.
      */
     @SuppressWarnings("unchecked")
@@ -97,7 +96,7 @@ public class BeanManagerUtils {
 
     /**
      * Get all CDI managed instances of a specific class. Return results in a {@link List} in no specific order.
-     * 
+     *
      * @param type The class for which to return instances.
      */
     @SuppressWarnings("unchecked")

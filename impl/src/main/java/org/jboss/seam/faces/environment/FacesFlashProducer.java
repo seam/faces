@@ -11,16 +11,16 @@ import javax.faces.context.Flash;
  * A producer which retrieves the {@link Flash} for the current request of the JavaServer Faces application by calling
  * {@link FacesContext#getCurrentInstance()} and stores the result as a request-scoped bean instance.
  * </p>
- * 
+ * <p/>
  * <p>
  * This producer allows the {@link Flash} to be injected:
  * </p>
- * 
+ * <p/>
  * <pre>
  * &#064;Inject
  * Flash flash;
  * </pre>
- * 
+ *
  * @author Lincoln Baxter
  */
 public class FacesFlashProducer {

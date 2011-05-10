@@ -1,9 +1,6 @@
 package org.jboss.seam.faces.transaction;
 
 import javax.faces.context.FacesContext;
-import static javax.faces.event.PhaseId.ANY_PHASE;
-import static javax.faces.event.PhaseId.RENDER_RESPONSE;
-
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
@@ -12,19 +9,21 @@ import javax.inject.Inject;
 import org.jboss.logging.Logger;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
 import org.jboss.seam.persistence.PersistenceContexts;
+import org.jboss.seam.solder.core.Requires;
 import org.jboss.seam.transaction.DefaultTransaction;
 import org.jboss.seam.transaction.SeamTransaction;
-import org.jboss.seam.solder.core.Requires;
+
+import static javax.faces.event.PhaseId.ANY_PHASE;
+import static javax.faces.event.PhaseId.RENDER_RESPONSE;
 
 /**
  * Phase listener that is responsible for seam managed transactions. It is also responsible for setting the correct flush mode
  * on the persistence context during the render response phase
- * 
+ *
  * @author Stuart Douglas
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
- * 
  */
-@Requires({ "org.jboss.seam.persistence.PersistenceContextsImpl", "org.jboss.seam.transaction.TransactionExtension" })
+@Requires({"org.jboss.seam.persistence.PersistenceContextsImpl", "org.jboss.seam.transaction.TransactionExtension"})
 public class TransactionPhaseListener implements PhaseListener {
     private static final long serialVersionUID = -9127555729455066493L;
 
@@ -77,7 +76,7 @@ public class TransactionPhaseListener implements PhaseListener {
 
             if (commitTran) {
                 commitOrRollback(phaseId); // we commit before destroying contexts,
-                                           // cos the contexts have the PC in them
+                // cos the contexts have the PC in them
             }
         }
     }

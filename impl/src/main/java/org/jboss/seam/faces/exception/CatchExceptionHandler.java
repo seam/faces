@@ -17,7 +17,7 @@ import org.jboss.seam.solder.core.Requires;
 
 /**
  * This class fires Exceptions from the JSF lifecycle into Seam Catch.
- * 
+ *
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */

@@ -9,7 +9,6 @@ import javax.enterprise.context.ContextNotActiveException;
 import javax.enterprise.context.spi.Context;
 import javax.enterprise.context.spi.Contextual;
 import javax.enterprise.context.spi.CreationalContext;
-
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
@@ -19,7 +18,7 @@ import javax.faces.event.SystemEventListener;
 
 /**
  * This class provides the contexts lifecycle for the new JSF-2 &#064;ViewScoped Context
- * 
+ *
  * @author <a href="mailto:struberg@yahoo.de">Mark Struberg</a>
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
@@ -97,7 +96,7 @@ public class ViewScopedContext implements Context, SystemEventListener {
      * We get PreDestroyViewMapEvent events from the JSF servlet and destroy our contextual instances. This should
      * (theoretically!) also get fired if the webapp closes, so there should be no need to manually track all view scopes and
      * destroy them at a shutdown.
-     * 
+     *
      * @see javax.faces.event.SystemEventListener#processEvent(javax.faces.event.SystemEvent)
      */
     @SuppressWarnings("unchecked")

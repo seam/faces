@@ -11,15 +11,15 @@ import org.jboss.seam.solder.beanManager.BeanManagerProvider;
 
 /**
  * A BeanManager provider for the Servlet Context attribute "javax.enterprise.inject.spi.BeanManager"
- * 
+ *
  * @author Nicklas Karlsson
- * 
  */
 public class FacesServletContextBeanManagerProvider implements BeanManagerProvider {
     public static final FacesServletContextBeanManagerProvider DEFAULT = new FacesServletContextBeanManagerProvider();
 
     private static final List<String> SERVLET_CONTEXT_KEYS = new ArrayList<String>() {
         private static final long serialVersionUID = 1L;
+
         {
             add(BeanManager.class.getName());
             add(BeanManagerServletContextListener.BEANMANAGER_SERVLETCONTEXT_KEY);

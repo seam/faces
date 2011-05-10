@@ -2,9 +2,11 @@ package org.jboss.seam.faces.security;
 
 import java.io.IOException;
 import java.util.Map;
+
 import javax.enterprise.event.Observes;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+
 import org.jboss.seam.faces.event.PostLoginEvent;
 import org.jboss.seam.faces.event.PreLoginEvent;
 
@@ -23,7 +25,7 @@ public class LoginListener {
             HttpServletRequest request = (HttpServletRequest) event.getFacesContext().getExternalContext().getRequest();
             StringBuffer sb = request.getRequestURL();
             // build the querystring out of the request parameters, because Reqeust#getQueryString is often null
-            Map<String,String> requestParameterMap = event.getFacesContext().getExternalContext().getRequestParameterMap();
+            Map<String, String> requestParameterMap = event.getFacesContext().getExternalContext().getRequestParameterMap();
             if (requestParameterMap != null) {
                 boolean first = true;
                 for (Map.Entry<String, String> entry : requestParameterMap.entrySet()) {

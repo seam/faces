@@ -8,7 +8,6 @@ import javax.enterprise.inject.Typed;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
- * 
  */
 @Typed()
 public class RenderContextImpl implements RenderContext, Serializable {

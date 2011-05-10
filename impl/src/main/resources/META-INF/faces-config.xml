@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faces-config xmlns="http://java.sun.com/xml/ns/javaee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
-	version="2.0" id="SeamFaces">
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+              version="2.0" id="SeamFaces">
 
-	<name>SeamFaces</name>
+    <name>SeamFaces</name>
 
-	<ordering>
-		<after>
-			<name>weld</name>
-			<others/>
-		</after>
-	</ordering>
+    <ordering>
+        <after>
+            <name>weld</name>
+            <others/>
+        </after>
+    </ordering>
 
-	<lifecycle>
-		<phase-listener>org.jboss.seam.faces.event.DelegatingPhaseListener</phase-listener>
-	</lifecycle>
-	
-	<factory>
-		<external-context-factory>org.jboss.seam.faces.environment.SeamExternalContextFactory</external-context-factory>
-	</factory>
-	
-	<factory>
-		<exception-handler-factory>org.jboss.seam.faces.exception.CatchExceptionHandlerFactory</exception-handler-factory>
-	</factory>
+    <lifecycle>
+        <phase-listener>org.jboss.seam.faces.event.DelegatingPhaseListener</phase-listener>
+    </lifecycle>
 
-	<application>
-		<navigation-handler>
-			org.jboss.seam.faces.event.SeamPreNavigationHandler
-		</navigation-handler>
-		
-		<system-event-listener>
-			<system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
-			<system-event-class>javax.faces.event.ComponentSystemEvent</system-event-class>
-		</system-event-listener>
-		<system-event-listener>
-			<system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
-			<system-event-class>javax.faces.event.ExceptionQueuedEvent</system-event-class>
-		</system-event-listener>
-		<system-event-listener>
-			<system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
-			<system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
-		</system-event-listener>
-		<system-event-listener>
-			<system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
-			<system-event-class>javax.faces.event.PostConstructCustomScopeEvent</system-event-class>
-		</system-event-listener>
-		<system-event-listener>
-			<system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
-			<system-event-class>javax.faces.event.PreDestroyApplicationEvent</system-event-class>
-		</system-event-listener>
-		<system-event-listener>
-			<system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
-			<system-event-class>javax.faces.event.PreDestroyCustomScopeEvent</system-event-class>
-		</system-event-listener>
-		<system-event-listener>
-			<system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
-			<system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
-		</system-event-listener>
-		<system-event-listener>
-			<system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
-			<system-event-class>javax.faces.event.PreValidateEvent</system-event-class>
-		</system-event-listener>
-      
-      <view-handler>org.jboss.seam.faces.view.SeamViewHandler</view-handler>
-	</application>
+    <factory>
+        <external-context-factory>org.jboss.seam.faces.environment.SeamExternalContextFactory</external-context-factory>
+    </factory>
+
+    <factory>
+        <exception-handler-factory>org.jboss.seam.faces.exception.CatchExceptionHandlerFactory</exception-handler-factory>
+    </factory>
+
+    <application>
+        <navigation-handler>
+            org.jboss.seam.faces.event.SeamPreNavigationHandler
+        </navigation-handler>
+
+        <system-event-listener>
+            <system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.ComponentSystemEvent</system-event-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.ExceptionQueuedEvent</system-event-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostConstructCustomScopeEvent</system-event-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PreDestroyApplicationEvent</system-event-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PreDestroyCustomScopeEvent</system-event-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
+        </system-event-listener>
+        <system-event-listener>
+            <system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PreValidateEvent</system-event-class>
+        </system-event-listener>
+
+        <view-handler>org.jboss.seam.faces.view.SeamViewHandler</view-handler>
+    </application>
 
 </faces-config>

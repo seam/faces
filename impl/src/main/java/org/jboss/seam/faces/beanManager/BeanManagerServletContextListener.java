@@ -7,9 +7,8 @@ import javax.servlet.ServletContextListener;
 
 /**
  * A Servlet Context Listener that places the BeanManager under a known attribute key
- * 
+ *
  * @author Nicklas Karlsson
- * 
  */
 public class BeanManagerServletContextListener implements ServletContextListener {
     public static final String BEANMANAGER_SERVLETCONTEXT_KEY = "org.jboss.seam.faces.javax.enterprise.spi.BeanManager";

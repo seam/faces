@@ -10,7 +10,7 @@ import org.jboss.seam.solder.beanManager.BeanManagerUnavailableException;
 
 /**
  * This class is registered with the JSF framework to invoke the <code>CatchExceptionHandler</code> as part of the JSF lifecycle
- * 
+ *
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */

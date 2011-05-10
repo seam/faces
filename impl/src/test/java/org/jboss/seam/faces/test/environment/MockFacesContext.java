@@ -1,6 +1,7 @@
 package org.jboss.seam.faces.test.environment;
 
 import java.util.Iterator;
+
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;

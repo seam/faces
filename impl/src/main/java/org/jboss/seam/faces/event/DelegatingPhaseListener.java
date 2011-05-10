@@ -11,9 +11,8 @@ import org.jboss.seam.faces.transaction.TransactionPhaseListener;
 
 /**
  * Provide CDI injection to PhaseListener artifacts by delegating through this class.
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
- * 
  */
 public class DelegatingPhaseListener extends AbstractListener<PhaseListener> implements PhaseListener {
     private static final long serialVersionUID = 8454616175394888259L;

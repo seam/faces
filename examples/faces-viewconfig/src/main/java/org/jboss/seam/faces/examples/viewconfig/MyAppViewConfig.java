@@ -10,7 +10,6 @@ import org.jboss.seam.faces.view.config.ViewConfig;
 import org.jboss.seam.faces.view.config.ViewPattern;
 
 /**
- *
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 @ViewConfig
@@ -21,17 +20,17 @@ public interface MyAppViewConfig {
         @ViewPattern("/admin.xhtml")
         @Admin
         ADMIN,
-        
-        @UrlMapping(pattern="/item/#{id}/")
+
+        @UrlMapping(pattern = "/item/#{id}/")
         @ViewPattern("/item.xhtml")
         @Owner
         ITEM,
-        
+
         @FacesRedirect
         @ViewPattern("/*")
         @AccessDeniedView("/denied.xhtml")
         @LoginView("/login.xhtml")
         ALL;
-        
+
     }
 }

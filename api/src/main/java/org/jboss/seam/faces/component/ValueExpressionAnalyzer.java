@@ -3,6 +3,7 @@ package org.jboss.seam.faces.component;
 import java.beans.FeatureDescriptor;
 import java.util.Iterator;
 import java.util.Locale;
+
 import javax.el.ELContext;
 import javax.el.ELException;
 import javax.el.ELResolver;
@@ -16,17 +17,17 @@ import javax.faces.el.CompositeComponentExpressionHolder;
  * <p>
  * Analyzes a {@link ValueExpression} and provides access to the base object and property name referenced by the expression.
  * </p>
- * 
+ * <p/>
  * <p>
  * The getValueReference(ELContext) method returns a {@link ValueReference} object, which encapsulates the base object and
  * property name to which the expression maps. This process works by resolving the expression up until the last segment.
  * </p>
- * 
+ * <p/>
  * <p>
  * Although access to the ValueReference was added in EL 2.2, the feature does not work correctly, which is why this custom
  * class is required.
  * </p>
- * 
+ *
  * @author Dan Allen
  */
 class ValueExpressionAnalyzer {

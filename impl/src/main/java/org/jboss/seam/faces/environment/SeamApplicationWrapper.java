@@ -10,15 +10,14 @@ import javax.faces.convert.Converter;
 import javax.faces.event.PostConstructApplicationEvent;
 import javax.faces.validator.Validator;
 import javax.inject.Inject;
-import org.jboss.logging.Logger;
 
+import org.jboss.logging.Logger;
 import org.jboss.seam.faces.util.BeanManagerUtils;
 
 /**
  * Provides contextual lifecycle and @{link Inject} support for JSF artifacts such as {@link Converter}, {@link Validator}.
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
- * 
  */
 @ApplicationScoped
 public class SeamApplicationWrapper extends ApplicationWrapper {

@@ -1,27 +1,27 @@
 package org.jboss.seam.faces.context.conversation;
 
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import javax.interceptor.InterceptorBinding;
 
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 /**
  * Parent annotation for @{@link Begin} and @{@link End}
- * <p>
+ * <p/>
  * <b>Note:</b> This should never be used.
- * <p>
+ * <p/>
  * TODO: Should we warn at startup if @{@link Begin} and @{@link End} are used together on the same method?
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
 @InterceptorBinding
 @Inherited
-@Target({ METHOD, TYPE })
+@Target({METHOD, TYPE})
 @Retention(RUNTIME)
-@interface ConversationBoundary {
+        @interface ConversationBoundary {
 }

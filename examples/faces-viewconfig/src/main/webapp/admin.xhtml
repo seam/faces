@@ -8,9 +8,9 @@
       xmlns:s="http://jboss.org/seam/faces"
       xml:lang="en" lang="en">
 
-    <ui:composition template="/resources/layout.xhtml">
-        <ui:define name="title">Welcome</ui:define>
-        <ui:define name="content">
+<ui:composition template="/resources/layout.xhtml">
+    <ui:define name="title">Welcome</ui:define>
+    <ui:define name="content">
         <p>This example demonstrates how to secure pages using the @ViewConfig annotation</p>
         <h:form>
             <h:dataTable value="#{pageController.items}" var="item">
@@ -31,6 +31,6 @@
                 </h:column>
             </h:dataTable>
         </h:form>
-        </ui:define>
-    </ui:composition>
+    </ui:define>
+</ui:composition>
 </html>

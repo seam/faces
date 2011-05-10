@@ -1,6 +1,7 @@
 package org.jboss.seam.faces.event;
 
 import java.util.Map;
+
 import javax.faces.context.FacesContext;
 
 /**
@@ -11,7 +12,7 @@ import javax.faces.context.FacesContext;
  */
 public class PreLoginEvent {
     private final FacesContext context;
-    private final Map<String,Object> sessionMap;
+    private final Map<String, Object> sessionMap;
 
     public PreLoginEvent(FacesContext context, Map<String, Object> sessionMap) {
         this.context = context;

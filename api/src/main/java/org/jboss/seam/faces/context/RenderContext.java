@@ -2,9 +2,8 @@ package org.jboss.seam.faces.context;
 
 /**
  * A context that lives from Restore View to the next Render Response.
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
- * 
  */
 public interface RenderContext {
 

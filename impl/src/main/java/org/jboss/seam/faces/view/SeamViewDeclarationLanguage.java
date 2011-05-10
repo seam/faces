@@ -13,7 +13,7 @@ import javax.faces.view.ViewMetadata;
 /**
  * Wrap the built-in {@link ViewDeclarationLanguage} implementation for the purpose of wrapping the {@link ViewMetadata}
  * implementation in {@link SeamViewMetadata}.
- * 
+ *
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  * @see SeamViewMetadata
  */

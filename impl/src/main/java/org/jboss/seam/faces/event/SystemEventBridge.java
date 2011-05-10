@@ -21,22 +21,22 @@ import org.jboss.seam.faces.event.qualifier.View;
 
 /**
  * A SystemEventListener used to bridge JSF system events to the CDI event model.
- * <p>
- * 
+ * <p/>
+ * <p/>
  * For each JSF system event (e.g: {@link PostConstructApplicationEvent}, a corresponding Seam CDI event will be fired.
- * <p>
- * 
+ * <p/>
+ * <p/>
  * Event listeners can be registered by observing the appropriate Seam CDI event (see @{@link Observes}):
- * <p>
+ * <p/>
  * <b>For example:</b>
- * <p>
+ * <p/>
  * <code>
  * public void listener(@Observes org.jboss.seam.faces.event.qualifier.ExceptionQueuedEvent event)
  * {
- *    //do something
+ * //do something
  * }
  * </code>
- * 
+ *
  * @author Nicklas Karlsson
  */
 public class SystemEventBridge implements SystemEventListener {
@@ -56,12 +56,12 @@ public class SystemEventBridge implements SystemEventListener {
     private Annotation[] getQualifiers(final SystemEvent e) {
         if (isViewEvent(e)) {
             String id = ((UIViewRoot) e.getSource()).getViewId();
-            return new Annotation[] { new ViewLiteral(id) };
+            return new Annotation[]{new ViewLiteral(id)};
         } else if (e instanceof ComponentSystemEvent) {
             String id = ((ComponentSystemEvent) e).getComponent().getId();
-            return new Annotation[] { new ComponentLiteral(id) };
+            return new Annotation[]{new ComponentLiteral(id)};
         } else {
-            return new Annotation[] {};
+            return new Annotation[]{};
         }
     }
 

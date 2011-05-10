@@ -4,7 +4,7 @@ import org.jboss.seam.faces.event.PhaseIdType;
 
 /**
  * The Default values for RestrictAtPhase annotation, extracted as constants.
- * 
+ *
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 public class RestrictAtPhaseDefault {

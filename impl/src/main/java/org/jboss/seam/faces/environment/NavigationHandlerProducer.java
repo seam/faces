@@ -12,7 +12,7 @@ import javax.inject.Inject;
  * A producer which retrieves the current JSF NavigationHandler by calling {@link Application#getNavigationHandler()}, thus
  * allowing it to be injected.
  * </p>
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
 public class NavigationHandlerProducer {

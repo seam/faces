@@ -4,9 +4,8 @@ import org.jboss.logging.Logger;
 
 /**
  * Provide a completely empty logger implementation for Unit Tests. This entire class is a no-op; it does <i>nothing</i>.
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
- * 
  */
 public class MockLogger extends Logger {
 

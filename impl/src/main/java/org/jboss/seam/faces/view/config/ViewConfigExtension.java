@@ -17,10 +17,9 @@ import org.jboss.logging.Logger;
 
 /**
  * Extension that scans enums for view specific configuration
- * 
+ *
  * @author stuart
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
- * 
  */
 public class ViewConfigExtension implements Extension {
 

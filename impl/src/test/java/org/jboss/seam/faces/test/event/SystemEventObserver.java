@@ -29,9 +29,7 @@ import org.jboss.seam.faces.event.qualifier.Component;
 import org.jboss.seam.faces.event.qualifier.View;
 
 /**
- * 
  * @author Nicklas Karlsson
- * 
  */
 @ApplicationScoped
 public class SystemEventObserver {

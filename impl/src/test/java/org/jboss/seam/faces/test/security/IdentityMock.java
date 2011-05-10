@@ -6,6 +6,7 @@ package org.jboss.seam.faces.test.security;
 
 import java.util.Collection;
 import java.util.Set;
+
 import org.jboss.seam.security.Authenticator;
 import org.jboss.seam.security.Identity;
 import org.picketlink.idm.api.Group;
@@ -13,7 +14,6 @@ import org.picketlink.idm.api.Role;
 import org.picketlink.idm.api.User;
 
 /**
- *
  * @author bleathem
  */
 public class IdentityMock implements Identity {
@@ -142,5 +142,5 @@ public class IdentityMock implements Identity {
     public boolean tryLogin() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
 }

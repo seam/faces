@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 
 /**
  * Represents a mapping between a Tiny URL and its destination URL.
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
 @Entity

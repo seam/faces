@@ -25,7 +25,7 @@ import org.jboss.seam.solder.beanManager.BeanManagerLocator;
 
 /**
  * This class provides lifecycle management for the {@link RenderContext}
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * @author Brian Leathem
  */
@@ -120,7 +120,7 @@ public class RenderScopedContext implements Context, PhaseListener, Serializable
     /**
      * Destroy the current context since Render Response has completed.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes", "unused" })
+    @SuppressWarnings({"unchecked", "rawtypes", "unused"})
     public void afterPhase(final PhaseEvent event) {
         if (PhaseId.RENDER_RESPONSE.equals(event.getPhaseId())) {
             RenderContext contextInstance = getContextInstance();

@@ -7,9 +7,8 @@ import javax.faces.context.FacesContext;
 /**
  * An event that is fired when JSF navigation is invoked via the {@link NavigationHandler}, but before any redirecting or
  * non-redirecting navigation is completed, giving consumers of this event a chance to take action.
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
- * 
  */
 public class PreNavigateEvent {
 
@@ -19,7 +18,7 @@ public class PreNavigateEvent {
     private final NavigationCase navigationCase;
 
     public PreNavigateEvent(final FacesContext context, final String fromAction, final String outcome,
-            final NavigationCase navigationCase) {
+                            final NavigationCase navigationCase) {
         this.context = context;
         this.fromAction = fromAction;
         this.outcome = outcome;

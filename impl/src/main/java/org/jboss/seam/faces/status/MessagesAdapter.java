@@ -20,16 +20,16 @@ import org.jboss.seam.international.status.Messages;
 
 /**
  * Convert Seam Messages into FacesMessages before RenderResponse phase.<br>
- * 
+ * <p/>
  * <p>
  * TODO perform EL evaluation
  * </p>
- * 
+ * <p/>
  * <p>
  * NOTE This class is using method parameter injection of Messages rather than field injection to work around GLASSFISH-15721.
  * This shouldn't be necessary starting with Weld 1.1.1.
  * </p>
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */

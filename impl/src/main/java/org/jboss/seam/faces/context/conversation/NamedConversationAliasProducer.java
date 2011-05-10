@@ -8,7 +8,7 @@ import javax.inject.Named;
 /**
  * Exposes the {@link Conversation} under the simplified name "conversation" in addition to the default
  * "javax.enterprise.context.conversation". This alias is provided for the page author's convenience.
- * 
+ *
  * @author Dan Allen
  */
 public class NamedConversationAliasProducer {

@@ -10,15 +10,15 @@ import javax.inject.Named;
  * A producer which retrieves the ProjectStage for the current request of the JavaServer Faces application, storing the result
  * as a ApplicationScoped bean instance.
  * </p>
- * 
+ * <p/>
  * <p>
  * This producer is named, allowing the Project Stage to be accessed via EL:
  * </p>
- * 
+ * <p/>
  * <pre>
  * #{projectStage}
  * </pre>
- * 
+ *
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 public class ProjectStageProducer {

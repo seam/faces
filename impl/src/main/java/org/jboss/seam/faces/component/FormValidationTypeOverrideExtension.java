@@ -16,9 +16,8 @@ import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
 /**
  * Ensure that any field annotated with {@link InputField} is produced by the same producer method with output type
  * {@link Object}.
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
- * 
  */
 @ApplicationScoped
 public class FormValidationTypeOverrideExtension implements Extension {

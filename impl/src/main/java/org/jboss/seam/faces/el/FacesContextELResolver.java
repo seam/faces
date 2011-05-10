@@ -11,7 +11,6 @@ import org.jboss.seam.solder.el.Resolver;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
- * 
  */
 @Resolver
 public class FacesContextELResolver extends ELResolver {

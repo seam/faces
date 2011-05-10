@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
 import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.BeanManager;
@@ -190,10 +191,10 @@ public class SecurityPhaseListener {
 
     /**
      * Get the default phases at which restrictions should be applied, by looking for a @RestrictAtPhase on a matching
-     * @ViewPattern, falling back on global defaults if none are found
      *
      * @param viewId
      * @return default phases for a view
+     * @ViewPattern, falling back on global defaults if none are found
      */
     public PhaseIdType[] getDefaultPhases(String viewId) {
         PhaseIdType[] defaultPhases = null;
@@ -261,7 +262,7 @@ public class SecurityPhaseListener {
         AuthorizationCheckEvent event = new AuthorizationCheckEvent(annotations);
         authorizationCheckEvent.fire(event);
         if (!event.isPassed()) {
-            if (! identity.isLoggedIn()) {
+            if (!identity.isLoggedIn()) {
                 log.debug("Access denied - not logged in");
                 redirectToLoginPage(context, viewRoot);
                 return;
@@ -283,7 +284,7 @@ public class SecurityPhaseListener {
      * @param viewRoot
      */
     private void redirectToLoginPage(FacesContext context, UIViewRoot viewRoot) {
-        Map<String,Object> sessionMap = context.getExternalContext().getSessionMap();
+        Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
         preLoginEvent.fire(new PreLoginEvent(context, sessionMap));
         LoginView loginView = viewConfigStore.getAnnotationData(viewRoot.getViewId(), LoginView.class);
         if (loginView == null || loginView.value() == null || loginView.value().isEmpty()) {
@@ -331,7 +332,7 @@ public class SecurityPhaseListener {
         if (Identity.RESPONSE_LOGIN_SUCCESS.equals(event.getOutcome())
                 && "#{identity.login}".equals(event.getFromAction())) {
             FacesContext context = event.getContext();
-            Map<String,Object> sessionMap = context.getExternalContext().getSessionMap();
+            Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
             postLoginEvent.fire(new PostLoginEvent(context, sessionMap));
         }
     }

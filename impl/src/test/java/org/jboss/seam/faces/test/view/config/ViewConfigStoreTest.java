@@ -1,17 +1,16 @@
 package org.jboss.seam.faces.test.view.config;
 
-import org.jboss.seam.faces.test.view.config.annotation.QualifiedUrlLiteral;
-import org.jboss.seam.faces.test.view.config.annotation.QualifiedIcon;
-import org.jboss.seam.faces.test.view.config.annotation.QualifiedIconLiteral;
-import org.jboss.seam.faces.test.view.config.annotation.QualifiedUrl;
-import org.jboss.seam.faces.test.view.config.annotation.TestQualifier;
-import org.jboss.seam.faces.test.view.config.annotation.Icon;
-import org.jboss.seam.faces.test.view.config.annotation.IconLiteral;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
 import junit.framework.Assert;
-
+import org.jboss.seam.faces.test.view.config.annotation.Icon;
+import org.jboss.seam.faces.test.view.config.annotation.IconLiteral;
+import org.jboss.seam.faces.test.view.config.annotation.QualifiedIcon;
+import org.jboss.seam.faces.test.view.config.annotation.QualifiedIconLiteral;
+import org.jboss.seam.faces.test.view.config.annotation.QualifiedUrl;
+import org.jboss.seam.faces.test.view.config.annotation.QualifiedUrlLiteral;
+import org.jboss.seam.faces.test.view.config.annotation.TestQualifier;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
 import org.jboss.seam.faces.view.config.ViewConfigStoreImpl;
 import org.junit.Before;

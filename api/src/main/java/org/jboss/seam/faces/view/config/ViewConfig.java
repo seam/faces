@@ -8,9 +8,8 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation that is applied to an enum to signify that it contains configuration for view specific data
- * 
+ *
  * @author Stuart Douglas
- * 
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

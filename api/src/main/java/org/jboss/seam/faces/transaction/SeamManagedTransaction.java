@@ -7,9 +7,8 @@ import java.lang.annotation.Target;
 
 /**
  * Configuration annotation for seam managed transactions
- * 
+ *
  * @author Stuart Douglas
- * 
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

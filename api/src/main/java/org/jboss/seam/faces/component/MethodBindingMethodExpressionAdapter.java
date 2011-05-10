@@ -20,7 +20,6 @@ import javax.faces.el.MethodNotFoundException;
  * <p>
  * Wrap a MethodExpression instance and expose it as a MethodBinding
  * </p>
- * 
  */
 class MethodBindingMethodExpressionAdapter extends MethodBinding implements StateHolder, Serializable {
 

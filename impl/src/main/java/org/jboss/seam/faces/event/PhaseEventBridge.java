@@ -22,23 +22,22 @@ import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
 
 /**
  * A PhaseListener used to bridge JSF phase events to the CDI event model.
- * <p>
- * 
+ * <p/>
+ * <p/>
  * For each JSF {@link PhaseEvent}, a corresponding Seam CDI event will be fired. Event listeners can be registered by observing
  * the appropriate Seam CDI event (see @{@link Observes}):
- * <p>
+ * <p/>
  * <b>For example:</b>
- * <p>
+ * <p/>
  * <code>
  * public void listener(@Observes @Before @RenderResponse PhaseEvent event)
  * {
- *    //do something
+ * //do something
  * }
  * </code>
- * 
+ *
  * @author Nicklas Karlsson
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
- * 
  */
 public class PhaseEventBridge implements PhaseListener {
     private static final long serialVersionUID = -6181019551463318453L;
@@ -50,8 +49,8 @@ public class PhaseEventBridge implements PhaseListener {
 
     /**
      * @param whenQualifier When this event occurred (e.g.: {@link PhaseListener#beforePhase(PhaseEvent)} or
-     *        {@link PhaseListener#afterPhase(PhaseEvent)})
-     * @param event The JSF PhaseEvent to be propagated
+     *                      {@link PhaseListener#afterPhase(PhaseEvent)})
+     * @param event         The JSF PhaseEvent to be propagated
      */
     private void handlePhase(final AnnotationLiteral<?> whenQualifier, final PhaseEvent event) {
         Annotation phaseQualifier = null;
@@ -75,7 +74,7 @@ public class PhaseEventBridge implements PhaseListener {
         /*
          * This propagates the event to CDI
          */
-        Annotation[] qualifiers = new Annotation[] { whenQualifier, phaseQualifier };
+        Annotation[] qualifiers = new Annotation[]{whenQualifier, phaseQualifier};
         log.debugf("Fired event [" + event + "] with qualifiers [" + qualifiers + "]");
         beanManager.fireEvent(event, qualifiers);
     }

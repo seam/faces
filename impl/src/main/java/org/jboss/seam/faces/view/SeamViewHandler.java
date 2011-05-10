@@ -8,7 +8,7 @@ import javax.faces.view.ViewDeclarationLanguage;
 /**
  * Wrap the built-in {@link ViewHandler} implementation for the purpose of wrapping the {@link ViewDeclarationLanguage}
  * implementation in {@link SeamViewDeclarationLanguage}.
- * 
+ *
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  * @see SeamViewDeclarationLanguage
  */

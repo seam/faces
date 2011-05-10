@@ -10,7 +10,6 @@ import org.jboss.seam.faces.context.conversation.End;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
- * 
  */
 @RequestScoped
 public class ConversationalBean {
@@ -44,7 +43,7 @@ public class ConversationalBean {
         }
     }
 
-    @Begin(permit = { SeamFacesException.class })
+    @Begin(permit = {SeamFacesException.class})
     public void beginAndThrowFatalException() {
         if (!conversation.isTransient()) {
             conversationLongRunningDuringInvocation3 = true;
@@ -52,7 +51,7 @@ public class ConversationalBean {
         throw new RuntimeException("A vanilla exception.");
     }
 
-    @Begin(permit = { SeamFacesException.class })
+    @Begin(permit = {SeamFacesException.class})
     public void beginAndThrowPermittedException() {
         if (!conversation.isTransient()) {
             conversationLongRunningDuringInvocation4 = true;
@@ -60,7 +59,7 @@ public class ConversationalBean {
         throw new SeamFacesException("Just so it's not a vanilla Exception.");
     }
 
-    @End(permit = { SeamFacesException.class })
+    @End(permit = {SeamFacesException.class})
     public void endAndThrowFatalException() {
         if (!conversation.isTransient()) {
             conversationLongRunningDuringInvocation5 = true;
@@ -68,7 +67,7 @@ public class ConversationalBean {
         throw new RuntimeException("A vanilla exception.");
     }
 
-    @End(permit = { SeamFacesException.class })
+    @End(permit = {SeamFacesException.class})
     public void endAndThrowPermittedException() {
         if (!conversation.isTransient()) {
             conversationLongRunningDuringInvocation6 = true;

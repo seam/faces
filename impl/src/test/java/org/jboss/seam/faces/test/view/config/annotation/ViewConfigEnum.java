@@ -1,6 +1,5 @@
 package org.jboss.seam.faces.test.view.config.annotation;
 
-import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import org.jboss.seam.faces.event.PhaseIdType;
 import org.jboss.seam.faces.security.RestrictAtPhase;
 import org.jboss.seam.faces.view.config.ViewConfig;
@@ -30,10 +29,10 @@ public interface ViewConfigEnum {
         @RestrictedDefault
         @QualifiedIcon("qualified.gif")
         QUALIFIED,
-        
+
         @ViewPattern("/qualified/yes.xhtml")
         @RestrictedAtRestoreView
         QUALIFIED_YES;
-        
+
     }
 }

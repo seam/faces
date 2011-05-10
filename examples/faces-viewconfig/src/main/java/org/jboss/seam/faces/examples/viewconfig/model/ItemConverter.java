@@ -3,10 +3,10 @@ package org.jboss.seam.faces.examples.viewconfig.model;
 import javax.faces.component.UIComponent;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
+
 import org.jboss.seam.faces.conversion.Converter;
 
 /**
- *
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 @FacesConverter("itemConverter")
@@ -24,6 +24,6 @@ public class ItemConverter extends Converter<Item> {
     public String toString(UIComponent uic, Item t) {
         return t.getId().toString();
     }
-    
-    
+
+
 }

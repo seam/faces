@@ -1,6 +1,5 @@
 package org.jboss.seam.faces.view.config;
 
-import org.jboss.seam.faces.security.SecurityPhaseListener;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,14 +12,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+
 import org.jboss.logging.Logger;
+import org.jboss.seam.faces.security.SecurityPhaseListener;
 
 /**
  * Data store for view specific data.
- * 
+ *
  * @author Stuart Douglas
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
- * 
  */
 @ApplicationScoped
 public class ViewConfigStoreImpl implements ViewConfigStore {
@@ -36,10 +36,9 @@ public class ViewConfigStoreImpl implements ViewConfigStore {
 
     /**
      * setup the bean with the configuration from the extension
-     * 
+     * <p/>
      * It would be better if the extension could do this, but the extension cannot resolve the bean until after all lifecycle
      * events have been processed
-     * 
      */
     @Inject
     public void setup(ViewConfigExtension extension) {
@@ -102,7 +101,7 @@ public class ViewConfigStoreImpl implements ViewConfigStore {
         }
         return null;
     }
-    
+
     @Override
     public <T extends Annotation> Map<String, Annotation> getAllAnnotationViewMap(Class<T> type) {
         return viewPatternDataByAnnotation.get(type);
@@ -118,8 +117,8 @@ public class ViewConfigStoreImpl implements ViewConfigStore {
     }
 
     private <T extends Annotation> List<T> prepareAnnotationCache(String viewId, Class<T> annotationType,
-            ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> cache,
-            ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>> viewPatternData) {
+                                                                  ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> cache,
+                                                                  ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>> viewPatternData) {
         // we need to synchronize to make sure that no threads see a half
         // completed list due to instruction re-ordering
         ConcurrentHashMap<String, List<? extends Annotation>> map = cache.get(annotationType);

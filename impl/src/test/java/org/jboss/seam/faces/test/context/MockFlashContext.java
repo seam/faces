@@ -10,9 +10,8 @@ import org.jboss.seam.faces.context.RenderContext;
 
 /**
  * A mock {@link RenderContext} that can be injected into tests.
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
- * 
  */
 @Typed(RenderContext.class)
 public class MockFlashContext implements RenderContext, Serializable {

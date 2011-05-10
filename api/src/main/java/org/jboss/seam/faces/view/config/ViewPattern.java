@@ -8,10 +8,9 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation that is applied to an enum constant to configure view specific information
- * 
+ *
  * @author Stuart Douglas
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
- * 
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

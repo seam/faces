@@ -11,9 +11,8 @@ import org.jboss.logging.Logger;
 
 /**
  * Provide CDI injection to SystemEventListener artifacts by delegating through this class.
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
- * 
  */
 public class DelegatingSystemEventListener extends AbstractListener<SystemEventListener> implements SystemEventListener {
     private transient final Logger log = Logger.getLogger(DelegatingSystemEventListener.class);
