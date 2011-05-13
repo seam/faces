@@ -64,7 +64,7 @@
          module:
         </para>
         <programlisting role="XML">
-<![CDATA[<list>
+<![CDATA[<listener>
    <listener-class>org.jboss.seam.faces.beanManager.BeanManagerServletContextListener</listener-class>
 </listener>]]>
         </programlisting>
