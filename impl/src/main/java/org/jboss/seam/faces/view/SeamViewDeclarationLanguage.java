@@ -2,10 +2,13 @@ package org.jboss.seam.faces.view;
 
 import java.beans.BeanInfo;
 import java.io.IOException;
+import java.util.List;
 
 import javax.faces.application.Resource;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import javax.faces.view.AttachedObjectHandler;
 import javax.faces.view.StateManagementStrategy;
 import javax.faces.view.ViewDeclarationLanguage;
 import javax.faces.view.ViewMetadata;
@@ -70,6 +73,17 @@ public class SeamViewDeclarationLanguage extends ViewDeclarationLanguage {
     @Override
     public StateManagementStrategy getStateManagementStrategy(FacesContext context, String viewId) {
         return delegate.getStateManagementStrategy(context, viewId);
+    }
+
+    @Override
+    public void retargetAttachedObjects(FacesContext context, UIComponent topLevelComponent,
+            List<AttachedObjectHandler> handlers) {
+        delegate.retargetAttachedObjects(context, topLevelComponent, handlers);
+    }
+
+    @Override
+    public void retargetMethodExpressions(FacesContext context, UIComponent topLevelComponent) {
+        delegate.retargetMethodExpressions(context, topLevelComponent);
     }
 
 }
