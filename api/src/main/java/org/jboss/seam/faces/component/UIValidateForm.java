@@ -18,6 +18,7 @@ import javax.faces.event.PreValidateEvent;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
+import org.jboss.logging.Logger;
 import org.jboss.seam.faces.event.qualifier.After;
 import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.solder.beanManager.BeanManagerLocator;
@@ -27,6 +28,9 @@ import org.jboss.seam.solder.beanManager.BeanManagerLocator;
  */
 @FacesComponent(UIValidateForm.COMPONENT_TYPE)
 public class UIValidateForm extends UIInput {
+
+    private Logger log = Logger.getLogger(UIValidateForm.class);
+
     private static final AnnotationLiteral<Before> BEFORE = new AnnotationLiteral<Before>() {
         private static final long serialVersionUID = 7631699535063526392L;
     };
@@ -39,6 +43,8 @@ public class UIValidateForm extends UIInput {
     private static final String VALIDATOR_ID_KEY = COMPONENT_TYPE + "_ID_KEY";
     private static final Serializable COMPONENTS_MAP_KEY = COMPONENT_TYPE + "_COMPONENTS_MAP_KEY";
     private static final Serializable FIELDS_KEY = COMPONENT_TYPE + "_FIELDS_KEY";
+    private static final Serializable SHOW_FIELD_MESSAGES_KEY = COMPONENT_TYPE + "_SHOW_FIELD_MESSAGES";
+    private static final Serializable SHOW_GLOBAL_MESSAGES_KEY = COMPONENT_TYPE + "_SHOW_GLOBAL_MESSAGES";
 
     @Override
     public String getFamily() {
@@ -71,10 +77,17 @@ public class UIValidateForm extends UIInput {
             setValid(false);
             for (UIInput comp : components.values()) {
                 comp.setValid(false);
-                // TODO Put this back when attributes can control it
-                // context.addMessage(comp.getClientId(), e.getFacesMessage());
+                if (isShowFieldMessages()) {
+                    context.addMessage(comp.getClientId(), e.getFacesMessage());
+                }
             }
-            context.addMessage(null, e.getFacesMessage());
+            if (isShowGlobalMessages()) {
+                context.addMessage(null, e.getFacesMessage());
+            }
+            if(!isShowGlobalMessages() && !isShowFieldMessages()) {
+                log.warn("The form validation failed but neither 'showFieldMessages' nor 'showGlobalMessages' " +
+                        "is true. The validation messages will be dropped.");
+            }
         }
 
         manager.fireEvent(this, AFTER);
@@ -140,6 +153,26 @@ public class UIValidateForm extends UIInput {
     public void setValidatorId(final String validatorId) {
         StateHelper helper = this.getStateHelper(true);
         helper.put(VALIDATOR_ID_KEY, validatorId);
+    }
+
+    public boolean isShowFieldMessages() {
+        StateHelper helper = this.getStateHelper(true);
+        return (Boolean) helper.eval(SHOW_FIELD_MESSAGES_KEY, false);
+    }
+
+    public void setShowFieldMessages(final boolean showFieldMessages) {
+        StateHelper helper = this.getStateHelper(true);
+        helper.put(SHOW_FIELD_MESSAGES_KEY, showFieldMessages);
+    }
+
+    public boolean isShowGlobalMessages() {
+        StateHelper helper = this.getStateHelper(true);
+        return (Boolean) helper.eval(SHOW_GLOBAL_MESSAGES_KEY, true);
+    }
+
+    public void setShowGlobalMessages(final boolean showGlobalMessages) {
+        StateHelper helper = this.getStateHelper(true);
+        helper.put(SHOW_GLOBAL_MESSAGES_KEY, showGlobalMessages);
     }
 
     @SuppressWarnings("unchecked")
