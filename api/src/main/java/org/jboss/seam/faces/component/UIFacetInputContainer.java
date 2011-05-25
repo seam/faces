@@ -180,7 +180,12 @@ public class UIFacetInputContainer extends UIComponentBase implements NamingCont
             getAttributes().put(getRequiredAttributeName(), true);
         }
 
-        if (!getAttributes().containsKey(getLabelAttributeName())) {
+        /*
+         * for some reason, Mojarra is not filling Attribute Map with "label" key if label attr has an EL value, so I added a
+         * labelHasEmptyValue to guarantee that there was no label setted.
+         */
+        if (getValueExpression(getLabelAttributeName()) == null
+                && (!getAttributes().containsKey(getLabelAttributeName()) || labelHasEmptyValue(elements))) {
             getAttributes().put(getLabelAttributeName(), generateLabel(elements, context));
         }
 
@@ -328,6 +333,11 @@ public class UIFacetInputContainer extends UIComponentBase implements NamingCont
         } catch (NoClassDefFoundError e) {
             return false;
         }
+    }
+
+    private boolean labelHasEmptyValue(InputContainerElements elements) {
+        return (elements.getLabel().getValue().toString().trim().equals(":") || elements.getLabel().getValue().toString()
+                .trim().equals(""));
     }
 
     public static class InputContainerElements {
