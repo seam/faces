@@ -41,6 +41,7 @@ import javax.validation.metadata.PropertyDescriptor;
  * Composite component definition example (minus layout):
  * </p>
  * <p/>
+ * 
  * <pre>
  * &lt;cc:interface componentType="org.jboss.seam.faces.InputContainer"/>
  * &lt;cc:implementation>
@@ -56,6 +57,7 @@ import javax.validation.metadata.PropertyDescriptor;
  * Composite component usage example:
  * </p>
  * <p/>
+ * 
  * <pre>
  * &lt;example:inputContainer id="name">
  *   &lt;h:inputText id="input" value="#{person.name}"/>
@@ -75,8 +77,9 @@ import javax.validation.metadata.PropertyDescriptor;
  * web.xml) keyed to javax.faces.SEPARATOR_CHAR. We recommend that you override this setting to make the separator an underscore
  * (_).
  * </p>
- *
+ * 
  * @author Dan Allen
+ * @author <a href="http://community.jboss.org/people/spinner)">Jose Rodolfo freitas</a>
  */
 @FacesComponent(UIInputContainer.COMPONENT_TYPE)
 public class UIInputContainer extends UIComponentBase implements NamingContainer {
@@ -180,7 +183,12 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
             getAttributes().put(getRequiredAttributeName(), true);
         }
 
-        if (!getAttributes().containsKey(getLabelAttributeName())) {
+        /*
+         * for some reason, Mojarra is not filling Attribute Map with "label" key if label attr has an EL value, so I added a
+         * labelHasEmptyValue to guarantee that there was no label setted.
+         */
+        if (getValueExpression(getLabelAttributeName()) == null
+                && (!getAttributes().containsKey(getLabelAttributeName()) || labelHasEmptyValue(elements))) {
             getAttributes().put(getLabelAttributeName(), generateLabel(elements, context));
         }
 
@@ -227,11 +235,11 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
 
     /**
      * Walk the component tree branch built by the composite component and locate the input container elements.
-     *
+     * 
      * @return a composite object of the input container elements
      */
     protected InputContainerElements scan(final UIComponent component, InputContainerElements elements,
-                                          final FacesContext context) {
+            final FacesContext context) {
         if (elements == null) {
             elements = new InputContainerElements();
         }
@@ -330,6 +338,11 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
         }
     }
 
+    private boolean labelHasEmptyValue(InputContainerElements elements) {
+        return (elements.getLabel().getValue().toString().trim().equals(":") || elements.getLabel().getValue().toString()
+                .trim().equals(""));
+    }
+
     public static class InputContainerElements {
         private String propertyName;
         private HtmlOutputLabel label;
@@ -387,7 +400,7 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
         }
 
         private boolean isRequiredByConstraint(final EditableValueHolder input, final Validator validator,
-                                               final FacesContext context) {
+                final FacesContext context) {
             if (validator == null) {
                 return false;
             }
