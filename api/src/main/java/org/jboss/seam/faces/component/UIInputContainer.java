@@ -66,7 +66,6 @@ public class UIInputContainer extends AbstractUIInputContainer {
 
     @Override
     protected void postScan(FacesContext context, InputContainerElements elements) {
-        // assignIds(elements, context);
     }
 
 }

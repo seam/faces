@@ -61,9 +61,7 @@ public class UIFacetInputContainer extends AbstractUIInputContainer {
 
     @Override
     protected void postScan(FacesContext context, InputContainerElements elements) {
-        // assignIds(elements, context);
         scan(getFacet("inputs"), elements, context);
-        System.out.println("postscan");
     }
 
 }

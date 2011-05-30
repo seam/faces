@@ -115,6 +115,7 @@ public abstract class AbstractUIInputContainer extends UIComponentBase implement
         super.encodeBegin(context);
 
         InputContainerElements elements = scan(getFacet(UIComponent.COMPOSITE_FACET_NAME), null, context);
+        // assignIds(elements, context);
         postScan(context, elements);
 
         wire(elements, context);
