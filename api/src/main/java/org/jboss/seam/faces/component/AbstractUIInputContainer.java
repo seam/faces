@@ -365,9 +365,11 @@ public abstract class AbstractUIInputContainer extends UIComponentBase implement
             if (valueExpression != null) {
                 ValueExpressionAnalyzer valueExpressionAnalyzer = new ValueExpressionAnalyzer(valueExpression);
                 ValueReference vref = valueExpressionAnalyzer.getValueReference(context.getELContext());
-                BeanDescriptor constraintsForClass = validator.getConstraintsForClass(vref.getBase().getClass());
-                PropertyDescriptor d = constraintsForClass.getConstraintsForProperty((String) vref.getProperty());
-                return (d != null) && d.hasConstraints();
+                if (vref != null) {
+                    BeanDescriptor constraintsForClass = validator.getConstraintsForClass(vref.getBase().getClass());
+                    PropertyDescriptor d = constraintsForClass.getConstraintsForProperty((String) vref.getProperty());
+                    return (d != null) && d.hasConstraints();
+                }
             }
             return false;
         }
