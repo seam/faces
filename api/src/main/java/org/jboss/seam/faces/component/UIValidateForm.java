@@ -50,6 +50,11 @@ public class UIValidateForm extends UIInput {
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+    
+    @Override
+    public String getRendererType() {
+      return null;
+    }
 
     @Override
     public void validate(final FacesContext context) {
