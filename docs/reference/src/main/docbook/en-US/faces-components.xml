@@ -449,25 +449,18 @@ public class FooValidator implements Validator {
    <h:outputLabel id="label" value="#{cc.attrs.label}:" styleClass="#{cc.attrs.invalid ? 'invalid' : ''}">
      <h:outputText styleClass="required" rendered="#{cc.attrs.required}" value="*"/>
    </h:outputLabel>
-   <cc:insertChildren/>
+   <h:panelGroup>
+     <cc:insertChildren/>
+   </h:panelGroup>
    <h:message id="message" errorClass="invalid message" rendered="#{cc.attrs.invalid}"/>
  </cc:implementation>]]></programlisting>
      
        <tip>
          <para>
-            While http://java.net/jira/browse/JAVASERVERFACES-1991 and http://java.net/jira/browse/JAVASERVERFACES-2040 are not fixed,
-            please make use of facetInputContainer, it works the same way as the normal InputContainer, except that inputs have to be surrounded by a facet
-            called "inputs" as stated below.
+           it's currently required to wrap the insertChildren tag with a jsf panelGroup. Please see http://java.net/jira/browse/JAVASERVERFACES-1991 for more details.
          </para>
       </tip>
       
-       <programlisting role="XML"><![CDATA[xmlns:sc="http://java.sun.com/jsf/composite/components/seamfaces"
-	<sc:facetInputContainer label="name" id="name">
-		<f:facet name="inputs">
-           	<h:inputText id="input" value="#{person.name}"/>
-        </f:facet>
-	</sc:facetInputContainer>]]></programlisting>
- 
       <tip>
          <para>
             NOTE: Firefox does not properly associate a label with the target input if the input id
