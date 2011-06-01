@@ -339,6 +339,8 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
     }
 
     private boolean labelHasEmptyValue(InputContainerElements elements) {
+        if (elements.getLabel() == null || elements.getLabel().getValue() == null)
+            return false;
         return (elements.getLabel().getValue().toString().trim().equals(":") || elements.getLabel().getValue().toString()
                 .trim().equals(""));
     }
@@ -410,9 +412,11 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
             if (valueExpression != null) {
                 ValueExpressionAnalyzer valueExpressionAnalyzer = new ValueExpressionAnalyzer(valueExpression);
                 ValueReference vref = valueExpressionAnalyzer.getValueReference(context.getELContext());
-                BeanDescriptor constraintsForClass = validator.getConstraintsForClass(vref.getBase().getClass());
-                PropertyDescriptor d = constraintsForClass.getConstraintsForProperty((String) vref.getProperty());
-                return (d != null) && d.hasConstraints();
+                if (vref != null) { // valueExpressionAnalyzer can return a null value. The condition prevents a NPE
+                    BeanDescriptor constraintsForClass = validator.getConstraintsForClass(vref.getBase().getClass());
+                    PropertyDescriptor d = constraintsForClass.getConstraintsForProperty((String) vref.getProperty());
+                    return (d != null) && d.hasConstraints();
+                }
             }
             return false;
         }
