@@ -2,8 +2,8 @@ package org.jboss.seam.faces.component;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.seam.faces.utils.Deployments;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,8 +12,9 @@ import org.junit.runner.RunWith;
 public class UIInputContainerTest {
 
     @Deployment
-    public static JavaArchive createDeployment() {
-        return ShrinkWrap.create(JavaArchive.class, "uiinputcontainertest.jar");
+    public static WebArchive createDeployment() {
+        WebArchive war = Deployments.createDeployment();
+        return war;
     }
 
     @Test
