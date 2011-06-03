@@ -1,0 +1,125 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>seam-faces-parent</artifactId>
+    <groupId>org.jboss.seam.faces</groupId>
+    <version>3.1.0-SNAPSHOT</version>
+  </parent>
+  <groupId>org.jboss.seam.faces</groupId>
+  <artifactId>tests</artifactId>
+  <version>3.1.0-SNAPSHOT</version>
+  <name>seam-faces-tests</name>
+  <description>seam faces tests module</description>
+  
+  <properties>
+  	<arquillian.version>1.0.0.Alpha5</arquillian.version>
+  	<jboss.version>6.0.0.Final</jboss.version>
+  </properties>
+  
+   <repositories>
+        <repository>
+          <id>jboss-public-repository-group</id>
+          <name>JBoss Public Maven Repository Group</name>
+          <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+          <layout>default</layout>
+          <releases>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+          </snapshots>
+        </repository>
+	</repositories>
+	
+  <profiles>
+    <profile>
+      <id>jbossas-embedded-6</id>
+      <dependencies>
+      	<dependency>
+            <groupId>org.jboss.arquillian.container</groupId>
+            <artifactId>arquillian-jbossas-embedded-6</artifactId>
+            <version>${arquillian.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.jbossas</groupId>
+            <artifactId>jboss-as-depchain</artifactId>
+            <version>${jboss.version}</version>
+            <type>pom</type>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    
+    <profile>
+	    <id>jbossas-managed-6</id>
+	    <dependencies>
+	        <dependency>
+	            <groupId>org.jboss.arquillian.container</groupId>
+	            <artifactId>arquillian-jbossas-managed-6</artifactId>
+	            <version>${arquillian.version}</version>
+	        </dependency>
+	
+	        <dependency>
+	            <groupId>org.jboss.jbossas</groupId>
+	            <artifactId>jboss-server-manager</artifactId>
+	            <version>1.0.3.GA</version>
+	        </dependency>
+	
+	        <dependency>
+	            <groupId>org.jboss.jbossas</groupId>
+	            <artifactId>jboss-as-client</artifactId>
+	            <version>${jboss.version}</version>
+	            <type>pom</type>
+	        </dependency>
+	    </dependencies>
+	</profile>
+
+  </profiles>
+  
+  <dependencies>
+  	<dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  	
+  	<dependency>
+      <groupId>javax.faces</groupId>
+      <artifactId>jsf-api</artifactId>
+      <scope>provided</scope>
+      <version>2.1</version>
+    </dependency>
+    
+  	<dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+         <groupId>org.jboss.arquillian</groupId>
+         <artifactId>arquillian-junit</artifactId>
+         <version>${arquillian.version}</version>
+      </dependency>
+      
+      <dependency>
+         <artifactId>seam-faces-api</artifactId>
+         <groupId>org.jboss.seam.faces</groupId>
+      </dependency>
+      
+      <dependency>
+         <artifactId>seam-faces-impl</artifactId>
+         <groupId>org.jboss.seam.faces</groupId>
+      </dependency>
+  </dependencies>
+  
+</project>
