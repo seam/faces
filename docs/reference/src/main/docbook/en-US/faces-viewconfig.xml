@@ -83,7 +83,7 @@ public interface Pages {
         </para>
         
         <para>
-            Each property of the enum is annotated with at least the <literal>@VewiPattern</literal> annotation.  This
+            Each property of the enum is annotated with at least the <literal>@ViewPattern</literal> annotation.  This
             view pattern is used to match against the JSF view ids, to determine which annotations apply to a given view
             id.  The view patterns themselves suport the <literal>*</literal> wild character.  A view is matched against 
             all view parameters that apply to determine the relevant annotations.  If conflicting annotatins are found,
