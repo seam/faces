@@ -1,13 +1,9 @@
 package org.jboss.seam.faces.environment;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
-import javax.faces.FactoryFinder;
 import javax.faces.application.Application;
-import javax.faces.application.ApplicationFactory;
 import javax.faces.application.ApplicationWrapper;
 import javax.faces.convert.Converter;
-import javax.faces.event.PostConstructApplicationEvent;
 import javax.faces.validator.Validator;
 import javax.inject.Inject;
 
@@ -31,13 +27,6 @@ public class SeamApplicationWrapper extends ApplicationWrapper {
     @Override
     public Application getWrapped() {
         return parent;
-    }
-
-    public void installWrapper(@Observes final PostConstructApplicationEvent event) {
-        log.debug("PostConstructApplicationEvent observed, installing wrapper");
-        ApplicationFactory factory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
-        parent = event.getApplication();
-        factory.setApplication(this);
     }
 
     @Override
@@ -89,5 +78,13 @@ public class SeamApplicationWrapper extends ApplicationWrapper {
         }
 
         return result;
+    }
+
+    public Application getParent() {
+        return parent;
+    }
+
+    public void setParent(Application parent) {
+        this.parent = parent;
     }
 }
