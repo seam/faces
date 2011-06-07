@@ -32,29 +32,28 @@ import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 
 /**
- * Deployments
+ * Deployments class has the responsability to manage the creation of the base archives to be deployed for testing purpose.
  * 
- * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
- * @version $Revision: $
+ * this class was adapted from arquillian-hellojsf example
+ * 
+ * @author <a href="http://community.jboss.org/people/spinner)">Jose Rodolfo freitas</a>
  */
 public class Deployments {
-    // property surefire sys prop setting
+
     public static final boolean IS_JETTY = (System.getProperty("jetty-embedded") != null);
     public static final boolean IS_TOMCAT = (System.getProperty("tomcat-embedded") != null);
 
     public static WebArchive createCDIDeployment() {
         WebArchive war = createBaseDeployment();
         war.setWebXML(new StringAsset(createCDIWebXML().exportAsString()));
-        System.out.println(" 4 == " + war.toString(true));
         war.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
-        System.out.println(" 5 == " + war.toString(true));
         if (IS_TOMCAT) {
             war.addAsLibraries(DependencyResolvers.use(MavenDependencyResolver.class)
                     .artifacts("org.jboss.weld.servlet:weld-servlet:1.1.0.Final").resolveAsFiles());
-            war.addAsManifestResource(new File("src/main/tomcat/cdi-context.xml"), "context.xml");
+            war.addAsManifestResource(new File("src/test/resources/tomcat/cdi-context.xml"), "context.xml");
         }
         if (IS_JETTY) {
-            war.addAsWebInfResource(new File("src/main/jetty/cdi-jetty-env.xml"), "jetty-env.xml");
+            war.addAsWebInfResource(new File("src/test/resources/jetty/cdi-jetty-env.xml"), "jetty-env.xml");
         }
         return war;
     }
@@ -62,20 +61,17 @@ public class Deployments {
     public static WebArchive createDeployment() {
         WebArchive war = createBaseDeployment();
         war.setWebXML(new StringAsset(createWebXML().exportAsString()));
+
         return war;
     }
 
     private static WebArchive createBaseDeployment() {
         WebArchive war = ShrinkWrap.create(WebArchive.class).addAsWebInfResource(
-                new File("src/main/webapp/WEB-INF/faces-config.xml"), "faces-config.xml");
-        war.addAsWebResource(new File("src/main/webapp", "index.xhtml"))
-                .addAsWebResource(new File("src/main/webapp", "finalgreeting.xhtml"))
-                .addAsWebResource(new File("src/main/webapp", "secured-page.xhtml"))
-                .addAsWebResource(new File("src/main/webapp", "NestedNamingContainers.xhtml"))
-                .addAsWebResource(new File("src/main/webapp", "indexWithExtraComponents.xhtml"))
-                .addAsWebResource(new File("src/main/webapp", "marathons.xhtml"))
-                .addAsWebResource(new File("src/main/webapp", "marathons_datatable.xhtml"));
+                new File("src/test/webapp/WEB-INF/faces-config.xml"), "faces-config.xml");
+        war.addAsWebResource(new File("src/test/webapp", "index.xhtml")).addAsWebResource(
+                new File("src/test/webapp", "inputcontainerform.xhtml"));
         appendForEmbedded(war);
+
         return war;
     }
 

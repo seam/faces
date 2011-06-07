@@ -14,6 +14,7 @@
   <properties>
   	<arquillian.version>1.0.0.Alpha5</arquillian.version>
   	<jboss.version>6.0.0.Final</jboss.version>
+  	<jsfunit.version>2.0.0-SNAPSHOT</jsfunit.version>
   </properties>
   
    <repositories>
@@ -114,9 +115,16 @@
       
       <dependency>
 	      <groupId>org.jboss.jsfunit</groupId>
+	      <artifactId>jboss-jsfunit-core</artifactId>
+	      <scope>test</scope>
+	      <version>${jsfunit.version}</version>
+	    </dependency>
+      
+      <dependency>
+	      <groupId>org.jboss.jsfunit</groupId>
 	      <artifactId>jsfunit-arquillian</artifactId>
 	      <scope>test</scope>
-	      <version>2.0.0-SNAPSHOT</version>
+	      <version>${jsfunit.version}</version>
 	    </dependency>
       
       <dependency>

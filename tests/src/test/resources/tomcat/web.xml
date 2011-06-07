@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+    version="2.5">
+
+  <context-param>
+    <param-name>javax.faces.CONFIG_FILES</param-name>
+    <param-value>/WEB-INF/local-module-faces-config.xml</param-value>
+  </context-param>
+
+  <servlet>
+    <servlet-name>Faces Servlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>Faces Servlet</servlet-name>
+    <url-pattern>*.faces</url-pattern>
+  </servlet-mapping>
+
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+
+  <security-constraint>
+    <display-name>Basic Authentication for the Admin</display-name>
+    <web-resource-collection>
+      <web-resource-name>Authenticated</web-resource-name>
+      <url-pattern>/secured-page.faces</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>hellotestadmin</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+  <login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>Authenticated</realm-name>
+  </login-config>
+   
+  <security-role>
+    <role-name>hellotestadmin</role-name>
+  </security-role>
+
+</web-app>

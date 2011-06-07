@@ -4,7 +4,6 @@
 	
     <container qualifier="jboss" default="true">
         <configuration>
-            <property name="javaHome">C:\Java\jdk1.6.0_20</property>
             <property name="httpPort">8080</property>
         </configuration>
     </container>

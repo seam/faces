@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:sc="http://java.sun.com/jsf/composite/components/seamfaces">
+
+<f:view>
+    <h:form prependId="False" id="form1">
+    	<h:messages id="messages" styleClass="global-messages"/>
+
+	    <sc:inputContainer label="#{inputContainerTestBean.foo} bar" id="age">
+	            <h:inputText id="input" required="true" size="2" maxlength="2" value="#{inputContainerTestBean.age}"/>
+	    </sc:inputContainer>
+	    
+	    <sc:inputContainer label="name" id="name">
+            	<h:inputText id="input" required="true" size="50" maxlength="50" value="#{inputContainerTestBean.name}" label="Name"/>
+	    </sc:inputContainer>
+        
+        <div class="action-buttons">
+        	<h:commandButton id="submitInputContainer" value="Test" action="#{inputContainerTestBean.submitTest}"/>
+        </div>
+    </h:form>
+</f:view>
+</html>
