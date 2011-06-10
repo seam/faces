@@ -25,6 +25,10 @@
         <exception-handler-factory>org.jboss.seam.faces.exception.CatchExceptionHandlerFactory</exception-handler-factory>
     </factory>
 
+    <factory>
+        <application-factory>org.jboss.seam.faces.environment.SeamApplicationFactory</application-factory>
+    </factory>
+
     <application>
         <navigation-handler>
             org.jboss.seam.faces.event.SeamPreNavigationHandler
