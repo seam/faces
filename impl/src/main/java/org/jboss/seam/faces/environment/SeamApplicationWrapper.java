@@ -58,7 +58,6 @@ public class SeamApplicationWrapper extends ApplicationWrapper {
         T result = base;
 
         if (base == null) {
-            log.warnf("Cannot attempt extension on null");
             return null;
         }
 
