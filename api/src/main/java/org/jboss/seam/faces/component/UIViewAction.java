@@ -252,7 +252,7 @@ public class UIViewAction extends UIComponentBase implements ActionSource2 {
             return PhaseId.UPDATE_MODEL_VALUES;
         } else if ("INVOKE_APPLICATION".equals(phase)) {
             return PhaseId.INVOKE_APPLICATION;
-        } else if ("ANY_PHASE".equals(phase) || "RESTORE_VIEW".equals(phase) || "RENDER_REPONSE".equals(phase)) {
+        } else if ("ANY_PHASE".equals(phase) || "RESTORE_VIEW".equals(phase) || "RENDER_RESPONSE".equals(phase)) {
             throw new FacesException("View actions cannot be executed in specified phase: [" + phase + "]");
         } else {
             throw new FacesException("Not a valid phase [" + phase + "]");
