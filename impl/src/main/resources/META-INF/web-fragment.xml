@@ -8,5 +8,7 @@
     <listener>
         <listener-class>org.jboss.seam.faces.beanManager.BeanManagerServletContextListener</listener-class>
     </listener>
+    
+    <distributable/>
 
 </web-fragment>
