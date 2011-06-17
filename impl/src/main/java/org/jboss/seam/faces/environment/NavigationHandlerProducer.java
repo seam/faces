@@ -22,6 +22,7 @@ import javax.faces.application.Application;
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * <p>
@@ -30,6 +31,7 @@ import javax.inject.Inject;
  * </p>
  *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
+ * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a> 
  */
 public class NavigationHandlerProducer {
     @Inject
@@ -37,6 +39,7 @@ public class NavigationHandlerProducer {
 
     @Produces
     @RequestScoped
+    @Named
     public NavigationHandler getNavigationHandler() {
         if (context != null) {
             Application application = context.getApplication();
