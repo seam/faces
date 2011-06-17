@@ -64,7 +64,7 @@ public class ShortlyTest extends AbstractTestCase {
         selenium.type(NAME_TEXT, "root");
         waitHttp(selenium).click(CREATE_BUTTON);
 
-        assertEquals(selenium.getAttribute(ROOT_LINK_HREF), "/short.ly/root");
+        assertEquals(selenium.getAttribute(ROOT_LINK_HREF), "/faces-shortly/root");
 
         waitHttp(selenium).click(ROOT_LINK);
         assertEquals(selenium.getLocation().toString(), contextRoot.toString());

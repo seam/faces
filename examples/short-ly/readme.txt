@@ -24,7 +24,7 @@ To run the example on GlassFish 3.1:
 
  mvn clean package -Pglassfish
  
- $GLASSFISH_HOME/bin/asadmin deploy target/short.ly.war
+ $GLASSFISH_HOME/bin/asadmin deploy target/faces-shortly.war
 
 TODO: remove the note if the glassfish bug is fixed in the final version of Glassfish3.1
 

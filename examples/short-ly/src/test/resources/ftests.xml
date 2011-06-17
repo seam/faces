@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://beust.com/testng/testng-1.0.dtd" >
 <suite name="Seam Short.ly Example" verbose="2" parallel="false">
     <test name="shortly_ftest">
-        <parameter name="example.context.path" value="/short.ly"/>
+        <parameter name="example.context.path" value="/shortly"/>
         <packages>
             <package name="org.jboss.seam.faces.examples.shortly.ftest"/>
         </packages>

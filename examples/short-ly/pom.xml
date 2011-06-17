@@ -119,7 +119,7 @@
             </configuration>
          </plugin>
       </plugins>
-      <finalName>faces-short.ly</finalName>
+      <finalName>faces-shortly</finalName>
    </build>
 
    <profiles>
