@@ -1,45 +1,34 @@
-TODO:
-  - Purpose of the example - for example, to demonstrate feature X by illustrate how that API can be used to perform A, B and C.
-  - Prerequisites - The AS has been installed and the appropriate properties files have been updated
-  - Step by Step setup for the example -
-  - Step by Step execution of the example - "ant deploy" or "mvn clean install" or "run -c server1" + "run -c server2" or "using your browser hit: http://localhost:8080/MyNewApp"
-  - Expected results - you should see "Hello World" on the console or you can now navigate the web-based application
-  - the readme.txt should include the maintainer of the example (along with contact info). This may simply point to the examples' POM.
-  
-JBoss AS 6.0
-------------
-To deploy the example to jbossas 6:
+Seam Faces short.ly example
+===========================
 
- export JBOSS_HOME=/path/to/jboss
- mvn clean package jboss:hard-deploy -Pjbossas
+Deploying to JBoss AS 6
+-----------------------
+export JBOSS_HOME=/path/to/jboss
+mvn clean package jboss:hard-deploy -Pjboss6
 
+Deploying to JBoss AS 7
+-----------------------
+mvn clean package -Pjboss7
+$JBOSS_HOME/bin/jboss-admin.sh --connect
+deploy target/faces-shortly.war
 
+Deploying to GlassFish 3.1.1
+----------------------------
+mvn clean package -Pglassfish
+$GLASSFISH_HOME/bin/asadmin start-database
+$GLASSFISH_HOME/bin/asadmin start-domain domain1
+$GLASSFISH_HOME/bin/asadmin deploy target/faces-shortly.war
 
-GlassFish 3.1
--------------
-To run the example on GlassFish 3.1:
-
- $GLASSFISH_HOME/bin/asadmin start-database
- $GLASSFISH_HOME/bin/asadmin start-domain domain1
-
- mvn clean package -Pglassfish
- 
- $GLASSFISH_HOME/bin/asadmin deploy target/faces-shortly.war
-
-TODO: remove the note if the glassfish bug is fixed in the final version of Glassfish3.1
-
-Note that there is a bug in the current Glassfish3.1 build (b43) that prevents successful deployment of the example on Glassfish
+Note that a bug prevents the example to successfully deploy on Glassfish versions prior to 3.1.1 
 
 see
 
  http://java.net/jira/browse/GLASSFISH-15721
 
-for a workaround
-
+for a workaround for 3.1
 
 Functional tests
 ----------------
-
 To run the functional tests, start the application server, deploy the example using one of the methods described above and run the following command:
 
  mvn verify -Pftest
