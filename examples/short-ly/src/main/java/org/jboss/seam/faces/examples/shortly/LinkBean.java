@@ -54,7 +54,7 @@ public class LinkBean implements Serializable {
 
     @SuppressWarnings("unchecked")
     public TinyLink getByKey(final String key) {
-        Query query = em.createQuery("from TinyLink t where t.name=:key", TinyLink.class);
+        Query query = em.createQuery("select t from TinyLink t where t.name=:key", TinyLink.class);
         query.setParameter("key", key);
         List<TinyLink> resultList = query.getResultList();
         if (resultList.isEmpty()) {
@@ -80,7 +80,7 @@ public class LinkBean implements Serializable {
     }
 
     public List<TinyLink> getLinks() {
-        return em.createQuery("from TinyLink").getResultList();
+        return em.createQuery("select t from TinyLink t").getResultList();
     }
 
     public TinyLink getLink() {
