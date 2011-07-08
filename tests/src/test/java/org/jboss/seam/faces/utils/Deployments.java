@@ -24,9 +24,8 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.descriptor.api.Descriptors;
-import org.jboss.shrinkwrap.descriptor.api.Node;
-import org.jboss.shrinkwrap.descriptor.api.spec.servlet.web.AuthMethodType;
 import org.jboss.shrinkwrap.descriptor.api.spec.servlet.web.WebAppDescriptor;
+import org.jboss.shrinkwrap.descriptor.spi.Node;
 import org.jboss.shrinkwrap.descriptor.spi.NodeProvider;
 import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
@@ -43,13 +42,20 @@ public class Deployments {
     public static final boolean IS_JETTY = (System.getProperty("jetty-embedded") != null);
     public static final boolean IS_TOMCAT = (System.getProperty("tomcat-embedded") != null);
 
+    public static final String SEAM_FACES_JAR = "org.jboss.seam.faces:seam-faces:3.1.0-SNAPSHOT";
+    public static final String WELD_IMPL_JAR = "org.jboss.weld.servlet:weld-servlet:1.1.0.Final";
+    public static final String JSF_API_JAR = "com.sun.faces:jsf-api:2.0.4-b03";
+    public static final String JSF_IMPL_JAR = "com.sun.faces:jsf-impl:2.0.4-b03";
+    public static final String JSR_250_API_JAR = "javax.annotation:jsr250-api:1.0";
+    public static final String SERVLET_JSTL_JAR = "javax.servlet:jstl:1.2";
+    public static final String EL_IMPL_JAR = "org.glassfish.web:el-impl:2.2";
+
     public static WebArchive createCDIDeployment() {
         WebArchive war = createBaseDeployment();
         war.setWebXML(new StringAsset(createCDIWebXML().exportAsString()));
         war.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
         if (IS_TOMCAT) {
-            war.addAsLibraries(DependencyResolvers.use(MavenDependencyResolver.class)
-                    .artifacts("org.jboss.weld.servlet:weld-servlet:1.1.0.Final").resolveAsFiles());
+            war.addAsLibraries(DependencyResolvers.use(MavenDependencyResolver.class).artifacts(WELD_IMPL_JAR).resolveAsFiles());
             war.addAsManifestResource(new File("src/test/resources/tomcat/cdi-context.xml"), "context.xml");
         }
         if (IS_JETTY) {
@@ -77,14 +83,11 @@ public class Deployments {
 
     private static void appendForEmbedded(WebArchive war) {
         if (IS_JETTY || IS_TOMCAT) {
-            war.addAsLibraries(DependencyResolvers
-                    .use(MavenDependencyResolver.class)
-                    .artifacts("com.sun.faces:jsf-api:2.0.4-b03", "com.sun.faces:jsf-impl:2.0.4-b03",
-                            "javax.annotation:jsr250-api:1.0", "javax.servlet:jstl:1.2").resolveAsFiles());
+            war.addAsLibraries(DependencyResolvers.use(MavenDependencyResolver.class)
+                    .artifacts(JSF_API_JAR, JSF_IMPL_JAR, JSR_250_API_JAR, SERVLET_JSTL_JAR).resolveAsFiles());
         }
         if (IS_JETTY) {
-            war.addAsLibraries(DependencyResolvers.use(MavenDependencyResolver.class)
-                    .artifacts("org.glassfish.web:el-impl:2.2").resolveAsFiles());
+            war.addAsLibraries(DependencyResolvers.use(MavenDependencyResolver.class).artifacts(EL_IMPL_JAR).resolveAsFiles());
         }
     }
 
@@ -116,12 +119,6 @@ public class Deployments {
                 .contextParam("javax.faces.CONFIG_FILES", "/WEB-INF/local-module-faces-config.xml").welcomeFile("index.xhtml")
                 .servlet("javax.faces.webapp.FacesServlet", "*.xhtml").loadOnStartup(1);
 
-        if (!(IS_JETTY || IS_TOMCAT)) {
-            // SHRINKDESC-48 desc.securityConstraint("Basic Authentication for the Admin")
-            desc.securityConstraint().webResourceCollection("Authenticated").urlPatterns("/secured-page.faces")
-                    .authConstraint("hellotestadmin").loginConfig(AuthMethodType.BASIC, "Authenticated")
-                    .securityRole("hellotestadmin");
-        }
         if (IS_JETTY) {
             desc.listener("org.jboss.weld.environment.servlet.Listener");
             desc.listener("com.sun.faces.config.ConfigureListener");

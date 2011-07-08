@@ -12,12 +12,14 @@
   <description>seam faces tests module</description>
   
   <properties>
-  	<arquillian.version>1.0.0.Alpha5</arquillian.version>
+  	<arquillian.core.version>1.0.0.Final-SNAPSHOT</arquillian.core.version>
+  	<arquillian.jboss.version>1.0.0.CR1</arquillian.jboss.version>
   	<jboss.version>6.0.0.Final</jboss.version>
   	<jsfunit.version>2.0.0-SNAPSHOT</jsfunit.version>
   </properties>
   
    <repositories>
+   		      
         <repository>
           <id>jboss-public-repository-group</id>
           <name>JBoss Public Maven Repository Group</name>
@@ -32,6 +34,21 @@
             <updatePolicy>never</updatePolicy>
           </snapshots>
         </repository>
+        
+        <repository>
+			<id>jboss-deprecated</id>
+          	<name>JBoss deprecated -remove me soon-</name>
+          	<url>https://repository.jboss.org/nexus/content/repositories/deprecated/</url>
+          	<layout>default</layout>
+          	<releases>
+            	<enabled>true</enabled>
+            	<updatePolicy>never</updatePolicy>
+          	</releases>
+          	<snapshots>
+	            <enabled>true</enabled>
+    	        <updatePolicy>never</updatePolicy>
+        	  </snapshots>
+        </repository>
 	</repositories>
 	
   <profiles>
@@ -41,7 +58,7 @@
       	<dependency>
             <groupId>org.jboss.arquillian.container</groupId>
             <artifactId>arquillian-jbossas-embedded-6</artifactId>
-            <version>${arquillian.version}</version>
+            <version>${arquillian.jboss.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.jbossas</groupId>
@@ -66,7 +83,7 @@
 	        <dependency>
 	            <groupId>org.jboss.arquillian.container</groupId>
 	            <artifactId>arquillian-jbossas-managed-6</artifactId>
-	            <version>${arquillian.version}</version>
+	            <version>${arquillian.jboss.version}</version>
 	        </dependency>
 	
 	        <dependency>
@@ -74,23 +91,32 @@
 	            <artifactId>jboss-server-manager</artifactId>
 	            <version>1.0.3.GA</version>
 	        </dependency>
-	
-	        <dependency>
-	            <groupId>org.jboss.jbossas</groupId>
-	            <artifactId>jboss-as-client</artifactId>
-	            <version>${jboss.version}</version>
-	            <type>pom</type>
-	        </dependency>
+		
+			<dependency>
+			  <groupId>org.jboss.jbossas</groupId>
+			  <artifactId>jboss-as-profileservice-client</artifactId>
+			  <version>${jboss.version}</version>
+			  <type>pom</type>
+			</dependency>
+			
+			 <dependency>
+	      <groupId>org.jboss.jsfunit</groupId>
+	      <artifactId>jboss-jsfunit-core</artifactId>
+	      <scope>test</scope>
+	      <version>${jsfunit.version}</version>
+	    </dependency>
+				
 	    </dependencies>
 	</profile>
 
   </profiles>
   
   <dependencies>
+  	   
   	<dependency>
         <groupId>org.jboss.shrinkwrap</groupId>
         <artifactId>shrinkwrap-api</artifactId>
-        <version>1.0.0-alpha-12</version>
+        <version>1.0.0-beta-3</version>
     </dependency>
     
     <dependency>
@@ -106,12 +132,14 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+   
+   	<dependency>
+         <groupId>org.jboss.arquillian.junit</groupId>
+         <artifactId>arquillian-junit-container</artifactId>
+       	 <version>${arquillian.core.version}</version>
+    </dependency> 
     
-    <dependency>
-         <groupId>org.jboss.arquillian</groupId>
-         <artifactId>arquillian-junit</artifactId>
-         <version>${arquillian.version}</version>
-      </dependency>
+   
       
       <dependency>
 	      <groupId>org.jboss.jsfunit</groupId>

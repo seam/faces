@@ -2,12 +2,11 @@ package org.jboss.seam.faces.component;
 
 import java.io.IOException;
 
-import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlOutputLabel;
 import javax.inject.Inject;
 
-import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.jsfunit.api.InitialPage;
 import org.jboss.jsfunit.jsfsession.JSFClientSession;
@@ -51,8 +50,8 @@ public class UIInputContainerTest {
         WebArchive war = Deployments.createCDIDeployment();
 
         war.addClass(UIInputContainerTestBean.class).addAsLibraries(
-                DependencyResolvers.use(MavenDependencyResolver.class)
-                        .artifact("org.jboss.seam.faces:seam-faces:3.1.0-SNAPSHOT").resolveAs(GenericArchive.class));
+                DependencyResolvers.use(MavenDependencyResolver.class).artifact(Deployments.SEAM_FACES_JAR)
+                        .resolveAs(GenericArchive.class));
 
         return war;
     }
@@ -73,7 +72,10 @@ public class UIInputContainerTest {
         Assert.assertEquals(AGE_INPUT_CLIENT_ID, ageLabel.getFor());
         Assert.assertEquals(NAME_INPUT_CLIENT_ID, nameLabel.getFor());
 
-        // Assert.assertEquals("foo bar", ageLabel.getLocalValue());
+        System.out.println(client.getPageAsText());
+
+        // I don't get why getLocalValue or getValue does not return the rendered text for the label.
+        // Assert.assertEquals("foo bar", ageLabel.getLocalValue()); // testing https://issues.jboss.org/browse/SEAMFACES-133
         // Assert.assertEquals("name", nameLabel.getLocalValue());
 
     }
@@ -86,6 +88,10 @@ public class UIInputContainerTest {
         client.setValue(AGE_INPUT_CLIENT_ID, "100");
         client.setValue(NAME_INPUT_CLIENT_ID, "jose_freitas");
         client.click("submitInputContainer");
+
+        // also related to https://issues.jboss.org/browse/SEAMFACES-47
+        // Assert.assertTrue(!isInputContainerInvalid(server, "age"));
+        // Assert.assertTrue(!isInputContainerInvalid(server, "name"));
 
         Assert.assertTrue(client.getPageAsText().contains("The test succeeded with jose_freitas of 100 years old"));
     }
@@ -114,7 +120,6 @@ public class UIInputContainerTest {
         // Assert.assertTrue(!isInputContainerInvalid(server, "age")); uncomment this line when the bug is fixed
         Assert.assertTrue(isInputContainerInvalid(server, "name"));
 
-        System.out.println("age input value =+=" + server.getComponentValue(AGE_INPUT_CLIENT_ID));
         Assert.assertEquals(100, server.getComponentValue(AGE_INPUT_CLIENT_ID));
 
         checkComponentRenderAfterSuccess(server, client);
@@ -130,9 +135,9 @@ public class UIInputContainerTest {
      * @return
      */
     private boolean isInputContainerInvalid(JSFServerSession server, String inputContainerClientId) {
-        UIComponent inputContainer = server.findComponent(inputContainerClientId);
-        if (inputContainer.getAttributes().get("invalid") != null)
-            return "true".equals(inputContainer.getAttributes().get("invalid").toString());
+        UIInputContainer inputContainer = (UIInputContainer) server.findComponent(inputContainerClientId);
+        if (inputContainer.getAttributes().get(inputContainer.getInvalidAttributeName()) != null)
+            return "true".equals(inputContainer.getAttributes().get(inputContainer.getInvalidAttributeName()).toString());
         return false;
     }
 }

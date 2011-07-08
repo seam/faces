@@ -4,11 +4,14 @@
 	
     <container qualifier="jboss" default="true">
         <configuration>
-            <property name="httpPort">8080</property>
+        	<!-- uncomment this if you need to run jboss on different ports -->
+            <!-- <property name="httpPort">8180</property>
+			<property name="rmiPort">1199</property>
+			<property name="javaVmArguments">-Djboss.service.binding.set=ports-01 -Xmx512m -XX:MaxPermSize=128m</property> -->
         </configuration>
     </container>
     
-	<engine>
+	<engine>	
 		<property name="deploymentExportPath">target/</property>
 	</engine>
 </arquillian>
