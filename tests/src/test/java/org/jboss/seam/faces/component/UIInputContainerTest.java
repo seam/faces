@@ -6,7 +6,7 @@ import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlOutputLabel;
 import javax.inject.Inject;
 
-import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.jsfunit.api.InitialPage;
 import org.jboss.jsfunit.jsfsession.JSFClientSession;

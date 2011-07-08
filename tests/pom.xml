@@ -12,8 +12,8 @@
   <description>seam faces tests module</description>
   
   <properties>
-  	<arquillian.core.version>1.0.0.Final-SNAPSHOT</arquillian.core.version>
-  	<arquillian.jboss.version>1.0.0.CR1</arquillian.jboss.version>
+  	<arquillian.core.version>1.0.0.Alpha5</arquillian.core.version>
+  	<arquillian.jboss.version>1.0.0.Alpha5</arquillian.jboss.version>
   	<jboss.version>6.0.0.Final</jboss.version>
   	<jsfunit.version>2.0.0-SNAPSHOT</jsfunit.version>
   </properties>
@@ -116,7 +116,7 @@
   	<dependency>
         <groupId>org.jboss.shrinkwrap</groupId>
         <artifactId>shrinkwrap-api</artifactId>
-        <version>1.0.0-beta-3</version>
+        <version>1.0.0-alpha-12</version>
     </dependency>
     
     <dependency>
@@ -134,8 +134,8 @@
     </dependency>
    
    	<dependency>
-         <groupId>org.jboss.arquillian.junit</groupId>
-         <artifactId>arquillian-junit-container</artifactId>
+         <groupId>org.jboss.arquillian</groupId>
+         <artifactId>arquillian-junit</artifactId>
        	 <version>${arquillian.core.version}</version>
     </dependency> 
     
