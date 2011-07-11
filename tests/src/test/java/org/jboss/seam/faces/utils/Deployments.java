@@ -19,6 +19,7 @@ package org.jboss.seam.faces.utils;
 
 import java.io.File;
 
+import org.jboss.shrinkwrap.api.GenericArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
@@ -50,6 +51,12 @@ public class Deployments {
     public static final String SERVLET_JSTL_JAR = "javax.servlet:jstl:1.2";
     public static final String EL_IMPL_JAR = "org.glassfish.web:el-impl:2.2";
 
+    public static WebArchive createSeamFacesDeployment() {
+        WebArchive war = createCDIDeployment();
+        war.addAsLibraries(DependencyResolvers.use(MavenDependencyResolver.class).artifact(Deployments.SEAM_FACES_JAR).resolveAs(GenericArchive.class));
+        return war;
+    }
+
     public static WebArchive createCDIDeployment() {
         WebArchive war = createBaseDeployment();
         war.setWebXML(new StringAsset(createCDIWebXML().exportAsString()));
@@ -74,8 +81,6 @@ public class Deployments {
     private static WebArchive createBaseDeployment() {
         WebArchive war = ShrinkWrap.create(WebArchive.class).addAsWebInfResource(
                 new File("src/test/webapp/WEB-INF/faces-config.xml"), "faces-config.xml");
-        war.addAsWebResource(new File("src/test/webapp", "index.xhtml")).addAsWebResource(
-                new File("src/test/webapp", "inputcontainerform.xhtml"));
         appendForEmbedded(war);
 
         return war;

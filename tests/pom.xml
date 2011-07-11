@@ -94,7 +94,7 @@
 		
 			<dependency>
 			  <groupId>org.jboss.jbossas</groupId>
-			  <artifactId>jboss-as-profileservice-client</artifactId>
+			  <artifactId>jboss-as-client</artifactId>
 			  <version>${jboss.version}</version>
 			  <type>pom</type>
 			</dependency>

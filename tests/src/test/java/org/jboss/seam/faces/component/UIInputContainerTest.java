@@ -1,5 +1,6 @@
 package org.jboss.seam.faces.component;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.faces.component.html.HtmlInputText;
@@ -17,6 +18,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -47,12 +49,11 @@ public class UIInputContainerTest {
 
     @Deployment
     public static WebArchive createDeployment() {
-        WebArchive war = Deployments.createCDIDeployment();
+        WebArchive war = Deployments.createSeamFacesDeployment();
 
-        war.addClass(UIInputContainerTestBean.class).addAsLibraries(
-                DependencyResolvers.use(MavenDependencyResolver.class).artifact(Deployments.SEAM_FACES_JAR)
-                        .resolveAs(GenericArchive.class));
-
+        war.addClass(UIInputContainerTestBean.class)
+                .addAsWebResource(new File("src/test/webapp", "index.xhtml"))
+                .addAsWebResource(new File("src/test/webapp/UIInputContainer", "inputcontainerform.xhtml"));
         return war;
     }
 
