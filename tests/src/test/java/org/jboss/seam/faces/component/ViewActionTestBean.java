@@ -9,7 +9,21 @@ import javax.inject.Named;
 @RequestScoped
 @Named
 public class ViewActionTestBean {
-    public String action() {
+    private String data;
+
+    public String gotoResult() {
         return "/result";
+    }
+
+    public void loadData() {
+        data = "Data Loaded";
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 }

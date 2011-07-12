@@ -29,15 +29,23 @@ public class ViewActionTest {
     public static WebArchive createDeployment() {
         WebArchive war = Deployments.createSeamFacesDeployment();
         war.addClass(ViewActionTestBean.class)
-            .addAsWebResource(new File("src/test/webapp/ViewAction", "form.xhtml"))
-            .addAsWebResource(new File("src/test/webapp/ViewAction", "result.xhtml"));
+            .addAsWebResource(new File("src/test/webapp/ViewAction", "goto_result.xhtml"))
+            .addAsWebResource(new File("src/test/webapp/ViewAction", "result.xhtml"))
+            .addAsWebResource(new File("src/test/webapp/ViewAction", "load_data.xhtml"));
         return war;
     }
 
     @Test
-    @InitialPage("/form.xhtml")
-    public void checkComponentRenderAfterSuccess(JSFServerSession server, JSFClientSession client) throws IOException {
+    @InitialPage("/goto_result.xhtml")
+    public void checkNavigation(JSFServerSession server, JSFClientSession client) throws IOException {
         Assert.assertEquals("/result.xhtml", server.getCurrentViewID());
         Assert.assertTrue(client.getPageAsText().contains("Result page"));
+    }
+
+    @Test
+    @InitialPage("/load_data.xhtml")
+    public void checkDataLoad(JSFServerSession server, JSFClientSession client) throws IOException {
+        Assert.assertEquals("/load_data.xhtml", server.getCurrentViewID());
+        Assert.assertTrue(client.getPageAsText().contains("Data Loaded"));
     }
 }
