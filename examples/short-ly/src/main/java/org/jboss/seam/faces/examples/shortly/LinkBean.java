@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.ejb.Stateful;
 import javax.enterprise.context.ConversationScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,6 +30,8 @@ import javax.persistence.Query;
 
 import org.jboss.seam.faces.context.conversation.Begin;
 import org.jboss.seam.faces.context.conversation.End;
+import org.jboss.seam.international.status.Messages;
+import org.jboss.seam.international.status.builder.BundleKey;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
@@ -41,12 +44,16 @@ public class LinkBean implements Serializable {
 
     @PersistenceContext
     private EntityManager em;
+    
+    @Inject
+    private Messages messages;
 
     private TinyLink link = new TinyLink();
 
     @Begin
     @End
     public String createLink() throws SQLException {
+    	messages.info("Created link {0}",link.getName());
         System.out.println("Created link: [ " + link.getName() + " => " + link.getTarget() + " ]");
         em.persist(link);
         return "pretty:create";
@@ -75,6 +82,7 @@ public class LinkBean implements Serializable {
     }
 
     public String deleteAll() {
+    	messages.info(new BundleKey("shortly", "linksDeleted"));
         em.createQuery("delete from TinyLink").executeUpdate();
         return "pretty:";
     }
