@@ -21,7 +21,6 @@
    <modules>
       <module>api</module>
       <module>impl</module>
-      <module>combined</module>
    </modules>
 
    <properties>
@@ -49,12 +48,6 @@
          <dependency>
             <groupId>org.jboss.seam.faces</groupId>
             <artifactId>seam-faces-api</artifactId>
-            <version>${project.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.seam.faces</groupId>
-            <artifactId>seam-faces-impl</artifactId>
             <version>${project.version}</version>
          </dependency>
 
