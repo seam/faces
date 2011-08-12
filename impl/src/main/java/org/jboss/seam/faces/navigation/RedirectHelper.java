@@ -27,13 +27,16 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jboss.seam.solder.core.Requires;
+
 /**
  * Allows for controlling the redirect to a new page with paramaters and altering the existing conversation
  * 
  * @author Cody Lerum
  * 
  */
-public class FacesManager implements Serializable {
+@Requires("org.jboss.seam.servlet.http.ImplicitHttpServletObjectsProducer")
+public class RedirectHelper implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -96,7 +99,7 @@ public class FacesManager implements Serializable {
      * @param viewId
      * @return
      */
-    public FacesManager viewId(String viewId) {
+    public RedirectHelper viewId(String viewId) {
         this.viewId = viewId;
         return this;
     }
@@ -106,7 +109,7 @@ public class FacesManager implements Serializable {
      * 
      * @return
      */
-    public FacesManager endConversation() {
+    public RedirectHelper endConversation() {
         endConversation = true;
         return this;
     }
@@ -116,7 +119,7 @@ public class FacesManager implements Serializable {
      * 
      * @return
      */
-    public FacesManager includeConversationId() {
+    public RedirectHelper includeConversationId() {
         includeConversationId = true;
         return this;
     }
@@ -128,7 +131,7 @@ public class FacesManager implements Serializable {
      * @param value
      * @return
      */
-    public FacesManager addParam(String name, Object value) {
+    public RedirectHelper addParam(String name, Object value) {
         if (parameters == null) {
             parameters = new HashMap<String, Object>();
         }
@@ -143,7 +146,7 @@ public class FacesManager implements Serializable {
      * @param params
      * @return
      */
-    public FacesManager addParam(Map<String, Object> params) {
+    public RedirectHelper addParam(Map<String, Object> params) {
         if (parameters == null) {
             parameters = new HashMap<String, Object>();
         }

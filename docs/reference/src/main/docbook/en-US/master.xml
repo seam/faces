@@ -15,7 +15,7 @@
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-artifacts.xml" />
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-events.xml" />
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-viewconfig.xml" />
-   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-manager.xml" />
+   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-redirectHelper.xml" />
    
 
    <!--

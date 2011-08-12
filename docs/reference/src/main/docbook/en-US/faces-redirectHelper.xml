@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="redirectHelper">
+    <title>RedirectHelper</title>
+    <para>
+     	RedirectHelper allows the developer to redirect to a specific view id while also controlling the conversation and adding params.
+    </para>
+   
+    <section id="redirectHelper.usage">
+        <title>Usage</title>
+        
+        <para>
+            The RedirectHelper can be @Injected and provides a fluent API to control the the desired redirect.
+        </para>
+        <note>
+        	<para>
+        		Seam Servlet must be included in your project or the injection point @Inject RedirectHelper will be unsatisfied!
+        	</para>
+        </note>
+        
+        <programlisting role="JAVA">
+public class MyBean {
+
+	@Inject
+	private RedirectHelper redirectHelper;
+	
+    public void redirect()
+    {
+        redirectHelper.viewId("/admin/user.xhtml").addParam("oid", 1).endConversation().redirect();
+    }
+}
+        </programlisting>
+
+    </section>
+
+</chapter>

@@ -61,8 +61,10 @@
       </dependency>
       
       <dependency>
-			<groupId>org.jboss.seam.servlet</groupId>
-			<artifactId>seam-servlet</artifactId>
+		 <groupId>org.jboss.seam.servlet</groupId>
+		 <artifactId>seam-servlet</artifactId>
+	     <scope>provided</scope>
+         <optional>true</optional>
 		</dependency>
 
        <dependency>
