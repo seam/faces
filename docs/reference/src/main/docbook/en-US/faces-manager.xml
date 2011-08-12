@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="facesManager">
+    <title>Faces Manager</title>
+    <para>
+        Faces Manager allows the developer to redirect to a specific view id while also controlling the conversation and adding params.
+    </para>
+   
+    <section id="facesManager.usage">
+        <title>Usage</title>
+        
+        <para>
+            The Faces Manager can be @Injected and provides a fluent API to control the the desired redirect.
+        </para>
+        
+        <programlisting role="JAVA">
+public class MyBean {
+
+	@Inject
+	private FacesManager facesManager;
+	
+    public void redirecter()
+    {
+        facesManager.viewId("/admin/user.xhtml").addParam("oid", 1).endConversation().redirect();
+    }
+}
+        </programlisting>
+
+    </section>
+
+</chapter>

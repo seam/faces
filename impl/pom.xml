@@ -59,6 +59,11 @@
          <scope>provided</scope>
          <optional>true</optional>
       </dependency>
+      
+      <dependency>
+			<groupId>org.jboss.seam.servlet</groupId>
+			<artifactId>seam-servlet</artifactId>
+		</dependency>
 
        <dependency>
          <groupId>com.ocpsoft</groupId>
