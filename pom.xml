@@ -5,7 +5,7 @@
    <parent>
       <groupId>org.jboss.seam</groupId>
       <artifactId>seam-parent</artifactId>
-      <version>10</version>
+      <version>12</version>
    </parent>
 
    <artifactId>seam-faces-parent</artifactId>
@@ -24,7 +24,7 @@
    </modules>
 
    <properties>
-      <seam.version>3.0.0.Final</seam.version>
+      <seam.version>3.1.0.Beta1</seam.version>
    </properties>
 
    <dependencyManagement>
