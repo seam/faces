@@ -32,11 +32,18 @@
       <dependency>
          <groupId>org.jboss.seam.solder</groupId>
          <artifactId>seam-solder</artifactId>
+         <scope>compile</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.seam.international</groupId>
+         <artifactId>seam-international-api</artifactId>
       </dependency>
 
       <dependency>
          <groupId>org.jboss.seam.international</groupId>
          <artifactId>seam-international</artifactId>
+         <scope>test</scope>
       </dependency>
 
       <dependency>
@@ -44,6 +51,11 @@
          <artifactId>seam-persistence-api</artifactId>
          <scope>provided</scope>
          <optional>true</optional>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.seam.transaction</groupId>
+         <artifactId>seam-transaction-api</artifactId>
       </dependency>
 
       <dependency>

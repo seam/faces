@@ -27,7 +27,7 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessBean;
 
-import org.jboss.logging.Logger;
+import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.solder.reflection.AnnotationInstanceProvider;
 import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
 

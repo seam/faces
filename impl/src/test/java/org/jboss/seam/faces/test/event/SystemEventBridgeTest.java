@@ -63,7 +63,7 @@ public class SystemEventBridgeTest {
     public static JavaArchive createTestArchive() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(SystemEventObserver.class, SystemEventBridge.class, BeanManagerAware.class)
-                .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+                .addAsManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
     }
 
     @Inject

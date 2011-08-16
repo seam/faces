@@ -46,7 +46,7 @@ public class ViewConfigTest {
     public static Archive<?> createTestArchive() {
         JavaArchive archive = ShrinkWrap.create(JavaArchive.class).addClass(ViewConfigTest.class)
                 .addClass(ViewConfigStoreImpl.class).addPackage(ViewConfigEnum.class.getPackage())
-                .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+                .addAsManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
         return archive;
     }
 

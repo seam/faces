@@ -20,7 +20,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerFactory;
 
-import org.jboss.logging.Logger;
+import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.solder.beanManager.BeanManagerLocator;
 import org.jboss.seam.solder.beanManager.BeanManagerUnavailableException;
 

@@ -61,7 +61,7 @@ public class MessagesAdapterTest extends PhaseTestBase {
                 .addClasses(MessagesAdapter.class, MessagesImpl.class, MockFlashContext.class, MessageFactory.class,
                         TemplateMessageImpl.class, BundleTemplateMessageImpl.class, Bundles.class, PhaseEventBridge.class,
                         MockLogger.class, MockLoggerProducer.class, ApplicationBundles.class, UserLocaleProducer.class, DefaultLocaleProducer.class)
-                .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+                .addAsManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
     }
 
     @Inject

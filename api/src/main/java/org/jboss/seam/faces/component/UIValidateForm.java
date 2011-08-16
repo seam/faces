@@ -34,7 +34,7 @@ import javax.faces.event.PreValidateEvent;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-import org.jboss.logging.Logger;
+import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.faces.event.qualifier.After;
 import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.solder.beanManager.BeanManagerLocator;

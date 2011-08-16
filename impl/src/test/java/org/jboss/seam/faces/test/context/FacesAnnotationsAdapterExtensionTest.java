@@ -37,7 +37,7 @@ public class FacesAnnotationsAdapterExtensionTest {
     @Deployment
     public static JavaArchive createTestArchive() {
         return ShrinkWrap.create(JavaArchive.class).addClasses(ImproperlyAnnotatedBean.class)
-                .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+                .addAsManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
     }
 
     @Test

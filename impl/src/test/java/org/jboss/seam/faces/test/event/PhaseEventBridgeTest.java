@@ -43,7 +43,7 @@ public class PhaseEventBridgeTest extends PhaseTestBase {
     public static JavaArchive createTestArchive() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(MockPhaseEventObserver.class, PhaseEventBridge.class, BeanManagerAware.class, MockLogger.class, MockLoggerProducer.class)
-                .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+                .addAsManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
     }
 
     @Inject

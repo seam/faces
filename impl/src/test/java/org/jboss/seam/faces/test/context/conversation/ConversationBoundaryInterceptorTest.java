@@ -44,7 +44,7 @@ public class ConversationBoundaryInterceptorTest {
         return ShrinkWrap
                 .create(JavaArchive.class)
                 .addClasses(ConversationBoundaryInterceptor.class, ConversationalBean.class, MockLogger.class, MockLoggerProducer.class)
-                .addManifestResource(
+                .addAsManifestResource(
                         ConversationBoundaryInterceptorTest.class.getPackage().getName().replaceAll("\\.", "/")
                                 + "/ConversationBoundaryInterceptorTest-beans.xml", ArchivePaths.create("beans.xml"));
     }

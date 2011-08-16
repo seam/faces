@@ -47,7 +47,7 @@ public class ExternalContextProducerTest {
     public static Archive<?> createTestArchive() {
         return ShrinkWrap.create(JavaArchive.class).addClass(FacesContextProducer.class)
                 .addClass(ExternalContextProducer.class)
-                .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+                .addAsManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
     }
 
     @Inject
