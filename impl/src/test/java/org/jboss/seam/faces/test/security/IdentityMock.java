@@ -141,7 +141,7 @@ public class IdentityMock implements Identity {
     }
 
     @Override
-    public void setAuthenticatorClass(Class<Authenticator> authenticatorClass) {
+    public void setAuthenticatorClass(Class<? extends Authenticator> authenticatorClass) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

@@ -23,7 +23,7 @@ import javax.faces.convert.Converter;
 import javax.faces.validator.Validator;
 import javax.inject.Inject;
 
-import org.jboss.logging.Logger;
+import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.faces.util.BeanManagerUtils;
 
 /**

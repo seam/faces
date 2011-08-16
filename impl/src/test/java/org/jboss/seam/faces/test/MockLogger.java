@@ -16,14 +16,12 @@
  */
 package org.jboss.seam.faces.test;
 
-import org.jboss.logging.Logger;
-
 /**
  * Provide a completely empty logger implementation for Unit Tests. This entire class is a no-op; it does <i>nothing</i>.
  *
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  */
-public class MockLogger extends Logger {
+public class MockLogger extends org.jboss.seam.solder.logging.internal.Logger {
 
     protected MockLogger(String name) {
         super(name);
@@ -35,10 +33,15 @@ public class MockLogger extends Logger {
     }
 
     @Override
-    protected void doLog(Level level, String className, Object message, Object[] params, Throwable e) {
+    protected void doLog(Level arg0, String arg1, Object arg2, Object[] arg3, Throwable arg4) {
+        // TODO Auto-generated method stub
+        
     }
 
     @Override
-    protected void doLogf(Level level, String className, String message, Object[] params, Throwable e) {
+    protected void doLogf(Level arg0, String arg1, String arg2, Object[] arg3, Throwable arg4) {
+        // TODO Auto-generated method stub
+        
     }
+
 }

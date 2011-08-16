@@ -27,7 +27,7 @@
 
       <dependency>
          <groupId>org.jboss.seam.faces</groupId>
-         <artifactId>seam-faces-impl</artifactId>
+         <artifactId>seam-faces</artifactId>
          <optional>true</optional>
       </dependency>
 
@@ -47,7 +47,7 @@
 
       <dependency>
          <groupId>org.jboss.seam.faces</groupId>
-         <artifactId>seam-faces-impl</artifactId>
+         <artifactId>seam-faces</artifactId>
          <version>${project.version}</version>
          <classifier>sources</classifier>
          <optional>true</optional>

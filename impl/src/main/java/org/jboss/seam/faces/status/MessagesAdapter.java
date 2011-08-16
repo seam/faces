@@ -25,7 +25,7 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.event.PhaseEvent;
 import javax.inject.Inject;
 
-import org.jboss.logging.Logger;
+import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.faces.context.RenderContext;
 import org.jboss.seam.faces.event.PreNavigateEvent;
 import org.jboss.seam.faces.event.qualifier.Before;

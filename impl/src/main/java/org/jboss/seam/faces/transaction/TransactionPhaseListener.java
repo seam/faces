@@ -22,7 +22,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.inject.Inject;
 
-import org.jboss.logging.Logger;
+import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
 import org.jboss.seam.persistence.PersistenceContexts;
 import org.jboss.seam.solder.core.Requires;

@@ -5,7 +5,7 @@
    <parent>
       <groupId>org.jboss.seam</groupId>
       <artifactId>seam-parent</artifactId>
-      <version>10</version>
+      <version>12</version>
    </parent>
 
    <artifactId>seam-faces-parent</artifactId>
@@ -21,11 +21,10 @@
    <modules>
       <module>api</module>
       <module>impl</module>
-      <module>combined</module>
    </modules>
 
    <properties>
-      <seam.version>3.0.0.Final</seam.version>
+      <seam.version>3.1.0.Beta1</seam.version>
    </properties>
 
    <dependencyManagement>
@@ -49,12 +48,6 @@
          <dependency>
             <groupId>org.jboss.seam.faces</groupId>
             <artifactId>seam-faces-api</artifactId>
-            <version>${project.version}</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.seam.faces</groupId>
-            <artifactId>seam-faces-impl</artifactId>
             <version>${project.version}</version>
          </dependency>
 

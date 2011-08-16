@@ -61,7 +61,7 @@ public class SecurityPhaseListenerTest {
                 .addClass(IdentityMock.class)
                 .addPackage(RenderResponse.class.getPackage())
                 .addPackage(ViewConfigEnum.class.getPackage())
-                .addManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
+                .addAsManifestResource(new ByteArrayAsset(new byte[0]), ArchivePaths.create("beans.xml"));
         return archive;
     }
 

@@ -43,7 +43,7 @@ public class ShortlyTest extends AbstractTestCase {
     protected final XpathLocator DELETEALL_BUTTON = xp("//input[contains(@value,'deleteAll')]");
 
     protected final XpathLocator ROOT_LINK = xp("//a[text()=\"root\"]");
-    protected final AttributeLocator ROOT_LINK_HREF = ROOT_LINK.getAttribute(HREF);
+    protected final AttributeLocator<XpathLocator> ROOT_LINK_HREF = ROOT_LINK.getAttribute(HREF);
 
     protected final XpathLocator BAR_LINK = xp("//a[text()=\"bar\"]");
 
@@ -65,7 +65,7 @@ public class ShortlyTest extends AbstractTestCase {
         waitHttp(selenium).click(CREATE_BUTTON);
 
         assertEquals(selenium.getAttribute(ROOT_LINK_HREF), "/faces-shortly/root");
-
+        assertEquals(selenium.isTextPresent("Created link root"), true);
         waitHttp(selenium).click(ROOT_LINK);
         assertEquals(selenium.getLocation().toString(), contextRoot.toString());
     }
@@ -73,6 +73,7 @@ public class ShortlyTest extends AbstractTestCase {
     @Test(dependsOnMethods = {"testCreate"})
     public void testDeleteAll() {
         waitHttp(selenium).click(DELETEALL_BUTTON);
+        assertEquals(selenium.isTextPresent("All links deleted"), true);
         assertEquals(selenium.isElementPresent(DELETEALL_BUTTON), false);
         assertEquals(selenium.isElementPresent(ROOT_LINK), false);
     }

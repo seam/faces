@@ -9,7 +9,7 @@
       <relativePath>../pom.xml</relativePath>
    </parent>
 
-   <artifactId>seam-faces-impl</artifactId>
+   <artifactId>seam-faces</artifactId>
 
    <packaging>jar</packaging>
    <name>Seam Faces Implementation</name>
@@ -32,11 +32,18 @@
       <dependency>
          <groupId>org.jboss.seam.solder</groupId>
          <artifactId>seam-solder</artifactId>
+         <scope>compile</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.seam.international</groupId>
+         <artifactId>seam-international-api</artifactId>
       </dependency>
 
       <dependency>
          <groupId>org.jboss.seam.international</groupId>
          <artifactId>seam-international</artifactId>
+         <scope>test</scope>
       </dependency>
 
       <dependency>
@@ -47,8 +54,13 @@
       </dependency>
 
       <dependency>
+         <groupId>org.jboss.seam.transaction</groupId>
+         <artifactId>seam-transaction-api</artifactId>
+      </dependency>
+
+      <dependency>
          <groupId>org.jboss.seam.catch</groupId>
-         <artifactId>seam-catch-impl</artifactId>
+         <artifactId>seam-catch</artifactId>
          <scope>provided</scope>
          <optional>true</optional>
       </dependency>
@@ -109,10 +121,13 @@
       <dependency>
          <groupId>org.jboss.arquillian</groupId>
          <artifactId>arquillian-junit</artifactId>
+         <version>1.0.0.Alpha5</version>
+         <scope>test</scope>
       </dependency>
       <dependency>
-         <groupId>org.jboss.weld.arquillian.container</groupId>
+         <groupId>org.jboss.arquillian.container</groupId>
          <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
+         <scope>test</scope>
       </dependency>
       <dependency>
          <groupId>org.jboss.spec.javax.ejb</groupId>
