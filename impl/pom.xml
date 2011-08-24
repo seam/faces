@@ -35,10 +35,10 @@
          <scope>compile</scope>
       </dependency>
 
-      <dependency>
+      <!--dependency>
          <groupId>org.jboss.seam.international</groupId>
          <artifactId>seam-international-api</artifactId>
-      </dependency>
+      </dependency-->
 
       <dependency>
          <groupId>org.jboss.seam.international</groupId>
