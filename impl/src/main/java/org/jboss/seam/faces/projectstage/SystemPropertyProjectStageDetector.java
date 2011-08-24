@@ -30,6 +30,11 @@ public class SystemPropertyProjectStageDetector implements ProjectStageDetector 
     private final static String SYSTEM_PROPERTY_NAME = "org.jboss.seam.faces.PROJECT_STAGE";
 
     @Override
+    public int getPrecedence() {
+        return 100;
+    }
+    
+    @Override
     public ProjectStage getProjectStage() {
 
         // try to read the system property

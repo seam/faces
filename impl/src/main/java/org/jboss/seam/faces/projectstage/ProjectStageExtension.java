@@ -16,8 +16,11 @@
  */
 package org.jboss.seam.faces.projectstage;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.enterprise.event.Observes;
@@ -27,6 +30,7 @@ import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.faces.application.ProjectStage;
 
 import org.jboss.seam.solder.logging.Logger;
+import org.jboss.seam.solder.util.Sortable;
 import org.jboss.seam.solder.util.service.ServiceLoader;
 
 /**
@@ -115,10 +119,15 @@ public class ProjectStageExtension implements Extension {
      */
     private ProjectStage detectProjectStage() {
 
-        // Get SPI implementations
-        Iterator<ProjectStageDetector> iterator = ServiceLoader.load(ProjectStageDetector.class).iterator();
-        while (iterator.hasNext()) {
-            ProjectStageDetector detector = iterator.next();
+        // build sorted list of detector implementations
+        List<ProjectStageDetector> detectors = new ArrayList<ProjectStageDetector>();
+        for (Iterator<ProjectStageDetector> iter = ServiceLoader.load(ProjectStageDetector.class).iterator(); iter.hasNext();) {
+            detectors.add(iter.next());
+        }
+        Collections.sort(detectors, new Sortable.Comparator());
+
+        // try all detectors
+        for(ProjectStageDetector detector : detectors) {
 
             // lets the detector do its job
             ProjectStage stage = detector.getProjectStage();

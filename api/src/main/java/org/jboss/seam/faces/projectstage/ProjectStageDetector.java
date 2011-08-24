@@ -18,13 +18,15 @@ package org.jboss.seam.faces.projectstage;
 
 import javax.faces.application.ProjectStage;
 
+import org.jboss.seam.solder.util.Sortable;
+
 /**
  * SPI for providing different ways to obtain the current project stage
  * 
  * @author Christian Kaltepoth <christian@kaltepoth.de>
  * 
  */
-public interface ProjectStageDetector {
+public interface ProjectStageDetector extends Sortable {
 
     /**
      * Obtain the current project stage. Implementations of this method must return 

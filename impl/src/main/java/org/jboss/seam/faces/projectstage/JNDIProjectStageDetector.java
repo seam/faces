@@ -29,6 +29,11 @@ import javax.naming.NamingException;
 public class JNDIProjectStageDetector implements ProjectStageDetector {
 
     @Override
+    public int getPrecedence() {
+        return 50;
+    }
+
+    @Override
     public ProjectStage getProjectStage() {
 
         // try to get the name of the project stage from JNDI
