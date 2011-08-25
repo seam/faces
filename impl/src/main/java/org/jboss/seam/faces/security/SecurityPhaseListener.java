@@ -327,18 +327,21 @@ public class SecurityPhaseListener {
      * @param viewRoot
      */
     private void redirectToAccessDeniedView(FacesContext context, UIViewRoot viewRoot) {
-        AccessDeniedView accessDeniedView = viewConfigStore.getAnnotationData(viewRoot.getViewId(), AccessDeniedView.class);
-        if (accessDeniedView == null || accessDeniedView.value() == null || accessDeniedView.value().isEmpty()) {
-            log.debug("Returning 401 response (access denied)");
-            context.getExternalContext().setResponseStatus(401);
-            context.responseComplete();
-            return;
+        // If a user has already done a redirect and rendered the response (possibly in an observer) we cannot do this output
+        if (!(context.getResponseComplete() || context.getRenderResponse())) {
+            AccessDeniedView accessDeniedView = viewConfigStore.getAnnotationData(viewRoot.getViewId(), AccessDeniedView.class);
+            if (accessDeniedView == null || accessDeniedView.value() == null || accessDeniedView.value().isEmpty()) {
+                log.warn("No AccessDeniedView is configured, returning 401 response (access denied). Please configure an AccessDeniedView in the ViewConfig.");
+                context.getExternalContext().setResponseStatus(401);
+                context.responseComplete();
+                return;
+            }
+            String accessDeniedViewId = accessDeniedView.value();
+            log.debugf("Redirecting to configured AccessDenied %s", accessDeniedViewId);
+            NavigationHandler navHandler = context.getApplication().getNavigationHandler();
+            navHandler.handleNavigation(context, "", accessDeniedViewId);
+            context.renderResponse();
         }
-        String accessDeniedViewId = accessDeniedView.value();
-        log.debugf("Redirecting to configured AccessDenied %s", accessDeniedViewId);
-        NavigationHandler navHandler = context.getApplication().getNavigationHandler();
-        navHandler.handleNavigation(context, "", accessDeniedViewId);
-        context.renderResponse();
     }
 
     /**
