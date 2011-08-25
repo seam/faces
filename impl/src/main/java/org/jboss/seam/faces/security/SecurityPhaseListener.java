@@ -50,6 +50,7 @@ import org.jboss.seam.logging.Logger;
 import org.jboss.seam.security.Identity;
 import org.jboss.seam.security.annotations.SecurityBindingType;
 import org.jboss.seam.security.events.AuthorizationCheckEvent;
+import org.jboss.seam.security.events.NotAuthorizedEvent;
 import org.jboss.seam.solder.core.Requires;
 import org.jboss.seam.solder.reflection.AnnotationInspector;
 
@@ -72,6 +73,8 @@ public class SecurityPhaseListener {
     private Event<PreLoginEvent> preLoginEvent;
     @Inject
     private Event<PostLoginEvent> postLoginEvent;
+    @Inject
+    private Event<NotAuthorizedEvent> notAuthorizedEventEvent;
     @Inject
     private BeanManager beanManager;
     @Inject
@@ -284,6 +287,7 @@ public class SecurityPhaseListener {
                 return;
             } else {
                 log.debug("Access denied - not authorized");
+                notAuthorizedEventEvent.fire(new NotAuthorizedEvent());
                 redirectToAccessDeniedView(context, viewRoot);
                 return;
             }
