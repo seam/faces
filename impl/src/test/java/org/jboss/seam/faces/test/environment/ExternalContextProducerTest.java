@@ -23,7 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import junit.framework.Assert;
-import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.faces.environment.ExternalContextProducer;
 import org.jboss.seam.faces.environment.FacesContextProducer;

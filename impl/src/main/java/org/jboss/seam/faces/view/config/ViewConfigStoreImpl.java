@@ -29,8 +29,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.faces.security.SecurityPhaseListener;
+import org.jboss.seam.logging.Logger;
 
 /**
  * Data store for view specific data.

@@ -33,7 +33,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.inject.Inject;
 
-import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.faces.event.PhaseIdType;
 import org.jboss.seam.faces.event.PostLoginEvent;
 import org.jboss.seam.faces.event.PreLoginEvent;
@@ -47,6 +46,7 @@ import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.faces.event.qualifier.RestoreView;
 import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
+import org.jboss.seam.logging.Logger;
 import org.jboss.seam.security.Identity;
 import org.jboss.seam.security.annotations.SecurityBindingType;
 import org.jboss.seam.security.events.AuthorizationCheckEvent;

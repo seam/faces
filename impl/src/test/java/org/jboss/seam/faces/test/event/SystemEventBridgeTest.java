@@ -40,7 +40,7 @@ import javax.faces.event.ScopeContext;
 import javax.faces.event.SystemEvent;
 import javax.inject.Inject;
 
-import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.faces.event.SystemEventBridge;
 import org.jboss.seam.solder.beanManager.BeanManagerAware;
