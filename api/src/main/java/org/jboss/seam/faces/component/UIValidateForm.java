@@ -34,9 +34,9 @@ import javax.faces.event.PreValidateEvent;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.faces.event.qualifier.After;
 import org.jboss.seam.faces.event.qualifier.Before;
+import org.jboss.seam.logging.Logger;
 import org.jboss.seam.solder.beanManager.BeanManagerLocator;
 
 /**
@@ -66,7 +66,7 @@ public class UIValidateForm extends UIInput {
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
-    
+
     @Override
     public String getRendererType() {
       return null;

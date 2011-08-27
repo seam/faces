@@ -19,7 +19,7 @@ package org.jboss.seam.faces.test.status;
 import javax.faces.event.PhaseId;
 import javax.inject.Inject;
 
-import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.faces.event.PhaseEventBridge;
 import org.jboss.seam.faces.status.MessagesAdapter;

@@ -26,7 +26,6 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.inject.Inject;
 
-import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.faces.event.qualifier.After;
 import org.jboss.seam.faces.event.qualifier.ApplyRequestValues;
 import org.jboss.seam.faces.event.qualifier.Before;
@@ -35,6 +34,7 @@ import org.jboss.seam.faces.event.qualifier.ProcessValidations;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.faces.event.qualifier.RestoreView;
 import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
+import org.jboss.seam.logging.Logger;
 
 /**
  * A PhaseListener used to bridge JSF phase events to the CDI event model.
