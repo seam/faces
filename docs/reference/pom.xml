@@ -4,14 +4,14 @@
 
    <groupId>org.jboss.seam.faces</groupId>
    <artifactId>seam-faces-reference-guide</artifactId>
-   <version>3.1.0-SNAPSHOT</version>
+   <version>3.1.0.Beta2</version>
    <packaging>jdocbook</packaging>
    <name>Seam Faces Reference Guide</name>
 
    <parent>
       <groupId>org.jboss.seam.faces</groupId>
       <artifactId>seam-faces-parent</artifactId>
-      <version>3.1.0-SNAPSHOT</version>
+      <version>3.1.0.Beta2</version>
       <relativePath>../../pom.xml</relativePath>
    </parent>
 
