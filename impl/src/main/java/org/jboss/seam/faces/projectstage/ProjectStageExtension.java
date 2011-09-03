@@ -29,7 +29,7 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.faces.application.ProjectStage;
 
-import org.jboss.seam.solder.logging.Logger;
+import org.jboss.seam.logging.Logger;
 import org.jboss.seam.solder.util.Sortable;
 import org.jboss.seam.solder.util.service.ServiceLoader;
 
