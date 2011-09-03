@@ -23,8 +23,8 @@ import javax.faces.convert.Converter;
 import javax.faces.validator.Validator;
 import javax.inject.Inject;
 
-import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.faces.util.BeanManagerUtils;
+import org.jboss.seam.logging.Logger;
 
 /**
  * Provides contextual lifecycle and @{link Inject} support for JSF artifacts such as {@link Converter}, {@link Validator}.

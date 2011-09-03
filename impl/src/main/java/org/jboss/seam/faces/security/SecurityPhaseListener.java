@@ -33,7 +33,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.inject.Inject;
 
-import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.faces.event.PhaseIdType;
 import org.jboss.seam.faces.event.PostLoginEvent;
 import org.jboss.seam.faces.event.PreLoginEvent;
@@ -47,9 +46,11 @@ import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.faces.event.qualifier.RestoreView;
 import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
+import org.jboss.seam.logging.Logger;
 import org.jboss.seam.security.Identity;
 import org.jboss.seam.security.annotations.SecurityBindingType;
 import org.jboss.seam.security.events.AuthorizationCheckEvent;
+import org.jboss.seam.security.events.NotAuthorizedEvent;
 import org.jboss.seam.solder.core.Requires;
 import org.jboss.seam.solder.reflection.AnnotationInspector;
 
@@ -72,6 +73,8 @@ public class SecurityPhaseListener {
     private Event<PreLoginEvent> preLoginEvent;
     @Inject
     private Event<PostLoginEvent> postLoginEvent;
+    @Inject
+    private Event<NotAuthorizedEvent> notAuthorizedEventEvent;
     @Inject
     private BeanManager beanManager;
     @Inject
@@ -284,6 +287,7 @@ public class SecurityPhaseListener {
                 return;
             } else {
                 log.debug("Access denied - not authorized");
+                notAuthorizedEventEvent.fire(new NotAuthorizedEvent());
                 redirectToAccessDeniedView(context, viewRoot);
                 return;
             }
@@ -323,18 +327,21 @@ public class SecurityPhaseListener {
      * @param viewRoot
      */
     private void redirectToAccessDeniedView(FacesContext context, UIViewRoot viewRoot) {
-        AccessDeniedView accessDeniedView = viewConfigStore.getAnnotationData(viewRoot.getViewId(), AccessDeniedView.class);
-        if (accessDeniedView == null || accessDeniedView.value() == null || accessDeniedView.value().isEmpty()) {
-            log.debug("Returning 401 response (access denied)");
-            context.getExternalContext().setResponseStatus(401);
-            context.responseComplete();
-            return;
+        // If a user has already done a redirect and rendered the response (possibly in an observer) we cannot do this output
+        if (!(context.getResponseComplete() || context.getRenderResponse())) {
+            AccessDeniedView accessDeniedView = viewConfigStore.getAnnotationData(viewRoot.getViewId(), AccessDeniedView.class);
+            if (accessDeniedView == null || accessDeniedView.value() == null || accessDeniedView.value().isEmpty()) {
+                log.warn("No AccessDeniedView is configured, returning 401 response (access denied). Please configure an AccessDeniedView in the ViewConfig.");
+                context.getExternalContext().setResponseStatus(401);
+                context.responseComplete();
+                return;
+            }
+            String accessDeniedViewId = accessDeniedView.value();
+            log.debugf("Redirecting to configured AccessDenied %s", accessDeniedViewId);
+            NavigationHandler navHandler = context.getApplication().getNavigationHandler();
+            navHandler.handleNavigation(context, "", accessDeniedViewId);
+            context.renderResponse();
         }
-        String accessDeniedViewId = accessDeniedView.value();
-        log.debugf("Redirecting to configured AccessDenied %s", accessDeniedViewId);
-        NavigationHandler navHandler = context.getApplication().getNavigationHandler();
-        navHandler.handleNavigation(context, "", accessDeniedViewId);
-        context.renderResponse();
     }
 
     /**

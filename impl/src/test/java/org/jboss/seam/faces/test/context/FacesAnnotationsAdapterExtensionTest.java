@@ -16,7 +16,7 @@
  */
 package org.jboss.seam.faces.test.context;
 
-import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.seam.faces.context.FacesAnnotationsAdapterExtension;
 import org.jboss.shrinkwrap.api.ArchivePaths;

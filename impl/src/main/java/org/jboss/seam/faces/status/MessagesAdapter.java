@@ -25,7 +25,6 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.event.PhaseEvent;
 import javax.inject.Inject;
 
-import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.faces.context.RenderContext;
 import org.jboss.seam.faces.event.PreNavigateEvent;
 import org.jboss.seam.faces.event.qualifier.Before;
@@ -33,6 +32,7 @@ import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.international.status.Level;
 import org.jboss.seam.international.status.Message;
 import org.jboss.seam.international.status.Messages;
+import org.jboss.seam.logging.Logger;
 
 /**
  * Convert Seam Messages into FacesMessages before RenderResponse phase.<br>
