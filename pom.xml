@@ -72,7 +72,7 @@
             </property>
          </activation>
          <modules>
-            <module>docs/reference</module>
+            <module>docs</module>
             <module>examples/short-ly</module>
             <module>examples/viewconfig</module>
             <module>dist</module>
