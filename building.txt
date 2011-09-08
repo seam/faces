@@ -1,0 +1,14 @@
+Building this project
+=====================
+
+This project requires Apache Maven (available from http://maven.apache.org/) 
+Version 3.0.3 or later to build. It also requires that the JBoss Public Maven
+Repository is configured - this can be done in one of two ways:
+
+1) Configure your settings.xml (usually found in the .m2 directory within your
+home directory) to include the JBoss repository - see the instructions on the 
+following page to learn how to do this: http://community.jboss.org/wiki/MavenGettingStarted
+
+2) Use the provided settings.xml, by running "mvn <target> -s settings.xml".
+
+
