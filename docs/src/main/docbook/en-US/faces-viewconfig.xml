@@ -32,7 +32,7 @@
         </listitem>
         <listitem>
             <para>
-                A personal favorite: setting faces-direct=true when navigating to a view.
+                A personal favorite: setting <literal>faces-direct=true</literal> when navigating to a view.
             </para>
         </listitem>
     </itemizedlist>
@@ -85,8 +85,8 @@ public interface Pages {
         <para>
             Each property of the enum is annotated with at least the <literal>@ViewPattern</literal> annotation.  This
             view pattern is used to match against the JSF view ids, to determine which annotations apply to a given view
-            id.  The view patterns themselves suport the <literal>*</literal> wild character.  A view is matched against 
-            all view parameters that apply to determine the relevant annotations.  If conflicting annotatins are found,
+            id.  The view patterns themselves support the <literal>*</literal> wild character.  A view is matched against 
+            all view parameters that apply to determine the relevant annotations.  If conflicting annotations are found,
             the annotation paired with the most specific matching view pattern takes precedence.
         </para>
 
@@ -96,7 +96,7 @@ public interface Pages {
         <title>Configuring View Restrictions</title>
         
         <para>
-            Securing view access is achieved through integration with Seam Security, which must be explilcitly bundled
+            Securing view access is achieved through integration with Seam Security, which must be explicitly bundled
             with your web application.  Refer to the Seam Security documentation for details on how to setup 
             authentication.  What we'll cover here is the authorisation to JSF views.
         </para>
@@ -131,7 +131,7 @@ public @interface Owner {
 
             <para>
                 Methods that enforce the Security restriction are annotated with the <literal>@Secures</literal> 
-                annotation, as well as the same <literal>@SecurityBindingType</literal> qualified annoation used on the 
+                annotation, as well as the same <literal>@SecurityBindingType</literal> qualified annotation used on the 
                 <literal>@ViewConfig enum</literal> property.
             </para>
             
@@ -147,7 +147,7 @@ public @Secures @Owner boolean ownerChecker(Identity identity, @Current Item ite
             
             <para>
                 When a JSF view is visited, matching <literal>@ViewPattern</literal> patterns are found, and their 
-                associated <literal>@SecurityBindingType</literal> qualified annoations are looked up.  The 
+                associated <literal>@SecurityBindingType</literal> qualified annotations are looked up.  The 
                 corresponding method is invoked, and access is either granted or denied.  If access is denied, and the 
                 user is not yet logged in, the user will be redirected to a view specified in a 
                 <literal>@LoginView</literal> annotation for that view.  However if access is denied, and the user is 
@@ -157,17 +157,17 @@ public @Secures @Owner boolean ownerChecker(Identity identity, @Current Item ite
             
             <para>
                 Refer to the Seam Security documentation for further details on writing <literal>@Secures</literal>
-                methods for restricting view access, including supoort for parameter injection.
+                methods for restricting view access, including support for parameter injection.
             </para>
             
         </section>
 
         <section id="viewconfig.security.phase">
-            <title>Changing the Restrcition Phases</title>
+            <title>Changing the Restriction Phases</title>
             
             <para>
                 By default, Security restrictions are enforced before the <literal>Invoke Application</literal> phase,
-                and before the <literal>Render Response</literal> phase.  Restrictions are enforced twice per lifecylce,
+                and before the <literal>Render Response</literal> phase.  Restrictions are enforced twice per lifecycle,
                 as the view id normally changes at the end of the <literal>Invoke Application</literal> phase.  However,
                 use cases exist requiring enforcement of a Security restriction at a different phase.  For instance it is
                 desirable to enforce a role-based restriction as early in the lifecycle as possible, to prevent any
@@ -176,11 +176,11 @@ public @Secures @Owner boolean ownerChecker(Identity identity, @Current Item ite
             </para>
             
             <para>
-                By qualying a <literal>@SecurityBindingType</literal> qualified annoation with the 
+                By qualifying a <literal>@SecurityBindingType</literal> qualified annotation with the 
                 <literal>@RestrictAtView</literal> qualifier, one is able to specify at which phase that individual
                 Security restriction should be applied.  Additionally, the <literal>@RestrictAtView</literal> annotation
                 can be applied directly to a <literal>@ViewConfig enum</literal> property, to determine the restriction
-                phase of all associated <literal>@SecurityBindingType</literal> qualified annoations.
+                phase of all associated <literal>@SecurityBindingType</literal> qualified annotations.
             </para>
 
         </section>

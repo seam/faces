@@ -5,8 +5,7 @@
 <bookinfo>
    <title>Seam Faces Module</title>
    <subtitle>Reference Guide</subtitle>
-   <releaseinfo>3.0.0-SNAPSHOT</releaseinfo>
-
+   <xi:include href="version_info.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
    <xi:include href="faces-author_group.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
 <!--

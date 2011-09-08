@@ -24,7 +24,8 @@
         </programlisting>
         <tip>
             <para>
-            Substitute the expression ${seam.faces.version} with the most recent or appropriate version of Seam Faces.
+            Substitute the expression <literal>${seam.faces.version}</literal> with the most recent or appropriate version of 
+            Seam Faces.
             Alternatively, you can create a 
                 <ulink
             href="http://www.sonatype.com/books/mvnref-book/reference/resource-filtering-sect-properties.html#resource-filtering-sect-user-defined">Maven
@@ -34,7 +35,7 @@
         </tip>
         <para>
          Alternatively, you can use the API at compile time and only include the implementation at runtime. This protects
-         you from inadvertantly depending on an implementation class.
+         you from inadvertently depending on an implementation class.
         </para>
         <programlisting role="XML"><![CDATA[<dependency>
    <groupId>org.jboss.seam.faces</groupId>
@@ -51,8 +52,7 @@
 </dependency>]]>
         </programlisting>
         <para>
-         In a Servlet 3.0 or Java EE 6 environment, 
-            <emphasis>your configuration is now complete!</emphasis>
+         In a Servlet 3.0 or Java EE 6 environment, <emphasis>your configuration is now complete!</emphasis>
         </para>
     </section>
    
@@ -150,7 +150,7 @@
         <para>
             The <ulink url="http://docs.jboss.org/jbossas/6/JSF_Guide/en-US/html/jsf.deployer.config.html">JBoss JSF 
             documentation</ulink> provides further details on #2 and #3 above, but these steps are unnecessary when you
-            use Seam Faces (#1).  this is beacuse Seam Faces scans for the presence of the Seam Servlet, and 
+            use Seam Faces (#1).  this is because Seam Faces scans for the presence of the Seam Servlet, and 
             programatically registers it for you if it's not present.
         </para>
     </section>
