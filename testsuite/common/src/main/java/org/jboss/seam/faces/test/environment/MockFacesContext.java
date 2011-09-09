@@ -35,7 +35,8 @@ import javax.faces.render.RenderKit;
 public class MockFacesContext extends FacesContext {
     private PhaseId currentPhaseId;
     private ExternalContext externalContext = new MockExternalContext();
-
+    private Application application = new MockApplication();
+    
     public FacesContext set() {
         setCurrentInstance(this);
         return this;
@@ -58,7 +59,7 @@ public class MockFacesContext extends FacesContext {
 
     @Override
     public Application getApplication() {
-        throw new UnsupportedOperationException("Not supported");
+        return application;
     }
 
     @Override
