@@ -49,7 +49,7 @@ import javax.validation.metadata.PropertyDescriptor;
  * and a label (<strong>HtmlOutputLabel</strong>). This component takes care of wiring the label to the first input and the
  * messages to each input in sequence. It also assigns two implicit attribute values, "required" and "invalid" to indicate that
  * a required input field is present and whether there are any validation errors, respectively. To determine if a input field is
- * required, both the required attribute is consulted and whether the property has Bean Validation constraints. Finally, if the
+ * required, both the required attribute is consulted. Finally, if the
  * "label" attribute is not provided on the composite component, the label value will be derived from the id of the composite
  * component, for convenience.
  * <p/>
@@ -383,7 +383,7 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
 
         public void registerInput(final EditableValueHolder input, final Validator validator, final FacesContext context) {
             inputs.add(input);
-            if (input.isRequired() || isRequiredByConstraint(input, validator, context)) {
+            if (input.isRequired()) {
                 requiredInput = true;
             }
             if (!input.isValid()) {
@@ -415,26 +415,6 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
 
         public boolean hasRequiredInput() {
             return requiredInput;
-        }
-
-        private boolean isRequiredByConstraint(final EditableValueHolder input, final Validator validator,
-                final FacesContext context) {
-            if (validator == null) {
-                return false;
-            }
-
-            // NOTE believe it or not, getValueReference on ValueExpression is broken, so we have to do it ourselves
-            ValueExpression valueExpression = ((UIComponent) input).getValueExpression("value");
-            if (valueExpression != null) {
-                ValueExpressionAnalyzer valueExpressionAnalyzer = new ValueExpressionAnalyzer(valueExpression);
-                ValueReference vref = valueExpressionAnalyzer.getValueReference(context.getELContext());
-                if (vref != null) { // valueExpressionAnalyzer can return a null value. The condition prevents a NPE
-                    BeanDescriptor constraintsForClass = validator.getConstraintsForClass(vref.getBase().getClass());
-                    PropertyDescriptor d = constraintsForClass.getConstraintsForProperty((String) vref.getProperty());
-                    return (d != null) && d.hasConstraints();
-                }
-            }
-            return false;
         }
 
         public String getPropertyName(final FacesContext context) {
