@@ -33,16 +33,17 @@
 public class Bean {
 	// ...
 }]]></programlisting>
-            <para>
-               @RenderScoped beans are destroyed when the next JSF RENDER_RESPONSE phase ends, however, if a user has multiple browser windows
-                    open for the same user-session, multiple RenderContexts will be created, one for each incoming request. Seam Faces keeps
-                    track of which RenderContext belongs to each request, and will restore/destroy them appropriately. If there is more than
-                    one active RenderContext at the time when you issue a redirect, you will see a URL parameter "?fid=..." appended to the
-                    end of the outbound URL, this is to ensure the correct context is restored when the request is received by the server, and will
-                    not be present if only one context is active.
-            </para>
+     <para>
+       <literal>@RenderScoped</literal> beans are destroyed when the next <literal>JSF RENDER_RESPONSE</literal> phase 
+       ends, however, if a user has multiple browser windows open for the same user-session, multiple 
+       <literal>RenderContext</literal>s will be created, one for each incoming request. Seam Faces keeps
+       track of which <literal>RenderContext</literal> belongs to each request, and will restore/destroy them appropriately. 
+       If there is more than one active <literal>RenderContext</literal> at the time when you issue a redirect, you will see 
+       a URL parameter <literal>?fid=...</literal> appended to the end of the outbound URL, this is to ensure the correct 
+       context is restored when the request is received by the server, and will not be present if only one context is active.
+     </para>
 
-			<caution>
+	<caution>
 				<para>
 					If you want to use the Render Scope with custom navigation in your application, 
 					be sure to call <literal>ExternalContext.encodeRedirectURL(String url, Map&lt;String, List&lt;String&gt;&gt; queryParams)</literal>

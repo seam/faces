@@ -1,6 +1,8 @@
 org.jboss.seam.faces.component.FormValidationTypeOverrideExtension
+org.jboss.seam.faces.component.ValidatorConverterScopeOverrideExtension
 org.jboss.seam.faces.context.ViewScopedExtension
 org.jboss.seam.faces.context.RenderScopedExtension
 org.jboss.seam.faces.context.FacesAnnotationsAdapterExtension
 org.jboss.seam.faces.view.config.ViewConfigExtension
 org.jboss.seam.faces.projectstage.ProjectStageExtension
+
