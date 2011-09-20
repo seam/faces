@@ -80,7 +80,7 @@ public class LocaleProducerTest {
     public void testReturnsDefaultLocale() {
         new MockFacesContext().set();
         FacesContext ctx = FacesContext.getCurrentInstance();
-        assertSame(new LocaleProducer().getDefaultLocale(ctx), ctx.getApplication().getDefaultLocale());
+        assertSame(new LocaleProducer().getDefaultFacesLocale(ctx), ctx.getApplication().getDefaultLocale());
     }
 
     @Test
