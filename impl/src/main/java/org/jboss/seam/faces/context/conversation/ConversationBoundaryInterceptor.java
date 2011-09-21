@@ -36,6 +36,7 @@ import org.jboss.seam.solder.reflection.AnnotationInspector;
  *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
+ * @author <a href="mailto:ssachtleben@gmail.com">Sebastian Sachtleben</a>
  */
 @ConversationBoundary
 @Interceptor
@@ -126,6 +127,11 @@ public class ConversationBoundaryInterceptor implements Serializable {
     }
 
     private void endConversation(final InvocationContext ctx) {
+    	if (conversation.isTransient()) {
+            log.debugf("No conversation found after method: (#0.#1(...))", new Object[]{
+                    ctx.getMethod().getDeclaringClass().getName(), ctx.getMethod().getName()});
+    		return;
+    	}
         log.debugf("Ending conversation: (#0) after method: (#1.#2(...))", new Object[]{conversation.getId(),
                 ctx.getMethod().getDeclaringClass().getName(), ctx.getMethod().getName()});
         conversation.end();

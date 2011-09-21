@@ -52,7 +52,7 @@ public class LocaleProducer {
     @Named
     @Faces
     @DefaultLocale
-    public Locale getDefaultLocale(final FacesContext context) {
+    public Locale getDefaultFacesLocale(final FacesContext context) {
         return context.getApplication().getDefaultLocale();
     }
 }
