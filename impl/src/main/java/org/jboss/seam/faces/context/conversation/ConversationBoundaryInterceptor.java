@@ -109,6 +109,11 @@ public class ConversationBoundaryInterceptor implements Serializable {
     }
 
     private void beginConversation(final InvocationContext ctx) throws Exception {
+        if (!conversation.isTransient()) {
+            log.debugf("Conversation (#0) is already long running before method: (#1.#2(...))", new Object[]{
+                    conversation.getId(), ctx.getMethod().getDeclaringClass().getName(), ctx.getMethod().getName()});
+            return;
+        }
         Begin beginAnnotation = AnnotationInspector.getAnnotation(ctx.getMethod(), Begin.class, beanManager);
         String cid = beginAnnotation.id();
         if ((cid != null) && !"".equals(cid)) {
