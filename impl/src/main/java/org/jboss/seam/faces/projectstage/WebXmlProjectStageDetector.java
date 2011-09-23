@@ -19,12 +19,17 @@ package org.jboss.seam.faces.projectstage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.faces.application.ProjectStage;
 import javax.servlet.ServletContext;
 
 import org.jboss.seam.logging.Logger;
+import org.jboss.seam.solder.util.Sortable;
+import org.jboss.seam.solder.util.service.ServiceLoader;
 
 /**
  * Implementation of {@link ProjectStageDetector} that tries to read the project stage from the standard servlet context
@@ -47,7 +52,7 @@ public class WebXmlProjectStageDetector implements ProjectStageDetector {
     public ProjectStage getProjectStage() {
 
         // try to get the name of the project stage
-        String projectStageName = getProjectStageFromWebXml();
+        String projectStageName = getProjectStageFromLocators();
 
         // lookup the correct enum for the value
         if (projectStageName != null && projectStageName.length() > 0) {
@@ -64,28 +69,38 @@ public class WebXmlProjectStageDetector implements ProjectStageDetector {
     }
 
     /**
-     * Tries to get the name of the project stage from the web.xml. This method will return <code>null</code> if the project
-     * stage could not be determined.
+     * Tries to get the name of the project stage from web.xml. This method will use the {@link WebXmlLocator} SPI for locating
+     * the file.
      * 
      * @return name of the project stage or <code>null</code>
      */
-    private String getProjectStageFromWebXml() {
+    private String getProjectStageFromLocators() {
 
-        // use the context class loader
+        // build sorted list of locator implementations
+        List<WebXmlLocator> locators = new ArrayList<WebXmlLocator>();
+        for (Iterator<WebXmlLocator> iter = ServiceLoader.load(WebXmlLocator.class).iterator(); iter.hasNext();) {
+            locators.add(iter.next());
+        }
+        Collections.sort(locators, new Sortable.Comparator());
+
+        // prefer the context classloader
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        if (classLoader == null) {
+            classLoader = this.getClass().getClassLoader();
+        }
 
-        // we currently support only URLClassLoaders
-        if (classLoader instanceof URLClassLoader) {
+        // process each locator one by one
+        for (WebXmlLocator locator : locators) {
 
-            URLClassLoader urlClassLoader = (URLClassLoader) classLoader;
+            // execute the SPI implementation
+            URL webXmlLocation = locator.getWebXmlLocation(classLoader);
 
-            // get the search path of the class loader
-            for (URL searchPathUrl : urlClassLoader.getURLs()) {
+            // try to parse the web.xml if the locator returned a result
+            if (webXmlLocation != null) {
 
-                // try this URL to locate the web.xml
-                String projectStage = processClassLoaderSearchPath(searchPathUrl);
+                String projectStage = parseWebXml(webXmlLocation);
 
-                // abort if we found the project stage as it makes no sense to search further
+                // accept the first result
                 if (projectStage != null) {
                     return projectStage;
                 }
@@ -94,65 +109,20 @@ public class WebXmlProjectStageDetector implements ProjectStageDetector {
 
         }
 
-        // log class loader type in all other cases
-        else {
-            if (log.isTraceEnabled()) {
-                log.trace("Context class loader is not an URLClassLoader but: "
-                        + (classLoader != null ? classLoader.getClass().getName() : "null"));
-            }
-        }
-
-        // we don't know
+        // not result found
         return null;
 
     }
 
     /**
-     * Try to get the project stage from the supplied classloader search path URL.
-     * 
-     * @param classPathUrl The {@link URL} the classloader uses to search for classes
-     * @return The project stage or <code>null</code> if it could not be determined
-     */
-    private String processClassLoaderSearchPath(URL classPathUrl) {
-
-        // the base URL for the search
-        String baseUrl = classPathUrl.toString();
-
-        // ignore JAR files as they don't help us
-        if (baseUrl.endsWith(".jar")) {
-            return null;
-        }
-
-        if (log.isTraceEnabled()) {
-            log.trace("Found classloader search path: " + baseUrl);
-        }
-
-        // The "classes" directory could help us to find web.xml
-        if (baseUrl.endsWith("/classes/")) {
-
-            // try to open web.xml using a path relative to the classes folder
-            String projectStage = parseWebXml(baseUrl + "../web.xml");
-
-            // have we found the project stage?
-            if (projectStage != null) {
-                return projectStage;
-            }
-
-        }
-
-        return null;
-
-    }
-
-    /**
-     * Tries to parse the project stage from a guessed location of the web.xml. The method will return <code>null</code> if the
+     * Tries to parse the project stage from the supplied web.xml location. The method will return <code>null</code> if the
      * web.xml does not exist, cannot be opened, a parsing error occurred or if the web.xml doesn't contain a context parameter
      * specifying the project stage.
      * 
      * @param location URL of the web.xml
      * @return project stage or <code>null</code>
      */
-    private String parseWebXml(String location) {
+    private String parseWebXml(URL location) {
 
         if (log.isTraceEnabled()) {
             log.trace("Processing possible web.xml location: " + location);
@@ -163,7 +133,7 @@ public class WebXmlProjectStageDetector implements ProjectStageDetector {
         // try to open this guessed location of the web.xml
         try {
 
-            webXmlStream = new URL(location).openStream();
+            webXmlStream = location.openStream();
 
         } catch (IOException e) {
             if (log.isDebugEnabled()) {
