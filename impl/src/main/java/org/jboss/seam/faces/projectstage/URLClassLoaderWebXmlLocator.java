@@ -93,18 +93,23 @@ public class URLClassLoaderWebXmlLocator implements WebXmlLocator {
             log.trace("Found URL of directory: " + location);
         }
 
-        // The "classes" directory could help us to find web.xml
-        if (location.endsWith("/classes/")) {
+        // should always work as the URL is built using an existing URL
+        try {
 
-            // should always work as the URL is built using an existing URL
-            try {
+            // Works for most containers like Tomcat, Jetty and Glassfish
+            if (location.endsWith("/WEB-INF/classes/")) {
                 return new URL(location.replaceAll("classes/$", "web.xml"));
-            } catch (MalformedURLException e) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Failed to create URL instance!", e);
-                }
             }
 
+            // special hack for the Maven Jetty plugin
+            if (location.endsWith("/target/classes/")) {
+                return new URL(location.replaceAll("target/classes/$", "src/main/webapp/WEB-INF/web.xml"));
+            }
+            
+        } catch (MalformedURLException e) {
+            if (log.isDebugEnabled()) {
+                log.debug("Failed to create URL instance!", e);
+            }
         }
         return null;
 

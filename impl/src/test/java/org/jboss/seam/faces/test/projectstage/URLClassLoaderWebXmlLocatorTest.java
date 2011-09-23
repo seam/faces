@@ -82,4 +82,21 @@ public class URLClassLoaderWebXmlLocatorTest {
 
     }
 
+    @Test
+    public void testUrlClassLoaderWithMavenJettyPlugin() throws MalformedURLException {
+
+        URLClassLoader classLoader = Mockito.mock(URLClassLoader.class);
+        Mockito.when(classLoader.getURLs()).thenReturn(new URL[] { 
+                new URL("file:/home/user/.m2/repository/group/artifact/1.0/artifact-1.0.jar"),
+                new URL("file:/somewhere/myapp/target/classes/"),
+                new URL("file:/home/user/.m2/repository/group/artifact2/1.0/artifact2-1.0.jar"),
+        });
+
+        URL result = new URLClassLoaderWebXmlLocator().getWebXmlLocation(classLoader);
+
+        assertNotNull(result);
+        assertEquals("file:/somewhere/myapp/src/main/webapp/WEB-INF/web.xml", result.toString());
+
+    }
+
 }
