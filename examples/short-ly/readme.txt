@@ -4,20 +4,20 @@ Seam Faces short.ly example
 Deploying to JBoss AS 6
 -----------------------
 export JBOSS_HOME=/path/to/jboss
-mvn clean package jboss:hard-deploy -Pjboss6
+mvn clean package -Pjboss6 arquillian:run -Darquillian=jbossas-managed-6
+
 
 Deploying to JBoss AS 7
 -----------------------
-mvn clean package -Pjboss7
-$JBOSS_HOME/bin/jboss-admin.sh --connect
-deploy target/faces-shortly.war
+export JBOSS_HOME=/path/to/jboss
+mvn clean package -Pjboss7 arquillian:run -Darquillian=jbossas-managed-7
+
 
 Deploying to GlassFish 3.1.1
 ----------------------------
-mvn clean package -Pglassfish
 $GLASSFISH_HOME/bin/asadmin start-database
-$GLASSFISH_HOME/bin/asadmin start-domain domain1
-$GLASSFISH_HOME/bin/asadmin deploy target/faces-shortly.war
+$GLASSFISH_HOME/bin/asadmin start-domain
+mvn clean package -Pglassfish arquillian:run -Darquillian=glassfish-remote-3.1
 
 Note that a bug prevents the example to successfully deploy on Glassfish versions prior to 3.1.1 
 
@@ -29,8 +29,16 @@ for a workaround for 3.1
 
 Functional tests
 ----------------
-To run the functional tests, start the application server, deploy the example using one of the methods described above and run the following command:
+You can run functional test using following configurations:
 
- mvn verify -Pftest
+mvn clean verify -Pjboss7 -Darquillian=jbossas-managed-7 
+mvn clean verify -Pjboss7 -Darquillian=jbossas-remote-7
+
+mvn clean verify -Pjboss6 -Darquillian=jbossas-managed-6
+mvn clean verify -Pjboss6 -Darquillian=jbossas-remote-6 
+
+mvn clean verify -Pglassfish -Darquillian=glassfish-remote-3.1 
+ 
+
 
 
