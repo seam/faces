@@ -131,9 +131,12 @@
             </build>
         </profile>
         <profile>
-            <id>jboss6</id>
+            <id>jbossas6</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>arquillian</name>
+                    <value>jbossas-managed-6</value>
+                </property>
             </activation>
             <build>
                 <plugins>
@@ -152,7 +155,14 @@
             </build>
         </profile>
         <profile>
-            <id>jboss7</id>
+            <id>jbossas7</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>arquillian</name>
+                    <value>jbossas-managed-7</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -177,6 +187,12 @@
         </profile>
         <profile>
             <id>glassfish</id>
+            <activation>
+                <property>
+                    <name>arquillian</name>
+                    <value>glassfish-remote-3.1</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
