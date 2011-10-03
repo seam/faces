@@ -29,7 +29,7 @@ import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
 import org.jboss.seam.logging.Logger;
-import org.jboss.seam.solder.reflection.AnnotationInspector;
+import org.jboss.solder.reflection.AnnotationInspector;
 
 /**
  * Intercepts methods annotated as Conversational entry points: @{@link Begin} and @{@link End}

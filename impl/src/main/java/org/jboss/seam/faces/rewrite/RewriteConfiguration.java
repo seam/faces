@@ -32,7 +32,7 @@ import com.ocpsoft.pretty.faces.spi.ConfigurationProvider;
 import org.jboss.seam.faces.beanManager.BeanManagerServletContextListener;
 import org.jboss.seam.faces.util.BeanManagerUtils;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
-import org.jboss.seam.solder.core.Requires;
+import org.jboss.solder.core.Requires;
 import org.xml.sax.SAXException;
 
 

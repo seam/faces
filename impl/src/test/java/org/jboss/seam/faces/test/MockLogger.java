@@ -21,7 +21,7 @@ package org.jboss.seam.faces.test;
  *
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  */
-public class MockLogger extends org.jboss.seam.solder.logging.internal.Logger {
+public class MockLogger extends org.jboss.solder.logging.internal.Logger {
 
     protected MockLogger(String name) {
         super(name);

@@ -37,7 +37,7 @@ import javax.faces.validator.ValidatorException;
 import org.jboss.seam.faces.event.qualifier.After;
 import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.logging.Logger;
-import org.jboss.seam.solder.beanManager.BeanManagerLocator;
+import org.jboss.solder.beanManager.BeanManagerLocator;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>

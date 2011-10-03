@@ -22,7 +22,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.ExternalContextFactory;
 
 import org.jboss.seam.faces.util.BeanManagerUtils;
-import org.jboss.seam.solder.beanManager.BeanManagerLocator;
+import org.jboss.solder.beanManager.BeanManagerLocator;
 
 public class SeamExternalContextFactory extends ExternalContextFactory {
     private final ExternalContextFactory parent;

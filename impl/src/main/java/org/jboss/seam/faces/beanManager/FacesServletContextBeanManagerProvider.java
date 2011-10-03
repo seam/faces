@@ -23,7 +23,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 
-import org.jboss.seam.solder.beanManager.BeanManagerProvider;
+import org.jboss.solder.beanManager.BeanManagerProvider;
 
 /**
  * A BeanManager provider for the Servlet Context attribute "javax.enterprise.inject.spi.BeanManager"

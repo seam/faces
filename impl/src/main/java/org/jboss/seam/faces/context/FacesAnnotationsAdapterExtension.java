@@ -28,8 +28,8 @@ import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessBean;
 
 import org.jboss.seam.logging.Logger;
-import org.jboss.seam.solder.reflection.AnnotationInstanceProvider;
-import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
+import org.jboss.solder.reflection.AnnotationInstanceProvider;
+import org.jboss.solder.reflection.annotated.AnnotatedTypeBuilder;
 
 /**
  * Alias the JSF scope annotations to the CDI scope annotations. If a JSF scope annotation is detected, advise the developer to

@@ -9,9 +9,9 @@ import javax.enterprise.inject.spi.ProcessProducerMethod;
 import javax.faces.convert.Converter;
 import javax.faces.validator.Validator;
 
-import org.jboss.seam.solder.literal.RequestScopedLiteral;
-import org.jboss.seam.solder.logging.internal.Logger;
-import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
+import org.jboss.solder.literal.RequestScopedLiteral;
+import org.jboss.solder.logging.internal.Logger;
+import org.jboss.solder.reflection.annotated.AnnotatedTypeBuilder;
 
 /**
  * Performs validation of validators and converters to ensure they're normal scoped (i.e. not @Dependent scoped)

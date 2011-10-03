@@ -18,7 +18,7 @@ package org.jboss.seam.faces.test;
 
 import javax.enterprise.inject.Produces;
 
-import org.jboss.seam.solder.logging.internal.Logger;
+import org.jboss.solder.logging.internal.Logger;
 
 public class MockLoggerProducer {
     @Produces

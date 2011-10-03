@@ -28,7 +28,7 @@ import javax.faces.event.ExceptionQueuedEvent;
 import org.jboss.seam.exception.control.ExceptionToCatch;
 import org.jboss.seam.faces.qualifier.FacesLiteral;
 import org.jboss.seam.logging.Logger;
-import org.jboss.seam.solder.core.Requires;
+import org.jboss.solder.core.Requires;
 
 /**
  * This class fires Exceptions from the JSF lifecycle into Seam Catch.

@@ -24,7 +24,7 @@ import java.util.Set;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 
-import org.jboss.seam.solder.beanManager.BeanManagerAware;
+import org.jboss.solder.beanManager.BeanManagerAware;
 
 /**
  * Superclass for event listeners
