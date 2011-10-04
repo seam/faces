@@ -23,7 +23,7 @@ import javax.faces.event.PreDestroyApplicationEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
-import org.jboss.seam.logging.Logger;
+import org.jboss.solder.logging.Logger;
 
 /**
  * Provide CDI injection to SystemEventListener artifacts by delegating through this class.

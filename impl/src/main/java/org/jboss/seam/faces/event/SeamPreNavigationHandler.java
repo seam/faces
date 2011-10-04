@@ -25,7 +25,7 @@ import javax.faces.application.NavigationCase;
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 
-import org.jboss.seam.solder.beanManager.BeanManagerLocator;
+import org.jboss.solder.beanManager.BeanManagerLocator;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>

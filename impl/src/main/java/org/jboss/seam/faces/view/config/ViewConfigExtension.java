@@ -29,7 +29,7 @@ import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 
-import org.jboss.seam.logging.Logger;
+import org.jboss.solder.logging.Logger;
 
 /**
  * Extension that scans enums for view specific configuration

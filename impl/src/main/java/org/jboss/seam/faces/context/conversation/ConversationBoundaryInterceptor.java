@@ -28,14 +28,15 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
-import org.jboss.seam.logging.Logger;
-import org.jboss.seam.solder.reflection.AnnotationInspector;
+import org.jboss.solder.logging.Logger;
+import org.jboss.solder.reflection.AnnotationInspector;
 
 /**
  * Intercepts methods annotated as Conversational entry points: @{@link Begin} and @{@link End}
  *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
+ * @author <a href="mailto:ssachtleben@gmail.com">Sebastian Sachtleben</a>
  */
 @ConversationBoundary
 @Interceptor
@@ -108,6 +109,11 @@ public class ConversationBoundaryInterceptor implements Serializable {
     }
 
     private void beginConversation(final InvocationContext ctx) throws Exception {
+        if (!conversation.isTransient()) {
+            log.debugf("Conversation (#0) is already long running before method: (#1.#2(...))", new Object[]{
+                    conversation.getId(), ctx.getMethod().getDeclaringClass().getName(), ctx.getMethod().getName()});
+            return;
+        }
         Begin beginAnnotation = AnnotationInspector.getAnnotation(ctx.getMethod(), Begin.class, beanManager);
         String cid = beginAnnotation.id();
         if ((cid != null) && !"".equals(cid)) {
@@ -126,6 +132,11 @@ public class ConversationBoundaryInterceptor implements Serializable {
     }
 
     private void endConversation(final InvocationContext ctx) {
+    	if (conversation.isTransient()) {
+            log.debugf("No conversation found after method: (#0.#1(...))", new Object[]{
+                    ctx.getMethod().getDeclaringClass().getName(), ctx.getMethod().getName()});
+    		return;
+    	}
         log.debugf("Ending conversation: (#0) after method: (#1.#2(...))", new Object[]{conversation.getId(),
                 ctx.getMethod().getDeclaringClass().getName(), ctx.getMethod().getName()});
         conversation.end();

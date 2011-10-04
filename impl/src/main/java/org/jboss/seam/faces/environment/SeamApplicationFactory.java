@@ -21,7 +21,7 @@ import javax.faces.application.Application;
 import javax.faces.application.ApplicationFactory;
 
 import org.jboss.seam.faces.util.BeanManagerUtils;
-import org.jboss.seam.solder.beanManager.BeanManagerLocator;
+import org.jboss.solder.beanManager.BeanManagerLocator;
 
 /**
  * Implementation of {@link ApplicationFactory} creating {@link SeamApplicationWrapper} instances that wrap the

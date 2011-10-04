@@ -37,7 +37,7 @@ import javax.faces.event.PhaseListener;
 import javax.inject.Named;
 
 import org.jboss.seam.faces.util.BeanManagerUtils;
-import org.jboss.seam.solder.beanManager.BeanManagerLocator;
+import org.jboss.solder.beanManager.BeanManagerLocator;
 
 /**
  * This class provides lifecycle management for the {@link RenderContext}

@@ -46,13 +46,13 @@ import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.faces.event.qualifier.RestoreView;
 import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
-import org.jboss.seam.logging.Logger;
+import org.jboss.solder.logging.Logger;
 import org.jboss.seam.security.Identity;
 import org.jboss.seam.security.annotations.SecurityBindingType;
 import org.jboss.seam.security.events.AuthorizationCheckEvent;
 import org.jboss.seam.security.events.NotAuthorizedEvent;
-import org.jboss.seam.solder.core.Requires;
-import org.jboss.seam.solder.reflection.AnnotationInspector;
+import org.jboss.solder.core.Requires;
+import org.jboss.solder.reflection.AnnotationInspector;
 
 /**
  * Use the annotations stored in the ViewConfigStore to restrict view access.

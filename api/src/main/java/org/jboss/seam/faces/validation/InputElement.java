@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 import javax.faces.component.UIInput;
 
-import org.jboss.seam.solder.core.Veto;
+import org.jboss.solder.core.Veto;
 
 /**
  * To be used in conjunction with <code>&lt;s:validateForm /&gt;</code> in Validators that should have their values fetched from

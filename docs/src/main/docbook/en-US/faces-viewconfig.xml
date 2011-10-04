@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="viewconfig">
+    <title>Faces View Configuration</title>
+    <para>
+        Seam Faces aims to provide JSF web developers with a truly worthy framework for web development by ironing out 
+        some of the JSF pain points, integrating tightly with CDI, and offering out of the box integration with the 
+        other Seam Modules.  The view configuration presented here provides a central means of configuring seemingly 
+        disparate concerns.
+    </para>
+    <para>
+	Adhering to the CDI core tenet of type safety, Seam Faces offers a type-safe way to configure the behaviour of 
+        your JSF views.  So far these configurable behaviors include:
+    </para>
+    <itemizedlist>
+        <listitem>
+            <para>
+                Configuring view access by integrating with Seam Security
+            </para>
+        </listitem>
+        <listitem>
+            <para>
+                Configuring URL rewriting by integrating with Pretty Faces (or any other pluggable URL rewriting 
+                framework)
+            </para>
+        </listitem>
+        <listitem>
+            <para>
+                Configuring Transactional behaviour through Seam Persistence
+            </para>
+        </listitem>
+        <listitem>
+            <para>
+                A personal favorite: setting <literal>faces-direct=true</literal> when navigating to a view.
+            </para>
+        </listitem>
+    </itemizedlist>
+    
+    <para>
+        The Seam Faces example application <literal>faces-viewconfig</literal>, demonstrates all the view configuration
+        techniques discussed in this chapter.
+    </para>
+    <section id="viewconfig.enum">
+        <title>Configuration With Annotated Enums</title>
+        
+        <para>
+            Faces pages are configured by placing annotations on the properties of an Java <literal>enum</literal>.
+            The annotation <literal>@ViewConfig</literal> is placed on a Java <literal>interface</literal>, which
+            contains a static enum.  It is the properties of this static enum that hold the individual annotations used
+            to configure the view.
+        </para>
+        
+        <programlisting role="JAVA">
+@ViewConfig
+public interface Pages {
+
+    static enum Pages1 {
+
+        @ViewPattern("/admin.xhtml")
+        @Admin
+        ADMIN,
+        
+        @UrlMapping(pattern="/item/#{item}/")
+        @ViewPattern("/item.xhtml")
+        @Owner
+        ITEM,
+        
+        @FacesRedirect
+        @ViewPattern("/*")
+        @AccessDeniedView("/denied.xhtml")
+        @LoginView("/login.xhtml")
+        ALL;
+        
+    }
+}
+        </programlisting>
+        
+        <para>
+            The <literal>interface</literal> containing the enum is required due to a limitation in version 1.0 of the 
+            CDI specification.  If the <literal>@ViewConfig</literal> is placed directly on the enum, the CDI
+            specification does not require the annotations to be scanned.
+        </para>
+        
+        <para>
+            Each property of the enum is annotated with at least the <literal>@ViewPattern</literal> annotation.  This
+            view pattern is used to match against the JSF view ids, to determine which annotations apply to a given view
+            id.  The view patterns themselves support the <literal>*</literal> wild character.  A view is matched against 
+            all view parameters that apply to determine the relevant annotations.  If conflicting annotations are found,
+            the annotation paired with the most specific matching view pattern takes precedence.
+        </para>
+
+    </section>
+    
+    <section id="viewconfig.security">
+        <title>Configuring View Restrictions</title>
+        
+        <para>
+            Securing view access is achieved through integration with Seam Security, which must be explicitly bundled
+            with your web application.  Refer to the Seam Security documentation for details on how to setup 
+            authentication.  What we'll cover here is the authorisation to JSF views.
+        </para>
+        
+        <section id="viewconfig.security.annotations">
+            <title>Writing Seam security Annotations</title>
+            
+            <para>
+                To secure a view, we start by 
+                writing an annotation qualified with a <literal>@SecurityBindingType</literal> qualifier:
+            </para>
+
+            <programlisting role="JAVA">
+@SecurityBindingType
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD, ElementType.METHOD, ElementType.TYPE})
+public @interface Owner {
+}
+            </programlisting>
+
+            <para>
+                This <literal>@SecurityBindingType</literal> qualified annotation is placed on an enum property in the
+                <literal>@ViewConfig</literal> annotated <literal>interface</literal>, adjacent to the @ViewPattern 
+                to which the security restriction applies.  View patterns with wildcards are supported for security 
+                based annotations.
+            </para>
+
+        </section>
+
+        <section id="viewconfig.security.restrictions">
+            <title>Applying the Security Restrictions</title>
+
+            <para>
+                Methods that enforce the Security restriction are annotated with the <literal>@Secures</literal> 
+                annotation, as well as the same <literal>@SecurityBindingType</literal> qualified annotation used on the 
+                <literal>@ViewConfig enum</literal> property.
+            </para>
+            
+            <programlisting role="JAVA">
+public @Secures @Owner boolean ownerChecker(Identity identity, @Current Item item) {
+        if (item == null || identity.getUser() == null) {
+            return false;
+        } else {
+            return item.getOwner().equals(identity.getUser().getId());
+        }
+    }    
+            </programlisting>
+            
+            <para>
+                When a JSF view is visited, matching <literal>@ViewPattern</literal> patterns are found, and their 
+                associated <literal>@SecurityBindingType</literal> qualified annotations are looked up.  The 
+                corresponding method is invoked, and access is either granted or denied.  If access is denied, and the 
+                user is not yet logged in, the user will be redirected to a view specified in a 
+                <literal>@LoginView</literal> annotation for that view.  However if access is denied, and the user is 
+                logged in, navigation will be redirected to a view specified in the <literal>@AccessDeined</literal> 
+                annotation.
+            </para>
+            
+            <para>
+                Refer to the Seam Security documentation for further details on writing <literal>@Secures</literal>
+                methods for restricting view access, including support for parameter injection.
+            </para>
+            
+        </section>
+
+        <section id="viewconfig.security.phase">
+            <title>Changing the Restriction Phases</title>
+            
+            <para>
+                By default, Security restrictions are enforced before the <literal>Invoke Application</literal> phase,
+                and before the <literal>Render Response</literal> phase.  Restrictions are enforced twice per lifecycle,
+                as the view id normally changes at the end of the <literal>Invoke Application</literal> phase.  However,
+                use cases exist requiring enforcement of a Security restriction at a different phase.  For instance it is
+                desirable to enforce a role-based restriction as early in the lifecycle as possible, to prevent any
+                unnecessary computations from occurring.  This is achieved using the <literal>@RestrictAtView</literal>
+                annotation.
+            </para>
+            
+            <para>
+                By qualifying a <literal>@SecurityBindingType</literal> qualified annotation with the 
+                <literal>@RestrictAtView</literal> qualifier, one is able to specify at which phase that individual
+                Security restriction should be applied.  Additionally, the <literal>@RestrictAtView</literal> annotation
+                can be applied directly to a <literal>@ViewConfig enum</literal> property, to determine the restriction
+                phase of all associated <literal>@SecurityBindingType</literal> qualified annotations.
+            </para>
+
+        </section>
+    
+    </section>
+    
+    <section id="viewconfig.urlrewriting">
+        <title>Configuring URL Rewriting</title>
+        
+        <para>
+            Seam Faces delegates URL Rewriting to <ulink url="http://ocpsoft.com/prettyfaces/">Pretty Faces</ulink>.
+            The Rewriting mechanism however is pluggable, and an alternate URL Rewriting engine could easily be used
+            instead. What makes SeamFaces unique in it's approach to URL rewriting, is that the rewrite configuration
+            is done via the <literal>@ViewConfig</literal> mechanism, so all view configuration is done consistently.
+        </para>
+        
+        <para>
+            To configure UrlRewriting, use the <literal>@UrlRewrite</literal> Seam Faces annotation: 
+        </para>
+        
+        <programlisting role="JAVA">
+        ...
+        @UrlMapping(pattern="/item/#{item}/")
+        @ViewPattern("/item.xhtml")
+        ITEM;
+        ...
+        </programlisting>
+        
+        <para>
+            The above listing would rewrite the url <literal>/item.jsf/item=2</literal> into 
+            <literal>/item/2/</literal>.  See the Pretty Faces documentation for further details on configuring URL
+            rewriting.
+        </para>
+    </section>
+    
+    <section id="viewconfig.facesredirect">
+        <title>Configuring "faces-redirect"</title>
+        
+        <para>
+            A <literal>@ViewPattern</literal> annotated with <literal>@FacesRedirect</literal> will cause all
+            navigations to views that match that pattern to have their faces-redirect property set to true.  This
+            alleviates the requirement to append <literal>?faces-redirect=true</literal> to all implicit navigation 
+            rules, and neither does it have to be specified in the navigation rules defined in the faces-config.xml.
+        </para>
+    </section>
+
+    <section id="viewconfig.transaction">
+        <title>Configuring Transactional Views</title>
+        
+        <para>
+            Through integration with Seam Persistence, the transactional behaviour of the JSF lifecycle can be
+            configured through the <literal>@ViewConfig</literal> mechanism.  More details will be provided here, as
+            this feature is fleshed out.
+        </para>
+    </section>
+
+</chapter>

@@ -23,7 +23,7 @@ import javax.el.ELContext;
 import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
 
-import org.jboss.seam.solder.el.Resolver;
+import org.jboss.solder.el.Resolver;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>

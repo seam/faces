@@ -20,9 +20,9 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerFactory;
 
-import org.jboss.seam.logging.Logger;
-import org.jboss.seam.solder.beanManager.BeanManagerLocator;
-import org.jboss.seam.solder.beanManager.BeanManagerUnavailableException;
+import org.jboss.solder.logging.Logger;
+import org.jboss.solder.beanManager.BeanManagerLocator;
+import org.jboss.solder.beanManager.BeanManagerUnavailableException;
 
 /**
  * This class is registered with the JSF framework to invoke the <code>CatchExceptionHandler</code> as part of the JSF lifecycle
