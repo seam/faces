@@ -22,7 +22,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewMetadata;
 
-import org.jboss.seam.logging.Logger;
+import org.jboss.solder.logging.Logger;
 
 /**
  * Wrap the built-in {@link ViewMetadata} implementation for the purpose of adding a UIViewParameter placeholder component if

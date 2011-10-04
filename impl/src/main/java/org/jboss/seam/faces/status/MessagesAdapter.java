@@ -32,7 +32,7 @@ import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.international.status.Level;
 import org.jboss.seam.international.status.Message;
 import org.jboss.seam.international.status.Messages;
-import org.jboss.seam.logging.Logger;
+import org.jboss.solder.logging.Logger;
 
 /**
  * Convert Seam Messages into FacesMessages before RenderResponse phase.<br>
