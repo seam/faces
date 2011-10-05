@@ -99,7 +99,7 @@
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
             <include>org.jboss.seam.faces:seam-faces-api:*:sources</include>
-            <include>org.jboss.seam.faces:seam-faces-impl:*:sources</include>
+            <include>org.jboss.seam.faces:seam-faces:*:sources</include>
          </includes>
          <unpackOptions>
             <excludes>
