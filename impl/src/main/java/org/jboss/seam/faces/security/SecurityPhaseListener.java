@@ -60,7 +60,7 @@ import org.jboss.solder.reflection.AnnotationInspector;
  *
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
-@Requires("org.jboss.seam.security.extension.SecurityExtension")
+@Requires("org.jboss.seam.security.SecurityExtension")
 public class SecurityPhaseListener {
 
     private transient final Logger log = Logger.getLogger(SecurityPhaseListener.class);
