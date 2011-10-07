@@ -47,6 +47,7 @@ public class LoginListener {
                 for (Map.Entry<String, String> entry : requestParameterMap.entrySet()) {
                     if (first) {
                         sb.append("?");
+                        first = false;
                     } else {
                         sb.append("&");
                     }
