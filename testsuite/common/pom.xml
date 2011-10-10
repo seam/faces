@@ -60,6 +60,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.jboss.seam.security</groupId>
+            <artifactId>seam-security</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.jboss.seam.international</groupId>
             <artifactId>seam-international</artifactId>
             <scope>compile</scope>
