@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.el.ValueExpression;
-import javax.el.ValueReference;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
@@ -40,8 +38,6 @@ import javax.validation.Validation;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import javax.validation.metadata.BeanDescriptor;
-import javax.validation.metadata.PropertyDescriptor;
 
 /**
  * <strong>UIInputContainer</strong> is a supplemental component for a JSF 2.0 composite component encapsulating one or more
@@ -194,10 +190,7 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
             getAttributes().put(getInvalidAttributeName(), true);
         }
 
-        // set the required attribute, but only if the user didn't already assign it
-        if (!getAttributes().containsKey(getRequiredAttributeName()) && elements.hasRequiredInput()) {
-            getAttributes().put(getRequiredAttributeName(), true);
-        }
+        getAttributes().put(getRequiredAttributeName(), elements.hasRequiredInput());
 
         /*
          * for some reason, Mojarra is not filling Attribute Map with "label" key if label attr has an EL value, so I added a
@@ -367,7 +360,6 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
         private final List<EditableValueHolder> inputs = new ArrayList<EditableValueHolder>();
         private final List<UIMessage> messages = new ArrayList<UIMessage>();
         private boolean validationError = false;
-        private boolean requiredInput = false;
 
         public HtmlOutputLabel getLabel() {
             return label;
@@ -383,9 +375,7 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
 
         public void registerInput(final EditableValueHolder input, final Validator validator, final FacesContext context) {
             inputs.add(input);
-            if (input.isRequired()) {
-                requiredInput = true;
-            }
+            
             if (!input.isValid()) {
                 validationError = true;
             }
@@ -414,7 +404,16 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
         }
 
         public boolean hasRequiredInput() {
-            return requiredInput;
+          //We have to scan these each time as the value could change in an AJAX request
+            for (EditableValueHolder holder : inputs)
+            {
+                if (holder.isRequired())
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public String getPropertyName(final FacesContext context) {
