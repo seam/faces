@@ -18,7 +18,7 @@ package org.jboss.seam.faces.projectstage;
 
 import java.net.URL;
 
-import org.jboss.seam.solder.util.Sortable;
+import org.jboss.solder.util.Sortable;
 
 /**
  * 

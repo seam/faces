@@ -16,10 +16,10 @@
  */
 package org.jboss.seam.faces.projectstage;
 
+import org.jboss.solder.logging.Logger;
+
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import org.jboss.seam.logging.Logger;
 
 /**
  * <p>

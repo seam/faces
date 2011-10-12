@@ -18,7 +18,7 @@ package org.jboss.seam.faces.projectstage;
 
 import javax.faces.application.ProjectStage;
 
-import org.jboss.seam.solder.util.Sortable;
+import org.jboss.solder.util.Sortable;
 
 /**
  * SPI for providing different ways to obtain the current project stage

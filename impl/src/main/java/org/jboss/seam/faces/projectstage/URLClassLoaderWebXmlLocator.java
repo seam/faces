@@ -20,7 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import org.jboss.seam.logging.Logger;
+import org.jboss.solder.logging.Logger;
 
 /**
  * This implementation of {@link WebXmlLocator} will try to identify the location of <code>web.xml</code> by examining the URLs

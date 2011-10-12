@@ -16,22 +16,21 @@
  */
 package org.jboss.seam.faces.projectstage;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import org.jboss.solder.logging.Logger;
+import org.jboss.solder.util.Sortable;
+import org.jboss.solder.util.service.ServiceLoader;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.faces.application.ProjectStage;
-
-import org.jboss.seam.logging.Logger;
-import org.jboss.seam.solder.util.Sortable;
-import org.jboss.seam.solder.util.service.ServiceLoader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Extension that supports to veto beans that should only be active in certain 

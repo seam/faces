@@ -16,6 +16,12 @@
  */
 package org.jboss.seam.faces.projectstage;
 
+import org.jboss.solder.logging.Logger;
+import org.jboss.solder.util.Sortable;
+import org.jboss.solder.util.service.ServiceLoader;
+
+import javax.faces.application.ProjectStage;
+import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -23,13 +29,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.faces.application.ProjectStage;
-import javax.servlet.ServletContext;
-
-import org.jboss.seam.logging.Logger;
-import org.jboss.seam.solder.util.Sortable;
-import org.jboss.seam.solder.util.service.ServiceLoader;
 
 /**
  * Implementation of {@link ProjectStageDetector} that tries to read the project stage from the standard servlet context
