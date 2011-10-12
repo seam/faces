@@ -404,15 +404,12 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
         }
 
         public boolean hasRequiredInput() {
-          //We have to scan these each time as the value could change in an AJAX request
-            for (EditableValueHolder holder : inputs)
-            {
-                if (holder.isRequired())
-                {
+            //We have to scan these each time as the value could change in an AJAX request
+            for (EditableValueHolder holder : inputs) {
+                if (holder.isRequired()) {
                     return true;
                 }
             }
-
             return false;
         }
 
