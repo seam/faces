@@ -21,12 +21,19 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
+
+import org.jboss.solder.logging.Logger;
 
 /**
+ * A basic converter that works with any kind of object. NOTE: It should only be used in long
+ * running conversations!
+ *
  * @author <a href="http://community.jboss.org/people/LightGuard">Jason Porter</a>a>
  */
 @ConversationScoped
@@ -35,18 +42,37 @@ public class ObjectConverter implements javax.faces.convert.Converter, Serializa
 
     private static final long serialVersionUID = -406332789399557968L;
     final private Map<String, Object> converterMap = new HashMap<String, Object>();
+    final private Map<Object, String> reverseConverterMap = new HashMap<Object, String>();
 
-    private int incrementor = 0;
+    @Inject
+    private transient Conversation conversation;
+
+    private final transient Logger log = Logger.getLogger(ObjectConverter.class);
+
+    private int incrementor = 1;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
+        if (this.conversation.isTransient()) {
+            log.warn("Conversion attempted without a long running conversation");
+        }
+
         return this.converterMap.get(value);
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        final String incrementorStringValue = String.valueOf(this.incrementor++);
-        this.converterMap.put(incrementorStringValue, value);
-        return incrementorStringValue;
+        if (this.conversation.isTransient()) {
+            log.warn("Conversion attempted without a long running conversation");
+        }
+
+        if (this.reverseConverterMap.containsKey(value)) {
+            return this.reverseConverterMap.get(value);
+        } else {
+            final String incrementorStringValue = String.valueOf(this.incrementor++);
+            this.converterMap.put(incrementorStringValue, value);
+            this.reverseConverterMap.put(value, incrementorStringValue);
+            return incrementorStringValue;
+        }
     }
 }
