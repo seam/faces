@@ -97,6 +97,7 @@ public class PhaseEventLogBean {
 }
         </programlisting>
         <tip>
+          <para>
             You can place more than one project stage annotation on a bean. So if a bean should be active in all
             project stages except for <constant>Production</constant>, define it like this:
             <programlisting role="JAVA">
@@ -105,6 +106,7 @@ public class Bean {
 
 }
             </programlisting>
+          </para>
         </tip>
         <para>
             Seam Faces will automatically detect the project stage that is used for the application. If you want Seam Faces
