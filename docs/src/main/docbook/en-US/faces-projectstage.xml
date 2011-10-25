@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="faces.projectstage">
+    <title>Project Stage Support</title>
+    <para>
+        The Seam Faces module provides integration with the JSF project stage system. Beside the injection
+        of the current project stage into beans, Seam Faces also allows to enable specific beans
+        only for certain project stages.
+    </para>
+    <section id="faces.projectstage.injection">
+        <title>Project Stage Injection</title>
+        <para>
+            Seam Faces supports the injection of the current project stage directly into CDI managed beans. This allows
+            to implement special behavior for certain project stages very easily.
+        </para>
+        <programlisting role="JAVA">
+public class Bean {
+
+    @Inject
+    private ProjectStage projectStage;
+
+    public void someMethod() {
+
+        if (projectStage == ProjectStage.Development) {
+            /* do something special for development mode here */
+        }
+
+    }
+
+}
+        </programlisting>
+    </section>
+    <section id="faces.projectstage.activation">
+        <title>Restricting Bean Activation</title>
+        <para>
+            Seam Faces provides a set of annotations that can be used to activate beans only
+            in specific project stages. The following table shows the JSF project stages and the corresponding
+            Seam Faces annotations.
+        </para>
+        <informaltable>
+            <tgroup cols="3">
+                <colspec colnum="1" colwidth="1*" />
+                <colspec colnum="2" colwidth="1*" />
+                <colspec colnum="3" colwidth="1*" />
+                <thead>
+                    <row>
+                        <entry>Project Stage</entry>
+                        <entry>ProjectStage Enum</entry>
+                        <entry>Seam Faces Anntotation</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>Production</entry>
+                        <entry><classname>ProjectStage.Production</classname></entry>
+                        <entry><classname>@Production</classname></entry>
+                    </row>
+                    <row>
+                        <entry>Development</entry>
+                        <entry><classname>ProjectStage.Development</classname></entry>
+                        <entry><classname>@Development</classname></entry>
+                    </row>
+                    <row>
+                        <entry>UnitTest</entry>
+                        <entry><classname>ProjectStage.UnitTest</classname></entry>
+                        <entry><classname>@UnitTest</classname></entry>
+                    </row>
+                    <row>
+                        <entry>SystemTest</entry>
+                        <entry><classname>ProjectStage.SystemTest</classname></entry>
+                        <entry><classname>@SystemTest</classname></entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </informaltable>
+        <para>
+          To restrict a bean to a project stage just place the correspoding annotation
+          on the class.
+        </para>
+        <para>
+          The following example shows a bean that logs the beginning and end of each JSF lifecycle phase.
+          As the bean is annotated with <classname>@Development</classname>, it will only be activated
+          if the application runs in the <constant>Development</constant> project stage.
+        </para>
+        <programlisting role="JAVA">
+@Development
+public class PhaseEventLogBean {
+
+    public void before(@Observes @Before PhaseEvent event) {
+        log.debug("Before: " + event.getPhaseId());
+    }
+    
+    public void after(@Observes @After PhaseEvent event) {
+        log.debug("After: " + event.getPhaseId());
+    }
+}
+        </programlisting>
+        <tip>
+            You can place more than one project stage annotation on a bean. So if a bean should be active in all
+            project stages except for <constant>Production</constant>, define it like this:
+            <programlisting role="JAVA">
+@Development @SystemTest @UnitTest
+public class Bean {
+
+}
+            </programlisting>
+        </tip>
+        <para>
+            Seam Faces will automatically detect the project stage that is used for the application. If you want Seam Faces
+            to use a different project stage, you can use one of the following two ways. 
+        </para>
+        <para>
+            The first possibility to change the project stage for Seam Faces is to set the system property
+            <constant>org.jboss.seam.faces.PROJECT_STAGE</constant>. This option is the most easiest to use but 
+            is also very unflexible because the project stage be set for all applications running in a container. 
+        </para>
+        <programlisting role="TEXT">-Dorg.jboss.seam.faces.PROJECT_STAGE=Development</programlisting>
+        <para>
+            If you need more control over the project stage that is used you can implement the Seam Faces
+            SPI <classname>org.jboss.seam.faces.projectstage.ProjectStageDetector</classname>. Just implement
+            this interface and add the fully-qualified classname of the class to the file
+            <filename>META-INF/services/org.jboss.seam.faces.projectstage.ProjectStageDetector</filename>. 
+            See the following class for an example:
+        </para>
+        <programlisting role="JAVA">
+public class MyProjectStageDetector implements ProjectStageDetector {
+
+    @Override
+    public int getPrecedence() {
+        return 10;
+    }
+
+    @Override
+    public ProjectStage getProjectStage() {
+    
+        if (System.getProperty("user.name").startsWith("dev-")) {
+            return ProjectStage.Development;
+        }
+        
+        return ProjectStage.Production;
+        
+    }
+
+}        
+        </programlisting>
+    </section>
+</chapter>

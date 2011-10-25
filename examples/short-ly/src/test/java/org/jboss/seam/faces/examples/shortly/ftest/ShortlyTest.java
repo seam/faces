@@ -45,6 +45,7 @@ import org.junit.runner.RunWith;
  * A functional test for the short-ly example
  *
  * @author Marek Schmidt
+ * @author <a href="http://community.jboss.org/people/jharting">Jozef Hartinger</a>
  */
 @RunWith(Arquillian.class)
 public class ShortlyTest {
@@ -75,7 +76,6 @@ public class ShortlyTest {
 
     @Before
     public void openStartUrl() throws MalformedURLException {
-        selenium.setSpeed(300);
         contextPath = new URL(contextPath.toString().replaceAll("127.0.0.1", "localhost"));
         selenium.open(new URL(contextPath.toString()));
     }
@@ -83,7 +83,11 @@ public class ShortlyTest {
     @Test
     public void testCreate() throws MalformedURLException, URISyntaxException {
         // deleteAll button is not displayed if there are no links
-        assertEquals(selenium.isElementPresent(DELETEALL_BUTTON), false);
+        if (selenium.isElementPresent(DELETEALL_BUTTON))
+        {
+            // openshift
+            waitForHttp(selenium).click(DELETEALL_BUTTON);
+        }
 
         // We can only test pages on the same domain, the only interesting page we can be quite sure to exist on the same domain
         // is the context root
@@ -93,7 +97,12 @@ public class ShortlyTest {
         assertEquals(selenium.getAttribute(ROOT_LINK_HREF), "/faces-shortly/root");
         assertEquals(selenium.isTextPresent("Created link root"), true);
         waitForHttp(selenium).click(ROOT_LINK);
-        assertEquals(selenium.getLocation().toString(), contextPath.toString());
+        // When running on openshift, the URL provided by arquillian contains an explicit port (80) while the URL from browser
+        // does not (which is still valid). Therefore, we only verify all the other parts of the URL (protocol, host, path).
+        URL actual = selenium.getLocation();
+        assertEquals(contextPath.getProtocol(), actual.getProtocol());
+        assertEquals(contextPath.getHost(), actual.getHost());
+        assertEquals(contextPath.getPath(), actual.getPath());
         testDeleteAll();
     }
     

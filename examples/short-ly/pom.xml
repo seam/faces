@@ -8,17 +8,11 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <groupId>org.jboss.seam.faces</groupId>
     <artifactId>seam-faces-example-short-ly</artifactId>
     <packaging>war</packaging>
     <name>Seam Faces Example: bit.ly clone with PrettyFaces</name>
     <!-- url required for JAR Manifest -->
     <url>${project.parent.url}</url>
-
-    <properties>
-        <jboss.home>${env.JBOSS_HOME}</jboss.home>
-        <jboss.domain>default</jboss.domain>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -332,6 +326,23 @@
                 <dependency>
                     <groupId>org.jboss.seam.test</groupId>
                     <artifactId>glassfish-remote-3.1</artifactId>
+                    <type>pom</type>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>openshift-express</id>
+            <activation>
+                <property>
+                    <name>arquillian</name>
+                    <value>openshift-express</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.seam.test</groupId>
+                    <artifactId>openshift-express</artifactId>
                     <type>pom</type>
                     <scope>test</scope>
                 </dependency>

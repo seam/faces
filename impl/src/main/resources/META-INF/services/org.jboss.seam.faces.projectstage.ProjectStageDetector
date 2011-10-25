@@ -1,0 +1,3 @@
+org.jboss.seam.faces.projectstage.JNDIProjectStageDetector
+org.jboss.seam.faces.projectstage.SystemPropertyProjectStageDetector
+org.jboss.seam.faces.projectstage.WebXmlProjectStageDetector
