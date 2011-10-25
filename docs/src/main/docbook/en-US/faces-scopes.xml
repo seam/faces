@@ -20,7 +20,7 @@
 			sends them to another view. For instance, when a user submits a form, you may want to invoke JSF navigation and redirect 
 			the user to another page in the site; if you needed to store a message to be displayed when the next page is rendered -but no longer- 
 			you would store that message in the RenderContext. Fortunately, Seam provides RenderScoped messages by default, via the 
-			<link linkend="messages">Seam Messages API</link>. 
+			<link linkend="faces.messages">Seam Messages API</link>. 
 		</para>
 		
 		<para>
