@@ -59,6 +59,15 @@ public class ViewConfigExtension implements Extension {
                 log.warn("ViewConfig annotation should only be applied to interfaces, and [" + tp.getJavaClass()
                         + "] is not an interface.");
             } else {
+                // SEAMFACES-210
+                boolean securityNotFound = false;
+                try {
+                    this.getClass().getClassLoader().loadClass("org.jboss.seam.security.SecurityExtension");
+                } catch (ClassNotFoundException e) {
+                    securityNotFound = true;
+                    log.debug("Security not found");
+                }
+
                 for (Class clazz : tp.getJavaClass().getClasses()) {
                     for (Field enumm : clazz.getFields())
                         if (enumm.isAnnotationPresent(ViewPattern.class)) {
@@ -68,6 +77,17 @@ public class ViewConfigExtension implements Extension {
                             for (Annotation a : enumm.getAnnotations()) {
                                 if (a.annotationType() != ViewPattern.class) {
                                     viewPattern.add(a);
+                                }
+
+                                // SEAMFACES-210
+                                if (securityNotFound) {
+                                    log.tracef("Checking annotations on annotation %s for use of SecurityBindingType", a.annotationType().getSimpleName());
+                                    for (Annotation annotation : a.annotationType().getAnnotations()) {
+                                        log.tracef("Checking annotation %s", annotation.annotationType().getName());
+                                        if ("SecurityBindingType".equals(annotation.annotationType().getSimpleName())) {
+                                            throw new RuntimeException("Security annotation found without Seam Security present");
+                                        }
+                                    }
                                 }
                             }
                         }
