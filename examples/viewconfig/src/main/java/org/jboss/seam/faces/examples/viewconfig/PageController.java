@@ -25,6 +25,7 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.jboss.seam.faces.examples.viewconfig.MyAppViewConfig.Pages;
 import org.jboss.seam.faces.examples.viewconfig.model.Current;
 import org.jboss.seam.faces.examples.viewconfig.model.Item;
 import org.jboss.seam.faces.examples.viewconfig.model.ItemDao;
@@ -53,6 +54,12 @@ public class PageController implements Serializable {
         return item;
     }
 
+    @MyViewAction(Pages.ITEM)
+    public void loadEntry() {
+    	System.out.println("loadEntry called");
+    }
+    
+    @MyViewAction(Pages.ITEM)
     public void setItem(Item item) {
         this.item = item;
     }
