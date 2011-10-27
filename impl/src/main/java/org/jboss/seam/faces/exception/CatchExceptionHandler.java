@@ -36,7 +36,7 @@ import org.jboss.solder.core.Requires;
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
-@Requires("org.jboss.seam.exception.control.extension.CatchExtension")
+@Requires("org.jboss.solder.exception.control.extension.CatchExtension")
 public class CatchExceptionHandler extends ExceptionHandlerWrapper {
     private transient final Logger log = Logger.getLogger(CatchExceptionHandler.class);
 

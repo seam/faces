@@ -3,14 +3,16 @@
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="faces.installation">
     <title>Installation</title>
-    <para>
-     To use the Seam Faces module, you need to put the API and implementation JARs on the classpath of your web
-     application. Most of the features of Seam Faces are enabled automatically when it's added to the classpath. Some
-     extra configuration, covered below, is required if you are not using a Servlet 3-compliant container.
-    </para>
 
     <section id="maven-dependencies">
         <title>Maven dependency configuration</title>
+
+        <para>
+         To use the Seam Faces module, you need to put the API and implementation JARs on the classpath of your web
+         application. Most of the features of Seam Faces are enabled automatically when it's added to the classpath. Some
+         extra configuration, covered below, is required if you are not using a Servlet 3-compliant container.
+        </para>
+
         <para>
            If you are using 
             <ulink url="http://maven.apache.org/">Maven</ulink> as your build tool, you can add the
@@ -28,7 +30,7 @@
             Seam Faces.
             Alternatively, you can create a 
                 <ulink
-            href="http://www.sonatype.com/books/mvnref-book/reference/resource-filtering-sect-properties.html#resource-filtering-sect-user-defined">Maven
+            url="http://www.sonatype.com/books/mvnref-book/reference/resource-filtering-sect-properties.html#resource-filtering-sect-user-defined">Maven
             user-defined property
                 </ulink> to satisfy this substitution so you can centrally manage the version.
             </para>
@@ -68,11 +70,12 @@
    <listener-class>org.jboss.seam.faces.beanManager.BeanManagerServletContextListener</listener-class>
 </listener>]]>
         </programlisting>
+
+        <para>
+          You're now ready to dive into the JSF enhancements provided for you by the Seam Faces module!
+        </para>
     </section>
 
-    <para>
-      You're now ready to dive into the JSF enhancements provided for you by the Seam Faces module!
-    </para>
 
 <!-- 
     <section id="configuration">

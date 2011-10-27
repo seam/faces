@@ -18,6 +18,10 @@
         <firstname>Nicklas</firstname>
         <surname>Karlsson</surname>
     </author>
+    <author>
+        <firstname>Christian</firstname>
+        <surname>Kaltepoth</surname>
+    </author>
 
    <!--
 vim:et:ts=3:sw=3:tw=120

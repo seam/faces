@@ -22,7 +22,7 @@ limitations under the License.
 
     <tag>
         <description>
-            This action component specifies an application-specific command (or action), 
+            This action component specifies an application-specific command (or action),
             using an EL method expression, to be invoked during one of the JSF lifecycle
             phases proceeding Render Response (i.e., view rendering).
         </description>
@@ -33,7 +33,7 @@ limitations under the License.
         <attribute>
             <description>
                 Method expression referencing the action method to be invoked by the
-                component. View actions support declarative navigation just like 
+                component. View actions support declarative navigation just like
                 UICommand components.
             </description>
             <name>action</name>
@@ -42,8 +42,8 @@ limitations under the License.
         </attribute>
         <attribute>
             <description>
-                By default, a view action is not executed on postback. If your application 
-                is decidedly stateless, you may need the view action to execute on any type 
+                By default, a view action is not executed on postback. If your application
+                is decidedly stateless, you may need the view action to execute on any type
                 of request. The default value is false.
             </description>
             <name>onPostback</name>
@@ -52,7 +52,7 @@ limitations under the License.
         </attribute>
         <attribute>
             <description>
-                You may only want the view action to be invoked under certain conditions. 
+                You may only want the view action to be invoked under certain conditions.
                 For that, you can use this attribute, which accepts an EL value expression
                 that must evaluate to a boolean value.
             </description>
@@ -62,8 +62,8 @@ limitations under the License.
         </attribute>
         <attribute>
             <description>
-                Setting the immediate attribute to true moves the invocation to the 
-                Apply Request Values phase instead of the default, the Invoke Application 
+                Setting the immediate attribute to true moves the invocation to the
+                Apply Request Values phase instead of the default, the Invoke Application
                 phase. The default value is false.
             </description>
             <name>immediate</name>
@@ -72,8 +72,8 @@ limitations under the License.
         </attribute>
         <attribute>
             <description>
-                Specifies the phase in which the action invocation should occur 
-                using the name of the phase constant in the PhaseId class (the case does 
+                Specifies the phase in which the action invocation should occur
+                using the name of the phase constant in the PhaseId class (the case does
                 not matter). The default is INVOKE_APPLICATION.
             </description>
             <name>phase</name>
@@ -83,7 +83,7 @@ limitations under the License.
     </tag>
     <tag>
         <description>
-            This component allows to perform advanced validation of submitted form data. 
+            This component allows to perform advanced validation of submitted form data.
         </description>
         <tag-name>validateForm</tag-name>
         <component>
@@ -99,8 +99,8 @@ limitations under the License.
         </attribute>
         <attribute>
             <description>
-                The attribute is used to specify a space-separated list of alias 
-                definitions. 
+                The attribute is used to specify a space-separated list of alias
+                definitions.
             </description>
             <name>fields</name>
             <required>false</required>
@@ -108,5 +108,15 @@ limitations under the License.
         </attribute>
     </tag>
     <!-- org.jboss.seam.faces.InputContainer is a composite component, does not need taglib -->
+    <tag>
+        <description>
+            This component is a generic converter which allows for basic conversion between objects and an auto incremented id.
+            The converter is conversation scoped, so the same objects should be available throughout a full conversation.
+        </description>
+        <tag-name>objectConverter</tag-name>
+        <converter>
+            <converter-id>org.jboss.seam.faces.conversion.ObjectConverter</converter-id>
+        </converter>
+    </tag>
 
 </facelet-taglib>
