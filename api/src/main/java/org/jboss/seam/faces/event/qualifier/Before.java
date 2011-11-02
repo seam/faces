@@ -16,14 +16,16 @@
  */
 package org.jboss.seam.faces.event.qualifier;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import javax.inject.Qualifier;
-
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Qualifies observer method parameters to select events that occur in a "before" phase in the JSF lifecycle
@@ -31,7 +33,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * @author Nicklas Karlsson
  */
 @Qualifier
-@Target({FIELD, PARAMETER})
+@Target({TYPE, FIELD, METHOD, PARAMETER})
 @Retention(RUNTIME)
 public @interface Before {
 }

@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -47,6 +46,7 @@ public class ViewConfigStoreImpl implements ViewConfigStore {
     private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> annotationCache = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>>();
     private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> qualifierCache = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>>();
 
+    private Map<String,ViewConfigDescriptor> viewConfigDescriptors = new ConcurrentHashMap<String, ViewConfigDescriptor>();
     private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>> viewPatternDataByAnnotation = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>>();
     private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> viewPatternDataByQualifier = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>>();
 
@@ -58,9 +58,10 @@ public class ViewConfigStoreImpl implements ViewConfigStore {
      */
     @Inject
     public void setup(ViewConfigExtension extension) {
-        for (Entry<String, Set<Annotation>> e : extension.getData().entrySet()) {
-            for (Annotation i : e.getValue()) {
-                addAnnotationData(e.getKey(), i);
+        viewConfigDescriptors = extension.getData();
+        for (ViewConfigDescriptor viewConfigDescriptor : viewConfigDescriptors.values()) {
+            for (Annotation metaData : viewConfigDescriptor.getMetaData()) {
+                addAnnotationData(viewConfigDescriptor.getViewId(), metaData);
             }
         }
     }
@@ -130,6 +131,11 @@ public class ViewConfigStoreImpl implements ViewConfigStore {
             return Collections.unmodifiableList(data);
         }
         return null;
+    }
+
+    @Override
+    public List<ViewConfigDescriptor> getAllViewConfigDescriptors() {
+        return Collections.unmodifiableList(new ArrayList<ViewConfigDescriptor>(viewConfigDescriptors.values()));
     }
 
     private <T extends Annotation> List<T> prepareAnnotationCache(String viewId, Class<T> annotationType,

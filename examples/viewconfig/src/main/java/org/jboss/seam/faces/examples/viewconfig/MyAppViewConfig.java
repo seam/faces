@@ -16,12 +16,16 @@
  */
 package org.jboss.seam.faces.examples.viewconfig;
 
+import org.jboss.seam.faces.event.qualifier.ApplyRequestValues;
+import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.faces.examples.viewconfig.security.Admin;
 import org.jboss.seam.faces.examples.viewconfig.security.Owner;
 import org.jboss.seam.faces.rewrite.FacesRedirect;
 import org.jboss.seam.faces.rewrite.UrlMapping;
 import org.jboss.seam.faces.security.AccessDeniedView;
 import org.jboss.seam.faces.security.LoginView;
+import org.jboss.seam.faces.view.action.ViewAction;
+import org.jboss.seam.faces.view.action.ViewController;
 import org.jboss.seam.faces.view.config.ViewConfig;
 import org.jboss.seam.faces.view.config.ViewPattern;
 
@@ -39,8 +43,22 @@ public interface MyAppViewConfig {
 
         @UrlMapping(pattern = "/item/#{id}/")
         @ViewPattern("/item.xhtml")
+        @ViewController(PageController.class)
         @Owner
+        @ViewAction("#{pageController.viewAction(pageController.item)}")
+        @Before @ApplyRequestValues
         ITEM,
+
+        @ViewPattern("/viewcontroller.xhtml")
+        @ViewController(org.jboss.seam.faces.examples.viewconfig.ViewController.class)
+        VIEW_CONTROLLER,
+
+        @ViewPattern("/viewactionbindingtype.xhtml")
+        VIEW_ACTION_BINDING_TYPE,
+
+        @ViewPattern("/viewaction.xhtml")
+        @ViewAction("#{viewActionController.preRenderAction}")
+        VIEW_ACTION,
 
         @FacesRedirect
         @ViewPattern("/*")

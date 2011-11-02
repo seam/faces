@@ -56,4 +56,8 @@ public interface ViewConfigStore {
      */
     public <T extends Annotation> Map<String, Annotation> getAllAnnotationViewMap(Class<T> type);
 
+    /**
+     * return the registered viewConfigs
+     */
+    public List<ViewConfigDescriptor> getAllViewConfigDescriptors();
 }

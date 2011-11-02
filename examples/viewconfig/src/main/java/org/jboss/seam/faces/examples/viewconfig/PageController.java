@@ -29,6 +29,7 @@ import org.jboss.seam.faces.examples.viewconfig.MyAppViewConfig.Pages;
 import org.jboss.seam.faces.examples.viewconfig.model.Current;
 import org.jboss.seam.faces.examples.viewconfig.model.Item;
 import org.jboss.seam.faces.examples.viewconfig.model.ItemDao;
+import org.jboss.seam.faces.view.action.BeforeRenderReponse;
 
 /**
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
@@ -54,12 +55,20 @@ public class PageController implements Serializable {
         return item;
     }
 
+    @BeforeRenderReponse
+    public void beforeRenderView(@Current Item item) {
+    	System.out.println("beforeRenderView called "+item);
+    }
+
+    public void viewAction(@Current Item item) {
+        System.out.println("viewAction "+item);
+    }
+
     @MyViewAction(Pages.ITEM)
-    public void loadEntry() {
-    	System.out.println("loadEntry called");
+    public void viewActionBindingType(@Current Item item) {
+        System.out.println("viewActionBindingType "+item);
     }
     
-    @MyViewAction(Pages.ITEM)
     public void setItem(Item item) {
         this.item = item;
     }

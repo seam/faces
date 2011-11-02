@@ -12,10 +12,4 @@ import org.jboss.seam.faces.view.action.ViewActionBindingType;
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.TYPE})
 public @interface MyViewAction {
 	MyAppViewConfig.Pages value();
-
-	//just testing value override
-//	public PhaseIdType phase() default PhaseIdType.RENDER_RESPONSE;
-//    public Boolean immediate = null;
-//    public Boolean onPostback = false;
-//    public String condition = null;
 }

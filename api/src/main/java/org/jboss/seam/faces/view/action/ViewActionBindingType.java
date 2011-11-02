@@ -7,16 +7,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Applied to an annotation to indicate that it is a faces action binding type
+ * Applied to an annotation to indicate that it is a faces action binding type.
  * 
- * Additionally, you can customize your view annotation follogin one of those approaches :
- * <ul>
- * <li> any other annotations in this package can also be applied to this annotation 
- * to customize view action behaviour (phase, postback, ...). This enables to customize behaviour 
- * per annotation definition</li>
- * <li> those annotations can be replaced by methods of the same name in the view action annotation.
- * This enables to customize behaviour per annotation usage.</li>
- * </ul>
+ * By default, this method will be called before RENDER_RESPONSE phase.
+ * You can change the jsf phase by using the annotations from org.jboss.seam.faces.event.qualifier package
+ * on your custom annotation.  
  *
  * @author Adriàn Gonzalez
  */
