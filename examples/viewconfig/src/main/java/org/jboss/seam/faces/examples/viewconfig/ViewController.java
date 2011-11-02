@@ -10,58 +10,67 @@ import org.jboss.seam.faces.event.qualifier.InvokeApplication;
 import org.jboss.seam.faces.event.qualifier.ProcessValidations;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
-import org.jboss.seam.faces.view.action.BeforeRenderReponse;
 
 public class ViewController {
 
-    @Before @ApplyRequestValues
+    @Before
+    @ApplyRequestValues
     public void beforeApplyRequestValues() {
-        addFacesMessage(this.getClass().getSimpleName()+".beforeApplyRequestValues was called");
+        addFacesMessage(this.getClass().getSimpleName() + ".beforeApplyRequestValues was called");
     }
 
-    @After @ApplyRequestValues
+    @After
+    @ApplyRequestValues
     public void afterApplyRequestValues() {
-        addFacesMessage(this.getClass().getSimpleName()+".afterApplyRequestValues was called");
+        addFacesMessage(this.getClass().getSimpleName() + ".afterApplyRequestValues was called");
     }
 
-    @Before @ProcessValidations
+    @Before
+    @ProcessValidations
     public void beforeProcessValidations() {
-        addFacesMessage(this.getClass().getSimpleName()+".beforeProcessValidations was called");
+        addFacesMessage(this.getClass().getSimpleName() + ".beforeProcessValidations was called");
     }
 
-    @After @ProcessValidations
+    @After
+    @ProcessValidations
     public void afterProcessValidations() {
-        addFacesMessage(this.getClass().getSimpleName()+".afterProcessValidations was called");
+        addFacesMessage(this.getClass().getSimpleName() + ".afterProcessValidations was called");
     }
 
-    @Before @UpdateModelValues
+    @Before
+    @UpdateModelValues
     public void beforeUpdateModelValues() {
-        addFacesMessage(this.getClass().getSimpleName()+".beforeUpdateModelValues was called");
+        addFacesMessage(this.getClass().getSimpleName() + ".beforeUpdateModelValues was called");
     }
 
-    @After @UpdateModelValues
+    @After
+    @UpdateModelValues
     public void afterUpdateModelValues() {
-        addFacesMessage(this.getClass().getSimpleName()+".afterUpdateModelValues was called");
+        addFacesMessage(this.getClass().getSimpleName() + ".afterUpdateModelValues was called");
     }
 
-    @Before @InvokeApplication
+    @Before
+    @InvokeApplication
     public void beforeInvokeApplication() {
-        addFacesMessage(this.getClass().getSimpleName()+".beforeInvokeApplication was called");
+        addFacesMessage(this.getClass().getSimpleName() + ".beforeInvokeApplication was called");
     }
 
-    @After @InvokeApplication
+    @After
+    @InvokeApplication
     public void afterInvokeApplication() {
-        addFacesMessage(this.getClass().getSimpleName()+".afterInvokeApplication was called");
+        addFacesMessage(this.getClass().getSimpleName() + ".afterInvokeApplication was called");
     }
 
-    @BeforeRenderReponse
+    @Before
+    @RenderResponse
     public void beforeRenderResponse() {
-        addFacesMessage(this.getClass().getSimpleName()+".beforeRenderResponse was called");
+        addFacesMessage(this.getClass().getSimpleName() + ".beforeRenderResponse was called");
     }
 
-    @After @RenderResponse
+    @After
+    @RenderResponse
     public void afterRenderResponse() {
-        addFacesMessage(this.getClass().getSimpleName()+".RenderResponse was called");
+        addFacesMessage(this.getClass().getSimpleName() + ".RenderResponse was called");
     }
 
     private void addFacesMessage(String message) {

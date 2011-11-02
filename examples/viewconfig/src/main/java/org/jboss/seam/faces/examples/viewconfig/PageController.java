@@ -25,11 +25,12 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.jboss.seam.faces.event.qualifier.Before;
+import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.faces.examples.viewconfig.MyAppViewConfig.Pages;
 import org.jboss.seam.faces.examples.viewconfig.model.Current;
 import org.jboss.seam.faces.examples.viewconfig.model.Item;
 import org.jboss.seam.faces.examples.viewconfig.model.ItemDao;
-import org.jboss.seam.faces.view.action.BeforeRenderReponse;
 
 /**
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
@@ -55,20 +56,21 @@ public class PageController implements Serializable {
         return item;
     }
 
-    @BeforeRenderReponse
+    @Before
+    @RenderResponse
     public void beforeRenderView(@Current Item item) {
-    	System.out.println("beforeRenderView called "+item);
+        System.out.println("beforeRenderView called " + item);
     }
 
     public void viewAction(@Current Item item) {
-        System.out.println("viewAction "+item);
+        System.out.println("viewAction " + item);
     }
 
     @MyViewAction(Pages.ITEM)
     public void viewActionBindingType(@Current Item item) {
-        System.out.println("viewActionBindingType "+item);
+        System.out.println("viewActionBindingType " + item);
     }
-    
+
     public void setItem(Item item) {
         this.item = item;
     }

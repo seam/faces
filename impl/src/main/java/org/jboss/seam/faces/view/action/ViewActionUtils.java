@@ -77,30 +77,6 @@ public class ViewActionUtils {
                             + annotationType + " and " + phaseId + ")");
                 }
                 phaseId = PhaseId.RENDER_RESPONSE;
-            } else if (annotationType == BeforeRenderReponse.class) {
-                if (phaseId != null) {
-                    throw new IllegalStateException("invalid " + parentElement
-                            + ". Cannot be annotated simultaneously with multiples JSF lifecycle annotations ("
-                            + annotationType + " and " + phaseId + ")");
-                }
-                if (before != null) {
-                    throw new IllegalStateException("invalid " + parentElement
-                            + ". Cannot be annotated simultaneously with multiples @Before/@After and " + annotationType);
-                }
-                phaseId = PhaseId.RENDER_RESPONSE;
-                before = true;
-            } else if (annotationType == AfterRenderResponse.class) {
-                if (phaseId != null) {
-                    throw new IllegalStateException("invalid " + parentElement
-                            + ". Cannot be annotated simultaneously with multiples JSF lifecycle annotations ("
-                            + annotationType + " and " + phaseId + ")");
-                }
-                if (before != null) {
-                    throw new IllegalStateException("invalid " + parentElement
-                            + ". Cannot be annotated simultaneously with multiples @Before/@After and " + annotationType);
-                }
-                phaseId = PhaseId.RENDER_RESPONSE;
-                before = false;
             }
         }
         if (before == null && phaseId == null) {
