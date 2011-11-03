@@ -49,7 +49,9 @@
 
       <dependency>
          <groupId>org.jboss.seam.transaction</groupId>
-         <artifactId>seam-transaction-api</artifactId>
+         <artifactId>seam-transaction</artifactId>
+          <scope>provided</scope>
+          <optional>true</optional>
       </dependency>
 
       <dependency>
