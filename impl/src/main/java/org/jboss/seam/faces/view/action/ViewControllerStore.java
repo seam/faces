@@ -1,7 +1,5 @@
 package org.jboss.seam.faces.view.action;
 
-import static org.jboss.seam.faces.view.action.PhaseInstant.BEFORE_RENDER_RESPONSE;
-
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;

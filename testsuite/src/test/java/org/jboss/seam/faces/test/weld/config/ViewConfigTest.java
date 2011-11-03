@@ -16,16 +16,24 @@
  */
 package org.jboss.seam.faces.test.weld.config;
 
+import java.lang.annotation.Annotation;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import junit.framework.Assert;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.seam.faces.security.RestrictAtPhase;
 import org.jboss.seam.faces.test.weld.config.annotation.Icon;
 import org.jboss.seam.faces.test.weld.config.annotation.IconLiteral;
+import org.jboss.seam.faces.test.weld.config.annotation.QualifiedIcon;
+import org.jboss.seam.faces.test.weld.config.annotation.RestrictedAtRestoreView;
 import org.jboss.seam.faces.test.weld.config.annotation.ViewConfigEnum;
+import org.jboss.seam.faces.view.config.ViewConfigDescriptor;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
 import org.jboss.seam.faces.view.config.ViewConfigStoreImpl;
 import org.jboss.shrinkwrap.api.Archive;
@@ -83,5 +91,57 @@ public class ViewConfigTest {
         Assert.assertEquals(1, dlist.size());
         Assert.assertEquals("default.gif", dlist.get(0).value());
 
+    }
+
+    @Test
+    public void testViewConfigDescriptor() {
+        
+        Map<String,ViewConfigDescriptor> descriptorMap = new HashMap<String, ViewConfigDescriptor>();
+        for (ViewConfigDescriptor descriptor : store.getAllViewConfigDescriptors()) {
+            Assert.assertFalse("duplicated viewId "+descriptor.getViewId(), descriptorMap.containsKey(descriptor.getViewId()));
+            descriptorMap.put(descriptor.getViewId(), descriptor);
+        }
+        
+        String viewId = "/happy/done.xhtml";
+        ViewConfigDescriptor descriptor = descriptorMap.get(viewId);
+        Assert.assertEquals(viewId, descriptor.getViewId());
+        Assert.assertEquals(ViewConfigEnum.Pages.HAPPY_DONE, descriptor.getValues().get(0));
+        Icon data = descriptor.getMetaData(Icon.class);
+        Assert.assertEquals("finished.gif", data.value());
+        
+        viewId = "/happy/*";
+        descriptor = descriptorMap.get(viewId);
+        Assert.assertEquals(viewId, descriptor.getViewId());
+        Assert.assertEquals(ViewConfigEnum.Pages.HAPPY, descriptor.getValues().get(0));
+        data = descriptor.getMetaData(Icon.class);
+        Assert.assertEquals("happy.gif", data.value());
+        
+        viewId = "/sad/*";
+        descriptor = descriptorMap.get(viewId);
+        Assert.assertEquals(viewId, descriptor.getViewId());
+        Assert.assertEquals(ViewConfigEnum.Pages.SAD, descriptor.getValues().get(0));
+        data = descriptor.getMetaData(Icon.class);
+        Assert.assertEquals("sad.gif", data.value());
+        
+        viewId = "/*";
+        descriptor = descriptorMap.get(viewId);
+        Assert.assertEquals(viewId, descriptor.getViewId());
+        Assert.assertEquals(ViewConfigEnum.Pages.DEFAULT, descriptor.getValues().get(0));
+        data = descriptor.getMetaData(Icon.class);
+        Assert.assertEquals("default.gif", data.value());
+
+        QualifiedIcon qualifiedData;
+        descriptor = descriptorMap.get("/qualified/*");
+        qualifiedData = descriptor.getMetaData(QualifiedIcon.class);
+        Assert.assertEquals(ViewConfigEnum.Pages.QUALIFIED, descriptor.getValues().get(0));
+        Assert.assertEquals("qualified.gif", qualifiedData.value());
+
+        descriptor = descriptorMap.get("/qualified/yes.xhtml");
+        Assert.assertEquals(ViewConfigEnum.Pages.QUALIFIED_YES, descriptor.getValues().get(0));
+        List<? extends Annotation> annotations = descriptor.getAllQualifierData(RestrictAtPhase.class);
+        Assert.assertEquals(1, annotations.size());
+        Assert.assertTrue(RestrictedAtRestoreView.class.isAssignableFrom(annotations.get(0).getClass()));
+
+        Assert.assertEquals(6, descriptorMap.size());
     }
 }

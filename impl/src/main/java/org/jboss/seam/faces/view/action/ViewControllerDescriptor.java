@@ -301,6 +301,10 @@ public class ViewControllerDescriptor {
         public MethodExpressionInvoker(String methodExpressionAsString) {
             this.methodExpressionAsString = methodExpressionAsString;
         }
+        
+        public String getMethodExpressionString() {
+            return methodExpressionAsString;
+        }
 
         @Override
         public Object execute() {

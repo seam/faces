@@ -103,4 +103,8 @@ public class ViewConfigDescriptor {
         List<? extends Annotation> metaData = metaDataByQualifier.get(qualifier);
         return metaData!=null ? Collections.unmodifiableList(metaData) : Collections.EMPTY_LIST; 
     }
+    
+    public String toString() {
+        return super.toString()+"{viewId="+getViewId()+"}";
+    }
 }

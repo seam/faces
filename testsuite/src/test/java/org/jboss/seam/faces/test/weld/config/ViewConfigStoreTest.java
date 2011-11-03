@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 
 import junit.framework.Assert;
+
 import org.jboss.seam.faces.test.weld.config.annotation.Icon;
 import org.jboss.seam.faces.test.weld.config.annotation.IconLiteral;
 import org.jboss.seam.faces.test.weld.config.annotation.QualifiedIcon;
