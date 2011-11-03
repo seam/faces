@@ -6,10 +6,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.jboss.seam.faces.event.qualifier.RenderResponse;
+
 /**
  * The EL MethodExpression is executed when this annotation is applied to a ViewConfig.
  * 
- * The MethodExpression is called before RENDER_RESPONSE phase.
+ * The MethodExpression is called by default before RENDER_RESPONSE phase. You can change this
+ * behaviour by using phase and before fields.
  *
  * @author Adriàn Gonzalez
  */
@@ -21,4 +24,14 @@ public @interface ViewAction {
      * El MethodExpression
      */
     String value();
+    
+    /**
+     * On which JSF phase must this viewAction be executed ? 
+     */
+    Class<?> phase() default RenderResponse.class;
+    
+    /**
+     * Is this viewAction executed before phase ?
+     */
+    boolean before() default true;
 }

@@ -84,14 +84,10 @@ public class ViewControllerStore {
         List<ViewConfigDescriptor> viewConfigDescriptors = viewConfigStore.getAllViewConfigDescriptors();
         for (ViewConfigDescriptor viewConfigDescriptor : viewConfigDescriptors) {
             ViewAction viewAction = viewConfigDescriptor.getMetaData(ViewAction.class);
-            // TODO : don't know using annotations @Before / @RenderResponse / ... with @ViewAction
-            // is a good idea (possible collision with future annotations ?)
-            // would it be better to add attributes to @ViewAction ?
             if (viewAction != null) {
                 ViewControllerDescriptor viewControllerDescriptor = new ViewControllerDescriptor(
                         viewConfigDescriptor.getViewId(), beanManager);
-                PhaseInstant phaseInstant = ViewActionUtils.getPhaseInstantOrDefault(viewConfigDescriptor.getMetaData(),
-                        viewConfigDescriptor, BEFORE_RENDER_RESPONSE);
+                PhaseInstant phaseInstant = new PhaseInstant(ViewActionUtils.convert(viewAction.phase()), viewAction.before());
                 viewControllerDescriptor.addMethod(phaseInstant, new ViewControllerDescriptor.MethodExpressionInvoker(
                         viewAction.value()));
                 addControllerDescriptor(viewControllerDescriptor);

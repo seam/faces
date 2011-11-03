@@ -16,8 +16,6 @@
  */
 package org.jboss.seam.faces.examples.viewconfig;
 
-import org.jboss.seam.faces.event.qualifier.ApplyRequestValues;
-import org.jboss.seam.faces.event.qualifier.Before;
 import org.jboss.seam.faces.examples.viewconfig.security.Admin;
 import org.jboss.seam.faces.examples.viewconfig.security.Owner;
 import org.jboss.seam.faces.rewrite.FacesRedirect;
@@ -45,8 +43,6 @@ public interface MyAppViewConfig {
         @ViewPattern("/item.xhtml")
         @ViewController(PageController.class)
         @Owner
-        @ViewAction("#{pageController.viewAction(pageController.item)}")
-        @Before @ApplyRequestValues
         ITEM,
 
         @ViewPattern("/viewcontroller.xhtml")

@@ -42,41 +42,13 @@ public class ViewActionUtils {
                             + ". Cannot be annotated simultaneously with multiples @Before and @After");
                 }
                 before = false;
-            } else if (annotationType == ApplyRequestValues.class) {
+            } else if (isPhaseQualifier(annotationType)) {
                 if (phaseId != null) {
                     throw new IllegalStateException("invalid " + parentElement
                             + ". Cannot be annotated simultaneously with multiples JSF lifecycle annotations ("
                             + annotationType + " and " + phaseId + ")");
                 }
-                phaseId = PhaseId.APPLY_REQUEST_VALUES;
-            } else if (annotationType == ProcessValidations.class) {
-                if (phaseId != null) {
-                    throw new IllegalStateException("invalid " + parentElement
-                            + ". Cannot be annotated simultaneously with multiples JSF lifecycle annotations ("
-                            + annotationType + " and " + phaseId + ")");
-                }
-                phaseId = PhaseId.PROCESS_VALIDATIONS;
-            } else if (annotationType == UpdateModelValues.class) {
-                if (phaseId != null) {
-                    throw new IllegalStateException("invalid " + parentElement
-                            + ". Cannot be annotated simultaneously with multiples JSF lifecycle annotations ("
-                            + annotationType + " and " + phaseId + ")");
-                }
-                phaseId = PhaseId.UPDATE_MODEL_VALUES;
-            } else if (annotationType == InvokeApplication.class) {
-                if (phaseId != null) {
-                    throw new IllegalStateException("invalid " + parentElement
-                            + ". Cannot be annotated simultaneously with multiples JSF lifecycle annotations ("
-                            + annotationType + " and " + phaseId + ")");
-                }
-                phaseId = PhaseId.INVOKE_APPLICATION;
-            } else if (annotationType == RenderResponse.class) {
-                if (phaseId != null) {
-                    throw new IllegalStateException("invalid " + parentElement
-                            + ". Cannot be annotated simultaneously with multiples JSF lifecycle annotations ("
-                            + annotationType + " and " + phaseId + ")");
-                }
-                phaseId = PhaseId.RENDER_RESPONSE;
+                phaseId = convert(annotationType);
             }
         }
         if (before == null && phaseId == null) {
@@ -86,6 +58,42 @@ public class ViewActionUtils {
         } else {
             throw new IllegalStateException("invalid " + parentElement
                     + ". both phaseId and @Before/@After must be specified {phaseId: " + phaseId + ", before: " + before + "}");
+        }
+    }
+
+    /**
+     * Converts the annotations from package org.jboss.seam.faces.event.qualifier to their corresponding JSF PhaseId.
+     * 
+     * @throws IllegalArgumentException if annotationType isn't a valid Jsf annotation.
+     */
+    public static PhaseId convert(Class<?> annotationType) {
+        PhaseId phaseId;
+        if (annotationType == ApplyRequestValues.class) {
+            phaseId = PhaseId.APPLY_REQUEST_VALUES;
+        } else if (annotationType == ProcessValidations.class) {
+            phaseId = PhaseId.PROCESS_VALIDATIONS;
+        } else if (annotationType == UpdateModelValues.class) {
+            phaseId = PhaseId.UPDATE_MODEL_VALUES;
+        } else if (annotationType == InvokeApplication.class) {
+            phaseId = PhaseId.INVOKE_APPLICATION;
+        } else if (annotationType == RenderResponse.class) {
+            phaseId = PhaseId.RENDER_RESPONSE;
+        } else {
+            throw new IllegalArgumentException("Annotation " + annotationType + " doesn't correspond to valid a Jsf phase.");
+        }
+        return phaseId;
+    }
+
+    /**
+     * Returns true if annotationType is a valid JSF annotation
+     */
+    public static boolean isPhaseQualifier(Class<?> annotationType) {
+        if (annotationType == ApplyRequestValues.class || annotationType == ProcessValidations.class
+                || annotationType == UpdateModelValues.class || annotationType == InvokeApplication.class
+                || annotationType == RenderResponse.class) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
