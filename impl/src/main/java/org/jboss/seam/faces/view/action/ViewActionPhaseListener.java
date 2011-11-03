@@ -39,12 +39,6 @@ public class ViewActionPhaseListener {
             ViewControllerDescriptor viewControllerDescriptor = viewControllers.get(i);
             viewControllerDescriptor.executeBeforePhase(event.getPhaseId());
         }
-        if (phaseId == PhaseId.RENDER_RESPONSE) {
-            for (int i = viewControllers.size(); --i >= 0;) {
-                ViewControllerDescriptor viewControllerDescriptor = viewControllers.get(i);
-                viewControllerDescriptor.executeBeforeRenderView();
-            }
-        }
     }
 
     public void observerAfterPhase(@Observes @After PhaseEvent event) {
@@ -54,11 +48,6 @@ public class ViewActionPhaseListener {
                 .getViewRoot().getViewId());
         for (ViewControllerDescriptor viewControllerDescriptor : viewControllers) {
             viewControllerDescriptor.executeAfterPhase(event.getPhaseId());
-        }
-        if (phaseId == PhaseId.RENDER_RESPONSE) {
-            for (ViewControllerDescriptor viewControllerDescriptor : viewControllers) {
-                viewControllerDescriptor.executeAfterRenderView();
-            }
         }
     }
 }

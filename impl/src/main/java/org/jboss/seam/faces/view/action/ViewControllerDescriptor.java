@@ -35,11 +35,6 @@ public class ViewControllerDescriptor {
     private String viewId;
     private Class<?> viewControllerClass;
     private BeanManager beanManager;
-
-    // call this one in an additional actionListener (faces-config.xml)
-    private List<ViewActionStrategy> beforePageActionMethods = new ArrayList<ViewActionStrategy>();
-    private List<ViewActionStrategy> beforeRenderViewMethods = new ArrayList<ViewActionStrategy>();
-    private List<ViewActionStrategy> afterRenderViewMethods = new ArrayList<ViewActionStrategy>();
     private Map<PhaseInstant, List<ViewActionStrategy>> phaseMethods = new HashMap<PhaseInstant, List<ViewActionStrategy>>();
 
     /**
@@ -77,12 +72,12 @@ public class ViewControllerDescriptor {
         Class<?> current = viewControllerClass;
         while (current != Object.class) {
             for (Method method : current.getDeclaredMethods()) {
-//                if (method.isAnnotationPresent(BeforeRenderView.class)) {
-//                    beforeRenderViewMethods.add(new MethodInvoker(method, beanManager));
-//                }
-//                if (method.isAnnotationPresent(AfterRenderView.class)) {
-//                    afterRenderViewMethods.add(new MethodInvoker(method, beanManager));
-//                }
+                // if (method.isAnnotationPresent(BeforeRenderView.class)) {
+                // beforeRenderViewMethods.add(new MethodInvoker(method, beanManager));
+                // }
+                // if (method.isAnnotationPresent(AfterRenderView.class)) {
+                // afterRenderViewMethods.add(new MethodInvoker(method, beanManager));
+                // }
                 PhaseInstant phaseInstant = ViewActionUtils.getPhaseInstant(Arrays.asList(method.getAnnotations()), method);
                 if (phaseInstant != null) {
                     addMethod(phaseInstant, new MethodInvoker(method, beanManager));
@@ -108,50 +103,6 @@ public class ViewControllerDescriptor {
                 action.execute();
             }
         }
-    }
-
-    public void executeBeforePageAction() {
-        throw new NoSuchMethodError("unimplemented");
-    }
-
-    public void executeBeforeRenderView() {
-        for (ViewActionStrategy invoker : getBeforeRenderViewMethods()) {
-            invoker.execute();
-        }
-    }
-
-    public void executeAfterRenderView() {
-        for (ViewActionStrategy invoker : getAfterRenderViewMethods()) {
-            invoker.execute();
-        }
-    }
-
-    public List<ViewActionStrategy> getBeforePageActionMethods() {
-        return beforePageActionMethods;
-    }
-
-    public void setBeforePageActionMethods(List<ViewActionStrategy> beforePageActionMethods) {
-        this.beforePageActionMethods = beforePageActionMethods;
-    }
-
-    public void addBeforeRenderViewMethod(ViewActionStrategy beforeRenderViewMethod) {
-        beforeRenderViewMethods.add(beforeRenderViewMethod);
-    }
-
-    public List<ViewActionStrategy> getBeforeRenderViewMethods() {
-        return beforeRenderViewMethods;
-    }
-
-    public void setBeforeRenderViewMethods(List<ViewActionStrategy> beforeRenderViewMethods) {
-        this.beforeRenderViewMethods = beforeRenderViewMethods;
-    }
-
-    public List<ViewActionStrategy> getAfterRenderViewMethods() {
-        return afterRenderViewMethods;
-    }
-
-    public void setAfterRenderViewMethods(List<ViewActionStrategy> afterRenderViewMethods) {
-        this.afterRenderViewMethods = afterRenderViewMethods;
     }
 
     public void addMethod(PhaseInstant phaseInstant, ViewActionStrategy method) {
@@ -191,10 +142,7 @@ public class ViewControllerDescriptor {
     public String toString() {
         StringBuilder builder = new StringBuilder(super.toString());
         builder.append("{viewId: ").append(getViewId()).append(", viewControllerClass: ").append(getViewControllerClass())
-                .append(", beforePageActionMethods: {").append(getBeforePageActionMethods())
-                .append("}, beforeRenderViewMethods: ").append(getAfterRenderViewMethods())
-                .append("}, afterRenderViewMethods: {").append(getAfterRenderViewMethods()).append("}, phaseMethods: {")
-                .append(getPhaseMethods()).append("}}");
+                .append("}, phaseMethods: {").append(getPhaseMethods()).append("}}");
         return builder.toString();
     }
 
@@ -301,7 +249,7 @@ public class ViewControllerDescriptor {
         public MethodExpressionInvoker(String methodExpressionAsString) {
             this.methodExpressionAsString = methodExpressionAsString;
         }
-        
+
         public String getMethodExpressionString() {
             return methodExpressionAsString;
         }
