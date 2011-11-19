@@ -5,7 +5,7 @@
    <parent>
       <groupId>org.jboss.seam</groupId>
       <artifactId>seam-parent</artifactId>
-      <version>16</version>
+      <version>17</version>
    </parent>
 
    <artifactId>seam-faces-parent</artifactId>
@@ -25,17 +25,11 @@
    </modules>
 
    <properties>
-      <seam.version>3.1.0.Beta4</seam.version>
+      <seam.version>3.1.0.Beta5</seam.version>
    </properties>
 
    <dependencyManagement>
       <dependencies>
-
-         <dependency>
-            <groupId>com.ocpsoft</groupId>
-            <artifactId>prettyfaces-jsf2</artifactId>
-            <version>3.2.0</version>
-         </dependency>
 
          <dependency>
             <groupId>org.jboss.seam</groupId>

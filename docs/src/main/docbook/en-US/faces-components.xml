@@ -409,6 +409,22 @@ public class FooValidator implements Validator {
 
 		</section>
 	</section>
+
+  <section id="faces.objectconverter">
+    <title>ObjectConverter</title>
+    <para>
+      The <literal>ObjectConverter</literal> is a simple converter that can be used on any Java Object, including
+      JPA entities. It can be used via it's converter id <literal>org.jboss.seam.faces.conversion.ObjectConverter</literal>
+      or by it's tag <literal>&lt;s:objectConverter/&gt;</literal>.
+    </para>
+    <warning>
+      <para>
+        This converter should only be used within a long running conversation to allow conversions happen correctly.
+        When used with a <literal>@ConversationScoped</literal> <literal>EntityManager</literal> no merges or re-fetch
+        should need to occur when using JPA entities.
+      </para>
+    </warning>
+  </section>
    
    <section id="UIInputContainer">
       <title>UI Input Container</title>
