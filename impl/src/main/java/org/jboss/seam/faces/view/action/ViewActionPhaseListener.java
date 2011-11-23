@@ -1,7 +1,5 @@
 package org.jboss.seam.faces.view.action;
 
-import java.util.List;
-
 import javax.enterprise.event.Observes;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
@@ -9,6 +7,8 @@ import javax.inject.Inject;
 
 import org.jboss.seam.faces.event.qualifier.After;
 import org.jboss.seam.faces.event.qualifier.Before;
+import org.jboss.seam.faces.view.config.ViewConfigDescriptor;
+import org.jboss.seam.faces.view.config.ViewConfigStore;
 import org.jboss.solder.logging.Logger;
 
 /**
@@ -23,9 +23,8 @@ public class ViewActionPhaseListener {
     private transient final Logger log = Logger.getLogger(ViewActionPhaseListener.class);
 
     @Inject
-    private ViewControllerStore viewControllerStore;
+    private ViewConfigStore viewConfigStore;
 
-    // TODO : should be executed after SecurityPhaseListener
     public void observerBeforePhase(@Observes @Before PhaseEvent event) {
         PhaseId phaseId = event.getPhaseId();
         log.debugf("Before {1} event", phaseId);
@@ -33,21 +32,16 @@ public class ViewActionPhaseListener {
             log.debug("viewRoot null, skipping view actions");
             return;
         }
-        List<ViewControllerDescriptor> viewControllers = viewControllerStore.getControllerDescriptors(event.getFacesContext()
+        ViewConfigDescriptor viewDescriptor = viewConfigStore.getRuntimeViewConfigDescriptor(event.getFacesContext()
                 .getViewRoot().getViewId());
-        for (int i = viewControllers.size(); --i >= 0;) {
-            ViewControllerDescriptor viewControllerDescriptor = viewControllers.get(i);
-            viewControllerDescriptor.executeBeforePhase(event.getPhaseId());
-        }
+        viewDescriptor.executeBeforePhase(event.getPhaseId());
     }
 
     public void observerAfterPhase(@Observes @After PhaseEvent event) {
         PhaseId phaseId = event.getPhaseId();
         log.debugf("After {1} event", phaseId);
-        List<ViewControllerDescriptor> viewControllers = viewControllerStore.getControllerDescriptors(event.getFacesContext()
+        ViewConfigDescriptor viewDescriptor = viewConfigStore.getRuntimeViewConfigDescriptor(event.getFacesContext()
                 .getViewRoot().getViewId());
-        for (ViewControllerDescriptor viewControllerDescriptor : viewControllers) {
-            viewControllerDescriptor.executeAfterPhase(event.getPhaseId());
-        }
+        viewDescriptor.executeAfterPhase(event.getPhaseId());
     }
 }

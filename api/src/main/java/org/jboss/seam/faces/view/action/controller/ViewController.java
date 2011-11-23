@@ -1,4 +1,4 @@
-package org.jboss.seam.faces.view.action;
+package org.jboss.seam.faces.view.action.controller;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -13,6 +13,7 @@ import org.jboss.seam.faces.event.qualifier.InvokeApplication;
 import org.jboss.seam.faces.event.qualifier.ProcessValidations;
 import org.jboss.seam.faces.event.qualifier.RenderResponse;
 import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
+import org.jboss.seam.faces.view.action.ViewAction;
 
 /**
  * This annotation must be used on a ViewConfig to specify its viewControllers.
@@ -31,6 +32,7 @@ import org.jboss.seam.faces.event.qualifier.UpdateModelValues;
  *
  * @author Adriàn Gonzalez
  */
+@ViewAction(ViewControllerHandlerProvider.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 @Documented

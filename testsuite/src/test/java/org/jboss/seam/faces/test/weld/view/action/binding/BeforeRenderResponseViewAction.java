@@ -1,4 +1,4 @@
-package org.jboss.seam.faces.examples.viewconfig;
+package org.jboss.seam.faces.test.weld.view.action.binding;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,6 +10,6 @@ import org.jboss.seam.faces.view.action.binding.ViewActionBindingType;
 @ViewActionBindingType
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.TYPE})
-public @interface MyViewAction {
-	MyAppViewConfig.Pages value();
+public @interface BeforeRenderResponseViewAction {
+    ViewConfigEnum.Pages value();
 }

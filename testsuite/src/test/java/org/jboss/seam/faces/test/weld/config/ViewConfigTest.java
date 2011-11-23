@@ -97,7 +97,7 @@ public class ViewConfigTest {
     public void testViewConfigDescriptor() {
         
         Map<String,ViewConfigDescriptor> descriptorMap = new HashMap<String, ViewConfigDescriptor>();
-        for (ViewConfigDescriptor descriptor : store.getAllViewConfigDescriptors()) {
+        for (ViewConfigDescriptor descriptor : store.getViewConfigDescriptors()) {
             Assert.assertFalse("duplicated viewId "+descriptor.getViewId(), descriptorMap.containsKey(descriptor.getViewId()));
             descriptorMap.put(descriptor.getViewId(), descriptor);
         }

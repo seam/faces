@@ -4,6 +4,8 @@ org.jboss.seam.faces.context.ViewScopedExtension
 org.jboss.seam.faces.context.RenderScopedExtension
 org.jboss.seam.faces.context.FacesAnnotationsAdapterExtension
 org.jboss.seam.faces.view.config.ViewConfigExtension
-org.jboss.seam.faces.view.action.ViewControllerExtension
+org.jboss.seam.faces.security.RestrictViewActionExtension
+org.jboss.seam.faces.view.action.binding.ViewActionBindingTypeExtension
+org.jboss.seam.faces.view.action.ViewActionExtension
 org.jboss.seam.faces.projectstage.ProjectStageExtension
 

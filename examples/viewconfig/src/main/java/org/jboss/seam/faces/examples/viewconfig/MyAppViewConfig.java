@@ -22,8 +22,8 @@ import org.jboss.seam.faces.rewrite.FacesRedirect;
 import org.jboss.seam.faces.rewrite.UrlMapping;
 import org.jboss.seam.faces.security.AccessDeniedView;
 import org.jboss.seam.faces.security.LoginView;
-import org.jboss.seam.faces.view.action.ViewAction;
-import org.jboss.seam.faces.view.action.ViewController;
+import org.jboss.seam.faces.view.action.controller.ViewController;
+import org.jboss.seam.faces.view.action.el.ElViewAction;
 import org.jboss.seam.faces.view.config.ViewConfig;
 import org.jboss.seam.faces.view.config.ViewPattern;
 
@@ -53,7 +53,7 @@ public interface MyAppViewConfig {
         VIEW_ACTION_BINDING_TYPE,
 
         @ViewPattern("/viewaction.xhtml")
-        @ViewAction("#{viewActionController.preRenderAction}")
+        @ElViewAction("#{viewActionController.preRenderAction}")
         VIEW_ACTION,
 
         @FacesRedirect

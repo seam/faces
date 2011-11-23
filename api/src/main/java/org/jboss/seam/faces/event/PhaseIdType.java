@@ -16,6 +16,8 @@
  */
 package org.jboss.seam.faces.event;
 
+import javax.faces.event.PhaseId;
+
 /**
  * Enum values corresponding to the phases of the JSF life-cycle.
  *
@@ -23,4 +25,50 @@ package org.jboss.seam.faces.event;
  */
 public enum PhaseIdType {
     ANY_PHASE, RESTORE_VIEW, APPLY_REQUEST_VALUES, PROCESS_VALIDATIONS, UPDATE_MODEL_VALUES, INVOKE_APPLICATION, RENDER_RESPONSE;
+    
+    public static PhaseId convert(PhaseIdType phaseIdType) {
+        switch (phaseIdType) {
+            case RESTORE_VIEW :
+                return PhaseId.RESTORE_VIEW;
+            case APPLY_REQUEST_VALUES :
+                return PhaseId.APPLY_REQUEST_VALUES;
+            case PROCESS_VALIDATIONS :
+                return PhaseId.PROCESS_VALIDATIONS;
+            case UPDATE_MODEL_VALUES :
+                return PhaseId.UPDATE_MODEL_VALUES;
+            case INVOKE_APPLICATION :
+                return PhaseId.INVOKE_APPLICATION;
+            case RENDER_RESPONSE :
+                return PhaseId.RENDER_RESPONSE;
+            case ANY_PHASE :
+                return PhaseId.ANY_PHASE;
+            default :
+                throw new IllegalArgumentException ("Couldn't convert "+phaseIdType+" to JSF phase Id");
+        }
+    }
+    
+    public static PhaseIdType convert(PhaseId phaseId) {
+        if (PhaseId.RESTORE_VIEW.equals(phaseId)) {
+            return RESTORE_VIEW;
+        }
+        if (PhaseId.APPLY_REQUEST_VALUES.equals(phaseId)) {
+            return APPLY_REQUEST_VALUES;
+        }
+        if (PhaseId.PROCESS_VALIDATIONS.equals(phaseId)) {
+            return PROCESS_VALIDATIONS;
+        }
+        if (PhaseId.UPDATE_MODEL_VALUES.equals(phaseId)) {
+            return UPDATE_MODEL_VALUES;
+        }
+        if (PhaseId.INVOKE_APPLICATION.equals(phaseId)) {
+            return INVOKE_APPLICATION;
+        }
+        if (PhaseId.RENDER_RESPONSE.equals(phaseId)) {
+            return RENDER_RESPONSE;
+        }
+        if (PhaseId.ANY_PHASE.equals(phaseId)) {
+            return ANY_PHASE;
+        }
+        throw new IllegalArgumentException ("Couldn't convert "+phaseId+" to JSF phase Id");
+    }
 }

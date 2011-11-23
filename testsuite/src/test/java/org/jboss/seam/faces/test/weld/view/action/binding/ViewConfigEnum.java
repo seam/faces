@@ -14,12 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.faces.test.weld.view.action.annotation;
+package org.jboss.seam.faces.test.weld.view.action.binding;
 
-import org.jboss.seam.faces.event.PhaseIdType;
-import org.jboss.seam.faces.security.RestrictAtPhase;
-import org.jboss.seam.faces.view.action.ViewAction;
-import org.jboss.seam.faces.view.action.ViewController;
 import org.jboss.seam.faces.view.config.ViewConfig;
 import org.jboss.seam.faces.view.config.ViewPattern;
 
@@ -30,22 +26,15 @@ public interface ViewConfigEnum {
         DEFAULT,
 
         @ViewPattern("/client/*")
-        @ViewAction("#{clientController.viewAction}")
         CLIENTS,
 
         @ViewPattern("/country/*")
-        @ViewController(CountryController.class)
         COUNTRIES(),
+
+        @ViewPattern("/order.xhtml")
+        ORDER_TEST(),
 
         @ViewPattern("/client/done.xhtml")
         CLIENT_CONFIRMED(),
-
-        @ViewPattern("/qualified/*")
-        @RestrictAtPhase(PhaseIdType.INVOKE_APPLICATION)
-        QUALIFIED,
-
-        @ViewPattern("/qualified/yes.xhtml")
-        QUALIFIED_YES;
-
     }
 }

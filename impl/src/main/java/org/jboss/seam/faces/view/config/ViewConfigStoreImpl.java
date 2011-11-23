@@ -28,25 +28,27 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import org.jboss.seam.faces.security.SecurityPhaseListener;
+import org.jboss.seam.faces.view.action.ViewActionHandler;
 import org.jboss.solder.logging.Logger;
 
 /**
  * Data store for view specific data.
- *
+ * 
  * @author Stuart Douglas
  * @author <a href="mailto:bleathem@gmail.com">Brian Leathem</a>
  */
 @ApplicationScoped
 public class ViewConfigStoreImpl implements ViewConfigStore {
-    private transient final Logger log = Logger.getLogger(SecurityPhaseListener.class);
+    private transient final Logger log = Logger.getLogger(ViewConfigStoreImpl.class);
     /**
      * cache of viewId to a given data list
      */
     private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> annotationCache = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>>();
     private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> qualifierCache = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>>();
 
-    private Map<String,ViewConfigDescriptor> viewConfigDescriptors = new ConcurrentHashMap<String, ViewConfigDescriptor>();
+    private Map<String, ViewConfigDescriptor> viewConfigDescriptors = new ConcurrentHashMap<String, ViewConfigDescriptor>();
+    private Map<String, ViewConfigDescriptor> runtimeViewConfigDescriptor = new ConcurrentHashMap<String, ViewConfigDescriptor>();
+
     private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>> viewPatternDataByAnnotation = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>>();
     private final ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> viewPatternDataByQualifier = new ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>>();
 
@@ -68,6 +70,7 @@ public class ViewConfigStoreImpl implements ViewConfigStore {
 
     @Override
     public synchronized void addAnnotationData(String viewId, Annotation annotation) {
+        runtimeViewConfigDescriptor.clear();
         ConcurrentHashMap<String, Annotation> annotationMap = viewPatternDataByAnnotation.get(annotation.annotationType());
         if (annotationMap == null) {
             annotationMap = new ConcurrentHashMap<String, Annotation>();
@@ -96,7 +99,8 @@ public class ViewConfigStoreImpl implements ViewConfigStore {
                 qualifiedAnnotations.addAll(exisitngQualifiedAnnotations);
             }
             qualifiedAnnotations.add(annotation);
-            log.debugf("Adding new annotation (type: %s) for viewId: %s and Qualifier %s", annotation.annotationType().getName(), viewId, qualifier.annotationType().getName());
+            log.debugf("Adding new annotation (type: %s) for viewId: %s and Qualifier %s", annotation.annotationType()
+                    .getName(), viewId, qualifier.annotationType().getName());
             qualifierMap.put(viewId, qualifiedAnnotations);
         }
     }
@@ -134,13 +138,49 @@ public class ViewConfigStoreImpl implements ViewConfigStore {
     }
 
     @Override
-    public List<ViewConfigDescriptor> getAllViewConfigDescriptors() {
+    public List<ViewConfigDescriptor> getViewConfigDescriptors() {
         return Collections.unmodifiableList(new ArrayList<ViewConfigDescriptor>(viewConfigDescriptors.values()));
     }
 
+    @Override
+    public ViewConfigDescriptor getViewConfigDescriptor(String viewId) {
+        return viewConfigDescriptors.get(viewId);
+    }
+
+    @Override
+    public ViewConfigDescriptor getRuntimeViewConfigDescriptor(String viewId) {
+        ViewConfigDescriptor viewConfigDescriptor = runtimeViewConfigDescriptor.get(viewId);
+        if (viewConfigDescriptor == null) {
+            List<String> resultingViews = findViewsWithPatternsThatMatch(viewId, viewConfigDescriptors.keySet());
+            List<ViewConfigDescriptor> resultingDescriptors = new ArrayList<ViewConfigDescriptor>();
+            for (String currentViewId : resultingViews) {
+                resultingDescriptors.add(getViewConfigDescriptor(currentViewId));
+            }
+            viewConfigDescriptor = merge(viewId, resultingDescriptors);
+            runtimeViewConfigDescriptor.put(viewId, viewConfigDescriptor);
+        }
+        return viewConfigDescriptor;
+    }
+
+    private ViewConfigDescriptor merge(String viewId, List<ViewConfigDescriptor> descriptors) {
+        ViewConfigDescriptor result = new ViewConfigDescriptor(viewId, null);
+        for (ViewConfigDescriptor descriptor : descriptors) {
+            for (Object value : descriptor.getValues()) {
+                result.addValue(value);
+            }
+            for (Annotation metaData : descriptor.getMetaData()) {
+                result.addMetaData(metaData);
+            }
+            for (ViewActionHandler viewActionHandler : descriptor.getViewActionHandlers()) {
+                result.addViewActionHandler(viewActionHandler);
+            }
+        }
+        return result;
+    }
+
     private <T extends Annotation> List<T> prepareAnnotationCache(String viewId, Class<T> annotationType,
-                                                                  ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> cache,
-                                                                  ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>> viewPatternData) {
+            ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, List<? extends Annotation>>> cache,
+            ConcurrentHashMap<Class<? extends Annotation>, ConcurrentHashMap<String, Annotation>> viewPatternData) {
         // we need to synchronize to make sure that no threads see a half
         // completed list due to instruction re-ordering
         ConcurrentHashMap<String, List<? extends Annotation>> map = cache.get(annotationType);

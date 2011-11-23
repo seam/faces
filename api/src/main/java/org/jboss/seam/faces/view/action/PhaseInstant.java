@@ -33,6 +33,11 @@ public class PhaseInstant {
     }
 
     @Override
+    public String toString() {
+        return super.toString()+"{phase="+phaseId+",before"+before+"}";
+    }
+
+    @Override
     public int hashCode() {
         return phaseId.hashCode();
     }

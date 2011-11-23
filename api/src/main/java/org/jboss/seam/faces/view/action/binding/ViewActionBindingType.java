@@ -1,4 +1,4 @@
-package org.jboss.seam.faces.view.action;
+package org.jboss.seam.faces.view.action.binding;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

@@ -59,5 +59,19 @@ public interface ViewConfigStore {
     /**
      * return the registered viewConfigs
      */
-    public List<ViewConfigDescriptor> getAllViewConfigDescriptors();
+    public List<ViewConfigDescriptor> getViewConfigDescriptors();
+
+    /**
+     * return the viewConfig for the given viewId
+     */
+    public ViewConfigDescriptor getViewConfigDescriptor(String viewId);
+
+    /**
+     * Similar to {@link #getViewConfigDescriptor(String)} except that the previous
+     * method can have patterned viewIds (i.e. /client/*).
+     * 
+     * This method merges all ViewConfigDescriptor corresponding to the 
+     * requested viewId into one instance of ViewConfigDescriptor (in order to speed up performance).
+     */
+    public ViewConfigDescriptor getRuntimeViewConfigDescriptor(String viewId);
 }
