@@ -76,9 +76,6 @@ public class TransactionPhaseListener implements PhaseListener {
         if (seamManagedTransactionStatus(phaseId)) {
             if (phaseId == RENDER_RESPONSE) {
                 persistenceContexts.beforeRender();
-            }
-            boolean beginTran = ((phaseId == PhaseId.RENDER_RESPONSE) || (phaseId == PhaseId.RESTORE_VIEW));
-            if (beginTran) {
                 begin(phaseId);
             }
         }
@@ -88,11 +85,11 @@ public class TransactionPhaseListener implements PhaseListener {
         PhaseId phaseId = event.getPhaseId();
         if (seamManagedTransactionStatus(phaseId)) {
             boolean commitTran = (phaseId == PhaseId.INVOKE_APPLICATION) || event.getFacesContext().getRenderResponse()
-                    || event.getFacesContext().getResponseComplete() || (phaseId == PhaseId.RENDER_RESPONSE);
+                    || event.getFacesContext().getResponseComplete();
 
             if (commitTran) {
-                commitOrRollback(phaseId); // we commit before destroying contexts,
-                // cos the contexts have the PC in them
+                commitOrRollback(phaseId);  // we commit before destroying contexts,
+                                            // cos the contexts have the PC in them
             }
         }
     }
