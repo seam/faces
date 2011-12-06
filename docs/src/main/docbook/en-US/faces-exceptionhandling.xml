@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="faces.messages">
+	<title>Exception Handling</title>
+  <para>
+    Seam Faces makes use of Solder Exception Handling, coupled with JSF2 exception handlers to provide a robust and
+    complete means of handling exceptions that occur in a JSF application. For more information about using Solder
+    Exception Handling, please see <xref linkend="catch-introduction"/>.
+  </para>
+  <para>
+    All exceptions that occur during the JSF life cycle should be caught by Seam Faces and passed along to Solder
+    Exception Handling. There may be a few cases where this doesn't happen, fortunately, a Solder servlet filter
+    acts as a catch all for exceptions and will pass along the uncaught exception.
+  </para>
+  <warning>
+    <para>
+      Something that must be considered when handling an exception within the JSF life cycle is the phase in which the 
+      exception occurred. Most exceptions can be handled easily and a <literal>FacesMessage</literal> can be added and
+      displayed to the user, or the user can be redirected to an error page. However, if the exception occurred in the
+      <literal>RENDER_RESPONSE</literal> phase this is not the case. No redirection, or messages, or other output to 
+      the response can be used if the request is in this part of the life cycle. Please inject the 
+      <literal>FacesContext</literal> and determine the life cycle phase of the request before proceeding with exception 
+      handling.
+    </para>
+  </warning>
+  <section>
+    <title>Qualifier</title>
+    <para>
+      All exceptions that are passed to Solder Exception Handling from within Seam Faces have the <literal>Faces</literal>
+      qualifier added to them. This can aid in exception handling by limiting the exception handlers (based on qualifier)
+      which are notified of the exception.
+    </para>
+</chapter>

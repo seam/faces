@@ -16,6 +16,7 @@
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-events.xml" />
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-projectstage.xml" />
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-viewconfig.xml" />
+   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-exceptionhandling.xml" />
 
    <!--
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="chapterXX.xml" />
