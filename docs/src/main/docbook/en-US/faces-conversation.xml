@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="faces.conversation">
+	<title>Conversation Management and Usage</title>
+
+  <section id="faces.conversation_el">
+    <title>Conversation Usage in EL</title>
+    <para>
+      CDI exposes the conversation to EL via the name <literal>javax.enterprise.context.conversation</literal>. Seam
+      Faces adds an alias to make this a little more convient for page authors. The alias Seam Faces provides is
+      simply <literal>conversation</literal>.
+    </para>
+  </section>
+
+  <section id="faces.conversation_management">
+    <title>Conversation Management</title>
+
+    <para>
+      CDI Conversations can be started and stopped easily in Seam Faces using annotations, respectifully 
+      <literal>@Begin</literal> and <literal>@End</literal>. Both of these have some extra properties that can be
+      used to configure the conversation.
+    </para>
+
+    <para>
+      Common to both annotations is the <literal>permit</literal> attribute. This is an array of Exception classes
+      which if encountered during the method execution, will still allow the conversation to begin, or end. By default,
+      any exception encountered will either prohibit the conversation from beginning or ending.
+    </para>
+
+    <section id="faces.conversation_management.begin">
+      <title><literal>@Begin</literal></title>
+      <para>
+        The <literal>@Begin</literal> annotation has the <literal>id</literal> property
+        which can be used to provide an id for the conversation, instead of the default. The <literal>timeout</literal>
+        property is used to set the timeout for the conversation in milliseconds.
+      </para>
+    </section>
+
+    <section id="faces.conversation_management.end">
+      <title><literal>@End</literal></title>
+      <para>
+        <literal>@End</literal> has no additional properties.
+      </para>
+    </section>
+  </section> 
+
+</chapter>

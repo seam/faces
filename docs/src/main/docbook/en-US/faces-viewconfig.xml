@@ -25,14 +25,17 @@
                 framework)
             </para>
         </listitem>
+        <!--
         <listitem>
             <para>
                 Configuring Transactional behaviour through Seam Persistence
             </para>
         </listitem>
+        -->
         <listitem>
             <para>
-                A personal favorite: setting <literal>faces-direct=true</literal> when navigating to a view.
+              A personal favorite of the Seam Faces lead: setting <literal>faces-direct=true</literal> when 
+              navigating to a view.
             </para>
         </listitem>
     </itemizedlist>
@@ -227,6 +230,7 @@ public @Secures @Owner boolean ownerChecker(Identity identity, @Current Item ite
         </para>
     </section>
 
+    <!-- Leaving this out unless it really is done, in that case it needs more information.
     <section id="viewconfig.transaction">
         <title>Configuring Transactional Views</title>
         
@@ -236,5 +240,6 @@ public @Secures @Owner boolean ownerChecker(Identity identity, @Current Item ite
             this feature is fleshed out.
         </para>
     </section>
+    -->
 
 </chapter>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="faces.locale">
+	<title>Locale</title>
+  <para>
+    In addition to <xref linkend="international.locales" />, Seam Faces provides an additional producer which returns
+    the supported locale of the <literal>UIViewRoot</literal> or <literal>ViewHandler</literal>. This 
+    <literal>Locale</literal> has the <literal>@Faces</literal> qualifier to help distinguish it from other produced
+    locales.
+  </para>
+  <para>
+    Seam Faces also provides easy access to the configured list of locales for the application both via injection and
+    via EL. Using EL thould would be <literal>#{supportedLocales}</literal> and <literal>#{defaultFacesLocale}</literal>.
+    Via injection one would use
+  </para>
+  <programlisting role="JAVA"><![CDATA[@Inject @Faces
+List<Locale> supportedLocales;]]>
+  </programlisting>
+  <para>
+    or
+  </para>
+  <programlisting role="JAVA"><![CDATA[@Inject @Faces @DefaultLocale
+Locale defaultLocale;]]>
+  </programlisting>
+</chapter>

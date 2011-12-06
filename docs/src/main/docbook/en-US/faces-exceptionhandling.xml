@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
-<chapter id="faces.messages">
+<chapter id="faces.exceptionhandling">
 	<title>Exception Handling</title>
   <para>
     Seam Faces makes use of Solder Exception Handling, coupled with JSF2 exception handlers to provide a robust and
