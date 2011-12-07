@@ -34,6 +34,10 @@
             org.jboss.seam.faces.event.SeamPreNavigationHandler
         </navigation-handler>
 
+        <el-resolver>
+            org.jboss.seam.faces.el.CollectionsELResolver
+        </el-resolver>
+
         <system-event-listener>
             <system-event-listener-class>org.jboss.seam.faces.event.DelegatingSystemEventListener</system-event-listener-class>
             <system-event-class>javax.faces.event.ComponentSystemEvent</system-event-class>
