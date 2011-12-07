@@ -24,11 +24,12 @@
       handling.
     </para>
   </warning>
-  <section>
+  <section id="faces.exceptionhandling.qualifier">
     <title>Qualifier</title>
     <para>
       All exceptions that are passed to Solder Exception Handling from within Seam Faces have the <literal>Faces</literal>
       qualifier added to them. This can aid in exception handling by limiting the exception handlers (based on qualifier)
       which are notified of the exception.
     </para>
+  </section>
 </chapter>
