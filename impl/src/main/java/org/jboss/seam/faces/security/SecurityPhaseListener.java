@@ -31,6 +31,7 @@ import javax.faces.application.NavigationHandler;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
 import javax.inject.Inject;
 
 import org.jboss.seam.faces.event.PhaseIdType;
@@ -328,7 +329,8 @@ public class SecurityPhaseListener {
      */
     private void redirectToAccessDeniedView(FacesContext context, UIViewRoot viewRoot) {
         // If a user has already done a redirect and rendered the response (possibly in an observer) we cannot do this output
-        if (!(context.getResponseComplete() || context.getRenderResponse())) {
+        final PhaseId currentPhase = context.getCurrentPhaseId();
+        if (!context.getResponseComplete() && !PhaseId.RENDER_RESPONSE.equals(currentPhase)) {
             AccessDeniedView accessDeniedView = viewConfigStore.getAnnotationData(viewRoot.getViewId(), AccessDeniedView.class);
             if (accessDeniedView == null || accessDeniedView.value() == null || accessDeniedView.value().isEmpty()) {
                 log.warn("No AccessDeniedView is configured, returning 401 response (access denied). Please configure an AccessDeniedView in the ViewConfig.");

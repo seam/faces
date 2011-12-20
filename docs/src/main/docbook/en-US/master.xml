@@ -10,12 +10,15 @@
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-preface.xml" />
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-installation.xml" />
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-scopes.xml" />
+   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-conversation.xml" />
+   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-locale.xml" />
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-messages.xml" />
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-components.xml" />
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-artifacts.xml" />
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-events.xml" />
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-projectstage.xml" />
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-viewconfig.xml" />
+   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faces-exceptionhandling.xml" />
 
    <!--
    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="chapterXX.xml" />
