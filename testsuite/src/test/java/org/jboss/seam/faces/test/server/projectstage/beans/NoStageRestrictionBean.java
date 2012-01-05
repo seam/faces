@@ -14,27 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.faces.projectstage;
+package org.jboss.seam.faces.test.server.projectstage.beans;
 
-import java.net.URL;
-
-import org.jboss.solder.util.Sortable;
-
-/**
- * 
- * SPI for finding the location of <code>web.xml</code>.
- * 
- * @author Christian Kaltepoth <christian@kaltepoth.de>
- * 
- */
-public interface WebXmlLocator extends Sortable {
-
-    /**
-     * Returns the guessed location of <code>web.xml</code>.
-     * 
-     * @param classLoader The classloader to use for resource lookups
-     * @return The location of <code>web.xml</code> or <code>null</code> if the location could not be identified
-     */
-    URL getWebXmlLocation(ClassLoader classLoader);
+public class NoStageRestrictionBean {
 
 }

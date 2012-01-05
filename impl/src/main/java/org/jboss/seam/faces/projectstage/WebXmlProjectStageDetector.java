@@ -16,19 +16,15 @@
  */
 package org.jboss.seam.faces.projectstage;
 
-import org.jboss.solder.logging.Logger;
-import org.jboss.solder.util.Sortable;
-import org.jboss.solder.util.service.ServiceLoader;
-
-import javax.faces.application.ProjectStage;
-import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+
+import javax.faces.application.ProjectStage;
+import javax.servlet.ServletContext;
+
+import org.jboss.solder.logging.Logger;
+import org.jboss.solder.servlet.resource.WebResourceLocator;
 
 /**
  * Implementation of {@link ProjectStageDetector} that tries to read the project stage from the standard servlet context
@@ -68,42 +64,25 @@ public class WebXmlProjectStageDetector implements ProjectStageDetector {
     }
 
     /**
-     * Tries to get the name of the project stage from web.xml. This method will use the {@link WebXmlLocator} SPI for locating
-     * the file.
+     * Tries to get the name of the project stage from web.xml. This method will use Solder's {@link WebResourceLocator} to find
+     * the location of web.xml.
      * 
      * @return name of the project stage or <code>null</code>
      */
     private String getProjectStageFromLocators() {
 
-        // build sorted list of locator implementations
-        List<WebXmlLocator> locators = new ArrayList<WebXmlLocator>();
-        for (Iterator<WebXmlLocator> iter = ServiceLoader.load(WebXmlLocator.class).iterator(); iter.hasNext();) {
-            locators.add(iter.next());
-        }
-        Collections.sort(locators, new Sortable.Comparator());
+        // try to locate web.xml
+        WebResourceLocator webResourceLocator = new WebResourceLocator();
+        URL webXmlLocation = webResourceLocator.getWebResourceUrl("/WEB-INF/web.xml");
 
-        // prefer the context classloader
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        if (classLoader == null) {
-            classLoader = this.getClass().getClassLoader();
-        }
+        // try to parse the web.xml if the locator returned a result
+        if (webXmlLocation != null) {
 
-        // process each locator one by one
-        for (WebXmlLocator locator : locators) {
+            String projectStage = parseWebXml(webXmlLocation);
 
-            // execute the SPI implementation
-            URL webXmlLocation = locator.getWebXmlLocation(classLoader);
-
-            // try to parse the web.xml if the locator returned a result
-            if (webXmlLocation != null) {
-
-                String projectStage = parseWebXml(webXmlLocation);
-
-                // accept the first result
-                if (projectStage != null) {
-                    return projectStage;
-                }
-
+            // accept the first result
+            if (projectStage != null) {
+                return projectStage;
             }
 
         }
