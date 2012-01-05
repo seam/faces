@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.faces.test.weld.projectstage;
+package org.jboss.seam.faces.test.server.projectstage;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
@@ -25,6 +25,11 @@ import java.io.InputStream;
 import org.jboss.seam.faces.projectstage.WebXmlContextParameterParser;
 import org.junit.Test;
 
+/**
+ * 
+ * @author Christian Kaltepoth <christian@kaltepoth.de>
+ * 
+ */
 public class WebXmlContextParameterParserTest {
 
     @Test
@@ -32,7 +37,7 @@ public class WebXmlContextParameterParserTest {
 
         // open the web.xml
         InputStream webXmlStream = Thread.currentThread().getContextClassLoader()
-                .getResourceAsStream(this.getClass().getPackage().getName().replace('.', '/') + "/web.xml");
+                .getResourceAsStream("org/jboss/seam/faces/test/server/projectstage/parser-test-web.xml");
         assertNotNull("Cannot find web.xml for test", webXmlStream);
 
         // parse it

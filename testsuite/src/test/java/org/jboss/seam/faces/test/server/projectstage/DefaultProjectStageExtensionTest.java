@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.faces.test.weld.projectstage;
+package org.jboss.seam.faces.test.server.projectstage;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -23,43 +23,40 @@ import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ArchivePaths;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.seam.faces.projectstage.ProjectStageExtension;
+import org.jboss.seam.faces.test.server.projectstage.beans.DevelopmentStageBean;
+import org.jboss.seam.faces.test.server.projectstage.beans.NoStageRestrictionBean;
+import org.jboss.seam.faces.test.server.projectstage.beans.ProductionStageBean;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * This tests checks if the ProjectStageExtensions works correctly if no project stage can be detected. In this case the
+ * 
+ * This tests checks if the {@link ProjectStageExtension} works correctly if no project stage can be detected. In this case the
  * extension assumes the Production stage.
- *
+ * 
  * @author Christian Kaltepoth <christian@kaltepoth.de>
- *
+ * 
  */
 @RunWith(Arquillian.class)
-public class ProjectStageExtensionTest {
+public class DefaultProjectStageExtensionTest {
 
     @Deployment
-    public static JavaArchive createTestArchive() {
-        return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(DevelopmentStageBean.class, ProductionStageBean.class, NoStageRestrictionBean.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, ArchivePaths.create("beans.xml"));
+    public static WebArchive createTestArchive() {
+        return ProjectStageBaseArchive.getBaseArchive()
+                .addClasses(DevelopmentStageBean.class, ProductionStageBean.class, NoStageRestrictionBean.class);
     }
 
     @Inject
     private BeanManager beanManager;
 
     @Test
-    public void testActivatedBeansInDefaultProjectStage() {
+    public void testActivatedBeansInDevelopmentStageFromWebXml() {
 
-        // the development bean has been vetoed
+        // The @Development annotated bean is vetoed, all others will be active
         assertEquals(0, beanManager.getBeans(DevelopmentStageBean.class).size());
-
-        // the production bean is active
         assertEquals(1, beanManager.getBeans(ProductionStageBean.class).size());
-
-        // no annotations on this type, so it is activated
         assertEquals(1, beanManager.getBeans(NoStageRestrictionBean.class).size());
 
     }
