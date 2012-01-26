@@ -32,6 +32,7 @@ import com.ocpsoft.pretty.faces.spi.ConfigurationProvider;
 import org.jboss.seam.faces.beanManager.BeanManagerServletContextListener;
 import org.jboss.seam.faces.util.BeanManagerUtils;
 import org.jboss.seam.faces.view.config.ViewConfigStore;
+import org.jboss.solder.beanManager.BeanManagerLocator;
 import org.jboss.solder.core.Requires;
 import org.xml.sax.SAXException;
 
@@ -42,7 +43,7 @@ import org.xml.sax.SAXException;
 @Requires("com.ocpsoft.pretty.faces.spi.ConfigurationProvider")
 public class RewriteConfiguration implements ConfigurationProvider {
     public static final String PRETTYFACES_CONFIG_SERVLETCONTEXT_KEY = "org.jboss.seam.faces.com.ocpsoft.pretty.faces.spi.ConfigurationProvider";
-
+    
     @Override
     public PrettyConfig loadConfiguration(ServletContext sc) {
         WebXmlParser webXmlParser = new WebXmlParser();
@@ -53,14 +54,18 @@ public class RewriteConfiguration implements ConfigurationProvider {
         } catch (SAXException ex) {
             throw new RuntimeException(ex);
         }
+        
         BeanManager beanManager = (BeanManager) sc.getAttribute(BeanManagerServletContextListener.BEANMANAGER_SERVLETCONTEXT_KEY);
+        if(beanManager == null)
+            beanManager = new BeanManagerLocator().getBeanManager();
+        
         ViewConfigStore store = BeanManagerUtils.getContextualInstance(beanManager, ViewConfigStore.class);
         List<UrlMapping> mappings = loadUrlMappings(store, webXmlParser.getFacesMapping());
         PrettyConfig prettyConfig = new PrettyConfig();
         prettyConfig.setMappings(mappings);
         return prettyConfig;
     }
-
+    
     private List<UrlMapping> loadUrlMappings(ViewConfigStore store, String facesMapping) {
         List<UrlMapping> mappings = new ArrayList<UrlMapping>();
         Map<String, Annotation> map = store.getAllAnnotationViewMap(org.jboss.seam.faces.rewrite.UrlMapping.class);
@@ -71,7 +76,7 @@ public class RewriteConfiguration implements ConfigurationProvider {
         }
         return mappings;
     }
-
+    
     private UrlMapping buildPrettyFacesUrlMapping(String viewId, Annotation annotation, String facesMapping) {
         org.jboss.seam.faces.rewrite.UrlMapping urlMappingAnnotation = (org.jboss.seam.faces.rewrite.UrlMapping) annotation;
         UrlMapping urlMapping = new UrlMapping();
@@ -82,7 +87,7 @@ public class RewriteConfiguration implements ConfigurationProvider {
         urlMapping.setPattern(urlMappingAnnotation.pattern());
         return urlMapping;
     }
-
+    
     String buildViewUrl(String viewId, String facesMapping) {
         String viewUrl = null;
         if (facesMapping.endsWith("*")) {
@@ -102,5 +107,5 @@ public class RewriteConfiguration implements ConfigurationProvider {
         }
         return viewUrl;
     }
-
+    
 }
