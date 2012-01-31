@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.el.ELContext;
 import javax.el.ELResolver;
@@ -43,9 +44,10 @@ public class CollectionsELResolver extends ELResolver {
             DATA_MODEL = null;
         }
     }
-//    private ELResolver getWrapped() {
-//        return FacesContext.getCurrentInstance().getELContext().getELResolver();
-//    }
+
+    // private ELResolver getWrapped() {
+    // return FacesContext.getCurrentInstance().getELContext().getELResolver();
+    // }
 
     @Override
     public Object getValue(ELContext context, Object base, Object property) {
@@ -86,43 +88,46 @@ public class CollectionsELResolver extends ELResolver {
         return Object.class;
     }
 
-    private boolean containsKey(Map map, String key) {
-        try {
-            return map.containsKey(key);
-        } catch (UnsupportedOperationException e) {
-            // eat it
-            return false;
-        }
-    }
-
     private Object resolveInMap(ELContext context, Map map, Object property) {
-        if ("size".equals(property) && !containsKey(map, "size")) {
-            context.setPropertyResolved(true);
-            return map.size();
-        } else if ("values".equals(property) && !containsKey(map, "values")) {
-            context.setPropertyResolved(true);
-            return map.values();
-        } else if ("keySet".equals(property) && !containsKey(map, "keySet")) {
-            context.setPropertyResolved(true);
-            return map.keySet();
-        } else if ("entrySet".equals(property) && !containsKey(map, "entrySet")) {
-            context.setPropertyResolved(true);
-            return map.entrySet();
-        } else if ("empty".equals(property) && !containsKey(map, "empty")) {
-            context.setPropertyResolved(true);
-            return map.isEmpty();
-        } else {
-            return null;
+
+        try {
+            if ("size".equals(property) && !map.containsKey("size")) {
+                int size = map.size();
+                context.isPropertyResolved();
+                context.setPropertyResolved(true);
+                return size;
+            } else if ("values".equals(property) && !map.containsKey("values")) {
+                Collection<?> values = map.values();
+                context.setPropertyResolved(true);
+                return values;
+            } else if ("keySet".equals(property) && !map.containsKey("keySet")) {
+                Set<?> keySet = map.keySet();
+                context.setPropertyResolved(true);
+                return keySet;
+            } else if ("entrySet".equals(property) && !map.containsKey("entrySet")) {
+                Set<?> entrySet = map.entrySet();
+                context.setPropertyResolved(true);
+                return entrySet;
+            } else if ("empty".equals(property) && !map.containsKey("empty")) {
+                boolean empty = map.isEmpty();
+                context.setPropertyResolved(true);
+                return empty;
+            }
+        } catch (Exception e) {
+            // swallowed: we aren't resolving anything if this happens
         }
+
+        return null;
     }
 
     private Object resolveInDataModel(ELContext context, Object base, Object property) {
         if ("size".equals(property)) {
             context.setPropertyResolved(true);
-            return (Integer) Reflections.invokeMethod(Reflections.findDeclaredMethod(DATA_MODEL, "getRowCount", EMPTY_CLASS_ARRAY), base);
+            return Reflections.invokeMethod(Reflections.findDeclaredMethod(DATA_MODEL, "getRowCount", EMPTY_CLASS_ARRAY), base);
         } else if ("empty".equals(property)) {
             context.setPropertyResolved(true);
-            return (Integer) Reflections.invokeMethod(Reflections.findDeclaredMethod(DATA_MODEL, "getRowCount", EMPTY_CLASS_ARRAY), base) == 0;
+            return (Integer) Reflections.invokeMethod(
+                    Reflections.findDeclaredMethod(DATA_MODEL, "getRowCount", EMPTY_CLASS_ARRAY), base) == 0;
         } else {
             return null;
         }
@@ -147,7 +152,7 @@ public class CollectionsELResolver extends ELResolver {
     }
 
     public static Object invok(Method method, Object target, Object... args) {
-            return Reflections.invokeMethod(method, target, args);
+        return Reflections.invokeMethod(method, target, args);
     }
 
 }
