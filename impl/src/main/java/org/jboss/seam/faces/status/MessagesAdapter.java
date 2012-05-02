@@ -17,6 +17,7 @@
 package org.jboss.seam.faces.status;
 
 import java.io.Serializable;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.enterprise.event.Observes;
@@ -45,7 +46,7 @@ import org.jboss.solder.logging.Logger;
  * NOTE This class is using method parameter injection of Messages rather than field injection to work around GLASSFISH-15721.
  * This shouldn't be necessary starting with Weld 1.1.1.
  * </p>
- *
+ * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
@@ -58,28 +59,45 @@ public class MessagesAdapter implements Serializable {
     @Inject
     RenderContext context;
 
-    void flushBeforeNavigate(@Observes final PreNavigateEvent event, Messages messages) {
-        if (!messages.getAll().isEmpty()) {
-            log.debug("Saving status Messages to Flash Scope");
-            context.put(FLASH_MESSAGES_KEY, messages.getAll());
-            messages.clear();
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    void convert(@Observes @Before @RenderResponse final PhaseEvent event, Messages messages) {
-        Set<Message> savedMessages = (Set<Message>) context.get(FLASH_MESSAGES_KEY);
-        if (savedMessages != null) {
-            for (Message m : savedMessages) {
-                event.getFacesContext().addMessage(m.getTargets(),
-                        new FacesMessage(getSeverity(m.getLevel()), m.getText(), null));
+    private abstract class MessageProcessor {
+        public void process(Messages messages) {
+            @SuppressWarnings("unchecked")
+            Set<Message> savedMessages = (Set<Message>) context.get(FLASH_MESSAGES_KEY);
+            Set<Message> combinedMessages = new LinkedHashSet<Message>();
+            if (savedMessages != null) {
+                log.debug("Picked up " + savedMessages.size() + " previously stored messages");
+                combinedMessages.addAll(savedMessages);
+            }
+            combinedMessages.addAll(messages.getAll());
+            if (!combinedMessages.isEmpty()) {
+                work(combinedMessages);
+                messages.clear();
             }
         }
 
-        for (Message m : messages.getAll()) {
-            event.getFacesContext().addMessage(m.getTargets(), new FacesMessage(getSeverity(m.getLevel()), m.getText(), null));
-        }
-        messages.clear();
+        protected abstract void work(Set<Message> combinedMessages);
+    }
+
+    void flushBeforeNavigate(@Observes final PreNavigateEvent event, Messages messages) {
+        new MessageProcessor() {
+            @Override
+            protected void work(Set<Message> combinedMessages) {
+                log.debug("Saving " + combinedMessages.size() + " status Messages to Flash Scope");
+                context.put(FLASH_MESSAGES_KEY, combinedMessages);
+            }
+        }.process(messages);
+    }
+
+    void convert(@Observes @Before @RenderResponse final PhaseEvent event, Messages messages) {
+        new MessageProcessor() {
+            @Override
+            protected void work(Set<Message> combinedMessages) {
+                for (Message m : combinedMessages) {
+                    event.getFacesContext().addMessage(m.getTargets(),
+                            new FacesMessage(getSeverity(m.getLevel()), m.getText(), null));
+                }
+            }
+        }.process(messages);
     }
 
     private Severity getSeverity(final Level level) {
