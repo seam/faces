@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.enterprise.event.Observes;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.RequestDispatcher;
 
 import org.jboss.seam.faces.event.PostLoginEvent;
 import org.jboss.seam.faces.event.PreLoginEvent;
@@ -40,6 +41,11 @@ public class LoginListener {
         if (event.getFacesContext().getExternalContext().getRequest() instanceof HttpServletRequest) {
             HttpServletRequest request = (HttpServletRequest) event.getFacesContext().getExternalContext().getRequest();
             StringBuffer sb = request.getRequestURL();
+            // If the original url has been forwarded, use the original
+            Object forwardedUrl = event.getFacesContext().getExternalContext().getRequestMap().get(RequestDispatcher.FORWARD_REQUEST_URI);
+            if (forwardedUrl != null && forwardedUrl instanceof String) {
+                sb = new StringBuffer((String) forwardedUrl);
+            }
             // build the querystring out of the request parameters, because Reqeust#getQueryString is often null
             Map<String, String> requestParameterMap = event.getFacesContext().getExternalContext().getRequestParameterMap();
             if (requestParameterMap != null) {
