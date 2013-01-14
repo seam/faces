@@ -18,6 +18,7 @@ package org.jboss.seam.faces.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
@@ -69,9 +70,8 @@ public class BeanManagerUtils {
     /**
      * Determine if a bean is {@link Dependent} scoped.
      */
-    @SuppressWarnings("unchecked")
-    public <T> boolean isDependentScoped(final Class<T> type) {
-        Bean<T> bean = (Bean<T>) manager.resolve(manager.getBeans(type));
+    public <T> boolean isDependentScopedStrict(final Class<T> type) {
+        Bean<T> bean = resolveStrict(manager, type);
         if (bean != null) {
             return Dependent.class.equals(bean.getScope());
         }
@@ -79,7 +79,7 @@ public class BeanManagerUtils {
     }
 
     /**
-     * Get a single CDI managed instance of a specific class. Return only the first result if multiple beans are available.
+     * Get a single CDI managed instance of a specific class. Will use BeanManager@resolve if multiple beans are available.
      *
      * @param type The class for which to return an instance.
      * @return The managed instance, or null if none could be provided.
@@ -89,7 +89,7 @@ public class BeanManagerUtils {
     }
 
     /**
-     * Get a single CDI managed instance of a specific class. Return only the first result if multiple beans are available.
+     * Get a single CDI managed instance of a specific class. Will use BeanManager@resolve if multiple beans are available.
      * <p/>
      * <b>NOTE:</b> Using this method should be avoided at all costs.
      *
@@ -110,6 +110,61 @@ public class BeanManagerUtils {
         return result;
     }
 
+
+    /**
+     * Get a CDI managed instance matching exactly the given type. That's why BeanManager#resolve isn't used.
+     *
+     * @param type The class for which to return an instance.
+     * @return The managed instance, or null if none could be provided.
+     */
+    public <T> T getContextualInstanceStrict(final Class<T> type) {
+        return getContextualInstanceStrict(manager, type);
+    }
+
+    /**
+     * Get a CDI managed instance matching exactly the given type. That's why BeanManager#resolve isn't used.
+     * <p/>
+     * <b>NOTE:</b> Using this method should be avoided at all costs.
+     * <b>NOTE:</b> Using this method should be avoided at all costs.
+     *
+     * @param manager The bean manager with which to perform the lookup.
+     * @param type    The class for which to return an instance.
+     * @return The managed instance, or null if none could be provided.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T getContextualInstanceStrict(final BeanManager manager, final Class<T> type) {
+        T result = null;
+        Bean<T> bean = resolveStrict(manager, type);
+        if (bean != null) {
+            CreationalContext<T> context = manager.createCreationalContext(bean);
+            if (context != null) {
+                result = (T) manager.getReference(bean, type, context);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * @param manager
+     * @param type
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    private static <T> Bean<T> resolveStrict(final BeanManager manager, final Class<T> type) {
+      Set<Bean<?>> beans = manager.getBeans(type);
+      Bean<T> bean = null;
+      
+      //alternative to BeanManager#resolve to get the exact type we need
+      for(Bean<?> candidate : beans) {
+        if(type.equals(candidate.getBeanClass())) {
+          bean = (Bean<T>) candidate;
+          break;
+        }
+      }
+      return bean;
+    }
+
+    
     /**
      * Get all CDI managed instances of a specific class. Return results in a {@link List} in no specific order.
      *
