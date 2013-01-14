@@ -41,7 +41,9 @@ public class BaseArchive {
     }
 
     public static Collection<JavaArchive> retrieveLibs(final String ... libGavs) {
-        return DependencyResolvers.use(MavenDependencyResolver.class).loadMetadataFromPom("pom.xml")
+        return DependencyResolvers.use(MavenDependencyResolver.class)
+                .configureFrom("../settings.xml")
+                .loadMetadataFromPom("pom.xml")
                 .artifacts(libGavs).resolveAs(JavaArchive.class);
     }
 }

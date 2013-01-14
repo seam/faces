@@ -3,6 +3,7 @@
     <profile>
       <id>jboss-public-repository</id>
       <activation>
+        <activeByDefault>true</activeByDefault>
         <property>
           <name>jboss-public-repository</name>
           <value>!false</value>
