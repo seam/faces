@@ -94,7 +94,7 @@ public class MessagesAdapter implements Serializable {
             protected void work(Set<Message> combinedMessages) {
                 for (Message m : combinedMessages) {
                     event.getFacesContext().addMessage(m.getTargets(),
-                            new FacesMessage(getSeverity(m.getLevel()), m.getText(), null));
+                            new FacesMessage(getSeverity(m.getLevel()), m.getText(), m.getDetail()));
                 }
             }
         }.process(messages);
