@@ -18,6 +18,7 @@ package org.jboss.seam.faces.component;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIInput;
@@ -75,15 +77,18 @@ public class FormValidationFieldProducer {
             String id = getFieldId(ip);
             UIInput component = findComponent(id, id);
             components.put(id, component);
-
+            log.debug("component: " + component.getClientId() + " found.");
+    
             if (component.isLocalValueSet()) {
                 result = component.getValue();
+		log.debug("value: " + (result == null ? "empty" : result.toString()));
             } else {
                 Converter converter = component.getConverter();
                 if (converter != null) {
                     result = converter.getAsObject(context, component, (String) component.getSubmittedValue());
                 } else {
                     result = component.getSubmittedValue();
+		    log.debug("submitted value: " + (result == null ? "empty" : result.toString()));
                 }
             }
 
@@ -155,7 +160,8 @@ public class FormValidationFieldProducer {
     private UIInput findComponent(final String alias, final String clientId) {
         UIComponent comp = null;
         if (!components.containsKey(clientId)) {
-            comp = form.findComponent(clientId);
+            comp = findComponent(form, clientId);
+         
             if (comp == null) {
                 throw new IllegalArgumentException("org.jboss.seam.component.UIValidateForm-- Could not locate component ["
                         + form.getClientId() + ":" + alias + "]");
@@ -169,5 +175,30 @@ public class FormValidationFieldProducer {
         }
         return (UIInput) comp;
     }
-
+    
+   
+    private UIComponent findComponent(final UIComponent component, final String clientId) {
+        UIComponent comp = null;
+        
+        comp = component.findComponent(clientId);
+        
+        if (comp != null) {
+            return comp;
+        }
+        
+        Iterator<UIComponent> children = component.getFacetsAndChildren();
+        while(children.hasNext()) {
+            UIComponent child = children.next();
+            if (child instanceof NamingContainer) {
+                comp = findComponent(child, clientId);
+                if (comp != null) {
+                    return comp;
+                }
+            }
+        }
+        
+        return null;
+            
+            
+    }
 }
