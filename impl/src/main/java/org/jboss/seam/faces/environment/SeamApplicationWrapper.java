@@ -49,7 +49,7 @@ public class SeamApplicationWrapper extends ApplicationWrapper {
     public Converter createConverter(final Class<?> targetClass) {
         log.debugf("Creating converter for targetClass %s", targetClass.getName());
         Converter result = parent.createConverter(targetClass);
-        result = attemptExtension(result);
+        result = attemptStrictExtension(result);
         return result;
     }
 
@@ -57,7 +57,7 @@ public class SeamApplicationWrapper extends ApplicationWrapper {
     public Converter createConverter(final String converterId) {
         log.debugf("Creating converter for converterId %s", converterId);
         Converter result = parent.createConverter(converterId);
-        result = attemptExtension(result);
+        result = attemptStrictExtension(result);
         return result;
     }
 
@@ -65,12 +65,12 @@ public class SeamApplicationWrapper extends ApplicationWrapper {
     public Validator createValidator(final String validatorId) {
         log.debugf("Creating validator for validatorId %s", validatorId);
         Validator result = parent.createValidator(validatorId);
-        result = attemptExtension(result);
+        result = attemptStrictExtension(result);
         return result;
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T attemptExtension(final T base) {
+    private <T> T attemptStrictExtension(final T base) {
         T result = base;
 
         if (base == null) {
@@ -78,10 +78,10 @@ public class SeamApplicationWrapper extends ApplicationWrapper {
         }
 
         log.debugf("Extending class: %s", base.getClass().getName());
-        if (managerUtils.isDependentScoped(base.getClass())) {
+        if (managerUtils.isDependentScopedStrict(base.getClass())) {
             managerUtils.injectNonContextualInstance(result);
         } else {
-            result = (T) managerUtils.getContextualInstance(base.getClass());
+            result = (T) managerUtils.getContextualInstanceStrict(base.getClass());
         }
 
         if (result == null) {
