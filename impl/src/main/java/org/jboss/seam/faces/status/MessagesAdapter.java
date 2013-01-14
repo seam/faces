@@ -45,7 +45,7 @@ import org.jboss.solder.logging.Logger;
  * NOTE This class is using method parameter injection of Messages rather than field injection to work around GLASSFISH-15721.
  * This shouldn't be necessary starting with Weld 1.1.1.
  * </p>
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
  */
@@ -72,13 +72,12 @@ public class MessagesAdapter implements Serializable {
         if (savedMessages != null) {
             for (Message m : savedMessages) {
                 event.getFacesContext().addMessage(m.getTargets(),
-                        new FacesMessage(getSeverity(m.getLevel()), m.getText(), m.getDetail()));
+                        new FacesMessage(getSeverity(m.getLevel()), m.getText(), null));
             }
         }
 
         for (Message m : messages.getAll()) {
-            event.getFacesContext().addMessage(m.getTargets(),
-                    new FacesMessage(getSeverity(m.getLevel()), m.getText(), m.getDetail()));
+            event.getFacesContext().addMessage(m.getTargets(), new FacesMessage(getSeverity(m.getLevel()), m.getText(), null));
         }
         messages.clear();
     }
