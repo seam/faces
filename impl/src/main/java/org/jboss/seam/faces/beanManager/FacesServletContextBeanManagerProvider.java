@@ -18,6 +18,7 @@ package org.jboss.seam.faces.beanManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.enterprise.inject.spi.BeanManager;
 import javax.faces.context.FacesContext;
@@ -47,14 +48,13 @@ public class FacesServletContextBeanManagerProvider implements BeanManagerProvid
         if (facesContext == null) {
             return null;
         }
-        ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
-        return getBeanManager(servletContext);
+        return getBeanManager(facesContext.getExternalContext().getApplicationMap());
     }
 
-    private BeanManager getBeanManager(ServletContext servletContext) {
+    private BeanManager getBeanManager(Map<String, Object> applicationMap) {
         BeanManager beanManager = null;
         for (String key : SERVLET_CONTEXT_KEYS) {
-            beanManager = (BeanManager) servletContext.getAttribute(key);
+            beanManager = (BeanManager) applicationMap.get(key);
             if (beanManager != null) {
                 break;
             }
