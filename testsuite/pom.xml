@@ -1,313 +1,357 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  JBoss, Home of Professional Open Source
-  Copyright 2011, Red Hat, Inc., and individual contributors
-  by the @authors tag. See the copyright.txt in the distribution for a
-  full listing of individual contributors.
+<!-- JBoss, Home of Professional Open Source Copyright 2011, Red Hat, Inc., 
+	and individual contributors by the @authors tag. See the copyright.txt in 
+	the distribution for a full listing of individual contributors. Licensed 
+	under the Apache License, Version 2.0 (the "License"); you may not use this 
+	file except in compliance with the License. You may obtain a copy of the 
+	License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by 
+	applicable law or agreed to in writing, software distributed under the License 
+	is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY 
+	KIND, either express or implied. See the License for the specific language 
+	governing permissions and limitations under the License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-  http://www.apache.org/licenses/LICENSE-2.0
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-  -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.jboss.seam.faces</groupId>
+		<artifactId>seam-faces-parent</artifactId>
+		<relativePath>../pom.xml</relativePath>
+		<version>3.2.0-SNAPSHOT</version>
+	</parent>
 
-    <parent>
-        <groupId>org.jboss.seam.faces</groupId>
-        <artifactId>seam-faces-parent</artifactId>
-        <relativePath>../pom.xml</relativePath>
-        <version>3.2.1-SNAPSHOT</version>
-    </parent>
+	<artifactId>seam-faces-testsuite</artifactId>
 
-    <version>3.2.1-SNAPSHOT</version>
-    <artifactId>seam-faces-testsuite</artifactId>
+	<name>Seam Faces Test Suite</name>
+	<packaging>jar</packaging>
 
-    <name>Seam Faces Test Suite</name>
-    <packaging>jar</packaging>
+	<properties>
+		<arquillian.version>1.0.3.Final</arquillian.version>
+		<arquillian.wrap.version>1.0.0.Alpha2</arquillian.wrap.version>
+		<arquillian.graphene.version>2.0.0.Alpha3</arquillian.graphene.version>
+		<arquillian.drone.version>1.2.0.Alpha1</arquillian.drone.version>
+	</properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.jboss.arquillian.junit</groupId>
-            <artifactId>arquillian-junit-container</artifactId>
-        </dependency>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.jboss.arquillian</groupId>
+				<artifactId>arquillian-bom</artifactId>
+				<version>${arquillian.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 
-        <dependency>
-            <groupId>org.jboss.shrinkwrap.resolver</groupId>
-            <artifactId>shrinkwrap-resolver-api-maven</artifactId>
-            <scope>test</scope>
-            <version>1.0.0-beta-5</version>
-        </dependency>
+            <!-- Arquillian Wrap BOM -->
+			<dependency>
+				<groupId>org.jboss.arquillian.extension</groupId>
+				<artifactId>arquillian-warp-bom</artifactId>
+				<version>${arquillian.wrap.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 
-        <dependency>
-            <groupId>org.jboss.shrinkwrap.resolver</groupId>
-            <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
-            <scope>test</scope>
-            <version>1.0.0-beta-5</version>
-        </dependency>
+			<!-- Arquillian Drone dependencies and Selenium dependencies -->
+			<dependency>
+				<groupId>org.jboss.arquillian.extension</groupId>
+				<artifactId>arquillian-drone-bom</artifactId>
+				<version>${arquillian.drone.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
-        <dependency>
-            <groupId>org.jboss.seam.faces</groupId>
-            <artifactId>seam-faces-api</artifactId>
-        </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>org.jboss.seam.faces</groupId>
+			<artifactId>seam-faces-api</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.seam.faces</groupId>
-            <artifactId>seam-faces</artifactId>
-            <scope>compile</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.seam.faces</groupId>
+			<artifactId>seam-faces</artifactId>
+			<scope>compile</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.seam.security</groupId>
-            <artifactId>seam-security-api</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.seam.security</groupId>
+			<artifactId>seam-security-api</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.seam.security</groupId>
-            <artifactId>seam-security</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.seam.security</groupId>
+			<artifactId>seam-security</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.seam.international</groupId>
-            <artifactId>seam-international</artifactId>
-            <scope>compile</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.seam.international</groupId>
+			<artifactId>seam-international</artifactId>
+			<scope>compile</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.test-jsf</groupId>
-            <artifactId>jsf-mock</artifactId>
-            <scope>compile</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.test-jsf</groupId>
+			<artifactId>jsf-mock</artifactId>
+			<scope>compile</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>com.ocpsoft</groupId>
-            <artifactId>prettyfaces-jsf2</artifactId>
-            <scope>compile</scope>
-        </dependency>
+		<dependency>
+			<groupId>com.ocpsoft</groupId>
+			<artifactId>prettyfaces-jsf2</artifactId>
+			<scope>compile</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.spec</groupId>
-            <artifactId>jboss-javaee-6.0</artifactId>
-            <type>pom</type>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.spec</groupId>
+			<artifactId>jboss-javaee-6.0</artifactId>
+			<type>pom</type>
+			<scope>provided</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.solder</groupId>
-            <artifactId>solder-api</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.solder</groupId>
+			<artifactId>solder-api</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.solder</groupId>
-            <artifactId>solder-impl</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.solder</groupId>
+			<artifactId>solder-impl</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.solder</groupId>
-            <artifactId>solder-tooling</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.solder</groupId>
+			<artifactId>solder-tooling</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.solder</groupId>
-            <artifactId>solder-logging</artifactId>
-            <version>${seam.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.solder</groupId>
+			<artifactId>solder-logging</artifactId>
+			<version>${seam.version}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.weld</groupId>
-            <artifactId>weld-core</artifactId>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.weld</groupId>
+			<artifactId>weld-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                    <systemProperties>
-                        <arquillian.launch>${arquillian}</arquillian.launch>
-                        <arquillian>${arquillian}</arquillian>
-                    </systemProperties>
-                </configuration>
+		<dependency>
+			<groupId>org.jboss.arquillian.junit</groupId>
+			<artifactId>arquillian-junit-container</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-                <executions>
-                    <execution>
-                        <id>surefire-it</id>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <configuration>
-                            <skip>false</skip>
-                            <redirectTestOutputToFile>true</redirectTestOutputToFile>
-                            <trimStackTrace>false</trimStackTrace>
-                            <printSummary>true</printSummary>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+		<dependency>
+			<groupId>org.jboss.shrinkwrap.resolver</groupId>
+			<artifactId>shrinkwrap-resolver-api-maven</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-    <profiles>
-        <profile>
-            <id>weld-ee-embedded-1.1</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-                <property>
-                    <name>arquillian</name>
-                    <value>weld-ee-embedded-1.1</value>
-                </property>
-            </activation>
+		<dependency>
+			<groupId>org.jboss.shrinkwrap.resolver</groupId>
+			<artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-            <dependencies>
-                <dependency>
-                    <groupId>org.jboss.seam.test</groupId>
-                    <artifactId>weld-ee-embedded-1.1</artifactId>
-                    <type>pom</type>
-                    <scope>test</scope>
-                </dependency>
+		<dependency>
+			<groupId>org.jboss.arquillian.extension</groupId>
+			<artifactId>arquillian-warp</artifactId>
+			<type>pom</type>
+			<scope>test</scope>
+		</dependency>
 
-                <!-- EL impl needed for ElTest -->
-                <dependency>
-                    <groupId>org.glassfish.web</groupId>
-                    <artifactId>el-impl</artifactId>
-                    <scope>test</scope>
-                </dependency>
+		<dependency>
+			<groupId>org.jboss.arquillian.graphene</groupId>
+			<artifactId>arquillian-graphene</artifactId>
+			<version>${arquillian.graphene.version}</version>
+			<type>pom</type>
+		</dependency>
+	</dependencies>
 
-            </dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+					<systemProperties>
+						<arquillian.launch>${arquillian}</arquillian.launch>
+						<arquillian>${arquillian}</arquillian>
+					</systemProperties>
+				</configuration>
 
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <systemProperties>
-                                <arquillian.launch>weld-ee-embedded-1.1</arquillian.launch>
-                                <arquillian>weld-ee-embedded-1.1</arquillian>
-                            </systemProperties>
-                            <excludes>
-                               <exclude>**/conversation/**</exclude>
-                               <exclude>**/server/**</exclude>
-                            </excludes>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+				<executions>
+					<execution>
+						<id>surefire-it</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<configuration>
+							<skip>false</skip>
+							<redirectTestOutputToFile>true</redirectTestOutputToFile>
+							<trimStackTrace>false</trimStackTrace>
+							<printSummary>true</printSummary>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
-        <profile>
-            <id>jbossas-managed-7</id>
-            <activation>
-                <property>
-                    <name>arquillian</name>
-                    <value>jbossas-managed-7</value>
-                </property>
-            </activation>
+	<profiles>
+		<profile>
+			<id>weld-ee-embedded-1.1</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>arquillian</name>
+					<value>weld-ee-embedded-1.1</value>
+				</property>
+			</activation>
 
-            <dependencies>
-                <dependency>
-                    <groupId>org.jboss.seam.test</groupId>
-                    <artifactId>jbossas-managed-7</artifactId>
-                    <type>pom</type>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
+			<dependencies>
+				<dependency>
+					<groupId>org.jboss.seam.test</groupId>
+					<artifactId>weld-ee-embedded-1.1</artifactId>
+					<type>pom</type>
+					<scope>test</scope>
+				</dependency>
 
-            <build>
-               <plugins>
-                  <plugin>
-                     <groupId>org.apache.maven.plugins</groupId>
-                     <artifactId>maven-surefire-plugin</artifactId>
-                     <configuration>
-                        <excludes>
-                           <exclude>**/weld/**</exclude>
-                        </excludes>
-                     </configuration>
-                  </plugin>
-               </plugins>
-            </build>
-        </profile>
+				<!-- EL impl needed for ElTest -->
+				<dependency>
+					<groupId>org.glassfish.web</groupId>
+					<artifactId>el-impl</artifactId>
+					<scope>test</scope>
+				</dependency>
 
-        <profile>
-            <id>glassfish-embedded-3.1</id>
-            <activation>
-                <property>
-                    <name>arquillian</name>
-                    <value>glassfish-embedded-3.1</value>
-                </property>
-            </activation>
+			</dependencies>
 
-            <dependencies>
-                <dependency>
-                    <groupId>org.jboss.seam.test</groupId>
-                    <artifactId>glassfish-embedded-3.1</artifactId>
-                    <type>pom</type>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<systemProperties>
+								<arquillian.launch>weld-ee-embedded-1.1</arquillian.launch>
+								<arquillian>weld-ee-embedded-1.1</arquillian>
+							</systemProperties>
+							<excludes>
+								<exclude>**/conversation/**</exclude>
+								<exclude>**/server/**</exclude>
+							</excludes>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 
-            <build>
-               <plugins>
-                  <plugin>
-                     <groupId>org.apache.maven.plugins</groupId>
-                     <artifactId>maven-surefire-plugin</artifactId>
-                     <configuration>
-                        <excludes>
-                           <exclude>**/weld/**</exclude>
-                        </excludes>
-                     </configuration>
-                  </plugin>
-               </plugins>
-            </build>
-        </profile>
+		<profile>
+			<id>jbossas-managed-7</id>
+			<activation>
+				<property>
+					<name>arquillian</name>
+					<value>jbossas-managed-7</value>
+				</property>
+			</activation>
 
-        <profile>
-            <id>glassfish-remote-3.1</id>
-            <activation>
-                <property>
-                    <name>arquillian</name>
-                    <value>glassfish-remote-3.1</value>
-                </property>
-            </activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.jboss.seam.test</groupId>
+					<artifactId>jbossas-managed-7</artifactId>
+					<type>pom</type>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
 
-            <dependencies>
-                <dependency>
-                    <groupId>org.jboss.seam.test</groupId>
-                    <artifactId>glassfish-remote-3.1</artifactId>
-                    <type>pom</type>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<excludes>
+								<exclude>**/weld/**</exclude>
+							</excludes>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 
-            <build>
-               <plugins>
-                  <plugin>
-                     <groupId>org.apache.maven.plugins</groupId>
-                     <artifactId>maven-surefire-plugin</artifactId>
-                     <configuration>
-                        <excludes>
-                           <exclude>**/weld/**</exclude>
-                        </excludes>
-                     </configuration>
-                  </plugin>
-               </plugins>
-            </build>
-        </profile>
-    </profiles>
+		<profile>
+			<id>glassfish-embedded-3.1</id>
+			<activation>
+				<property>
+					<name>arquillian</name>
+					<value>glassfish-embedded-3.1</value>
+				</property>
+			</activation>
+
+			<dependencies>
+				<dependency>
+					<groupId>org.jboss.seam.test</groupId>
+					<artifactId>glassfish-embedded-3.1</artifactId>
+					<type>pom</type>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<excludes>
+								<exclude>**/weld/**</exclude>
+							</excludes>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>glassfish-remote-3.1</id>
+			<activation>
+				<property>
+					<name>arquillian</name>
+					<value>glassfish-remote-3.1</value>
+				</property>
+			</activation>
+
+			<dependencies>
+				<dependency>
+					<groupId>org.jboss.seam.test</groupId>
+					<artifactId>glassfish-remote-3.1</artifactId>
+					<type>pom</type>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<excludes>
+								<exclude>**/weld/**</exclude>
+							</excludes>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
