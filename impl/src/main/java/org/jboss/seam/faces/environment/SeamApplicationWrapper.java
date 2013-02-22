@@ -79,7 +79,7 @@ public class SeamApplicationWrapper extends ApplicationWrapper {
     public UIComponent createComponent(FacesContext context, Resource componentResource) {
         log.debugf("Creating UIComponent for componentResource %s", componentResource.getResourceName());
         UIComponent component = parent.createComponent(context, componentResource);
-        component = attemptExtension(component);
+        component = attemptStrictExtension(component);
         return component;
     }
     
@@ -87,7 +87,7 @@ public class SeamApplicationWrapper extends ApplicationWrapper {
     public UIComponent createComponent(FacesContext context, String componentType, String rendererType) {
         log.debugf("Creating UIComponent for componentType %s and rendererType %s", componentType, rendererType);
         UIComponent component = parent.createComponent(context, componentType, rendererType);
-        component = attemptExtension(component);
+        component = attemptStrictExtension(component);
         return component;
     }
     
@@ -95,7 +95,7 @@ public class SeamApplicationWrapper extends ApplicationWrapper {
     public UIComponent createComponent(String componentType) throws FacesException {
         log.debugf("Creating UIComponent for componentType %s", componentType);
         UIComponent component = parent.createComponent(componentType);
-        component = attemptExtension(component);
+        component = attemptStrictExtension(component);
         return component;
     }
     
@@ -104,7 +104,7 @@ public class SeamApplicationWrapper extends ApplicationWrapper {
     public UIComponent createComponent(ValueBinding componentBinding, FacesContext context, String componentType) throws FacesException {
         log.debugf("Creating UIComponent for componentBinding %s and componentType %s", componentBinding.getExpressionString(), componentType);
         UIComponent component = parent.createComponent(componentBinding, context, componentType);
-        component = attemptExtension(component);
+        component = attemptStrictExtension(component);
         return component;
     }
     
@@ -112,7 +112,7 @@ public class SeamApplicationWrapper extends ApplicationWrapper {
     public UIComponent createComponent(ValueExpression componentExpression, FacesContext context, String componentType) throws FacesException {
         log.debugf("Creating UIComponent for componentExpression %s and componentType %s", componentExpression.getExpressionString(), componentType);
         UIComponent component = parent.createComponent(componentExpression, context, componentType);
-        component = attemptExtension(component);
+        component = attemptStrictExtension(component);
         return component;
     }
     
@@ -120,7 +120,7 @@ public class SeamApplicationWrapper extends ApplicationWrapper {
     public UIComponent createComponent(ValueExpression componentExpression, FacesContext context, String componentType, String rendererType) {
         log.debugf("Creating UIComponent for componentExpression %s, componentType %s and rendererType %s", componentExpression.getExpressionString(), componentType, rendererType);
         UIComponent component = parent.createComponent(componentExpression, context, componentType, rendererType);
-        component = attemptExtension(component);
+        component = attemptStrictExtension(component);
         return component;
     }
     
