@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
@@ -182,15 +183,6 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
 
         InputContainerElements elements = scan(getFacet(UIComponent.COMPOSITE_FACET_NAME), null, context);
         // assignIds(elements, context);
-        wire(elements, context);
-
-        getAttributes().put(getElementsAttributeName(), elements);
-
-        if (elements.hasValidationError()) {
-            getAttributes().put(getInvalidAttributeName(), true);
-        }
-
-        getAttributes().put(getRequiredAttributeName(), elements.hasRequiredInput());
 
         /*
          * for some reason, Mojarra is not filling Attribute Map with "label" key if label attr has an EL value, so I added a
@@ -200,6 +192,17 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
                 && (!getAttributes().containsKey(getLabelAttributeName()) || labelHasEmptyValue(elements))) {
             getAttributes().put(getLabelAttributeName(), generateLabel(elements, context));
         }
+        assignLabels(elements, context, this);
+
+        wire(elements, context);
+
+        getAttributes().put(getElementsAttributeName(), elements);
+
+        if (elements.hasValidationError()) {
+            getAttributes().put(getInvalidAttributeName(), true);
+        }
+
+        getAttributes().put(getRequiredAttributeName(), elements.hasRequiredInput());
 
         if (Boolean.TRUE.equals(getAttributes().get(getEncloseAttributeName()))) {
             startContainerElement(context);
@@ -299,6 +302,37 @@ public class UIInputContainer extends UIComponentBase implements NamingContainer
                 msg.setId(getDefaultMessageId() + (i == 0 ? "" : (i + 1)));
             } else if (refreshIds) {
                 msg.setId(msg.getId());
+            }
+        }
+    }
+
+    // assign label attribute for any input component (better validation message)
+    private void assignLabels(InputContainerElements elements,
+                              FacesContext context, UIInputContainer uiInputContainer) {
+
+        // label attribute handling
+        ValueExpression labelValueExpression = null;
+        Object labelValue = null;
+        for (int i = 0, len = elements.getInputs().size(); i < len; i++) {
+            UIComponent input = (UIComponent) elements.getInputs().get(i);
+            if (input.getValueExpression("label") == null
+                    && (!input.getAttributes().containsKey("label"))) {
+
+                // retrieving container label only if necessary
+                if (labelValueExpression == null && labelValue == null) {
+                    labelValueExpression = uiInputContainer.getValueExpression(getLabelAttributeName());
+                    if (labelValueExpression == null) {
+                        labelValue = uiInputContainer.getAttributes().get(getLabelAttributeName());
+                    }
+                }
+
+                // copy container label to input
+                if (labelValueExpression != null) {
+                    input.setValueExpression("label", labelValueExpression);
+                }
+                if (labelValue != null) {
+                    input.getAttributes().put("label", labelValue);
+                }
             }
         }
     }
