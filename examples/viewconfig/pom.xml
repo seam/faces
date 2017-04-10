@@ -46,6 +46,26 @@
             <groupId>org.jboss.seam.faces</groupId>
             <artifactId>seam-faces-api</artifactId>
         </dependency>
+		
+		<dependency>
+		   <groupId>org.jboss.seam.transaction</groupId>
+		   <artifactId>seam-transaction-api</artifactId>
+		</dependency>
+		
+		<dependency>
+		   <groupId>org.jboss.seam.transaction</groupId>
+		   <artifactId>seam-transaction</artifactId>
+		</dependency>
+		
+		<dependency>
+		   <groupId>org.jboss.seam.international</groupId>
+		   <artifactId>seam-international-api</artifactId>
+		</dependency>
+		
+		<dependency>
+		   <groupId>org.jboss.seam.international</groupId>
+		   <artifactId>seam-international</artifactId>
+		</dependency>
 
         <dependency>
             <groupId>org.jboss.seam.security</groupId>
